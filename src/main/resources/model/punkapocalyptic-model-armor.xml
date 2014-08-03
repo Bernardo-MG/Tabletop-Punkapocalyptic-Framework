@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<armors xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-armor.xsd">
+	<armor>
+		<name>bulletproof_vest</name>
+		<constraints>
+			<constraint>firearms_protection</constraint>
+		</constraints>
+		<protection>3</protection>
+		<protection_ranged>
+			<short>5</short>
+			<medium>6</medium>
+			<long>7</long>
+		</protection_ranged>
+	</armor>
+	<armor>
+		<name>hardened_leather</name>
+		<protection>2</protection>
+	</armor>
+	<armor>
+		<name>metal_plate</name>
+		<rules>
+			<rule>cumbersome</rule>
+		</rules>
+		<protection>5</protection>
+	</armor>
+	<armor>
+		<name>metallic_armor</name>
+		<protection>4</protection>
+	</armor>
+	<armor>
+		<name>thick_clothes</name>
+		<protection>1</protection>
+	</armor>
+</armors>

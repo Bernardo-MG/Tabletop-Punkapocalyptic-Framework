@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faction_equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-config-faction-equipment-initial.xsd">
+	<availability>
+		<faction>gangers</faction>
+		<equipment_pieces>
+			<equipment_piece>
+				<name>bayonet</name>
+				<cost>4</cost>
+			</equipment_piece>
+			<equipment_piece>
+				<name>biohazard_suit</name>
+				<cost>8</cost>
+			</equipment_piece>
+		</equipment_pieces>
+	</availability>
+</faction_equipment>

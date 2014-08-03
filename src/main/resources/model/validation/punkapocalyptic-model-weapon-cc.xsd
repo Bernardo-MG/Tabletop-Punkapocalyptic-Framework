@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:punka="http://www.wandrell.com/tabletop/validation/punkapocalyptic/model">
+	<xs:import schemaLocation="punkapocalyptic-model.xsd"
+		namespace="http://www.wandrell.com/tabletop/validation/punkapocalyptic/model" />
+
+	<xs:element name="weapons">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="weapon" type="weapon" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueData">
+			<xs:selector xpath="weapon" />
+			<xs:field xpath="name" />
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="weapon">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="rules" type="punka:rules" maxOccurs="1"
+				minOccurs="0">
+				<xs:unique name="uniqueRule">
+					<xs:selector xpath="rule" />
+					<xs:field xpath="." />
+				</xs:unique>
+			</xs:element>
+			<xs:element name="combat" type="xs:int" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="penetration" type="xs:int" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="strength" type="xs:int" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="cost" type="xs:int" maxOccurs="1"
+				minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

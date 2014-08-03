@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:punka="http://www.wandrell.com/tabletop/validation/punkapocalyptic/model">
+	<xs:import schemaLocation="punkapocalyptic-model.xsd"
+		namespace="http://www.wandrell.com/tabletop/validation/punkapocalyptic/model" />
+
+	<xs:element name="special_rules">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="rule" type="rule" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueData">
+			<xs:selector xpath="rule" />
+			<xs:field xpath="name" />
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="rule">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="constraints" type="punka:constraints"
+				maxOccurs="1" minOccurs="0">
+				<xs:unique name="uniqueConstraint">
+					<xs:selector xpath="constraint" />
+					<xs:field xpath="." />
+				</xs:unique>
+			</xs:element>
+			<xs:element name="bonus_list" type="punka:bonusList"
+				maxOccurs="1" minOccurs="0">
+				<xs:unique name="uniqueBonus">
+					<xs:selector xpath="bonus" />
+					<xs:field xpath="attribute" />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

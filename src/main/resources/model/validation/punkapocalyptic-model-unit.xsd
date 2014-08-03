@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="profiles">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="profile" type="profile" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueData">
+			<xs:selector xpath="unit" />
+			<xs:field xpath="name" />
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="profile">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="actions" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="combat" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="precision" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="agility" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="strength" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="toughness" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="tech" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
