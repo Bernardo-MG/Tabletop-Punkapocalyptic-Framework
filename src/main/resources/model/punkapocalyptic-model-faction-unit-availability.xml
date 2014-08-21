@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <unit_availabilities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-faction-unit-availability.xsd">
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-faction-unit-availability.xsd">
 	<unit_availability>
 		<faction>gangers</faction>
 		<units>
