@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unit_availabilities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-faction-unit-availability.xsd">
+	<unit_availability>
+		<faction>gangers</faction>
+		<units>
+			<unit>chief</unit>
+			<unit>badass</unit>
+			<unit>brute</unit>
+			<unit>ganger</unit>
+			<unit>scumbag</unit>
+		</units>
+	</unit_availability>
+</unit_availabilities>
