@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-unit.xsd">
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-profile.xsd">
 	<profile>
 		<name>chief</name>
 		<actions>3</actions>
