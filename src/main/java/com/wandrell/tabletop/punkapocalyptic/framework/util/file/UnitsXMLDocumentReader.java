@@ -40,22 +40,22 @@ public class UnitsXMLDocumentReader implements
 
         units = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            name = node.getAttributeValue("name");
+            name = node.getChildText("name");
 
             actions = factory.getAttribute("actions",
-                    Integer.parseInt(node.getAttributeValue("actions")));
+                    Integer.parseInt(node.getChildText("actions")));
             combat = factory.getAttribute("combat",
-                    Integer.parseInt(node.getAttributeValue("combat")));
+                    Integer.parseInt(node.getChildText("combat")));
             precision = factory.getAttribute("precision",
-                    Integer.parseInt(node.getAttributeValue("precision")));
+                    Integer.parseInt(node.getChildText("precision")));
             agility = factory.getAttribute("agility",
-                    Integer.parseInt(node.getAttributeValue("agility")));
+                    Integer.parseInt(node.getChildText("agility")));
             strength = factory.getAttribute("strength",
-                    Integer.parseInt(node.getAttributeValue("strength")));
+                    Integer.parseInt(node.getChildText("strength")));
             toughness = factory.getAttribute("toughness",
-                    Integer.parseInt(node.getAttributeValue("toughness")));
+                    Integer.parseInt(node.getChildText("toughness")));
             tech = factory.getAttribute("tech",
-                    Integer.parseInt(node.getAttributeValue("tech")));
+                    Integer.parseInt(node.getChildText("tech")));
 
             slots = factory.getAttribute("weapon_slots", 2);
 
