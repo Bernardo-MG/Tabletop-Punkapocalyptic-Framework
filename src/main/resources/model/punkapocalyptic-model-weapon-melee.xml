@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <weapons xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-cc.xsd">
+	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-melee.xsd">
 	<weapon>
 		<name>claws_and_teeth</name>
 		<combat>0</combat>
