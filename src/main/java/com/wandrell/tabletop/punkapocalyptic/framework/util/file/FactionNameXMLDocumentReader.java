@@ -24,7 +24,7 @@ public final class FactionNameXMLDocumentReader implements
         root = doc.getRootElement();
 
         for (final Element node : root.getChildren()) {
-            names.add(node.getAttributeValue("name"));
+            names.add(node.getChildText("name"));
         }
 
         return names;

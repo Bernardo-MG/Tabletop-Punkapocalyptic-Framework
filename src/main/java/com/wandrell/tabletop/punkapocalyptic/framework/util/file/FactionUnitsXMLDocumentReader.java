@@ -30,10 +30,10 @@ public final class FactionUnitsXMLDocumentReader implements
             units = new LinkedList<>();
 
             for (final Element unit : node.getChild("units").getChildren()) {
-                units.add(unit.getAttributeValue("unit"));
+                units.add(unit.getChildText("unit"));
             }
 
-            factionUnits.put(node.getAttributeValue("name"), units);
+            factionUnits.put(node.getChildText("name"), units);
         }
 
         return factionUnits;
