@@ -35,6 +35,7 @@ public final class MeleeWeaponsXMLDocumentReader implements
         Integer cost;
         Collection<SpecialRule> rules;
         Weapon weapon;
+        Element rulesNode;
 
         root = doc.getRootElement();
 
@@ -47,8 +48,12 @@ public final class MeleeWeaponsXMLDocumentReader implements
             cost = Integer.parseInt(node.getChildText("cost"));
 
             rules = new LinkedList<>();
-            for (final Element rule : node.getChild("rules").getChildren()) {
-                rules.add(getRules().get(rule.getText()));
+
+            rulesNode = node.getChild("rules");
+            if (rulesNode != null) {
+                for (final Element rule : rulesNode.getChildren()) {
+                    rules.add(getRules().get(rule.getText()));
+                }
             }
 
             weapon = new DefaultMeleeWeapon(name, cost, strength, penetration,
