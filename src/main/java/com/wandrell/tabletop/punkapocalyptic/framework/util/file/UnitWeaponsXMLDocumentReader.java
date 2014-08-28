@@ -21,6 +21,7 @@ public final class UnitWeaponsXMLDocumentReader implements
     public final Map<String, Collection<String>> getValue(final Document doc) {
         final Element root;
         final Map<String, Collection<String>> weapons;
+        Element weaponsNode;
         Collection<String> weaponList;
 
         root = doc.getRootElement();
@@ -28,9 +29,14 @@ public final class UnitWeaponsXMLDocumentReader implements
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
             weaponList = new LinkedList<>();
-            for (final Element weapon : node.getChild("weapons").getChildren()) {
-                weaponList.add(weapon.getText());
+
+            weaponsNode = node.getChild("weapons");
+            if (weaponsNode != null) {
+                for (final Element weapon : weaponsNode.getChildren()) {
+                    weaponList.add(weapon.getText());
+                }
             }
+
             weapons.put(node.getChildText("unit"), weaponList);
         }
 

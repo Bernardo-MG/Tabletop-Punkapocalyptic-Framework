@@ -22,6 +22,7 @@ public final class UnitArmorsXMLDocumentReader implements
             final Document doc) {
         final Element root;
         final Map<String, Collection<Collection<Object>>> armors;
+        Element armorsNode;
         Collection<Collection<Object>> armorList;
         Collection<Object> data;
 
@@ -30,12 +31,17 @@ public final class UnitArmorsXMLDocumentReader implements
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
             armorList = new LinkedList<>();
-            for (final Element weapon : node.getChild("armors").getChildren()) {
-                data = new LinkedList<>();
-                data.add(weapon.getChild("name").getText());
-                data.add(Integer.parseInt(weapon.getChild("cost").getText()));
 
-                armorList.add(data);
+            armorsNode = node.getChild("armors");
+
+            if (armorsNode != null) {
+                for (final Element armor : armorsNode.getChildren()) {
+                    data = new LinkedList<>();
+                    data.add(armor.getChildText("name"));
+                    data.add(Integer.parseInt(armor.getChildText("cost")));
+
+                    armorList.add(data);
+                }
             }
 
             armors.put(node.getChildText("unit"), armorList);
