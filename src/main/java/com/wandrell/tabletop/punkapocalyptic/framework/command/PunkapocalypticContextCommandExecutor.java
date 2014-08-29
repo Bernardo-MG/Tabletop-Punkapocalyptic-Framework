@@ -6,7 +6,6 @@ import com.wandrell.punkapocalyptic.framework.api.dao.FactionDAO;
 import com.wandrell.punkapocalyptic.framework.api.dao.SpecialRuleDAO;
 import com.wandrell.punkapocalyptic.framework.api.dao.UnitDAO;
 import com.wandrell.punkapocalyptic.framework.api.dao.WeaponDAO;
-import com.wandrell.punkapocalyptic.framework.api.service.ApplicationInfoService;
 import com.wandrell.punkapocalyptic.framework.api.service.PunkapocalypticLocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.ArmorDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.FactionDAOAware;
@@ -19,6 +18,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.tag.service.LocalizationS
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.service.application.ApplicationInfoService;
 
 public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
 
