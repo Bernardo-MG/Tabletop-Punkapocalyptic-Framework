@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.punkapocalyptic.framework.api.dao.SpecialRuleDAO;
 import com.wandrell.tabletop.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.punkapocalyptic.rule.SpecialRule;
@@ -16,12 +17,12 @@ import com.wandrell.util.file.api.xml.XMLDocumentReader;
 public final class ArmorsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Armor>> {
 
-    private final Map<String, SpecialRule> rules;
+    private final SpecialRuleDAO daoRule;
 
-    public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules) {
+    public ArmorsXMLDocumentReader(final SpecialRuleDAO dao) {
         super();
 
-        this.rules = rules;
+        daoRule = dao;
     }
 
     @Override
@@ -42,7 +43,7 @@ public final class ArmorsXMLDocumentReader implements
 
             rules = new LinkedList<>();
             for (final Element rule : node.getChild("rules").getChildren()) {
-                rules.add(getRules().get(rule.getText()));
+                rules.add(getSpecialRuleDAO().getSpecialRule(rule.getText()));
             }
 
             armor = new DefaultArmor(name, protection, rules);
@@ -53,8 +54,8 @@ public final class ArmorsXMLDocumentReader implements
         return armors;
     }
 
-    protected final Map<String, SpecialRule> getRules() {
-        return rules;
+    protected final SpecialRuleDAO getSpecialRuleDAO() {
+        return daoRule;
     }
 
 }

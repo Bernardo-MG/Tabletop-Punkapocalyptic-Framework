@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.punkapocalyptic.framework.api.dao.SpecialRuleDAO;
 import com.wandrell.tabletop.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.rule.SpecialRule;
@@ -16,12 +17,12 @@ import com.wandrell.util.file.api.xml.XMLDocumentReader;
 public final class RangedWeaponsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Weapon>> {
 
-    private final Map<String, SpecialRule> rules;
+    private final SpecialRuleDAO daoRule;
 
-    public RangedWeaponsXMLDocumentReader(final Map<String, SpecialRule> rules) {
+    public RangedWeaponsXMLDocumentReader(final SpecialRuleDAO dao) {
         super();
 
-        this.rules = rules;
+        daoRule = dao;
     }
 
     @Override
@@ -92,7 +93,8 @@ public final class RangedWeaponsXMLDocumentReader implements
             rulesNode = node.getChild("rules");
             if (rulesNode != null) {
                 for (final Element rule : node.getChild("rules").getChildren()) {
-                    rules.add(getRules().get(rule.getText()));
+                    rules.add(getSpecialRuleDAO()
+                            .getSpecialRule(rule.getText()));
                 }
             }
 
@@ -108,8 +110,8 @@ public final class RangedWeaponsXMLDocumentReader implements
         return weapons;
     }
 
-    protected final Map<String, SpecialRule> getRules() {
-        return rules;
+    protected final SpecialRuleDAO getSpecialRuleDAO() {
+        return daoRule;
     }
 
 }
