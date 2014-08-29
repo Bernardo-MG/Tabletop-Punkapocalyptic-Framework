@@ -110,16 +110,22 @@
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Tabletop's Punkapocalyptic Framework API -->
+			<groupId>com.wandrell</groupId>
+			<artifactId>tabletop-punkapocalyptic-framework-api</artifactId>
+			<version>${tabletop.version}</version>
+		</dependency>
+		<dependency>
 			<!-- Wandrell's Core library -->
 			<groupId>com.wandrell</groupId>
 			<artifactId>wandrell-core</artifactId>
 			<version>${wandrell.version}</version>
 		</dependency>
 		<dependency>
-			<!-- Tabletop's Punkapocalyptic Framework API -->
+			<!-- Wandrell's Swing library -->
 			<groupId>com.wandrell</groupId>
-			<artifactId>tabletop-punkapocalyptic-framework-api</artifactId>
-			<version>${tabletop.version}</version>
+			<artifactId>wandrell-swing</artifactId>
+			<version>${wandrell.version}</version>
 		</dependency>
 	</dependencies>
 
