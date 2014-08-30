@@ -95,7 +95,7 @@
 			<weapon>rifle</weapon>
 			<weapon>shotgun</weapon>
 			<weapon>small_blade</weapon>
-			<weapon>throwing_knives</weapon>
+			<weapon>throwing_knife</weapon>
 		</weapons>
 		<armors>
 			<armor>
@@ -116,7 +116,7 @@
 			<weapon>light_mace</weapon>
 			<weapon>pistol</weapon>
 			<weapon>small_blade</weapon>
-			<weapon>throwing_knives</weapon>
+			<weapon>throwing_knife</weapon>
 		</weapons>
 	</availability>
 </availabilities>

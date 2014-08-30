@@ -2,6 +2,9 @@
 <special_rules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-special-rule.xsd">
 	<rule>
+		<name>automatic</name>
+	</rule>
+	<rule>
 		<name>cumbersome</name>
 		<bonus_list>
 			<bonus>
@@ -9,6 +12,9 @@
 				<value>-1</value>
 			</bonus>
 		</bonus_list>
+	</rule>
+	<rule>
+		<name>dead_slow</name>
 	</rule>
 	<rule>
 		<name>firearm</name>
