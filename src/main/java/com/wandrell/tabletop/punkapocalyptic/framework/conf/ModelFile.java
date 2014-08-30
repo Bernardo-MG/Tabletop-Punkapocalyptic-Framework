@@ -17,7 +17,7 @@ public final class ModelFile {
     public static final String VALIDATION_WEAPON_MELEE      = "model/validation/punkapocalyptic-model-weapon-melee.xsd";
     public static final String VALIDATION_WEAPON_RANGED     = "model/validation/punkapocalyptic-model-weapon-ranged.xsd";
     public static final String WEAPON_MELEE                 = "model/punkapocalyptic-model-weapon-melee.xml";
-    public static final String WEAPON_RANGED                = "model/punkapocalyptic-model-weapon-ranged.xml";
+    public static final String WEAPON_RANGED                 = "model/punkapocalyptic-model-weapon-ranged.xml";
 
     private ModelFile() {
         super();
