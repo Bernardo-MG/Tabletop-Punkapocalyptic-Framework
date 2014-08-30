@@ -40,8 +40,6 @@
 				minOccurs="1" />
 			<xs:element name="constraints" type="constraintsList"
 				maxOccurs="1" minOccurs="0" />
-			<xs:element name="cost" type="xs:int" maxOccurs="1"
-				minOccurs="1" />
 		</xs:sequence>
 	</xs:complexType>
 

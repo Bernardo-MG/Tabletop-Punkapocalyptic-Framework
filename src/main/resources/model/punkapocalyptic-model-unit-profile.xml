@@ -10,6 +10,7 @@
 		<strength>4</strength>
 		<toughness>4</toughness>
 		<tech>5</tech>
+		<cost>70</cost>
 	</profile>
 	<profile>
 		<name>badass</name>
@@ -20,6 +21,7 @@
 		<strength>4</strength>
 		<toughness>4</toughness>
 		<tech>4</tech>
+		<cost>40</cost>
 	</profile>
 	<profile>
 		<name>brute</name>
@@ -30,6 +32,7 @@
 		<strength>5</strength>
 		<toughness>4</toughness>
 		<tech>2</tech>
+		<cost>40</cost>
 	</profile>
 	<profile>
 		<name>ganger</name>
@@ -40,6 +43,7 @@
 		<strength>4</strength>
 		<toughness>3</toughness>
 		<tech>3</tech>
+		<cost>30</cost>
 	</profile>
 	<profile>
 		<name>scumbag</name>
@@ -50,5 +54,6 @@
 		<strength>4</strength>
 		<toughness>3</toughness>
 		<tech>3</tech>
+		<cost>20</cost>
 	</profile>
 </profiles>

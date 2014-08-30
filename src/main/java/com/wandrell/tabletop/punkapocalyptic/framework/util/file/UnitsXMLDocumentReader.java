@@ -33,6 +33,7 @@ public class UnitsXMLDocumentReader implements
         ValueHandler toughness;
         ValueHandler tech;
         ValueHandler slots;
+        Integer cost;
 
         root = doc.getRootElement();
 
@@ -57,10 +58,12 @@ public class UnitsXMLDocumentReader implements
             tech = factory.getAttribute("tech",
                     Integer.parseInt(node.getChildText("tech")));
 
+            cost = Integer.parseInt(node.getChildText("cost"));
+
             slots = factory.getAttribute("weapon_slots", 2);
 
             units.put(name, new DefaultUnit(name, actions, agility, combat,
-                    precision, strength, tech, toughness, slots));
+                    precision, strength, tech, toughness, slots, cost));
         }
 
         return units;

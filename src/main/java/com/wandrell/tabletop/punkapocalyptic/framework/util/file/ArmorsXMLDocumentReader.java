@@ -32,6 +32,7 @@ public final class ArmorsXMLDocumentReader implements
         String name;
         Integer protection;
         Collection<SpecialRule> rules;
+        Element rulesNode;
         Armor armor;
 
         root = doc.getRootElement();
@@ -42,8 +43,12 @@ public final class ArmorsXMLDocumentReader implements
             protection = Integer.parseInt(node.getChildText("protection"));
 
             rules = new LinkedList<>();
-            for (final Element rule : node.getChild("rules").getChildren()) {
-                rules.add(getSpecialRuleDAO().getSpecialRule(rule.getText()));
+            rulesNode = node.getChild("rules");
+            if (rulesNode != null) {
+                for (final Element rule : rulesNode.getChildren()) {
+                    rules.add(getSpecialRuleDAO()
+                            .getSpecialRule(rule.getText()));
+                }
             }
 
             armor = new DefaultArmor(name, protection, rules);
