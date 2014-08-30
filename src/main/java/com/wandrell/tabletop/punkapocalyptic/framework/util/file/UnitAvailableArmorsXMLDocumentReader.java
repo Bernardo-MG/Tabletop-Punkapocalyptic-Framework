@@ -8,23 +8,27 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.punkapocalyptic.framework.api.dao.ArmorDAO;
+import com.wandrell.tabletop.punkapocalyptic.inventory.Armor;
 import com.wandrell.util.file.api.xml.XMLDocumentReader;
 
-public final class UnitArmorsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<Collection<Object>>>> {
+public final class UnitAvailableArmorsXMLDocumentReader implements
+        XMLDocumentReader<Map<String, Collection<Armor>>> {
 
-    public UnitArmorsXMLDocumentReader() {
+    private final ArmorDAO daoArmor;
+
+    public UnitAvailableArmorsXMLDocumentReader(final ArmorDAO dao) {
         super();
+
+        daoArmor = dao;
     }
 
     @Override
-    public final Map<String, Collection<Collection<Object>>> getValue(
-            final Document doc) {
+    public final Map<String, Collection<Armor>> getValue(final Document doc) {
         final Element root;
-        final Map<String, Collection<Collection<Object>>> armors;
+        final Map<String, Collection<Armor>> armors;
         Element armorsNode;
-        Collection<Collection<Object>> armorList;
-        Collection<Object> data;
+        Collection<Armor> armorList;
 
         root = doc.getRootElement();
 
@@ -36,11 +40,9 @@ public final class UnitArmorsXMLDocumentReader implements
 
             if (armorsNode != null) {
                 for (final Element armor : armorsNode.getChildren()) {
-                    data = new LinkedList<>();
-                    data.add(armor.getChildText("name"));
-                    data.add(Integer.parseInt(armor.getChildText("cost")));
-
-                    armorList.add(data);
+                    armorList.add(getArmorDAO().getArmor(
+                            armor.getChildText("name"),
+                            Integer.parseInt(armor.getChildText("cost"))));
                 }
             }
 
@@ -48,6 +50,10 @@ public final class UnitArmorsXMLDocumentReader implements
         }
 
         return armors;
+    }
+
+    private final ArmorDAO getArmorDAO() {
+        return daoArmor;
     }
 
 }

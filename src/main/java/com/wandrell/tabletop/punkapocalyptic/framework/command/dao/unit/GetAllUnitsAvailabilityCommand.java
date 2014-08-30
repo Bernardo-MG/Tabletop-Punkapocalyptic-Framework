@@ -17,17 +17,19 @@ import com.wandrell.util.command.ReturnCommand;
 public final class GetAllUnitsAvailabilityCommand implements
         ReturnCommand<Map<String, AvailabilityUnit>>, UnitDAOAware {
 
+    private final Map<String, Armor>              armor;
     private final Map<String, Collection<Armor>>  armors;
     private UnitDAO                               daoUnit;
     private final Map<String, Interval>           weaponIntervals;
     private final Map<String, Collection<Weapon>> weapons;
 
-    public GetAllUnitsAvailabilityCommand(
+    public GetAllUnitsAvailabilityCommand(final Map<String, Armor> armor,
             final Map<String, Collection<Armor>> armors,
             final Map<String, Collection<Weapon>> weapons,
             final Map<String, Interval> weaponIntervals) {
         super();
 
+        this.armor = armor;
         this.armors = armors;
         this.weapons = weapons;
         this.weaponIntervals = weaponIntervals;
@@ -51,6 +53,8 @@ public final class GetAllUnitsAvailabilityCommand implements
                     weaponsInterval.getLowerLimit(),
                     weaponsInterval.getUpperLimit());
 
+            availability.setArmor(getArmor().get(unit.getUnitName()));
+
             mapAvailability.put(unit.getUnitName(), availability);
         }
 
@@ -60,6 +64,10 @@ public final class GetAllUnitsAvailabilityCommand implements
     @Override
     public final void setUnitDAO(final UnitDAO dao) {
         daoUnit = dao;
+    }
+
+    protected final Map<String, Armor> getArmor() {
+        return armor;
     }
 
     protected final Map<String, Collection<Armor>> getArmors() {

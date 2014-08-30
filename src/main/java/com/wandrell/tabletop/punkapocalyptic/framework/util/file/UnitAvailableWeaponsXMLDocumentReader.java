@@ -8,21 +8,27 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.punkapocalyptic.framework.api.dao.WeaponDAO;
+import com.wandrell.tabletop.punkapocalyptic.inventory.Weapon;
 import com.wandrell.util.file.api.xml.XMLDocumentReader;
 
-public final class UnitWeaponsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<String>>> {
+public final class UnitAvailableWeaponsXMLDocumentReader implements
+        XMLDocumentReader<Map<String, Collection<Weapon>>> {
 
-    public UnitWeaponsXMLDocumentReader() {
+    private final WeaponDAO daoWeapon;
+
+    public UnitAvailableWeaponsXMLDocumentReader(final WeaponDAO dao) {
         super();
+
+        daoWeapon = dao;
     }
 
     @Override
-    public final Map<String, Collection<String>> getValue(final Document doc) {
+    public final Map<String, Collection<Weapon>> getValue(final Document doc) {
         final Element root;
-        final Map<String, Collection<String>> weapons;
+        final Map<String, Collection<Weapon>> weapons;
         Element weaponsNode;
-        Collection<String> weaponList;
+        Collection<Weapon> weaponList;
 
         root = doc.getRootElement();
 
@@ -33,7 +39,7 @@ public final class UnitWeaponsXMLDocumentReader implements
             weaponsNode = node.getChild("weapons");
             if (weaponsNode != null) {
                 for (final Element weapon : weaponsNode.getChildren()) {
-                    weaponList.add(weapon.getText());
+                    weaponList.add(getWeaponDAO().getWeapon(weapon.getText()));
                 }
             }
 
@@ -41,6 +47,10 @@ public final class UnitWeaponsXMLDocumentReader implements
         }
 
         return weapons;
+    }
+
+    protected final WeaponDAO getWeaponDAO() {
+        return daoWeapon;
     }
 
 }
