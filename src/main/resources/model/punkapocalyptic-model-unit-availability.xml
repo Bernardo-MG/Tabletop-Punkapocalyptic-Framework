@@ -20,7 +20,7 @@
 		<armors>
 			<armor>
 				<name>bulletproof_vest</name>
-				<cost>15</cost>
+				<cost>10</cost>
 			</armor>
 			<armor>
 				<name>metallic_armor</name>
@@ -30,7 +30,7 @@
 	</availability>
 	<availability>
 		<unit>badass</unit>
-		<armor>hardened_leather</armor>
+		<armor>thick_clothes</armor>
 		<constraints>
 			<min_weapons>1</min_weapons>
 			<max_weapons>2</max_weapons>
@@ -46,8 +46,12 @@
 		</weapons>
 		<armors>
 			<armor>
+				<name>hardened_leather</name>
+				<cost>5</cost>
+			</armor>
+			<armor>
 				<name>metallic_armor</name>
-				<cost>10</cost>
+				<cost>15</cost>
 			</armor>
 		</armors>
 	</availability>
@@ -100,7 +104,7 @@
 		<armors>
 			<armor>
 				<name>hardened_leather</name>
-				<cost>10</cost>
+				<cost>5</cost>
 			</armor>
 		</armors>
 	</availability>
