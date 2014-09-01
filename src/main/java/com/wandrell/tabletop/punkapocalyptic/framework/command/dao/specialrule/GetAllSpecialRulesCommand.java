@@ -5,7 +5,7 @@ import java.util.Map;
 import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.SpecialRulesXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.rule.SpecialRule;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -28,11 +28,12 @@ public final class GetAllSpecialRulesCommand implements
                 new DisabledXMLWriter<Map<String, SpecialRule>>(),
                 new SpecialRulesXMLDocumentReader(),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_SPECIAL_RULE)));
+                        ModelFile.VALIDATION_SPECIAL_RULE,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_SPECIAL_RULE)));
 
-        rules = fileRules.read(PathUtils
-                .getClassPathResource(ModelFile.SPECIAL_RULE));
+        rules = fileRules.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.SPECIAL_RULE));
 
         return rules;
     }

@@ -8,7 +8,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.WeaponDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.UnitAvailableWeaponsXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -33,11 +33,12 @@ public final class GetAllUnitAvailableWeaponsCommand implements
                 new DisabledXMLWriter<Map<String, Collection<Weapon>>>(),
                 new UnitAvailableWeaponsXMLDocumentReader(getWeaponDAO()),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
+                        ModelFile.UNIT_AVAILABILITY,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
 
-        unitWeapons = fileUnitWeapons.read(PathUtils
-                .getClassPathResource(ModelFile.UNIT_AVAILABILITY));
+        unitWeapons = fileUnitWeapons.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.UNIT_AVAILABILITY));
 
         return unitWeapons;
     }

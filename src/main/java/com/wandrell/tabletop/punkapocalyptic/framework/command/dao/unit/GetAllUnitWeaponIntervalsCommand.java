@@ -5,7 +5,7 @@ import java.util.Map;
 import com.wandrell.tabletop.interval.Interval;
 import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.UnitWeaponIntervalXMLDocumentReader;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -28,11 +28,12 @@ public final class GetAllUnitWeaponIntervalsCommand implements
                 new DisabledXMLWriter<Map<String, Interval>>(),
                 new UnitWeaponIntervalXMLDocumentReader(),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
+                        ModelFile.VALIDATION_UNIT_AVAILABILITY,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
 
-        weapons = fileWeapons.read(PathUtils
-                .getClassPathResource(ModelFile.UNIT_AVAILABILITY));
+        weapons = fileWeapons.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.UNIT_AVAILABILITY));
 
         return weapons;
     }

@@ -8,7 +8,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.conf.PunkapocalypticFacto
 import com.wandrell.tabletop.valuehandler.ValueHandler;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 
 public final class PunkapocalypticFactory {
 
@@ -32,8 +32,8 @@ public final class PunkapocalypticFactory {
         final Properties properties;
 
         properties = FileUtils
-                .getProperties(PathUtils
-                        .getClassPathResource(PunkapocalypticFactoryConf.PROPERTIES_ATTRIBUTE));
+                .getProperties(ResourceUtils
+                        .getClassPathInputStream(PunkapocalypticFactoryConf.PROPERTIES_ATTRIBUTE));
 
         // TODO: This is hardcoded
         properties.setProperty("attribute.name", name);
@@ -41,11 +41,8 @@ public final class PunkapocalypticFactory {
                 .setProperty("attribute.module.store.value", value.toString());
 
         // TODO: Try to reload changing only the values
-        context = ContextUtils
-                .getContext(
-                        PathUtils
-                                .getClassPathResource(PunkapocalypticFactoryConf.CONTEXT_ATTRIBUTE),
-                        properties);
+        context = ContextUtils.getClassPathContext(
+                PunkapocalypticFactoryConf.CONTEXT_ATTRIBUTE, properties);
 
         // Spring framework builds the instance
 

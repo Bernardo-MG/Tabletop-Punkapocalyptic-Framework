@@ -9,7 +9,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.SpecialRuleDAOAwa
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.MeleeWeaponsXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.RangedWeaponsXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -37,21 +37,23 @@ public final class GetAllWeaponsCommand implements
                 new DisabledXMLWriter<Map<String, Weapon>>(),
                 new MeleeWeaponsXMLDocumentReader(getSpecialRuleDAO()),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_WEAPON_MELEE)));
+                        ModelFile.VALIDATION_WEAPON_MELEE,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_WEAPON_MELEE)));
 
-        ccWeapons = fileCCWeapons.read(PathUtils
-                .getClassPathResource(ModelFile.WEAPON_MELEE));
+        ccWeapons = fileCCWeapons.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.WEAPON_MELEE));
 
         fileRangedWeapons = new DefaultXMLFileHandler<>(
                 new DisabledXMLWriter<Map<String, Weapon>>(),
                 new RangedWeaponsXMLDocumentReader(getSpecialRuleDAO()),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_WEAPON_RANGED)));
+                        ModelFile.VALIDATION_WEAPON_RANGED,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_WEAPON_RANGED)));
 
-        rangedWeapons = fileRangedWeapons.read(PathUtils
-                .getClassPathResource(ModelFile.WEAPON_RANGED));
+        rangedWeapons = fileRangedWeapons.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.WEAPON_RANGED));
 
         weapons = new LinkedHashMap<>();
         weapons.putAll(ccWeapons);

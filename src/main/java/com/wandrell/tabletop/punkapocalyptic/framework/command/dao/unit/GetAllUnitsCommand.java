@@ -6,7 +6,7 @@ import java.util.Map;
 import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.UnitsXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.unit.Unit;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -28,10 +28,11 @@ public final class GetAllUnitsCommand implements
         fileUnits = new DefaultXMLFileHandler<>(
                 new DisabledXMLWriter<Map<String, Unit>>(),
                 new UnitsXMLDocumentReader(),
-                new XSDValidator(PathUtils
-                        .getClassPathResource(ModelFile.VALIDATION_UNIT)));
+                new XSDValidator(ModelFile.VALIDATION_UNIT, ResourceUtils
+                        .getClassPathInputStream(ModelFile.VALIDATION_UNIT)));
 
-        units = fileUnits.read(PathUtils.getClassPathResource(ModelFile.UNIT));
+        units = fileUnits.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.UNIT));
 
         return units.values();
     }

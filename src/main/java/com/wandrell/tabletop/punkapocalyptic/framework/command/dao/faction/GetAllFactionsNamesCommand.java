@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.FactionNameXMLDocumentReader;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -26,11 +26,11 @@ public final class GetAllFactionsNamesCommand implements
         fileFactionNames = new DefaultXMLFileHandler<>(
                 new DisabledXMLWriter<Collection<String>>(),
                 new FactionNameXMLDocumentReader(),
-                new XSDValidator(PathUtils
-                        .getClassPathResource(ModelFile.VALIDATION_FACTION)));
+                new XSDValidator(ModelFile.VALIDATION_FACTION, ResourceUtils
+                        .getClassPathInputStream(ModelFile.VALIDATION_FACTION)));
 
-        factionNames = fileFactionNames.read(PathUtils
-                .getClassPathResource(ModelFile.FACTION));
+        factionNames = fileFactionNames.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.FACTION));
 
         return factionNames;
     }

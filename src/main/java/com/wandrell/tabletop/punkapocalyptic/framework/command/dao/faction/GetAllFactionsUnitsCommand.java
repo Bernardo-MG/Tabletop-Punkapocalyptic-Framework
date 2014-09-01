@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.FactionUnitsXMLDocumentReader;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -28,11 +28,12 @@ public final class GetAllFactionsUnitsCommand implements
                 new DisabledXMLWriter<Map<String, Collection<String>>>(),
                 new FactionUnitsXMLDocumentReader(),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_FACTION_UNITS)));
+                        ModelFile.VALIDATION_FACTION_UNITS,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_FACTION_UNITS)));
 
-        factionUnits = fileFactionUnits.read(PathUtils
-                .getClassPathResource(ModelFile.FACTION_UNITS));
+        factionUnits = fileFactionUnits.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.FACTION_UNITS));
 
         return factionUnits;
     }

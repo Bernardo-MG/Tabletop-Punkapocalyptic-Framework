@@ -7,7 +7,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.conf.ModelFile;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.ArmorDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.util.file.UnitInitialArmorXMLDocumentReader;
 import com.wandrell.tabletop.punkapocalyptic.inventory.Armor;
-import com.wandrell.util.PathUtils;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
 import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
@@ -32,11 +32,12 @@ public final class GetAllUnitsInitialArmorCommand implements
                 new DisabledXMLWriter<Map<String, Armor>>(),
                 new UnitInitialArmorXMLDocumentReader(getArmorDAO()),
                 new XSDValidator(
-                        PathUtils
-                                .getClassPathResource(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
+                        ModelFile.VALIDATION_UNIT_AVAILABILITY,
+                        ResourceUtils
+                                .getClassPathInputStream(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
 
-        unitArmors = fileUnitArmors.read(PathUtils
-                .getClassPathResource(ModelFile.UNIT_AVAILABILITY));
+        unitArmors = fileUnitArmors.read(ResourceUtils
+                .getClassPathInputStream(ModelFile.UNIT_AVAILABILITY));
 
         return unitArmors;
     }
