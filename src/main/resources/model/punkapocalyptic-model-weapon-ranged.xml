@@ -33,36 +33,6 @@
 		<cost>10</cost>
 	</weapon>
 	<weapon>
-		<name>crossbow</name>
-		<rules>
-			<rule>dead_slow</rule>
-			<rule>two-handed</rule>
-		</rules>
-		<penetration>
-			<short>2</short>
-			<medium>2</medium>
-			<long>2</long>
-		</penetration>
-		<strength>
-			<short>3</short>
-			<medium>3</medium>
-			<long>3</long>
-		</strength>
-		<range>
-			<inches>
-				<short>6</short>
-				<medium>12</medium>
-				<long>18</long>
-			</inches>
-			<cm>
-				<short>15</short>
-				<medium>30</medium>
-				<long>45</long>
-			</cm>
-		</range>
-		<cost>8</cost>
-	</weapon>
-	<weapon>
 		<name>bow</name>
 		<rules>
 			<rule>hard_to_use</rule>
@@ -88,6 +58,36 @@
 				<short>20</short>
 				<medium>40</medium>
 				<long>60</long>
+			</cm>
+		</range>
+		<cost>8</cost>
+	</weapon>
+	<weapon>
+		<name>crossbow</name>
+		<rules>
+			<rule>dead_slow</rule>
+			<rule>two-handed</rule>
+		</rules>
+		<penetration>
+			<short>2</short>
+			<medium>2</medium>
+			<long>2</long>
+		</penetration>
+		<strength>
+			<short>3</short>
+			<medium>3</medium>
+			<long>3</long>
+		</strength>
+		<range>
+			<inches>
+				<short>6</short>
+				<medium>12</medium>
+				<long>18</long>
+			</inches>
+			<cm>
+				<short>15</short>
+				<medium>30</medium>
+				<long>45</long>
 			</cm>
 		</range>
 		<cost>8</cost>
