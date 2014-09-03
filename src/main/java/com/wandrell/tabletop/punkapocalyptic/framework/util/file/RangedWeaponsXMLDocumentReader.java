@@ -47,6 +47,7 @@ public final class RangedWeaponsXMLDocumentReader implements
         Integer distanceMediumInches;
         Integer distanceLongInches;
         Integer cost;
+        Integer hands;
         Collection<SpecialRule> rules;
         Weapon weapon;
         Element rulesNode;
@@ -87,6 +88,7 @@ public final class RangedWeaponsXMLDocumentReader implements
             distanceLongCM = Integer.parseInt(distance.getChildText("long"));
 
             cost = Integer.parseInt(node.getChildText("cost"));
+            hands = Integer.parseInt(node.getChildText("hands"));
 
             rules = new LinkedList<>();
 
@@ -98,11 +100,12 @@ public final class RangedWeaponsXMLDocumentReader implements
                 }
             }
 
-            weapon = new DefaultRangedWeapon(name, cost, penetrationShort,
-                    penetrationMedium, penetrationLong, strengthShort,
-                    strengthMedium, strengthLong, distanceShortCM,
-                    distanceMediumCM, distanceLongCM, distanceShortInches,
-                    distanceMediumInches, distanceLongInches, rules);
+            weapon = new DefaultRangedWeapon(name, cost, hands,
+                    penetrationShort, penetrationMedium, penetrationLong,
+                    strengthShort, strengthMedium, strengthLong,
+                    distanceShortCM, distanceMediumCM, distanceLongCM,
+                    distanceShortInches, distanceMediumInches,
+                    distanceLongInches, rules);
 
             weapons.put(name, weapon);
         }

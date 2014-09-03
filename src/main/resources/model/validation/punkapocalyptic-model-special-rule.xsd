@@ -17,20 +17,38 @@
 		<xs:sequence>
 			<xs:element name="name" type="xs:token" maxOccurs="1"
 				minOccurs="1" />
-			<xs:element name="constraints" type="constraints"
-				maxOccurs="1" minOccurs="0">
-				<xs:unique name="uniqueConstraint">
-					<xs:selector xpath="constraint" />
+			<xs:element name="effects" type="effects" maxOccurs="1"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="effects">
+		<xs:sequence>
+			<xs:element name="effect" type="effect" maxOccurs="unbounded"
+				minOccurs="1">
+				<xs:unique name="uniqueEffect">
+					<xs:selector xpath="effect" />
 					<xs:field xpath="." />
 				</xs:unique>
 			</xs:element>
-			<xs:element name="bonus_list" type="bonusList" maxOccurs="1"
-				minOccurs="0">
-				<xs:unique name="uniqueBonus">
-					<xs:selector xpath="bonus" />
-					<xs:field xpath="attribute" />
-				</xs:unique>
-			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="effect">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:choice>
+				<xs:element name="value" type="xs:integer" maxOccurs="1"
+					minOccurs="1" />
+				<xs:element name="bonus_list" type="bonusList" maxOccurs="1"
+					minOccurs="0">
+					<xs:unique name="uniqueBonus">
+						<xs:selector xpath="bonus" />
+						<xs:field xpath="attribute" />
+					</xs:unique>
+				</xs:element>
+			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -50,13 +68,6 @@
 			<xs:enumeration value="cover" />
 		</xs:restriction>
 	</xs:simpleType>
-
-	<xs:complexType name="constraints">
-		<xs:sequence>
-			<xs:element name="constraint" type="xs:token" maxOccurs="unbounded"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
 
 	<xs:complexType name="rules">
 		<xs:sequence>

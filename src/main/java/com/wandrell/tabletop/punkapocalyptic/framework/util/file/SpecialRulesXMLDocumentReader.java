@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.punkapocalyptic.framework.api.dao.SpecialRuleDAO;
 import com.wandrell.tabletop.punkapocalyptic.rule.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.rule.SpecialRule;
 import com.wandrell.util.file.api.xml.XMLDocumentReader;
@@ -13,8 +14,12 @@ import com.wandrell.util.file.api.xml.XMLDocumentReader;
 public final class SpecialRulesXMLDocumentReader implements
         XMLDocumentReader<Map<String, SpecialRule>> {
 
-    public SpecialRulesXMLDocumentReader() {
+    private final SpecialRuleDAO daoRule;
+
+    public SpecialRulesXMLDocumentReader(final SpecialRuleDAO dao) {
         super();
+
+        daoRule = dao;
     }
 
     @Override
@@ -36,6 +41,10 @@ public final class SpecialRulesXMLDocumentReader implements
         }
 
         return rules;
+    }
+
+    protected final SpecialRuleDAO getSpecialRuleDAO() {
+        return daoRule;
     }
 
 }

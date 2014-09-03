@@ -34,6 +34,7 @@ public final class MeleeWeaponsXMLDocumentReader implements
         Integer penetration;
         Integer combat;
         Integer cost;
+        Integer hands;
         Collection<SpecialRule> rules;
         Weapon weapon;
         Element rulesNode;
@@ -47,6 +48,7 @@ public final class MeleeWeaponsXMLDocumentReader implements
             penetration = Integer.parseInt(node.getChildText("penetration"));
             combat = Integer.parseInt(node.getChildText("combat"));
             cost = Integer.parseInt(node.getChildText("cost"));
+            hands = Integer.parseInt(node.getChildText("hands"));
 
             rules = new LinkedList<>();
 
@@ -58,8 +60,8 @@ public final class MeleeWeaponsXMLDocumentReader implements
                 }
             }
 
-            weapon = new DefaultMeleeWeapon(name, cost, strength, penetration,
-                    combat, rules);
+            weapon = new DefaultMeleeWeapon(name, cost, hands, strength,
+                    penetration, combat, rules);
 
             weapons.put(name, weapon);
         }

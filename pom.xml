@@ -52,6 +52,7 @@
 		<java.version.source>1.7</java.version.source>
 		<java.version.target>${java.version.source}</java.version.target>
 		<!-- Dependencies versions -->
+		<jdom.version>2.0.5</jdom.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<spring.version>4.0.5.RELEASE</spring.version>
 		<tabletop.version>alpha</tabletop.version>
@@ -74,6 +75,13 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<!-- JDom 2 -->
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>${jdom.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<!-- SLF4J API -->
 			<groupId>org.slf4j</groupId>

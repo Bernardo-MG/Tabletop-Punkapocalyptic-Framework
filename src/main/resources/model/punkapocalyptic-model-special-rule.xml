@@ -6,49 +6,58 @@
 	</rule>
 	<rule>
 		<name>cumbersome</name>
-		<bonus_list>
-			<bonus>
-				<attribute>agility</attribute>
-				<value>-1</value>
-			</bonus>
-		</bonus_list>
+		<effects>
+			<effect>
+				<name>attribute_bonus</name>
+				<bonus_list>
+					<bonus>
+						<attribute>agility</attribute>
+						<value>-1</value>
+					</bonus>
+				</bonus_list>
+			</effect>
+		</effects>
 	</rule>
 	<rule>
 		<name>dead_slow</name>
 	</rule>
 	<rule>
 		<name>firearm</name>
-		<constraints>
-			<constraint>bullets</constraint>
-		</constraints>
+		<effects>
+			<effect>
+				<name>requires_bullets</name>
+			</effect>
+		</effects>
 	</rule>
 	<rule>
 		<name>hard_to_use</name>
-		<bonus_list>
-			<bonus>
-				<attribute>precision</attribute>
-				<value>-1</value>
-			</bonus>
-		</bonus_list>
+		<effects>
+			<effect>
+				<name>attribute_bonus</name>
+				<bonus_list>
+					<bonus>
+						<attribute>precision</attribute>
+						<value>-1</value>
+					</bonus>
+				</bonus_list>
+			</effect>
+		</effects>
 	</rule>
 	<rule>
 		<name>pellets</name>
-		<constraints>
-			<constraint>no_avoid_cover</constraint>
-			<constraint>no_aim_combat</constraint>
-			<constraint>no_penalty_shoot_combat</constraint>
-		</constraints>
-		<bonus_list>
-			<bonus>
-				<attribute>precision</attribute>
-				<value>1</value>
-			</bonus>
-		</bonus_list>
+		<effects>
+			<effect>
+				<name>attribute_bonus</name>
+				<bonus_list>
+					<bonus>
+						<attribute>precision</attribute>
+						<value>1</value>
+					</bonus>
+				</bonus_list>
+			</effect>
+		</effects>
 	</rule>
 	<rule>
 		<name>two-handed</name>
-		<constraints>
-			<constraint>two_weapon_slots</constraint>
-		</constraints>
 	</rule>
 </special_rules>
