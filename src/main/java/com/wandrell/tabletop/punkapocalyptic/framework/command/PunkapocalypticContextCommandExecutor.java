@@ -7,6 +7,7 @@ import com.wandrell.punkapocalyptic.framework.api.dao.SpecialRuleDAO;
 import com.wandrell.punkapocalyptic.framework.api.dao.UnitDAO;
 import com.wandrell.punkapocalyptic.framework.api.dao.WeaponDAO;
 import com.wandrell.punkapocalyptic.framework.api.service.PunkapocalypticLocalizationService;
+import com.wandrell.punkapocalyptic.framework.api.service.PunkapocalypticRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.ArmorDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.FactionDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.SpecialRuleDAOAware;
@@ -15,6 +16,7 @@ import com.wandrell.tabletop.punkapocalyptic.framework.tag.dao.WeaponDAOAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.service.LayoutServiceAware;
 import com.wandrell.tabletop.punkapocalyptic.framework.tag.service.LocalizationServiceAware;
+import com.wandrell.tabletop.punkapocalyptic.framework.tag.service.RulesetServiceAware;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
@@ -31,6 +33,7 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
     private ApplicationInfoService             serviceApplicationInfo;
     private LayoutService                      serviceLayout;
     private PunkapocalypticLocalizationService serviceLocalization;
+    private PunkapocalypticRulesetService      serviceRuleSet;
 
     public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
         super();
@@ -73,6 +76,11 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
         serviceLocalization = service;
     }
 
+    public final void setRuleSetService(
+            final PunkapocalypticRulesetService service) {
+        serviceRuleSet = service;
+    }
+
     public final void setSpecialRuleDAO(final SpecialRuleDAO dao) {
         daoSpecialRule = dao;
     }
@@ -102,6 +110,11 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
 
         if (command instanceof LayoutServiceAware) {
             ((LayoutServiceAware) command).setLayoutService(getLayoutService());
+        }
+
+        if (command instanceof RulesetServiceAware) {
+            ((RulesetServiceAware) command)
+                    .setRulesetService(getPunkapocalypticRuleSetService());
         }
 
         if (command instanceof ArmorDAOAware) {
@@ -144,6 +157,11 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
 
     protected final PunkapocalypticLocalizationService getLocalizationService() {
         return serviceLocalization;
+    }
+
+    protected final PunkapocalypticRulesetService
+            getPunkapocalypticRuleSetService() {
+        return serviceRuleSet;
     }
 
     protected final SpecialRuleDAO getSpecialRuleDAO() {
