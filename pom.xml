@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.wandrell</groupId>
+	<groupId>com.wandrell.tabletop</groupId>
 	<artifactId>tabletop-punkapocalyptic-framework</artifactId>
 	<version>alpha</version>
 	<packaging>jar</packaging>
@@ -109,25 +109,25 @@
 		</dependency>
 		<dependency>
 			<!-- Tabletop Core -->
-			<groupId>com.wandrell</groupId>
+			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>tabletop-core</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic API -->
-			<groupId>com.wandrell</groupId>
+			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>tabletop-punkapocalyptic-api</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic Core -->
-			<groupId>com.wandrell</groupId>
+			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>tabletop-punkapocalyptic-core</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic Framework API -->
-			<groupId>com.wandrell</groupId>
+			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>tabletop-punkapocalyptic-framework-api</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
