@@ -6,12 +6,12 @@ import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLoc
 import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticRulesetService;
 import com.wandrell.tabletop.data.dao.punkapocalyptic.ArmorDAO;
 import com.wandrell.tabletop.data.dao.punkapocalyptic.FactionDAO;
-import com.wandrell.tabletop.data.dao.punkapocalyptic.SpecialRuleDAO;
+import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
 import com.wandrell.tabletop.data.dao.punkapocalyptic.UnitDAO;
 import com.wandrell.tabletop.data.dao.punkapocalyptic.WeaponDAO;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.ArmorDAOAware;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.FactionDAOAware;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.SpecialRuleDAOAware;
+import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.RulesetDAOAware;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.UnitDAOAware;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.WeaponDAOAware;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
@@ -26,7 +26,7 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
 
     private ArmorDAO                           daoArmor;
     private FactionDAO                         daoFaction;
-    private SpecialRuleDAO                     daoSpecialRule;
+    private RulesetDAO                         daoSpecialRule;
     private UnitDAO                            daoUnit;
     private WeaponDAO                          daoWeapon;
     private final CommandExecutor              executor;
@@ -81,7 +81,7 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
         serviceRuleSet = service;
     }
 
-    public final void setSpecialRuleDAO(final SpecialRuleDAO dao) {
+    public final void setSpecialRuleDAO(final RulesetDAO dao) {
         daoSpecialRule = dao;
     }
 
@@ -125,9 +125,8 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
             ((FactionDAOAware) command).setFactionDAO(getFactionDAO());
         }
 
-        if (command instanceof SpecialRuleDAOAware) {
-            ((SpecialRuleDAOAware) command)
-                    .setSpecialRuleDAO(getSpecialRuleDAO());
+        if (command instanceof RulesetDAOAware) {
+            ((RulesetDAOAware) command).setRulesetDAO(getSpecialRuleDAO());
         }
 
         if (command instanceof UnitDAOAware) {
@@ -164,7 +163,7 @@ public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
         return serviceRuleSet;
     }
 
-    protected final SpecialRuleDAO getSpecialRuleDAO() {
+    protected final RulesetDAO getSpecialRuleDAO() {
         return daoSpecialRule;
     }
 

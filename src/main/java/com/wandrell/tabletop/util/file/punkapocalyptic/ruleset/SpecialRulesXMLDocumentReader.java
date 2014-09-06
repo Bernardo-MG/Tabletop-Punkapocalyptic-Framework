@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.util.file.punkapocalyptic.rule;
+package com.wandrell.tabletop.util.file.punkapocalyptic.ruleset;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -6,17 +6,17 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
-import com.wandrell.tabletop.data.dao.punkapocalyptic.SpecialRuleDAO;
-import com.wandrell.tabletop.model.punkapocalyptic.rule.DefaultSpecialRule;
-import com.wandrell.tabletop.model.punkapocalyptic.rule.SpecialRule;
+import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
+import com.wandrell.tabletop.model.punkapocalyptic.ruleset.DefaultSpecialRule;
+import com.wandrell.tabletop.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.util.file.api.xml.XMLDocumentReader;
 
 public final class SpecialRulesXMLDocumentReader implements
         XMLDocumentReader<Map<String, SpecialRule>> {
 
-    private final SpecialRuleDAO daoRule;
+    private final RulesetDAO daoRule;
 
-    public SpecialRulesXMLDocumentReader(final SpecialRuleDAO dao) {
+    public SpecialRulesXMLDocumentReader(final RulesetDAO dao) {
         super();
 
         daoRule = dao;
@@ -43,7 +43,7 @@ public final class SpecialRulesXMLDocumentReader implements
         return rules;
     }
 
-    protected final SpecialRuleDAO getSpecialRuleDAO() {
+    protected final RulesetDAO getSpecialRuleDAO() {
         return daoRule;
     }
 

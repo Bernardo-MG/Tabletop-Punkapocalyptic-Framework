@@ -1,12 +1,12 @@
-package com.wandrell.tabletop.util.command.punkapocalyptic.dao.specialrule;
+package com.wandrell.tabletop.util.command.punkapocalyptic.dao.ruleset;
 
 import java.util.Map;
 
 import com.wandrell.tabletop.conf.punkapocalyptic.ModelFile;
-import com.wandrell.tabletop.data.dao.punkapocalyptic.SpecialRuleDAO;
-import com.wandrell.tabletop.model.punkapocalyptic.rule.SpecialRule;
-import com.wandrell.tabletop.util.file.punkapocalyptic.rule.SpecialRulesXMLDocumentReader;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.SpecialRuleDAOAware;
+import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
+import com.wandrell.tabletop.model.punkapocalyptic.ruleset.SpecialRule;
+import com.wandrell.tabletop.util.file.punkapocalyptic.ruleset.SpecialRulesXMLDocumentReader;
+import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.RulesetDAOAware;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
@@ -15,9 +15,9 @@ import com.wandrell.util.file.impl.xml.DisabledXMLWriter;
 import com.wandrell.util.file.impl.xml.XSDValidator;
 
 public final class GetAllSpecialRulesCommand implements
-        ReturnCommand<Map<String, SpecialRule>>, SpecialRuleDAOAware {
+        ReturnCommand<Map<String, SpecialRule>>, RulesetDAOAware {
 
-    private SpecialRuleDAO daoSpecialRule;
+    private RulesetDAO daoSpecialRule;
 
     public GetAllSpecialRulesCommand() {
         super();
@@ -43,11 +43,11 @@ public final class GetAllSpecialRulesCommand implements
     }
 
     @Override
-    public final void setSpecialRuleDAO(final SpecialRuleDAO dao) {
+    public final void setRulesetDAO(final RulesetDAO dao) {
         daoSpecialRule = dao;
     }
 
-    protected final SpecialRuleDAO getSpecialRuleDAO() {
+    protected final RulesetDAO getSpecialRuleDAO() {
         return daoSpecialRule;
     }
 

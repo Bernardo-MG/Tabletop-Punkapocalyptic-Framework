@@ -4,11 +4,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.wandrell.tabletop.conf.punkapocalyptic.ModelFile;
-import com.wandrell.tabletop.data.dao.punkapocalyptic.SpecialRuleDAO;
+import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
 import com.wandrell.tabletop.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
 import com.wandrell.tabletop.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.SpecialRuleDAOAware;
+import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.RulesetDAOAware;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.api.FileHandler;
@@ -17,9 +17,9 @@ import com.wandrell.util.file.impl.xml.DisabledXMLWriter;
 import com.wandrell.util.file.impl.xml.XSDValidator;
 
 public final class GetAllWeaponsCommand implements
-        ReturnCommand<Map<String, Weapon>>, SpecialRuleDAOAware {
+        ReturnCommand<Map<String, Weapon>>, RulesetDAOAware {
 
-    private SpecialRuleDAO daoRule;
+    private RulesetDAO daoRule;
 
     public GetAllWeaponsCommand() {
         super();
@@ -63,11 +63,11 @@ public final class GetAllWeaponsCommand implements
     }
 
     @Override
-    public final void setSpecialRuleDAO(final SpecialRuleDAO dao) {
+    public final void setRulesetDAO(final RulesetDAO dao) {
         daoRule = dao;
     }
 
-    protected final SpecialRuleDAO getSpecialRuleDAO() {
+    protected final RulesetDAO getSpecialRuleDAO() {
         return daoRule;
     }
 

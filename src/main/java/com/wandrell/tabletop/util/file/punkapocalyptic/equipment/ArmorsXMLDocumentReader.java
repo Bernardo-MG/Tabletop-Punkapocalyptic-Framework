@@ -8,18 +8,18 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
-import com.wandrell.tabletop.data.dao.punkapocalyptic.SpecialRuleDAO;
+import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
 import com.wandrell.tabletop.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.model.punkapocalyptic.inventory.DefaultArmor;
-import com.wandrell.tabletop.model.punkapocalyptic.rule.SpecialRule;
+import com.wandrell.tabletop.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.util.file.api.xml.XMLDocumentReader;
 
 public final class ArmorsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Armor>> {
 
-    private final SpecialRuleDAO daoRule;
+    private final RulesetDAO daoRule;
 
-    public ArmorsXMLDocumentReader(final SpecialRuleDAO dao) {
+    public ArmorsXMLDocumentReader(final RulesetDAO dao) {
         super();
 
         daoRule = dao;
@@ -59,7 +59,7 @@ public final class ArmorsXMLDocumentReader implements
         return armors;
     }
 
-    protected final SpecialRuleDAO getSpecialRuleDAO() {
+    protected final RulesetDAO getSpecialRuleDAO() {
         return daoRule;
     }
 
