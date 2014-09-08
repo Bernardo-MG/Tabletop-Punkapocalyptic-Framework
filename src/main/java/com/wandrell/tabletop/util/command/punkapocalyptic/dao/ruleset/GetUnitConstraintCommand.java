@@ -1,9 +1,9 @@
 package com.wandrell.tabletop.util.command.punkapocalyptic.dao.ruleset;
 
 import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
-import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UniqueUnitConstraint;
 import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UnitConstraint;
 import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
+import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
 import com.wandrell.tabletop.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
@@ -26,13 +26,16 @@ public final class GetUnitConstraintCommand implements
         final UnitConstraint constraint;
 
         if (getConstraint().equals("unique")) {
-            constraint = new UniqueUnitConstraint(getUnit(),
+            constraint = new UptToACountUnitConstraint(getUnit(),
                     getLocalizationService().getMessageString(
-                            "unit_should_be_unique"));
+                            "unit_should_be_unique"), 1);
         } else if (getConstraint().equals("up_to_half_points")) {
             constraint = new UpToHalfPointsLimitUnitConstraint(getUnit(),
-                    getLocalizationService().getMessageString(
-                            "unit_should_be_up_to_half_points"));
+                    String.format(
+                            getLocalizationService().getMessageString(
+                                    "unit_should_be_up_to_half_points"),
+                            getLocalizationService().getUnitNameString(
+                                    getUnit())));
         } else {
             constraint = null;
         }

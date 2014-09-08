@@ -2,56 +2,49 @@ package com.wandrell.tabletop.procedure.punkapocalyptic;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.Vector;
 
-import javax.swing.JTable;
 import javax.swing.JTextPane;
-import javax.swing.table.DefaultTableModel;
 
 import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UnitConstraint;
 import com.wandrell.tabletop.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.tabletop.model.punkapocalyptic.unit.Band;
 import com.wandrell.tabletop.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.valuehandler.AbstractValueHandler;
+import com.wandrell.tabletop.valuehandler.event.ValueHandlerEvent;
+import com.wandrell.tabletop.valuehandler.event.ValueHandlerListener;
 
-public final class SwingArmyBuilderController implements ArmyBuilderController {
+public final class DefaultArmyBuilderController implements
+        ArmyBuilderController {
 
     private final Band                        band;
-    private final JTable                      table;
     private final JTextPane                   textErrors;
     private final UnitConfigurationController unitConfig;
 
-    public SwingArmyBuilderController(
+    public DefaultArmyBuilderController(
             final UnitConfigurationController unitConfig, final Band band,
-            final JTable table, final JTextPane textErrors) {
+            final JTextPane textErrors) {
         super();
 
         this.unitConfig = unitConfig;
         this.band = band;
-        this.table = table;
         this.textErrors = textErrors;
+
+        ((AbstractValueHandler) band.getBullets())
+                .addValueEventListener(new ValueHandlerListener() {
+
+                    @Override
+                    public final void valueChanged(final ValueHandlerEvent evt) {
+                        validate();
+                    }
+
+                });
     }
 
     @Override
     public final void addUnit(final AvailabilityUnit unit) {
-        final Vector<Object> row;
-        StringBuilder textErrors;
-
-        textErrors = new StringBuilder();
-        for (final UnitConstraint constraint : getConstraints()) {
-            if (!constraint.isValid(getBand())) {
-                if (textErrors.toString().length() > 0) {
-                    textErrors.append(System.lineSeparator());
-                }
-                textErrors.append(constraint.getErrorMessage());
-            }
-        }
-        getErrorsPane().setText(textErrors.toString());
-
-        row = new Vector<>(getTable().getRowCount());
-        row.add(unit);
-
-        ((DefaultTableModel) getTable().getModel()).addRow(row);
         getBand().addUnit(unit);
+
+        validate();
     }
 
     @Override
@@ -62,6 +55,11 @@ public final class SwingArmyBuilderController implements ArmyBuilderController {
     @Override
     public final UnitConfigurationController getUnitConfigurationController() {
         return unitConfig;
+    }
+
+    @Override
+    public final void removeUnit(final AvailabilityUnit unit) {
+        getBand().removeUnit(unit);
     }
 
     protected final Collection<UnitConstraint> getConstraints() {
@@ -80,8 +78,20 @@ public final class SwingArmyBuilderController implements ArmyBuilderController {
         return textErrors;
     }
 
-    protected final JTable getTable() {
-        return table;
+    protected final void validate() {
+        StringBuilder textErrors;
+
+        textErrors = new StringBuilder();
+        for (final UnitConstraint constraint : getConstraints()) {
+            if (!constraint.isValid(getBand())) {
+                if (textErrors.toString().length() > 0) {
+                    textErrors.append(System.lineSeparator());
+                }
+                textErrors.append(constraint.getErrorMessage());
+            }
+        }
+
+        getErrorsPane().setText(textErrors.toString());
     }
 
 }
