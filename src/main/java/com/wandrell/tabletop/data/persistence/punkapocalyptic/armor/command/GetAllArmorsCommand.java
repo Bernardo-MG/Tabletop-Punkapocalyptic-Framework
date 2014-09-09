@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.util.command.punkapocalyptic.dao.armor;
+package com.wandrell.tabletop.data.persistence.punkapocalyptic.armor.command;
 
 import java.util.Map;
 

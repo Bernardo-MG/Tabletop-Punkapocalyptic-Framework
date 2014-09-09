@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.util.command.punkapocalyptic.dao.weapon;
+package com.wandrell.tabletop.data.persistence.punkapocalyptic.weapon.command;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

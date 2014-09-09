@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.util.command.punkapocalyptic.dao.ruleset;
+package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
 import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
 import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UnitConstraint;

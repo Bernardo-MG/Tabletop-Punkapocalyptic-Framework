@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.util.command.punkapocalyptic.dao.faction;
+package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
