@@ -33,7 +33,7 @@
 		c:value="#{new Integer(${attribute.module.store.value})}" />
 
 	<bean id="moduleValidatorAggregator" scope="prototype"
-		class="com.wandrell.tabletop.valuehandler.module.validator.ValidatorAggregate">
+		class="com.wandrell.tabletop.business.model.valuehandler.module.validator.ValidatorAggregate">
 		<property name="validators">
 			<list>
 				<ref bean="moduleValidator" />
