@@ -5,11 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.wandrell.tabletop.data.dao.punkapocalyptic.UnitDAO;
-import com.wandrell.tabletop.model.punkapocalyptic.faction.DefaultFaction;
-import com.wandrell.tabletop.model.punkapocalyptic.faction.Faction;
-import com.wandrell.tabletop.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.UnitDAOAware;
+import com.wandrell.tabletop.business.model.punkapocalyptic.faction.DefaultFaction;
+import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.UnitDAOAware;
+import com.wandrell.tabletop.data.persistence.punkapocalyptic.UnitDAO;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetFactionsCommand implements

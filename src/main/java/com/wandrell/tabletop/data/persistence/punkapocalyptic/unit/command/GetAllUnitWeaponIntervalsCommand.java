@@ -2,15 +2,15 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
 import java.util.Map;
 
-import com.wandrell.tabletop.conf.punkapocalyptic.ModelFile;
-import com.wandrell.tabletop.interval.Interval;
-import com.wandrell.tabletop.util.file.punkapocalyptic.unit.UnitWeaponIntervalXMLDocumentReader;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitWeaponIntervalXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.api.FileHandler;
-import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
-import com.wandrell.util.file.impl.xml.DisabledXMLWriter;
-import com.wandrell.util.file.impl.xml.XSDValidator;
+import com.wandrell.util.file.FileHandler;
+import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitWeaponIntervalsCommand implements
         ReturnCommand<Map<String, Interval>> {

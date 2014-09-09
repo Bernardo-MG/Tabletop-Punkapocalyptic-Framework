@@ -1,10 +1,10 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
-import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UnitConstraint;
-import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
-import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.service.LocalizationServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetUnitConstraintCommand implements

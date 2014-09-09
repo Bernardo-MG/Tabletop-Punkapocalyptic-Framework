@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.wandrell.tabletop.data.dao.punkapocalyptic.UnitDAO;
-import com.wandrell.tabletop.interval.Interval;
-import com.wandrell.tabletop.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.model.punkapocalyptic.ruleset.UnitConstraint;
-import com.wandrell.tabletop.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.model.punkapocalyptic.unit.DefaultAvailabilityUnit;
-import com.wandrell.tabletop.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.UnitDAOAware;
+import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultAvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.UnitDAOAware;
+import com.wandrell.tabletop.data.persistence.punkapocalyptic.UnitDAO;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetAllUnitsAvailabilityCommand implements

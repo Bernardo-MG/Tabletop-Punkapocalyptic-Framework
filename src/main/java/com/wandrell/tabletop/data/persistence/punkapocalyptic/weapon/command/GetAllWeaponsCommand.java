@@ -3,18 +3,18 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.weapon.command;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.wandrell.tabletop.conf.punkapocalyptic.ModelFile;
-import com.wandrell.tabletop.data.dao.punkapocalyptic.RulesetDAO;
-import com.wandrell.tabletop.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.util.tag.punkapocalyptic.dao.RulesetDAOAware;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
+import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.api.FileHandler;
-import com.wandrell.util.file.impl.xml.DefaultXMLFileHandler;
-import com.wandrell.util.file.impl.xml.DisabledXMLWriter;
-import com.wandrell.util.file.impl.xml.XSDValidator;
+import com.wandrell.util.file.FileHandler;
+import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllWeaponsCommand implements
         ReturnCommand<Map<String, Weapon>>, RulesetDAOAware {
