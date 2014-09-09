@@ -12,8 +12,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
-import com.wandrell.tabletop.procedure.punkapocalyptic.ArmyBuilderController;
-import com.wandrell.tabletop.procedure.punkapocalyptic.UnitConfigurationController;
 
 public final class DefaultArmyBuilderController implements
         ArmyBuilderController {

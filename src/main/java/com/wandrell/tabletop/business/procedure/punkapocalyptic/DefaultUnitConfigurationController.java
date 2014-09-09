@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.procedure.punkapocalyptic.UnitConfigurationController;
 
 public final class DefaultUnitConfigurationController implements
         UnitConfigurationController {
