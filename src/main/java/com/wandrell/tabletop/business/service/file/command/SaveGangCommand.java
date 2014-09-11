@@ -15,15 +15,15 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Band;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.Command;
 
-public final class SaveBandCommand implements Command {
+public final class SaveGangCommand implements Command {
 
-    private final Band band;
+    private final Gang band;
 
-    public SaveBandCommand(final Band band) {
+    public SaveGangCommand(final Gang band) {
         super();
 
         this.band = band;
@@ -31,20 +31,25 @@ public final class SaveBandCommand implements Command {
 
     @Override
     public final void execute() {
-        final Collection<Band> bands;
+        final Collection<Gang> bands;
         final InputStream fullInput;
+        final InputStream weaponsInput;
         final InputStream unitsInput;
         final JRBeanCollectionDataSource source;
         final Map<String, Object> parameters;
+        final Map<String, Object> parametersUnits;
         final JasperReport fullReport;
         final JasperReport unitsReport;
+        final JasperReport weaponsReport;
         final JasperPrint print;
 
         try {
             fullInput = ResourceUtils
-                    .getClassPathInputStream("report/punkapocalyptic-band-full-report.jrxml");
+                    .getClassPathInputStream("report/punkapocalyptic-gang-report.jrxml");
             unitsInput = ResourceUtils
                     .getClassPathInputStream("report/punkapocalyptic-unit-report.jrxml");
+            weaponsInput = ResourceUtils
+                    .getClassPathInputStream("report/punkapocalyptic-weapon-report.jrxml");
 
             bands = new LinkedList<>();
             bands.add(getBand());
@@ -55,8 +60,11 @@ public final class SaveBandCommand implements Command {
 
             unitsReport = JasperCompileManager.compileReport(JRXmlLoader
                     .load(unitsInput));
+            weaponsReport = JasperCompileManager.compileReport(JRXmlLoader
+                    .load(weaponsInput));
 
             parameters.put("unitsReport", unitsReport);
+            parameters.put("weaponsReport", weaponsReport);
 
             fullReport = JasperCompileManager.compileReport(JRXmlLoader
                     .load(fullInput));
@@ -70,7 +78,7 @@ public final class SaveBandCommand implements Command {
         }
     }
 
-    protected final Band getBand() {
+    protected final Gang getBand() {
         return band;
     }
 

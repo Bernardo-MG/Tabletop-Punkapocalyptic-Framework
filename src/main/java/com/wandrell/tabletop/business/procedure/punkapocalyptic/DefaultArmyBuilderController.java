@@ -7,7 +7,7 @@ import javax.swing.JTextPane;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Band;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
@@ -16,12 +16,12 @@ import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListe
 public final class DefaultArmyBuilderController implements
         ArmyBuilderController {
 
-    private final Band                        band;
+    private final Gang                        band;
     private final JTextPane                   textErrors;
     private final UnitConfigurationController unitConfig;
 
     public DefaultArmyBuilderController(
-            final UnitConfigurationController unitConfig, final Band band,
+            final UnitConfigurationController unitConfig, final Gang band,
             final JTextPane textErrors) {
         super();
 
@@ -48,7 +48,7 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
-    public final Band getBand() {
+    public final Gang getBand() {
         return band;
     }
 
