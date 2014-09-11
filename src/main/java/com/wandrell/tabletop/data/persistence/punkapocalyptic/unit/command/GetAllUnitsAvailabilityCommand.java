@@ -7,7 +7,7 @@ import java.util.Map;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultAvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -18,18 +18,18 @@ import com.wandrell.util.command.ReturnCommand;
 public final class GetAllUnitsAvailabilityCommand implements
         ReturnCommand<Map<String, AvailabilityUnit>>, UnitDAOAware {
 
-    private final Map<String, Armor>                      armor;
-    private final Map<String, Collection<Armor>>          armors;
-    private final Map<String, Collection<UnitConstraint>> constraints;
-    private UnitDAO                                       daoUnit;
-    private final Map<String, Interval>                   weaponIntervals;
-    private final Map<String, Collection<Weapon>>         weapons;
+    private final Map<String, Armor>                                 armor;
+    private final Map<String, Collection<Armor>>                     armors;
+    private final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints;
+    private UnitDAO                                                  daoUnit;
+    private final Map<String, Interval>                              weaponIntervals;
+    private final Map<String, Collection<Weapon>>                    weapons;
 
     public GetAllUnitsAvailabilityCommand(final Map<String, Armor> armor,
             final Map<String, Collection<Armor>> armors,
             final Map<String, Collection<Weapon>> weapons,
             final Map<String, Interval> weaponIntervals,
-            final Map<String, Collection<UnitConstraint>> constraints) {
+            final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints) {
         super();
 
         this.armor = armor;
@@ -46,7 +46,7 @@ public final class GetAllUnitsAvailabilityCommand implements
         Collection<Armor> armors;
         Collection<Weapon> weapons;
         Interval weaponsInterval;
-        Collection<UnitConstraint> constraints;
+        Collection<ArmyBuilderUnitConstraint> constraints;
 
         mapAvailability = new LinkedHashMap<>();
         for (final Unit unit : getUnitDAO().getUnits()) {
@@ -80,7 +80,8 @@ public final class GetAllUnitsAvailabilityCommand implements
         return armors;
     }
 
-    protected final Map<String, Collection<UnitConstraint>> getConstraints() {
+    protected final Map<String, Collection<ArmyBuilderUnitConstraint>>
+            getConstraints() {
         return constraints;
     }
 

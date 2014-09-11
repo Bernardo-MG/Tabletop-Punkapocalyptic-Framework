@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
@@ -16,8 +17,12 @@ import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 public final class GetAllUnitsCommand implements
         ReturnCommand<Collection<Unit>> {
 
-    public GetAllUnitsCommand() {
+    private final Map<String, Collection<SpecialRule>> rules;
+
+    public GetAllUnitsCommand(final Map<String, Collection<SpecialRule>> rules) {
         super();
+
+        this.rules = rules;
     }
 
     @Override
@@ -27,7 +32,7 @@ public final class GetAllUnitsCommand implements
 
         fileUnits = new DefaultXMLFileHandler<>(
                 new DisabledXMLWriter<Map<String, Unit>>(),
-                new UnitsXMLDocumentReader(),
+                new UnitsXMLDocumentReader(getRules()),
                 new XSDValidator(ModelFile.VALIDATION_UNIT, ResourceUtils
                         .getClassPathInputStream(ModelFile.VALIDATION_UNIT)));
 
@@ -35,6 +40,10 @@ public final class GetAllUnitsCommand implements
                 .getClassPathInputStream(ModelFile.UNIT));
 
         return units.values();
+    }
+
+    protected final Map<String, Collection<SpecialRule>> getRules() {
+        return rules;
     }
 
 }

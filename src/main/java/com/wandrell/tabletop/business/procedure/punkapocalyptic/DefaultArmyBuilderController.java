@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 
 import javax.swing.JTextPane;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -62,8 +62,8 @@ public final class DefaultArmyBuilderController implements
         getBand().removeUnit(unit);
     }
 
-    protected final Collection<UnitConstraint> getConstraints() {
-        final Collection<UnitConstraint> constraints;
+    protected final Collection<ArmyBuilderUnitConstraint> getConstraints() {
+        final Collection<ArmyBuilderUnitConstraint> constraints;
 
         constraints = new LinkedHashSet<>();
 
@@ -82,7 +82,7 @@ public final class DefaultArmyBuilderController implements
         StringBuilder textErrors;
 
         textErrors = new StringBuilder();
-        for (final UnitConstraint constraint : getConstraints()) {
+        for (final ArmyBuilderUnitConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getBand())) {
                 if (textErrors.toString().length() > 0) {
                     textErrors.append(System.lineSeparator());

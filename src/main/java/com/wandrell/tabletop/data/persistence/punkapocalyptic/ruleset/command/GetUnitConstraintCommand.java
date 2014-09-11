@@ -1,6 +1,6 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
@@ -8,7 +8,7 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.Localizat
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetUnitConstraintCommand implements
-        ReturnCommand<UnitConstraint>, LocalizationServiceAware {
+        ReturnCommand<ArmyBuilderUnitConstraint>, LocalizationServiceAware {
 
     private final String                       constraint;
     private PunkapocalypticLocalizationService serviceLocalization;
@@ -22,8 +22,8 @@ public final class GetUnitConstraintCommand implements
     }
 
     @Override
-    public final UnitConstraint execute() {
-        final UnitConstraint constraint;
+    public final ArmyBuilderUnitConstraint execute() {
+        final ArmyBuilderUnitConstraint constraint;
 
         if (getConstraint().equals("unique")) {
             constraint = new UptToACountUnitConstraint(getUnit(),

@@ -1,5 +1,6 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.factory.PunkapocalypticFactory;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
@@ -15,8 +17,13 @@ import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 public class UnitsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Unit>> {
 
-    public UnitsXMLDocumentReader() {
+    private final Map<String, Collection<SpecialRule>> rules;
+
+    public UnitsXMLDocumentReader(
+            final Map<String, Collection<SpecialRule>> rules) {
         super();
+
+        this.rules = rules;
     }
 
     @Override
@@ -63,10 +70,15 @@ public class UnitsXMLDocumentReader implements
             slots = factory.getAttribute("weapon_slots", 2);
 
             units.put(name, new DefaultUnit(name, actions, agility, combat,
-                    precision, strength, tech, toughness, slots, cost));
+                    precision, strength, tech, toughness, slots, cost,
+                    getRules().get(name)));
         }
 
         return units;
+    }
+
+    protected final Map<String, Collection<SpecialRule>> getRules() {
+        return rules;
     }
 
 }

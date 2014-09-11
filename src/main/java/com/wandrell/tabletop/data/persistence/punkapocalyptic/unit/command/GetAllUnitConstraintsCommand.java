@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitConstraintsXMLDocumentReader;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
@@ -19,7 +19,8 @@ import com.wandrell.util.file.xml.module.validator.XSDValidator;
 import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitConstraintsCommand implements
-        ReturnCommand<Map<String, Collection<UnitConstraint>>>, RulesetDAOAware {
+        ReturnCommand<Map<String, Collection<ArmyBuilderUnitConstraint>>>,
+        RulesetDAOAware {
 
     private RulesetDAO daoRuleset;
 
@@ -28,11 +29,11 @@ public final class GetAllUnitConstraintsCommand implements
     }
 
     @Override
-    public final Map<String, Collection<UnitConstraint>> execute() {
-        final Map<String, Collection<UnitConstraint>> constraints;
+    public final Map<String, Collection<ArmyBuilderUnitConstraint>> execute() {
+        final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints;
         final Map<String, Collection<String>> constraintNames;
         final FileHandler<Map<String, Collection<String>>> fileUnitConstraints;
-        Collection<UnitConstraint> consts;
+        Collection<ArmyBuilderUnitConstraint> consts;
 
         fileUnitConstraints = new DefaultXMLFileHandler<>(
                 new DisabledXMLWriter<Map<String, Collection<String>>>(),

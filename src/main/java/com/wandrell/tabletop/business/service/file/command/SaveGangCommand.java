@@ -37,7 +37,6 @@ public final class SaveGangCommand implements Command {
         final InputStream unitsInput;
         final JRBeanCollectionDataSource source;
         final Map<String, Object> parameters;
-        final Map<String, Object> parametersUnits;
         final JasperReport fullReport;
         final JasperReport unitsReport;
         final JasperReport weaponsReport;
