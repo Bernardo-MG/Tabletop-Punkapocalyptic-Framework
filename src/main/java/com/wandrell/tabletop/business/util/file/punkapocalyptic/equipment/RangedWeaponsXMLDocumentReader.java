@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
@@ -50,55 +51,51 @@ public final class RangedWeaponsXMLDocumentReader implements
         Integer hands;
         Collection<SpecialRule> rules;
         Weapon weapon;
-        Element rulesNode;
 
         root = doc.getRootElement();
 
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            name = node.getChildText("name");
+            name = node.getChildText(ModelNodeConf.NAME);
 
-            strength = node.getChild("strength");
-            strengthShort = Integer.parseInt(strength.getChildText("short"));
-            strengthMedium = Integer.parseInt(strength.getChildText("medium"));
-            strengthLong = Integer.parseInt(strength.getChildText("long"));
+            strength = node.getChild(ModelNodeConf.STRENGTH);
+            strengthShort = Integer.parseInt(strength
+                    .getChildText(ModelNodeConf.SHORT));
+            strengthMedium = Integer.parseInt(strength
+                    .getChildText(ModelNodeConf.MEDIUM));
+            strengthLong = Integer.parseInt(strength
+                    .getChildText(ModelNodeConf.LONG));
 
-            penetration = node.getChild("penetration");
+            penetration = node.getChild(ModelNodeConf.PENETRATION);
             penetrationShort = Integer.parseInt(penetration
-                    .getChildText("short"));
+                    .getChildText(ModelNodeConf.SHORT));
             penetrationMedium = Integer.parseInt(penetration
-                    .getChildText("medium"));
-            penetrationLong = Integer
-                    .parseInt(penetration.getChildText("long"));
+                    .getChildText(ModelNodeConf.MEDIUM));
+            penetrationLong = Integer.parseInt(penetration
+                    .getChildText(ModelNodeConf.LONG));
 
-            range = node.getChild("range");
+            range = node.getChild(ModelNodeConf.RANGE);
 
-            distance = range.getChild("inches");
+            distance = range.getChild(ModelNodeConf.INCHES);
             distanceShortInches = Integer.parseInt(distance
-                    .getChildText("short"));
+                    .getChildText(ModelNodeConf.SHORT));
             distanceMediumInches = Integer.parseInt(distance
-                    .getChildText("medium"));
-            distanceLongInches = Integer
-                    .parseInt(distance.getChildText("long"));
+                    .getChildText(ModelNodeConf.MEDIUM));
+            distanceLongInches = Integer.parseInt(distance
+                    .getChildText(ModelNodeConf.LONG));
 
-            distance = range.getChild("cm");
-            distanceShortCM = Integer.parseInt(distance.getChildText("short"));
-            distanceMediumCM = Integer
-                    .parseInt(distance.getChildText("medium"));
-            distanceLongCM = Integer.parseInt(distance.getChildText("long"));
+            distance = range.getChild(ModelNodeConf.CM);
+            distanceShortCM = Integer.parseInt(distance
+                    .getChildText(ModelNodeConf.SHORT));
+            distanceMediumCM = Integer.parseInt(distance
+                    .getChildText(ModelNodeConf.MEDIUM));
+            distanceLongCM = Integer.parseInt(distance
+                    .getChildText(ModelNodeConf.LONG));
 
-            cost = Integer.parseInt(node.getChildText("cost"));
-            hands = Integer.parseInt(node.getChildText("hands"));
+            cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
+            hands = Integer.parseInt(node.getChildText(ModelNodeConf.HANDS));
 
-            rules = new LinkedList<>();
-
-            rulesNode = node.getChild("rules");
-            if (rulesNode != null) {
-                for (final Element rule : node.getChild("rules").getChildren()) {
-                    rules.add(getSpecialRuleDAO()
-                            .getSpecialRule(rule.getText()));
-                }
-            }
+            rules = getRules(node.getChild(ModelNodeConf.RULES));
 
             weapon = new DefaultRangedWeapon(name, cost, hands,
                     penetrationShort, penetrationMedium, penetrationLong,
@@ -111,6 +108,19 @@ public final class RangedWeaponsXMLDocumentReader implements
         }
 
         return weapons;
+    }
+
+    private final Collection<SpecialRule> getRules(final Element rulesNode) {
+        Collection<SpecialRule> rules;
+
+        rules = new LinkedList<>();
+        if (rulesNode != null) {
+            for (final Element rule : rulesNode.getChildren()) {
+                rules.add(getSpecialRuleDAO().getSpecialRule(rule.getText()));
+            }
+        }
+
+        return rules;
     }
 
     protected final RulesetDAO getSpecialRuleDAO() {

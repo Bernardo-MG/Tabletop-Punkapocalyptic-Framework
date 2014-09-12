@@ -8,42 +8,65 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
+import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class UnitConstraintsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<String>>> {
+        XMLDocumentReader<Map<String, Collection<ArmyBuilderUnitConstraint>>> {
 
-    public UnitConstraintsXMLDocumentReader() {
+    private final RulesetDAO daoRuleset;
+
+    public UnitConstraintsXMLDocumentReader(final RulesetDAO daoRuleset) {
         super();
+
+        this.daoRuleset = daoRuleset;
     }
 
     @Override
-    public final Map<String, Collection<String>> getValue(final Document doc) {
+    public final Map<String, Collection<ArmyBuilderUnitConstraint>> getValue(
+            final Document doc) {
         final Element root;
-        final Map<String, Collection<String>> constraints;
-        Element nodeConstraints;
-        Collection<String> consts;
+        final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints;
+        Collection<ArmyBuilderUnitConstraint> consts;
+        String unit;
 
         root = doc.getRootElement();
 
         constraints = new LinkedHashMap<>();
         for (final Element nodeFaction : root.getChildren()) {
-            for (final Element nodeUnit : nodeFaction.getChild("units")
-                    .getChildren()) {
-                consts = new LinkedList<>();
-                nodeConstraints = nodeUnit.getChild("constraints");
-                if (nodeConstraints != null) {
-                    for (final Element constraintNode : nodeConstraints
-                            .getChildren()) {
-                        consts.add(constraintNode.getText());
-                    }
-                }
+            for (final Element nodeUnit : nodeFaction.getChild(
+                    ModelNodeConf.UNITS).getChildren()) {
+                unit = nodeUnit.getChildText(ModelNodeConf.NAME);
 
-                constraints.put(nodeUnit.getChildText("name"), consts);
+                consts = getConstraints(
+                        nodeUnit.getChild(ModelNodeConf.CONSTRAINTS), unit);
+
+                constraints.put(unit, consts);
             }
         }
 
         return constraints;
+    }
+
+    private final Collection<ArmyBuilderUnitConstraint> getConstraints(
+            final Element nodeConstraints, final String unit) {
+        final Collection<ArmyBuilderUnitConstraint> constraints;
+
+        constraints = new LinkedList<>();
+        if (nodeConstraints != null) {
+            for (final Element constraintNode : nodeConstraints.getChildren()) {
+                constraints.add(getRulesetDAO().getUnitConstraint(
+                        constraintNode.getText(), unit));
+            }
+        }
+
+        return constraints;
+    }
+
+    protected final RulesetDAO getRulesetDAO() {
+        return daoRuleset;
     }
 
 }

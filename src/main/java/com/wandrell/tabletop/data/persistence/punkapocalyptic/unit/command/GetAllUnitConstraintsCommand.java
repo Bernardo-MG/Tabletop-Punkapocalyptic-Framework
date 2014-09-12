@@ -1,12 +1,9 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitConstraintsXMLDocumentReader;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
@@ -15,8 +12,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitConstraintsCommand implements
         ReturnCommand<Map<String, Collection<ArmyBuilderUnitConstraint>>>,
@@ -30,34 +28,20 @@ public final class GetAllUnitConstraintsCommand implements
 
     @Override
     public final Map<String, Collection<ArmyBuilderUnitConstraint>> execute() {
-        final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints;
-        final Map<String, Collection<String>> constraintNames;
-        final FileHandler<Map<String, Collection<String>>> fileUnitConstraints;
-        Collection<ArmyBuilderUnitConstraint> consts;
+        final FileHandler<Map<String, Collection<ArmyBuilderUnitConstraint>>> fileUnitConstraints;
+        final XMLDocumentReader<Map<String, Collection<ArmyBuilderUnitConstraint>>> reader;
+        final XMLDocumentValidator validator;
 
-        fileUnitConstraints = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, Collection<String>>>(),
-                new UnitConstraintsXMLDocumentReader(),
-                new XSDValidator(
-                        ModelFile.VALIDATION_FACTION_UNITS,
-                        ResourceUtils
-                                .getClassPathInputStream(ModelFile.VALIDATION_FACTION_UNITS)));
+        reader = new UnitConstraintsXMLDocumentReader(getRulesetDAO());
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_FACTION_UNITS,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        constraintNames = fileUnitConstraints.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.FACTION_UNITS));
+        fileUnitConstraints = new DefaultXMLFileHandler<>(reader, validator);
 
-        constraints = new LinkedHashMap<>();
-        for (final Entry<String, Collection<String>> entry : constraintNames
-                .entrySet()) {
-            consts = new LinkedList<>();
-            for (final String constraint : entry.getValue()) {
-                consts.add(getRulesetDAO().getUnitConstraint(constraint,
-                        entry.getKey()));
-            }
-            constraints.put(entry.getKey(), consts);
-        }
-
-        return constraints;
+        return fileUnitConstraints.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.FACTION_UNITS));
     }
 
     @Override

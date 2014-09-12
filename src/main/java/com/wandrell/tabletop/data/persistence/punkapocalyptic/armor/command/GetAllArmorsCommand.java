@@ -2,7 +2,7 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.armor.command;
 
 import java.util.Map;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.ArmorsXMLDocumentReader;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
@@ -11,8 +11,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllArmorsCommand implements
         ReturnCommand<Map<String, Armor>>, RulesetDAOAware {
@@ -26,18 +27,19 @@ public final class GetAllArmorsCommand implements
     @Override
     public final Map<String, Armor> execute() {
         final FileHandler<Map<String, Armor>> fileArmors;
-        final Map<String, Armor> armors;
+        final XMLDocumentReader<Map<String, Armor>> reader;
+        final XMLDocumentValidator validator;
 
-        fileArmors = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, Armor>>(),
-                new ArmorsXMLDocumentReader(getSpecialRuleDAO()),
-                new XSDValidator(ModelFile.VALIDATION_ARMOR, ResourceUtils
-                        .getClassPathInputStream(ModelFile.VALIDATION_ARMOR)));
+        reader = new ArmorsXMLDocumentReader(getSpecialRuleDAO());
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_ARMOR,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_ARMOR));
 
-        armors = fileArmors.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.ARMOR));
+        fileArmors = new DefaultXMLFileHandler<>(reader, validator);
 
-        return armors;
+        return fileArmors.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.ARMOR));
     }
 
     @Override

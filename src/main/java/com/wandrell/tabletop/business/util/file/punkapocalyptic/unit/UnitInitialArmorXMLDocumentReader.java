@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.ArmorDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
@@ -31,11 +32,11 @@ public final class UnitInitialArmorXMLDocumentReader implements
 
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            armorNode = node.getChild("armor");
+            armorNode = node.getChild(ModelNodeConf.ARMOR);
 
             if (armorNode != null) {
-                armors.put(node.getChildText("unit"),
-                        getArmorDAO().getArmor(armorNode.getText(), 0));
+                armors.put(node.getChildText(ModelNodeConf.UNIT), getArmorDAO()
+                        .getArmor(armorNode.getText(), 0));
             }
         }
 

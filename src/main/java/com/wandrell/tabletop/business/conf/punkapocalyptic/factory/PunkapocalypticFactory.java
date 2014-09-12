@@ -1,14 +1,11 @@
 package com.wandrell.tabletop.business.conf.punkapocalyptic.factory;
 
-import java.util.Properties;
-
-import org.springframework.context.ApplicationContext;
-
-import com.wandrell.tabletop.business.conf.punkapocalyptic.PunkapocalypticFactoryConf;
+import com.wandrell.tabletop.business.model.valuehandler.DefaultValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.util.ContextUtils;
-import com.wandrell.util.FileUtils;
-import com.wandrell.util.ResourceUtils;
+import com.wandrell.tabletop.business.model.valuehandler.module.generator.DefaultGenerator;
+import com.wandrell.tabletop.business.model.valuehandler.module.interval.DefaultIntervalModule;
+import com.wandrell.tabletop.business.model.valuehandler.module.store.DefaultStore;
+import com.wandrell.tabletop.business.model.valuehandler.module.validator.IntervalValidator;
 
 public final class PunkapocalypticFactory {
 
@@ -28,26 +25,9 @@ public final class PunkapocalypticFactory {
 
     public final ValueHandler getAttribute(final String name,
             final Integer value) {
-        final ApplicationContext context;
-        final Properties properties;
-
-        properties = FileUtils
-                .getProperties(ResourceUtils
-                        .getClassPathInputStream(PunkapocalypticFactoryConf.PROPERTIES_ATTRIBUTE));
-
-        // TODO: This is hardcoded
-        properties.setProperty("attribute.name", name);
-        properties
-                .setProperty("attribute.module.store.value", value.toString());
-
-        // TODO: Try to reload changing only the values
-        context = ContextUtils.getClassPathContext(
-                PunkapocalypticFactoryConf.CONTEXT_ATTRIBUTE, properties);
-
-        // Spring framework builds the instance
-
-        return (ValueHandler) context
-                .getBean(PunkapocalypticFactoryConf.BEAN_ATTRIBUTE);
+        return new DefaultValueHandler(name, new DefaultGenerator(),
+                new DefaultIntervalModule(0, Integer.MAX_VALUE),
+                new DefaultStore(value), new IntervalValidator());
     }
 
 }

@@ -2,15 +2,16 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
 import java.util.Map;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitWeaponIntervalXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitWeaponIntervalsCommand implements
         ReturnCommand<Map<String, Interval>> {
@@ -22,20 +23,19 @@ public final class GetAllUnitWeaponIntervalsCommand implements
     @Override
     public final Map<String, Interval> execute() {
         final FileHandler<Map<String, Interval>> fileWeapons;
-        final Map<String, Interval> weapons;
+        final XMLDocumentReader<Map<String, Interval>> reader;
+        final XMLDocumentValidator validator;
 
-        fileWeapons = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, Interval>>(),
-                new UnitWeaponIntervalXMLDocumentReader(),
-                new XSDValidator(
-                        ModelFile.VALIDATION_UNIT_AVAILABILITY,
-                        ResourceUtils
-                                .getClassPathInputStream(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
+        reader = new UnitWeaponIntervalXMLDocumentReader();
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_UNIT_AVAILABILITY,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        weapons = fileWeapons.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.UNIT_AVAILABILITY));
+        fileWeapons = new DefaultXMLFileHandler<>(reader, validator);
 
-        return weapons;
+        return fileWeapons.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));
     }
 
 }

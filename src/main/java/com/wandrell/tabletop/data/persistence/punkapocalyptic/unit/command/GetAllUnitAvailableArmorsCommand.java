@@ -3,7 +3,7 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 import java.util.Collection;
 import java.util.Map;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitAvailableArmorsXMLDocumentReader;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.ArmorDAOAware;
@@ -12,8 +12,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitAvailableArmorsCommand implements
         ReturnCommand<Map<String, Collection<Armor>>>, ArmorDAOAware {
@@ -27,20 +28,19 @@ public final class GetAllUnitAvailableArmorsCommand implements
     @Override
     public final Map<String, Collection<Armor>> execute() {
         final FileHandler<Map<String, Collection<Armor>>> fileUnitArmors;
-        final Map<String, Collection<Armor>> unitArmors;
+        final XMLDocumentReader<Map<String, Collection<Armor>>> reader;
+        final XMLDocumentValidator validator;
 
-        fileUnitArmors = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, Collection<Armor>>>(),
-                new UnitAvailableArmorsXMLDocumentReader(getArmorDAO()),
-                new XSDValidator(
-                        ModelFile.VALIDATION_UNIT_AVAILABILITY,
-                        ResourceUtils
-                                .getClassPathInputStream(ModelFile.VALIDATION_UNIT_AVAILABILITY)));
+        reader = new UnitAvailableArmorsXMLDocumentReader(getArmorDAO());
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_UNIT_AVAILABILITY,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        unitArmors = fileUnitArmors.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.UNIT_AVAILABILITY));
+        fileUnitArmors = new DefaultXMLFileHandler<>(reader, validator);
 
-        return unitArmors;
+        return fileUnitArmors.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));
     }
 
     @Override

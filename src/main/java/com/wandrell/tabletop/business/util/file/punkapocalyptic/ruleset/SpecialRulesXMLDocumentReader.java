@@ -6,6 +6,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
@@ -33,7 +34,7 @@ public final class SpecialRulesXMLDocumentReader implements
 
         rules = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            name = node.getChildText("name");
+            name = node.getChildText(ModelNodeConf.NAME);
 
             rule = new DefaultSpecialRule(name);
 

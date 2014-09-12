@@ -24,7 +24,8 @@ import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
 
-public class PunkapocalypticContextCommandExecutor implements CommandExecutor {
+public final class PunkapocalypticContextCommandExecutor implements
+        CommandExecutor {
 
     private ArmorDAO                           daoArmor;
     private FactionDAO                         daoFaction;

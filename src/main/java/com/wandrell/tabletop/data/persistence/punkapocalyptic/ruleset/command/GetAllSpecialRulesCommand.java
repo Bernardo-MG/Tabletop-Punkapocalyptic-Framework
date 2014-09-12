@@ -2,7 +2,7 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
 import java.util.Map;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.ruleset.SpecialRulesXMLDocumentReader;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
@@ -11,8 +11,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllSpecialRulesCommand implements
         ReturnCommand<Map<String, SpecialRule>>, RulesetDAOAware {
@@ -26,20 +27,19 @@ public final class GetAllSpecialRulesCommand implements
     @Override
     public final Map<String, SpecialRule> execute() {
         final FileHandler<Map<String, SpecialRule>> fileRules;
-        final Map<String, SpecialRule> rules;
+        final XMLDocumentReader<Map<String, SpecialRule>> reader;
+        final XMLDocumentValidator validator;
 
-        fileRules = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, SpecialRule>>(),
-                new SpecialRulesXMLDocumentReader(getSpecialRuleDAO()),
-                new XSDValidator(
-                        ModelFile.VALIDATION_SPECIAL_RULE,
-                        ResourceUtils
-                                .getClassPathInputStream(ModelFile.VALIDATION_SPECIAL_RULE)));
+        reader = new SpecialRulesXMLDocumentReader(getSpecialRuleDAO());
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_SPECIAL_RULE,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_SPECIAL_RULE));
 
-        rules = fileRules.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.SPECIAL_RULE));
+        fileRules = new DefaultXMLFileHandler<>(reader, validator);
 
-        return rules;
+        return fileRules.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.SPECIAL_RULE));
     }
 
     @Override

@@ -2,14 +2,15 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 
 import java.util.Collection;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionNameXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllFactionsNamesCommand implements
         ReturnCommand<Collection<String>> {
@@ -21,18 +22,19 @@ public final class GetAllFactionsNamesCommand implements
     @Override
     public final Collection<String> execute() {
         final FileHandler<Collection<String>> fileFactionNames;
-        final Collection<String> factionNames;
+        final XMLDocumentReader<Collection<String>> reader;
+        final XMLDocumentValidator validator;
 
-        fileFactionNames = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Collection<String>>(),
-                new FactionNameXMLDocumentReader(),
-                new XSDValidator(ModelFile.VALIDATION_FACTION, ResourceUtils
-                        .getClassPathInputStream(ModelFile.VALIDATION_FACTION)));
+        reader = new FactionNameXMLDocumentReader();
+        validator = new XSDValidator(
+                ModelFileConf.VALIDATION_FACTION,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION));
 
-        factionNames = fileFactionNames.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.FACTION));
+        fileFactionNames = new DefaultXMLFileHandler<>(reader, validator);
 
-        return factionNames;
+        return fileFactionNames.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.FACTION));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.wandrell.tabletop.business.conf.punkapocalyptic;
 
-public final class ModelFile {
+public final class ModelFileConf {
 
     public static final String ARMOR                        = "model/punkapocalyptic-model-armor.xml";
     public static final String FACTION                      = "model/punkapocalyptic-model-faction.xml";
@@ -19,7 +19,7 @@ public final class ModelFile {
     public static final String WEAPON_MELEE                 = "model/punkapocalyptic-model-weapon-melee.xml";
     public static final String WEAPON_RANGED                = "model/punkapocalyptic-model-weapon-ranged.xml";
 
-    private ModelFile() {
+    private ModelFileConf() {
         super();
     }
 

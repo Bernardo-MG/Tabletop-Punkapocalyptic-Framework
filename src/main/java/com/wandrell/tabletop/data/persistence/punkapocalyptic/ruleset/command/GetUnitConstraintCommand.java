@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ConstraintsConf;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.MessageBundleKey;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
@@ -25,19 +27,15 @@ public final class GetUnitConstraintCommand implements
     public final ArmyBuilderUnitConstraint execute() {
         final ArmyBuilderUnitConstraint constraint;
 
-        if (getConstraint().equals("unique")) {
-            constraint = new UptToACountUnitConstraint(getUnit(),
-                    getLocalizationService().getMessageString(
-                            "unit_should_be_unique"), 1);
-        } else if (getConstraint().equals("up_to_half_points")) {
-            constraint = new UpToHalfPointsLimitUnitConstraint(getUnit(),
-                    String.format(
-                            getLocalizationService().getMessageString(
-                                    "unit_should_be_up_to_half_points"),
-                            getLocalizationService().getUnitNameString(
-                                    getUnit())));
-        } else {
-            constraint = null;
+        switch (getConstraint()) {
+            case ConstraintsConf.UNIQUE:
+                constraint = getUniqueConstraint();
+                break;
+            case ConstraintsConf.UP_TO_HALF_POINTS:
+                constraint = getUpToHalfPointsConstraint();
+                break;
+            default:
+                constraint = null;
         }
 
         return constraint;
@@ -47,6 +45,26 @@ public final class GetUnitConstraintCommand implements
     public void setLocalizationService(
             final PunkapocalypticLocalizationService service) {
         serviceLocalization = service;
+    }
+
+    private final ArmyBuilderUnitConstraint getUniqueConstraint() {
+        final String message;
+
+        message = getLocalizationService().getMessageString(
+                MessageBundleKey.UNIT_SHOULD_BE_UNIQUE);
+
+        return new UptToACountUnitConstraint(getUnit(), message, 1);
+    }
+
+    private final ArmyBuilderUnitConstraint getUpToHalfPointsConstraint() {
+        final String message;
+
+        message = String.format(
+                getLocalizationService().getMessageString(
+                        MessageBundleKey.UNIT_SHOULD_BE_UP_TO_HALF_POINTS),
+                getLocalizationService().getUnitNameString(getUnit()));
+
+        return new UpToHalfPointsLimitUnitConstraint(getUnit(), message);
     }
 
     protected final String getConstraint() {

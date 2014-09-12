@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultMeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
@@ -37,28 +38,20 @@ public final class MeleeWeaponsXMLDocumentReader implements
         Integer hands;
         Collection<SpecialRule> rules;
         Weapon weapon;
-        Element rulesNode;
 
         root = doc.getRootElement();
 
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            name = node.getChildText("name");
-            strength = Integer.parseInt(node.getChildText("strength"));
-            penetration = Integer.parseInt(node.getChildText("penetration"));
-            combat = Integer.parseInt(node.getChildText("combat"));
-            cost = Integer.parseInt(node.getChildText("cost"));
-            hands = Integer.parseInt(node.getChildText("hands"));
-
-            rules = new LinkedList<>();
-
-            rulesNode = node.getChild("rules");
-            if (rulesNode != null) {
-                for (final Element rule : rulesNode.getChildren()) {
-                    rules.add(getSpecialRuleDAO()
-                            .getSpecialRule(rule.getText()));
-                }
-            }
+            name = node.getChildText(ModelNodeConf.NAME);
+            strength = Integer.parseInt(node
+                    .getChildText(ModelNodeConf.STRENGTH));
+            penetration = Integer.parseInt(node
+                    .getChildText(ModelNodeConf.PENETRATION));
+            combat = Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT));
+            cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
+            hands = Integer.parseInt(node.getChildText(ModelNodeConf.HANDS));
+            rules = getRules(node.getChild(ModelNodeConf.RULES));
 
             weapon = new DefaultMeleeWeapon(name, cost, hands, strength,
                     penetration, combat, rules);
@@ -67,6 +60,19 @@ public final class MeleeWeaponsXMLDocumentReader implements
         }
 
         return weapons;
+    }
+
+    private final Collection<SpecialRule> getRules(final Element rulesNode) {
+        Collection<SpecialRule> rules;
+
+        rules = new LinkedList<>();
+        if (rulesNode != null) {
+            for (final Element rule : rulesNode.getChildren()) {
+                rules.add(getSpecialRuleDAO().getSpecialRule(rule.getText()));
+            }
+        }
+
+        return rules;
     }
 
     protected final RulesetDAO getSpecialRuleDAO() {

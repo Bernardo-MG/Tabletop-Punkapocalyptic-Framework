@@ -3,7 +3,7 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 import java.util.Collection;
 import java.util.Map;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFile;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitsXMLDocumentReader;
@@ -11,8 +11,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileHandler;
 import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
-import com.wandrell.util.file.xml.module.writer.DisabledXMLWriter;
 
 public final class GetAllUnitsCommand implements
         ReturnCommand<Collection<Unit>> {
@@ -27,19 +28,19 @@ public final class GetAllUnitsCommand implements
 
     @Override
     public final Collection<Unit> execute() {
-        final FileHandler<Map<String, Unit>> fileUnits;
-        final Map<String, Unit> units;
+        final FileHandler<Collection<Unit>> fileUnits;
+        final XMLDocumentReader<Collection<Unit>> reader;
+        final XMLDocumentValidator validator;
 
-        fileUnits = new DefaultXMLFileHandler<>(
-                new DisabledXMLWriter<Map<String, Unit>>(),
-                new UnitsXMLDocumentReader(getRules()),
-                new XSDValidator(ModelFile.VALIDATION_UNIT, ResourceUtils
-                        .getClassPathInputStream(ModelFile.VALIDATION_UNIT)));
+        reader = new UnitsXMLDocumentReader(getRules());
+        validator = new XSDValidator(ModelFileConf.VALIDATION_UNIT,
+                ResourceUtils
+                        .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT));
 
-        units = fileUnits.read(ResourceUtils
-                .getClassPathInputStream(ModelFile.UNIT));
+        fileUnits = new DefaultXMLFileHandler<>(reader, validator);
 
-        return units.values();
+        return fileUnits.read(ResourceUtils
+                .getClassPathInputStream(ModelFileConf.UNIT));
     }
 
     protected final Map<String, Collection<SpecialRule>> getRules() {

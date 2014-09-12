@@ -8,6 +8,7 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class FactionUnitsXMLDocumentReader implements
@@ -29,11 +30,12 @@ public final class FactionUnitsXMLDocumentReader implements
         for (final Element node : root.getChildren()) {
             units = new LinkedList<>();
 
-            for (final Element unit : node.getChild("units").getChildren()) {
-                units.add(unit.getChildText("name"));
+            for (final Element unit : node.getChild(ModelNodeConf.UNITS)
+                    .getChildren()) {
+                units.add(unit.getChildText(ModelNodeConf.NAME));
             }
 
-            factionUnits.put(node.getChildText("faction"), units);
+            factionUnits.put(node.getChildText(ModelNodeConf.FACTION), units);
         }
 
         return factionUnits;
