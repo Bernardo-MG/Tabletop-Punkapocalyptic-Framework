@@ -26,8 +26,8 @@ public final class PunkapocalypticFactory {
     public final EditableValueHandler getAttribute(final String name,
             final Integer value) {
         return new DefaultValueHandler(name, new DefaultGenerator(),
-                new DefaultIntervalModule(0, Integer.MAX_VALUE),
-                new DefaultStore(value), new IntervalValidator());
+                new DefaultIntervalModule(1, 10), new DefaultStore(value),
+                new IntervalValidator());
     }
 
 }
