@@ -5,16 +5,16 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.MessageBundleKey;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UpToHalfPointsLimitUnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.UptToACountUnitConstraint;
-import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetUnitConstraintCommand implements
         ReturnCommand<ArmyBuilderUnitConstraint>, LocalizationServiceAware {
 
-    private final String                       constraint;
-    private PunkapocalypticLocalizationService serviceLocalization;
-    private final String                       unit;
+    private final String        constraint;
+    private LocalizationService serviceLocalization;
+    private final String        unit;
 
     public GetUnitConstraintCommand(final String constraint, final String unit) {
         super();
@@ -42,8 +42,7 @@ public final class GetUnitConstraintCommand implements
     }
 
     @Override
-    public void setLocalizationService(
-            final PunkapocalypticLocalizationService service) {
+    public void setLocalizationService(final LocalizationService service) {
         serviceLocalization = service;
     }
 
@@ -71,7 +70,7 @@ public final class GetUnitConstraintCommand implements
         return constraint;
     }
 
-    protected final PunkapocalypticLocalizationService getLocalizationService() {
+    protected final LocalizationService getLocalizationService() {
         return serviceLocalization;
     }
 

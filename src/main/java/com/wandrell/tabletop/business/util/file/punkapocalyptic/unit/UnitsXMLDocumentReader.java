@@ -2,7 +2,6 @@ package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -13,18 +12,18 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public class UnitsXMLDocumentReader implements
         XMLDocumentReader<Collection<Unit>> {
 
-    private final Map<String, Collection<SpecialRule>> rules;
+    private final RulesetDAO dao;
 
-    public UnitsXMLDocumentReader(
-            final Map<String, Collection<SpecialRule>> rules) {
+    public UnitsXMLDocumentReader(final RulesetDAO dao) {
         super();
 
-        this.rules = rules;
+        this.dao = dao;
     }
 
     @Override
@@ -73,14 +72,14 @@ public class UnitsXMLDocumentReader implements
 
             units.add(new DefaultUnit(name, actions, agility, combat,
                     precision, strength, tech, toughness, slots, cost,
-                    getRules().get(name)));
+                    new LinkedList<SpecialRule>()));
         }
 
         return units;
     }
 
-    protected final Map<String, Collection<SpecialRule>> getRules() {
-        return rules;
+    protected final RulesetDAO getRulesetDAO() {
+        return dao;
     }
 
 }

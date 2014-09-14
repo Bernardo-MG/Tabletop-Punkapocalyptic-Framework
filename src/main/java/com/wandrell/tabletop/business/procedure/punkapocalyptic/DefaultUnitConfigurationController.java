@@ -1,14 +1,13 @@
 package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 
-import java.util.Collection;
 import java.util.EventObject;
-import java.util.LinkedList;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
+import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfigurationListener;
 
 public final class DefaultUnitConfigurationController implements
         UnitConfigurationController {
@@ -22,7 +21,7 @@ public final class DefaultUnitConfigurationController implements
             final String compulsoryWeaponsError) {
         super();
 
-        if (unit == null) {
+        if (compulsoryWeaponsError == null) {
             throw new NullPointerException(
                     "Received a null pointer as the compulsory weapons error message");
         }
@@ -42,24 +41,24 @@ public final class DefaultUnitConfigurationController implements
     }
 
     @Override
-    public final String getValidationMessage() {
-        return validationMessage;
+    public final void addUnitConfigurationListener(
+            final UnitConfigurationListener listener) {
+        if (listener == null) {
+            throw new NullPointerException(
+                    "Received a null pointer as listener");
+        }
+
+        getListeners().add(UnitConfigurationListener.class, listener);
     }
 
     @Override
-    public final Collection<Weapon> getWeaponsSelection() {
-        final Collection<Weapon> weapons;
+    public final AvailabilityUnit getUnit() {
+        return unit;
+    }
 
-        weapons = new LinkedList<>();
-        for (final Weapon weapon : getUnit().getWeaponOptions()) {
-            if ((!weapons.contains(weapon))
-                    && (weapon.getHands() <= getUnit().getFreeWeaponSlots()
-                            .getStoredValue())) {
-                weapons.add(weapon);
-            }
-        }
-
-        return weapons;
+    @Override
+    public final String getValidationMessage() {
+        return validationMessage;
     }
 
     @Override
@@ -69,12 +68,20 @@ public final class DefaultUnitConfigurationController implements
     }
 
     @Override
+    public final void removeUnitConfigurationListener(
+            final UnitConfigurationListener listener) {
+        getListeners().remove(UnitConfigurationListener.class, listener);
+    }
+
+    @Override
     public final void setUnit(final AvailabilityUnit unit) {
         if (unit == null) {
             throw new NullPointerException("Received a null pointer as unit");
         }
 
         this.unit = unit;
+
+        fireUnitSelectedEvent(new UnitEvent(this, getUnit()));
 
         validate();
     }
@@ -101,6 +108,19 @@ public final class DefaultUnitConfigurationController implements
         }
 
         return valid;
+    }
+
+    protected final void fireUnitSelectedEvent(final UnitEvent evt) {
+        final UnitConfigurationListener[] ls;
+
+        if (evt == null) {
+            throw new NullPointerException("Received a null pointer as event");
+        }
+
+        ls = getListeners().getListeners(UnitConfigurationListener.class);
+        for (final UnitConfigurationListener l : ls) {
+            l.unitSelected(evt);
+        }
     }
 
     protected final void fireValidationFailedEvent(final EventObject evt) {
@@ -135,10 +155,6 @@ public final class DefaultUnitConfigurationController implements
 
     protected final EventListenerList getListeners() {
         return listeners;
-    }
-
-    protected final AvailabilityUnit getUnit() {
-        return unit;
     }
 
     protected final void setValidationMessage(final String message) {

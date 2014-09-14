@@ -2,9 +2,9 @@ package com.wandrell.tabletop.business.util.command.punkapocalyptic;
 
 import com.wandrell.service.application.ApplicationInfoService;
 import com.wandrell.service.swing.layout.LayoutService;
-import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticFileService;
-import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticLocalizationService;
-import com.wandrell.tabletop.business.service.punkapocalyptic.PunkapocalypticRulesetService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.ArmorDAOAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.FactionDAOAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
@@ -27,17 +27,17 @@ import com.wandrell.util.command.ReturnCommand;
 public final class PunkapocalypticContextCommandExecutor implements
         CommandExecutor {
 
-    private ArmorDAO                           daoArmor;
-    private FactionDAO                         daoFaction;
-    private RulesetDAO                         daoSpecialRule;
-    private UnitDAO                            daoUnit;
-    private WeaponDAO                          daoWeapon;
-    private final CommandExecutor              executor;
-    private ApplicationInfoService             serviceApplicationInfo;
-    private PunkapocalypticFileService         serviceFile;
-    private LayoutService                      serviceLayout;
-    private PunkapocalypticLocalizationService serviceLocalization;
-    private PunkapocalypticRulesetService      serviceRuleset;
+    private ArmorDAO               daoArmor;
+    private FactionDAO             daoFaction;
+    private RulesetDAO             daoSpecialRule;
+    private UnitDAO                daoUnit;
+    private WeaponDAO              daoWeapon;
+    private final CommandExecutor  executor;
+    private ApplicationInfoService serviceApplicationInfo;
+    private FileService            serviceFile;
+    private LayoutService          serviceLayout;
+    private LocalizationService    serviceLocalization;
+    private RulesetService         serviceRuleset;
 
     public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
         super();
@@ -71,7 +71,7 @@ public final class PunkapocalypticContextCommandExecutor implements
         daoFaction = dao;
     }
 
-    public final void setFileService(final PunkapocalypticFileService service) {
+    public final void setFileService(final FileService service) {
         serviceFile = service;
     }
 
@@ -79,13 +79,11 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceLayout = service;
     }
 
-    public final void setLocalizationService(
-            final PunkapocalypticLocalizationService service) {
+    public final void setLocalizationService(final LocalizationService service) {
         serviceLocalization = service;
     }
 
-    public final void setRulesetService(
-            final PunkapocalypticRulesetService service) {
+    public final void setRulesetService(final RulesetService service) {
         serviceRuleset = service;
     }
 
@@ -162,7 +160,7 @@ public final class PunkapocalypticContextCommandExecutor implements
         return daoFaction;
     }
 
-    protected final PunkapocalypticFileService getFileService() {
+    protected final FileService getFileService() {
         return serviceFile;
     }
 
@@ -170,11 +168,11 @@ public final class PunkapocalypticContextCommandExecutor implements
         return serviceLayout;
     }
 
-    protected final PunkapocalypticLocalizationService getLocalizationService() {
+    protected final LocalizationService getLocalizationService() {
         return serviceLocalization;
     }
 
-    protected final PunkapocalypticRulesetService getRulesetService() {
+    protected final RulesetService getRulesetService() {
         return serviceRuleset;
     }
 
