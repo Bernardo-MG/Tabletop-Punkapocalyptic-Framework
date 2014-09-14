@@ -11,7 +11,7 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.factory.Punkapocalypt
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
@@ -32,14 +32,14 @@ public class UnitsXMLDocumentReader implements
         final Element root;
         final PunkapocalypticFactory factory;
         String name;
-        ValueHandler actions;
-        ValueHandler combat;
-        ValueHandler precision;
-        ValueHandler agility;
-        ValueHandler strength;
-        ValueHandler toughness;
-        ValueHandler tech;
-        ValueHandler slots;
+        EditableValueHandler actions;
+        EditableValueHandler combat;
+        EditableValueHandler precision;
+        EditableValueHandler agility;
+        EditableValueHandler strength;
+        EditableValueHandler toughness;
+        EditableValueHandler tech;
+        EditableValueHandler slots;
         Integer cost;
 
         root = doc.getRootElement();
