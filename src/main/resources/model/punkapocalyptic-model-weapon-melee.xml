@@ -7,7 +7,6 @@
 		<penetration>2</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-		<hands>0</hands>
 	</weapon>
 	<weapon>
 		<name>heavy_blade</name>
@@ -19,7 +18,6 @@
 		<penetration>4</penetration>
 		<strength>3</strength>
 		<cost>8</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>heavy_mace</name>
@@ -30,7 +28,6 @@
 		<penetration>2</penetration>
 		<strength>4</strength>
 		<cost>6</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>improvised_weapon</name>
@@ -38,7 +35,6 @@
 		<penetration>0</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>light_mace</name>
@@ -46,7 +42,6 @@
 		<penetration>0</penetration>
 		<strength>1</strength>
 		<cost>3</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>mace</name>
@@ -54,7 +49,6 @@
 		<penetration>1</penetration>
 		<strength>2</strength>
 		<cost>5</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>medium_blade</name>
@@ -62,7 +56,6 @@
 		<penetration>3</penetration>
 		<strength>2</strength>
 		<cost>10</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>small_blade</name>
@@ -70,7 +63,6 @@
 		<penetration>2</penetration>
 		<strength>1</strength>
 		<cost>5</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>unarmed</name>
@@ -78,6 +70,5 @@
 		<penetration>0</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-		<hands>0</hands>
 	</weapon>
 </weapons>

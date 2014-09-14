@@ -31,7 +31,6 @@
 			</cm>
 		</range>
 		<cost>10</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>bow</name>
@@ -62,7 +61,6 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>crossbow</name>
@@ -93,7 +91,6 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>pistol</name>
@@ -123,7 +120,6 @@
 			</cm>
 		</range>
 		<cost>5</cost>
-		<hands>1</hands>
 	</weapon>
 	<weapon>
 		<name>rifle</name>
@@ -154,7 +150,6 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>shotgun</name>
@@ -186,7 +181,6 @@
 			</cm>
 		</range>
 		<cost>6</cost>
-		<hands>2</hands>
 	</weapon>
 	<weapon>
 		<name>throwing_knife</name>
@@ -216,6 +210,5 @@
 			</cm>
 		</range>
 		<cost>3</cost>
-		<hands>1</hands>
 	</weapon>
 </weapons>

@@ -39,7 +39,6 @@ public class UnitsXMLDocumentReader implements
         EditableValueHandler strength;
         EditableValueHandler toughness;
         EditableValueHandler tech;
-        EditableValueHandler slots;
         Integer cost;
 
         root = doc.getRootElement();
@@ -68,10 +67,8 @@ public class UnitsXMLDocumentReader implements
 
             cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-            slots = factory.getAttribute(ModelNodeConf.WEAPON_SLOTS, 2);
-
             units.add(new DefaultUnit(name, actions, agility, combat,
-                    precision, strength, tech, toughness, slots, cost,
+                    precision, strength, tech, toughness, cost,
                     new LinkedList<SpecialRule>()));
         }
 

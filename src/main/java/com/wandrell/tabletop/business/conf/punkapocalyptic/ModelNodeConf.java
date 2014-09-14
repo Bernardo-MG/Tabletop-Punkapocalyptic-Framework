@@ -11,7 +11,6 @@ public final class ModelNodeConf {
     public static final String CONSTRAINTS  = "constraints";
     public static final String COST         = "cost";
     public static final String FACTION      = "faction";
-    public static final String HANDS        = "hands";
     public static final String INCHES       = "inches";
     public static final String LONG         = "long";
     public static final String MAX_WEAPONS  = "max_weapons";

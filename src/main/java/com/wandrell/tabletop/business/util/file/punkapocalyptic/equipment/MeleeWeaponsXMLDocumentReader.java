@@ -9,6 +9,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.SpecialRuleNameConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultMeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
@@ -50,8 +51,14 @@ public final class MeleeWeaponsXMLDocumentReader implements
                     .getChildText(ModelNodeConf.PENETRATION));
             combat = Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT));
             cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
-            hands = Integer.parseInt(node.getChildText(ModelNodeConf.HANDS));
             rules = getRules(node.getChild(ModelNodeConf.RULES));
+
+            if (rules.contains(getSpecialRuleDAO().getSpecialRule(
+                    SpecialRuleNameConf.TWO_HANDED))) {
+                hands = 2;
+            } else {
+                hands = 1;
+            }
 
             weapon = new DefaultMeleeWeapon(name, cost, hands, strength,
                     penetration, combat, rules);
