@@ -5,7 +5,9 @@ import com.wandrell.util.command.ReturnCommand;
 
 public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
 
-    private final Gang gang;
+    private static final Integer RANGE = 100;
+    private static final Integer STEP  = 3;
+    private final Gang           gang;
 
     public GetMaxAllowedUnitsCommand(final Gang gang) {
         super();
@@ -15,7 +17,25 @@ public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
 
     @Override
     public final Integer execute() {
-        return ((getGang().getValoration().getStoredValue() % 100) * 3);
+        Integer value;
+        Integer max;
+
+        value = getGang().getValoration().getStoredValue();
+        if (value == 0) {
+            max = STEP;
+        } else {
+            max = 0;
+            while (value > 0) {
+                if (value > RANGE) {
+                    value -= RANGE;
+                } else {
+                    value = 0;
+                }
+                max += STEP;
+            }
+        }
+
+        return max;
     }
 
     protected final Gang getGang() {

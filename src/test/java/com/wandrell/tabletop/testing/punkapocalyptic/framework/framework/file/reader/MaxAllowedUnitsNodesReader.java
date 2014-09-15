@@ -3,28 +3,25 @@ package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.file.r
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.jdom2.Document;
 import org.jdom2.Element;
 
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.reader.DefaultFilteredXMLDocumentReader.NodesReader;
 
-public final class MaxAllowedUnitsXMLDocumentReader implements
-        XMLDocumentReader<Collection<Collection<Integer>>> {
+public final class MaxAllowedUnitsNodesReader implements
+        NodesReader<Collection<Collection<Integer>>> {
 
-    public MaxAllowedUnitsXMLDocumentReader() {
+    public MaxAllowedUnitsNodesReader() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Integer>> getValue(final Document doc) {
-        final Element root;
+    public final Collection<Collection<Integer>> readNodes(
+            final Collection<Element> nodes) {
         final Collection<Collection<Integer>> data;
         Collection<Integer> pair;
 
-        root = doc.getRootElement();
-
         data = new LinkedList<>();
-        for (final Element node : root.getChildren()) {
+        for (final Element node : nodes) {
             pair = new LinkedList<>();
             pair.add(Integer.parseInt(node.getChildText("points")));
             pair.add(Integer.parseInt(node.getChildText("units")));
