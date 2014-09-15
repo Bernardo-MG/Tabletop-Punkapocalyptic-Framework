@@ -10,7 +10,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderU
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
@@ -43,7 +43,7 @@ public final class DefaultArmyBuilderController implements
 
                 });
 
-        gang.addGangListener(new GangListener() {
+        gang.addGangListener(new GangListenerAdapter() {
 
             @Override
             public final void unitAdded(final UnitEvent e) {
