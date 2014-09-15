@@ -1,0 +1,53 @@
+This document contains some simple sample XQuery queries to be used for creating new test values.
+
+-- Gang maximum allowed units
+let $l := 0
+let $u := 100
+let $units := 3
+return
+<entries>
+	<data>
+		<points>{$l}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{$l + 1}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{$l + 2}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{xs:int((($l + $u) div 2)) - 2}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{xs:int((($l + $u) div 2)) - 1}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{xs:int(($l + $u) div 2)}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{xs:int((($l + $u) div 2)) + 1}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{xs:int((($l + $u) div 2)) + 2}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{$u - 2}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{$u - 1}</points>
+		<units>{$units}</units>
+	</data>
+	<data>
+		<points>{$u}</points>
+		<units>{$units}</units>
+	</data>
+</entries>

@@ -54,6 +54,7 @@
 		<!-- Dependencies versions -->
 		<jasperreports.version>5.6.1</jasperreports.version>
 		<jdom.version>2.0.5</jdom.version>
+		<mockito.version>1.9.5</mockito.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<spring.version>4.0.5.RELEASE</spring.version>
 		<tabletop.version>alpha</tabletop.version>
@@ -88,6 +89,12 @@
 			<artifactId>jdom2</artifactId>
 			<version>${jdom.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<!-- Mockito -->
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
 		</dependency>
 		<dependency>
 			<!-- SLF4J API -->
