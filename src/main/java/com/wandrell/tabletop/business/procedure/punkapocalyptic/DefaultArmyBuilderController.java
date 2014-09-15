@@ -13,6 +13,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
+import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
@@ -23,15 +24,18 @@ public final class DefaultArmyBuilderController implements
     private Collection<ArmyBuilderUnitConstraint> constraints       = new LinkedHashSet<>();
     private final Gang                            gang;
     private final EventListenerList               listeners         = new EventListenerList();
+    private final ValueHandler                    maxUnits;
     private final UnitConfigurationController     unitValidator;
     private String                                validationMessage = "";
 
     public DefaultArmyBuilderController(
-            final UnitConfigurationController unitValidator, final Gang failed) {
+            final UnitConfigurationController unitValidator, final Gang gang,
+            final ValueHandler maxUnits) {
         super();
 
         this.unitValidator = unitValidator;
-        this.gang = failed;
+        this.gang = gang;
+        this.maxUnits = maxUnits;
 
         ((AbstractValueHandler) gang.getBullets())
                 .addValueEventListener(new ValueHandlerListener() {
@@ -81,6 +85,11 @@ public final class DefaultArmyBuilderController implements
     @Override
     public final Gang getGang() {
         return gang;
+    }
+
+    @Override
+    public final ValueHandler getMaxUnits() {
+        return maxUnits;
     }
 
     @Override
