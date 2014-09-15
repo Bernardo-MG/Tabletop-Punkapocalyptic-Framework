@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetMaxAllowedUnitsCommand;
-import com.wandrell.tabletop.testing.core.framework.conf.DataProviderConf;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter.RulesetParametersFactory;
 import com.wandrell.util.command.ReturnCommand;
 
