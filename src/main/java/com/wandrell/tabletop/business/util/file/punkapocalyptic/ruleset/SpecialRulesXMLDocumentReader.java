@@ -6,9 +6,11 @@ import java.util.Map;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.business.conf.SpecialRuleNameConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.TwoHandedSpecialRule;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
@@ -36,7 +38,13 @@ public final class SpecialRulesXMLDocumentReader implements
         for (final Element node : root.getChildren()) {
             name = node.getChildText(ModelNodeConf.NAME);
 
-            rule = new DefaultSpecialRule(name);
+            switch (name) {
+                case SpecialRuleNameConf.TWO_HANDED:
+                    rule = new TwoHandedSpecialRule();
+                    break;
+                default:
+                    rule = new DefaultSpecialRule(name);
+            }
 
             rules.put(name, rule);
         }

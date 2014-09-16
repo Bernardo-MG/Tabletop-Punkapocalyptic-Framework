@@ -9,7 +9,6 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.conf.punkapocalyptic.SpecialRuleNameConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
@@ -49,7 +48,6 @@ public final class RangedWeaponsXMLDocumentReader implements
         Integer distanceMediumInches;
         Integer distanceLongInches;
         Integer cost;
-        Integer hands;
         Collection<SpecialRule> rules;
         Weapon weapon;
 
@@ -97,19 +95,11 @@ public final class RangedWeaponsXMLDocumentReader implements
 
             rules = getRules(node.getChild(ModelNodeConf.RULES));
 
-            if (rules.contains(getSpecialRuleDAO().getSpecialRule(
-                    SpecialRuleNameConf.TWO_HANDED))) {
-                hands = 2;
-            } else {
-                hands = 1;
-            }
-
-            weapon = new DefaultRangedWeapon(name, cost, hands,
-                    penetrationShort, penetrationMedium, penetrationLong,
-                    strengthShort, strengthMedium, strengthLong,
-                    distanceShortCM, distanceMediumCM, distanceLongCM,
-                    distanceShortInches, distanceMediumInches,
-                    distanceLongInches, rules);
+            weapon = new DefaultRangedWeapon(name, cost, penetrationShort,
+                    penetrationMedium, penetrationLong, strengthShort,
+                    strengthMedium, strengthLong, distanceShortCM,
+                    distanceMediumCM, distanceLongCM, distanceShortInches,
+                    distanceMediumInches, distanceLongInches, rules);
 
             weapons.put(name, weapon);
         }
