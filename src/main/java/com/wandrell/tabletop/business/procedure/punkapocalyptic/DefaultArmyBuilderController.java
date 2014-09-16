@@ -25,17 +25,19 @@ public final class DefaultArmyBuilderController implements
     private final Gang                            gang;
     private final EventListenerList               listeners         = new EventListenerList();
     private final ValueHandler                    maxUnits;
+    private final String                          tooManyUnitsMessage;
     private final UnitConfigurationController     unitValidator;
     private String                                validationMessage = "";
 
     public DefaultArmyBuilderController(
             final UnitConfigurationController unitValidator, final Gang gang,
-            final ValueHandler maxUnits) {
+            final ValueHandler maxUnits, final String tooManyUnitsMessage) {
         super();
 
         this.unitValidator = unitValidator;
         this.gang = gang;
         this.maxUnits = maxUnits;
+        this.tooManyUnitsMessage = tooManyUnitsMessage;
 
         ((AbstractValueHandler) gang.getBullets())
                 .addValueEventListener(new ValueHandlerListener() {
@@ -113,8 +115,28 @@ public final class DefaultArmyBuilderController implements
         final StringBuilder textErrors;
         Boolean failed;
 
-        failed = false;
         textErrors = new StringBuilder();
+
+        failed = validateUnitsCount(textErrors);
+
+        failed = validateUnitConstraints(textErrors);
+
+        setValidationMessage(textErrors.toString());
+
+        if (failed) {
+            fireValidationFailedEvent(new EventObject(this));
+        } else {
+            fireValidationPassedEvent(new EventObject(this));
+        }
+
+        return !failed;
+    }
+
+    private final Boolean
+            validateUnitConstraints(final StringBuilder textErrors) {
+        Boolean failed;
+
+        failed = false;
         for (final ArmyBuilderUnitConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getGang())) {
                 if (textErrors.toString().length() > 0) {
@@ -126,15 +148,23 @@ public final class DefaultArmyBuilderController implements
             }
         }
 
-        setValidationMessage(textErrors.toString());
+        return failed;
+    }
 
-        if (failed) {
-            fireValidationFailedEvent(new EventObject(this));
+    private final Boolean validateUnitsCount(final StringBuilder textErrors) {
+        final Boolean failed;
+
+        if (getGang().getUnits().size() > getMaxUnits().getStoredValue()) {
+            textErrors
+                    .append(String.format(getTooManyUnitsWarningMessage(),
+                            getGang().getUnits().size(), getMaxUnits()
+                                    .getStoredValue()));
+            failed = true;
         } else {
-            fireValidationPassedEvent(new EventObject(this));
+            failed = false;
         }
 
-        return !failed;
+        return failed;
     }
 
     protected final void fireValidationFailedEvent(final EventObject evt) {
@@ -169,6 +199,10 @@ public final class DefaultArmyBuilderController implements
 
     protected final EventListenerList getListeners() {
         return listeners;
+    }
+
+    protected final String getTooManyUnitsWarningMessage() {
+        return tooManyUnitsMessage;
     }
 
     protected final void setValidationMessage(final String message) {
