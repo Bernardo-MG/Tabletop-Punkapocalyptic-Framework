@@ -43,6 +43,11 @@ public final class GetAllUnitsCommand implements
 
     @Override
     public final void setRulesetService(final RulesetService service) {
+        if (service == null) {
+            throw new NullPointerException(
+                    "Received a null pointer as ruleset service");
+        }
+
         serviceRuleset = service;
     }
 

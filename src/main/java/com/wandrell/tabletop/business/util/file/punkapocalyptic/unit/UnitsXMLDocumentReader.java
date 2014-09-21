@@ -27,6 +27,11 @@ public class UnitsXMLDocumentReader implements
     public UnitsXMLDocumentReader(final RulesetService service) {
         super();
 
+        if (service == null) {
+            throw new NullPointerException(
+                    "Received a null pointer as ruleset service");
+        }
+
         serviceRuleset = service;
     }
 
