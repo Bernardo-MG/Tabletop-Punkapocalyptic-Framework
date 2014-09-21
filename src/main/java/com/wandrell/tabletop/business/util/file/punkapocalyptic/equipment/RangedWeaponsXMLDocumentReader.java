@@ -1,8 +1,6 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -10,20 +8,19 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class RangedWeaponsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Weapon>> {
 
-    private final RulesetDAO daoRule;
+    private final MeleeWeapon melee;
 
-    public RangedWeaponsXMLDocumentReader(final RulesetDAO dao) {
+    public RangedWeaponsXMLDocumentReader(final MeleeWeapon defaultWeapon) {
         super();
 
-        daoRule = dao;
+        melee = defaultWeapon;
     }
 
     @Override
@@ -48,7 +45,6 @@ public final class RangedWeaponsXMLDocumentReader implements
         Integer distanceMediumInches;
         Integer distanceLongInches;
         Integer cost;
-        Collection<SpecialRule> rules;
         Weapon weapon;
 
         root = doc.getRootElement();
@@ -93,13 +89,12 @@ public final class RangedWeaponsXMLDocumentReader implements
 
             cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-            rules = getRules(node.getChild(ModelNodeConf.RULES));
-
             weapon = new DefaultRangedWeapon(name, cost, penetrationShort,
                     penetrationMedium, penetrationLong, strengthShort,
                     strengthMedium, strengthLong, distanceShortCM,
                     distanceMediumCM, distanceLongCM, distanceShortInches,
-                    distanceMediumInches, distanceLongInches, rules);
+                    distanceMediumInches, distanceLongInches,
+                    getDefaultMeleeWeapon());
 
             weapons.put(name, weapon);
         }
@@ -107,21 +102,8 @@ public final class RangedWeaponsXMLDocumentReader implements
         return weapons;
     }
 
-    private final Collection<SpecialRule> getRules(final Element rulesNode) {
-        Collection<SpecialRule> rules;
-
-        rules = new LinkedList<>();
-        if (rulesNode != null) {
-            for (final Element rule : rulesNode.getChildren()) {
-                rules.add(getSpecialRuleDAO().getSpecialRule(rule.getText()));
-            }
-        }
-
-        return rules;
-    }
-
-    protected final RulesetDAO getSpecialRuleDAO() {
-        return daoRule;
+    protected final MeleeWeapon getDefaultMeleeWeapon() {
+        return melee;
     }
 
 }

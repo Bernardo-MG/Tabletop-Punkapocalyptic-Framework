@@ -9,46 +9,39 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
-public final class ArmorsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Armor>> {
+public final class RangedWeaponsRulesXMLDocumentReader implements
+        XMLDocumentReader<Map<String, Collection<SpecialRule>>> {
 
     private final Map<String, SpecialRule> rules;
 
-    public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules) {
+    public RangedWeaponsRulesXMLDocumentReader(
+            final Map<String, SpecialRule> rules) {
         super();
 
         this.rules = rules;
     }
 
     @Override
-    public final Map<String, Armor> getValue(final Document doc) {
+    public final Map<String, Collection<SpecialRule>> getValue(
+            final Document doc) {
         final Element root;
-        final Map<String, Armor> armors;
-        String name;
-        Integer protection;
+        final Map<String, Collection<SpecialRule>> result;
         Collection<SpecialRule> rules;
-        Armor armor;
 
         root = doc.getRootElement();
 
-        armors = new LinkedHashMap<>();
+        result = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
-            name = node.getChildText(ModelNodeConf.NAME);
-            protection = Integer.parseInt(node
-                    .getChildText(ModelNodeConf.PROTECTION));
             rules = getRules(node.getChild(ModelNodeConf.RULES));
+            rules = new LinkedList<>();
 
-            armor = new DefaultArmor(name, protection, rules);
-
-            armors.put(name, armor);
+            result.put(node.getChildText(ModelNodeConf.NAME), rules);
         }
 
-        return armors;
+        return result;
     }
 
     private final Collection<SpecialRule> getRules(final Element rulesNode) {

@@ -3,31 +3,33 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.weapon.command;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileHandler;
-import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.FileParser;
+import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
-public final class GetAllWeaponsCommand implements
-        ReturnCommand<Map<String, Weapon>>, RulesetDAOAware {
+public final class GetRangedWeaponsCommand implements
+        ReturnCommand<Map<String, Weapon>> {
 
-    private RulesetDAO daoRule;
+    private final Map<String, Weapon> weapons;
 
-    public GetAllWeaponsCommand() {
+    public GetRangedWeaponsCommand(final Map<String, Weapon> weapons) {
         super();
+
+        this.weapons = weapons;
     }
 
     @Override
-    public final Map<String, Weapon> execute() {
+    public final Map<String, Weapon> execute() throws Exception {
         final Map<String, Weapon> weapons;
 
         weapons = new LinkedHashMap<>();
@@ -37,47 +39,43 @@ public final class GetAllWeaponsCommand implements
         return weapons;
     }
 
-    @Override
-    public final void setRulesetDAO(final RulesetDAO dao) {
-        daoRule = dao;
-    }
-
-    private final Map<String, Weapon> getMeleeWeapons() {
-        final FileHandler<Map<String, Weapon>> fileMeleeWeapons;
+    private final Map<String, Weapon> getMeleeWeapons() throws Exception {
+        final FileParser<Map<String, Weapon>> fileMeleeWeapons;
         final XMLDocumentReader<Map<String, Weapon>> reader;
         final XMLDocumentValidator validator;
 
-        reader = new MeleeWeaponsXMLDocumentReader(getSpecialRuleDAO());
+        reader = new MeleeWeaponsXMLDocumentReader();
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_MELEE,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileMeleeWeapons = new DefaultXMLFileHandler<>(reader, validator);
+        fileMeleeWeapons = new DefaultXMLFileParser<>(reader, validator);
 
         return fileMeleeWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE));
     }
 
-    private final Map<String, Weapon> getRangedWeapons() {
-        final FileHandler<Map<String, Weapon>> fileRangedWeapons;
+    private final Map<String, Weapon> getRangedWeapons() throws Exception {
+        final FileParser<Map<String, Weapon>> fileRangedWeapons;
         final XMLDocumentReader<Map<String, Weapon>> reader;
         final XMLDocumentValidator validator;
 
-        reader = new RangedWeaponsXMLDocumentReader(getSpecialRuleDAO());
+        reader = new RangedWeaponsXMLDocumentReader((MeleeWeapon) getWeapons()
+                .get(WeaponNameConf.LIGHT_MACE));
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_RANGED,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRangedWeapons = new DefaultXMLFileHandler<>(reader, validator);
+        fileRangedWeapons = new DefaultXMLFileParser<>(reader, validator);
 
         return fileRangedWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED));
     }
 
-    protected final RulesetDAO getSpecialRuleDAO() {
-        return daoRule;
+    protected final Map<String, Weapon> getWeapons() {
+        return weapons;
     }
 
 }

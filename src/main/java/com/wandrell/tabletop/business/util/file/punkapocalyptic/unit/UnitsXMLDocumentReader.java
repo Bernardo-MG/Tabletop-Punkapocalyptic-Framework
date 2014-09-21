@@ -1,14 +1,15 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.factory.PunkapocalypticFactory;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.DefaultDerivedValueHandler;
@@ -16,26 +17,22 @@ import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public class UnitsXMLDocumentReader implements
-        XMLDocumentReader<Collection<Unit>> {
+        XMLDocumentReader<Map<String, Unit>> {
 
-    private final RulesetDAO     dao;
     private final RulesetService serviceRuleset;
 
-    public UnitsXMLDocumentReader(final RulesetDAO dao,
-            final RulesetService service) {
+    public UnitsXMLDocumentReader(final RulesetService service) {
         super();
 
-        this.dao = dao;
         serviceRuleset = service;
     }
 
     @Override
-    public final Collection<Unit> getValue(final Document doc) {
-        final Collection<Unit> units;
+    public final Map<String, Unit> getValue(final Document doc) {
+        final Map<String, Unit> units;
         final Element root;
         final PunkapocalypticFactory factory;
         String name;
@@ -55,7 +52,7 @@ public class UnitsXMLDocumentReader implements
 
         factory = PunkapocalypticFactory.getInstance();
 
-        units = new LinkedList<>();
+        units = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
             name = node.getChildText(ModelNodeConf.NAME);
 
@@ -86,14 +83,10 @@ public class UnitsXMLDocumentReader implements
 
             store.setUnit(unit);
 
-            units.add(unit);
+            units.put(name, unit);
         }
 
         return units;
-    }
-
-    protected final RulesetDAO getRulesetDAO() {
-        return dao;
     }
 
     protected final RulesetService getRulesetService() {

@@ -7,8 +7,8 @@ import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitWeaponIntervalXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileHandler;
-import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.FileParser;
+import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
@@ -21,8 +21,8 @@ public final class GetAllUnitWeaponIntervalsCommand implements
     }
 
     @Override
-    public final Map<String, Interval> execute() {
-        final FileHandler<Map<String, Interval>> fileWeapons;
+    public final Map<String, Interval> execute() throws Exception {
+        final FileParser<Map<String, Interval>> fileWeapons;
         final XMLDocumentReader<Map<String, Interval>> reader;
         final XMLDocumentValidator validator;
 
@@ -32,7 +32,7 @@ public final class GetAllUnitWeaponIntervalsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileWeapons = new DefaultXMLFileHandler<>(reader, validator);
+        fileWeapons = new DefaultXMLFileParser<>(reader, validator);
 
         return fileWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));

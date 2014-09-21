@@ -4,53 +4,49 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitConstraintsXMLDocumentReader;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileHandler;
-import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.FileParser;
+import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitConstraintsCommand implements
-        ReturnCommand<Map<String, Collection<ArmyBuilderUnitConstraint>>>,
-        RulesetDAOAware {
+        ReturnCommand<Map<String, Collection<GangConstraint>>> {
 
-    private RulesetDAO daoRuleset;
+    private final Map<String, GangConstraint> constraints;
 
-    public GetAllUnitConstraintsCommand() {
+    public GetAllUnitConstraintsCommand(
+            final Map<String, GangConstraint> constraints) {
         super();
+
+        this.constraints = constraints;
     }
 
     @Override
-    public final Map<String, Collection<ArmyBuilderUnitConstraint>> execute() {
-        final FileHandler<Map<String, Collection<ArmyBuilderUnitConstraint>>> fileUnitConstraints;
-        final XMLDocumentReader<Map<String, Collection<ArmyBuilderUnitConstraint>>> reader;
+    public final Map<String, Collection<GangConstraint>> execute()
+            throws Exception {
+        final FileParser<Map<String, Collection<GangConstraint>>> fileUnitConstraints;
+        final XMLDocumentReader<Map<String, Collection<GangConstraint>>> reader;
         final XMLDocumentValidator validator;
 
-        reader = new UnitConstraintsXMLDocumentReader(getRulesetDAO());
+        reader = new UnitConstraintsXMLDocumentReader(getConstraints());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_FACTION_UNITS,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileUnitConstraints = new DefaultXMLFileHandler<>(reader, validator);
+        fileUnitConstraints = new DefaultXMLFileParser<>(reader, validator);
 
         return fileUnitConstraints.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));
     }
 
-    @Override
-    public final void setRulesetDAO(final RulesetDAO dao) {
-        daoRuleset = dao;
-    }
-
-    protected final RulesetDAO getRulesetDAO() {
-        return daoRuleset;
+    protected final Map<String, GangConstraint> getConstraints() {
+        return constraints;
     }
 
 }

@@ -10,18 +10,18 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.ArmorDAO;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class UnitAvailableArmorsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Collection<Armor>>> {
 
-    private final ArmorDAO daoArmor;
+    private final Map<String, Armor> armors;
 
-    public UnitAvailableArmorsXMLDocumentReader(final ArmorDAO dao) {
+    public UnitAvailableArmorsXMLDocumentReader(final Map<String, Armor> armors) {
         super();
 
-        daoArmor = dao;
+        this.armors = armors;
     }
 
     @Override
@@ -42,25 +42,26 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
         return armors;
     }
 
-    private final ArmorDAO getArmorDAO() {
-        return daoArmor;
-    }
-
     private final Collection<Armor> getArmors(final Element armorsNode) {
         final Collection<Armor> armorList;
+        Armor armr;
 
         armorList = new LinkedList<>();
         if (armorsNode != null) {
             for (final Element armor : armorsNode.getChildren()) {
-                armorList.add(getArmorDAO()
-                        .getArmor(
-                                armor.getChildText(ModelNodeConf.NAME),
-                                Integer.parseInt(armor
-                                        .getChildText(ModelNodeConf.COST))));
+                armr = getArmors().get(armor.getChildText(ModelNodeConf.NAME))
+                        .createNewInstance();
+                ((DefaultArmor) armr).setCost(Integer.parseInt(armor
+                        .getChildText(ModelNodeConf.COST)));
+                armorList.add(armr);
             }
         }
 
         return armorList;
+    }
+
+    protected final Map<String, Armor> getArmors() {
+        return armors;
     }
 
 }

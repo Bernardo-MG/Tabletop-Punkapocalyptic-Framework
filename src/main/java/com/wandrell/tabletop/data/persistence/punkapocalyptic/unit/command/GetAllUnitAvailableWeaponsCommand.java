@@ -6,50 +6,45 @@ import java.util.Map;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitAvailableWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.WeaponDAOAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.WeaponDAO;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileHandler;
-import com.wandrell.util.file.xml.DefaultXMLFileHandler;
+import com.wandrell.util.file.FileParser;
+import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitAvailableWeaponsCommand implements
-        ReturnCommand<Map<String, Collection<Weapon>>>, WeaponDAOAware {
+        ReturnCommand<Map<String, Collection<Weapon>>> {
 
-    private WeaponDAO daoWeapon;
+    private final Map<String, Weapon> weapons;
 
-    public GetAllUnitAvailableWeaponsCommand() {
+    public GetAllUnitAvailableWeaponsCommand(final Map<String, Weapon> weapons) {
         super();
+
+        this.weapons = weapons;
     }
 
     @Override
-    public final Map<String, Collection<Weapon>> execute() {
-        final FileHandler<Map<String, Collection<Weapon>>> fileUnitWeapons;
+    public final Map<String, Collection<Weapon>> execute() throws Exception {
+        final FileParser<Map<String, Collection<Weapon>>> fileUnitWeapons;
         final XMLDocumentReader<Map<String, Collection<Weapon>>> reader;
         final XMLDocumentValidator validator;
 
-        reader = new UnitAvailableWeaponsXMLDocumentReader(getWeaponDAO());
+        reader = new UnitAvailableWeaponsXMLDocumentReader(getWeapons());
         validator = new XSDValidator(
                 ModelFileConf.UNIT_AVAILABILITY,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitWeapons = new DefaultXMLFileHandler<>(reader, validator);
+        fileUnitWeapons = new DefaultXMLFileParser<>(reader, validator);
 
         return fileUnitWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));
     }
 
-    @Override
-    public final void setWeaponDAO(final WeaponDAO dao) {
-        daoWeapon = dao;
-    }
-
-    protected WeaponDAO getWeaponDAO() {
-        return daoWeapon;
+    protected final Map<String, Weapon> getWeapons() {
+        return weapons;
     }
 
 }

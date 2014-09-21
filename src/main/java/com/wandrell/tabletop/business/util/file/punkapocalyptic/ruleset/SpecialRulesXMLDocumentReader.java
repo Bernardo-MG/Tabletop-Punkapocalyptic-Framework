@@ -8,21 +8,21 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.SpecialRuleNameConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.DefaultSpecialRule;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.TwoHandedSpecialRule;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.DefaultSpecialRule;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.TwoHandedSpecialRule;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class SpecialRulesXMLDocumentReader implements
         XMLDocumentReader<Map<String, SpecialRule>> {
 
-    private final RulesetDAO daoRule;
+    private final MeleeWeapon melee;
 
-    public SpecialRulesXMLDocumentReader(final RulesetDAO dao) {
+    public SpecialRulesXMLDocumentReader(final MeleeWeapon twoHandedWeapon) {
         super();
 
-        daoRule = dao;
+        melee = twoHandedWeapon;
     }
 
     @Override
@@ -40,7 +40,8 @@ public final class SpecialRulesXMLDocumentReader implements
 
             switch (name) {
                 case SpecialRuleNameConf.TWO_HANDED:
-                    rule = new TwoHandedSpecialRule();
+                    rule = new TwoHandedSpecialRule(
+                            SpecialRuleNameConf.TWO_HANDED, getDefaultWeapon());
                     break;
                 default:
                     rule = new DefaultSpecialRule(name);
@@ -52,8 +53,8 @@ public final class SpecialRulesXMLDocumentReader implements
         return rules;
     }
 
-    protected final RulesetDAO getSpecialRuleDAO() {
-        return daoRule;
+    protected final MeleeWeapon getDefaultWeapon() {
+        return melee;
     }
 
 }

@@ -5,21 +5,13 @@ import com.wandrell.service.swing.layout.LayoutService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.ArmorDAOAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.FactionDAOAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.RulesetDAOAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.UnitDAOAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.WeaponDAOAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LayoutServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.ArmorDAO;
 import com.wandrell.tabletop.data.persistence.punkapocalyptic.FactionDAO;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.UnitDAO;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.WeaponDAO;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
@@ -27,11 +19,7 @@ import com.wandrell.util.command.ReturnCommand;
 public final class PunkapocalypticContextCommandExecutor implements
         CommandExecutor {
 
-    private ArmorDAO               daoArmor;
     private FactionDAO             daoFaction;
-    private RulesetDAO             daoSpecialRule;
-    private UnitDAO                daoUnit;
-    private WeaponDAO              daoWeapon;
     private final CommandExecutor  executor;
     private ApplicationInfoService serviceApplicationInfo;
     private FileService            serviceFile;
@@ -63,10 +51,6 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceApplicationInfo = service;
     }
 
-    public final void setArmorDAO(final ArmorDAO dao) {
-        daoArmor = dao;
-    }
-
     public final void setFactionDAO(final FactionDAO dao) {
         daoFaction = dao;
     }
@@ -85,18 +69,6 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     public final void setRulesetService(final RulesetService service) {
         serviceRuleset = service;
-    }
-
-    public final void setSpecialRuleDAO(final RulesetDAO dao) {
-        daoSpecialRule = dao;
-    }
-
-    public final void setUnitDAO(final UnitDAO dao) {
-        daoUnit = dao;
-    }
-
-    public final void setWeaponDAO(final WeaponDAO dao) {
-        daoWeapon = dao;
     }
 
     private final CommandExecutor getExecutor() {
@@ -127,33 +99,13 @@ public final class PunkapocalypticContextCommandExecutor implements
             ((FileServiceAware) command).setFileService(getFileService());
         }
 
-        if (command instanceof ArmorDAOAware) {
-            ((ArmorDAOAware) command).setArmorDAO(getArmorDAO());
-        }
-
         if (command instanceof FactionDAOAware) {
             ((FactionDAOAware) command).setFactionDAO(getFactionDAO());
-        }
-
-        if (command instanceof RulesetDAOAware) {
-            ((RulesetDAOAware) command).setRulesetDAO(getSpecialRuleDAO());
-        }
-
-        if (command instanceof UnitDAOAware) {
-            ((UnitDAOAware) command).setUnitDAO(getUnitDAO());
-        }
-
-        if (command instanceof WeaponDAOAware) {
-            ((WeaponDAOAware) command).setWeaponDAO(getWeaponDAO());
         }
     }
 
     protected final ApplicationInfoService getApplicationInfoService() {
         return serviceApplicationInfo;
-    }
-
-    protected final ArmorDAO getArmorDAO() {
-        return daoArmor;
     }
 
     protected final FactionDAO getFactionDAO() {
@@ -174,18 +126,6 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     protected final RulesetService getRulesetService() {
         return serviceRuleset;
-    }
-
-    protected final RulesetDAO getSpecialRuleDAO() {
-        return daoSpecialRule;
-    }
-
-    protected final UnitDAO getUnitDAO() {
-        return daoUnit;
-    }
-
-    protected final WeaponDAO getWeaponDAO() {
-        return daoWeapon;
     }
 
 }

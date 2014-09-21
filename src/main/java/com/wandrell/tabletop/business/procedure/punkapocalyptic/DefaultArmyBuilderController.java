@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -21,13 +21,13 @@ import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListene
 public final class DefaultArmyBuilderController implements
         ArmyBuilderController {
 
-    private Collection<ArmyBuilderUnitConstraint> constraints       = new LinkedHashSet<>();
-    private final Gang                            gang;
-    private final EventListenerList               listeners         = new EventListenerList();
-    private final ValueHandler                    maxUnits;
-    private final String                          tooManyUnitsMessage;
-    private final UnitConfigurationController     unitValidator;
-    private String                                validationMessage = "";
+    private Collection<GangConstraint>        constraints       = new LinkedHashSet<>();
+    private final Gang                        gang;
+    private final EventListenerList           listeners         = new EventListenerList();
+    private final ValueHandler                maxUnits;
+    private final String                      tooManyUnitsMessage;
+    private final UnitConfigurationController unitValidator;
+    private String                            validationMessage = "";
 
     public DefaultArmyBuilderController(
             final UnitConfigurationController unitValidator, final Gang gang,
@@ -137,7 +137,7 @@ public final class DefaultArmyBuilderController implements
         Boolean failed;
 
         failed = false;
-        for (final ArmyBuilderUnitConstraint constraint : getConstraints()) {
+        for (final GangConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getGang())) {
                 if (textErrors.toString().length() > 0) {
                     textErrors.append(System.lineSeparator());
@@ -193,7 +193,7 @@ public final class DefaultArmyBuilderController implements
         }
     }
 
-    protected final Collection<ArmyBuilderUnitConstraint> getConstraints() {
+    protected final Collection<GangConstraint> getConstraints() {
         return constraints;
     }
 

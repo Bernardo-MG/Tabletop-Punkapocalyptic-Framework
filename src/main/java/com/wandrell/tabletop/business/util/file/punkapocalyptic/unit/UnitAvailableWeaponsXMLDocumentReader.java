@@ -10,18 +10,18 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.WeaponDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class UnitAvailableWeaponsXMLDocumentReader implements
         XMLDocumentReader<Map<String, Collection<Weapon>>> {
 
-    private final WeaponDAO daoWeapon;
+    private final Map<String, Weapon> weapons;
 
-    public UnitAvailableWeaponsXMLDocumentReader(final WeaponDAO dao) {
+    public UnitAvailableWeaponsXMLDocumentReader(
+            final Map<String, Weapon> weapons) {
         super();
 
-        daoWeapon = dao;
+        this.weapons = weapons;
     }
 
     @Override
@@ -48,15 +48,15 @@ public final class UnitAvailableWeaponsXMLDocumentReader implements
         weaponList = new LinkedList<>();
         if (weaponsNode != null) {
             for (final Element weapon : weaponsNode.getChildren()) {
-                weaponList.add(getWeaponDAO().getWeapon(weapon.getText()));
+                weaponList.add(getWeapons().get(weapon.getText()));
             }
         }
 
         return weaponList;
     }
 
-    protected final WeaponDAO getWeaponDAO() {
-        return daoWeapon;
+    protected final Map<String, Weapon> getWeapons() {
+        return weapons;
     }
 
 }

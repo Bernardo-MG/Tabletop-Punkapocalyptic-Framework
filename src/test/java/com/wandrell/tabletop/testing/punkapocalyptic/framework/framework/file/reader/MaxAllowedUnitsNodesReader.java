@@ -5,10 +5,10 @@ import java.util.LinkedList;
 
 import org.jdom2.Element;
 
-import com.wandrell.util.file.xml.module.reader.DefaultFilteredXMLDocumentReader.FilteredNodesReader;
+import com.wandrell.util.file.xml.module.reader.DefaultFilteredXMLDocumentReader.FilteredNodesParser;
 
 public final class MaxAllowedUnitsNodesReader implements
-        FilteredNodesReader<Collection<Collection<Integer>>> {
+        FilteredNodesParser<Collection<Collection<Integer>>> {
 
     public MaxAllowedUnitsNodesReader() {
         super();

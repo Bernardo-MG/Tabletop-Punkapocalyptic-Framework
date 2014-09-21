@@ -8,18 +8,17 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.ArmorDAO;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class UnitInitialArmorXMLDocumentReader implements
         XMLDocumentReader<Map<String, Armor>> {
 
-    private final ArmorDAO daoArmor;
+    private final Map<String, Armor> armors;
 
-    public UnitInitialArmorXMLDocumentReader(final ArmorDAO dao) {
+    public UnitInitialArmorXMLDocumentReader(final Map<String, Armor> armors) {
         super();
 
-        daoArmor = dao;
+        this.armors = armors;
     }
 
     @Override
@@ -35,16 +34,16 @@ public final class UnitInitialArmorXMLDocumentReader implements
             armorNode = node.getChild(ModelNodeConf.ARMOR);
 
             if (armorNode != null) {
-                armors.put(node.getChildText(ModelNodeConf.UNIT), getArmorDAO()
-                        .getArmor(armorNode.getText(), 0));
+                armors.put(node.getChildText(ModelNodeConf.UNIT), getArmors()
+                        .get(armorNode.getText()).createNewInstance());
             }
         }
 
         return armors;
     }
 
-    private final ArmorDAO getArmorDAO() {
-        return daoArmor;
+    protected final Map<String, Armor> getArmors() {
+        return armors;
     }
 
 }

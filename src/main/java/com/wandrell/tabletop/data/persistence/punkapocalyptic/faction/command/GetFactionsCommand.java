@@ -2,25 +2,21 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.DefaultFaction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.UnitDAOAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.UnitDAO;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetFactionsCommand implements
-        ReturnCommand<Map<String, Faction>>, UnitDAOAware {
+        ReturnCommand<Map<String, Faction>> {
 
-    private UnitDAO                               daoUnit;
-    private final Collection<String>              factionNames;
-    private final Map<String, Collection<String>> factionUnits;
+    private final Collection<String>                        factionNames;
+    private final Map<String, Collection<AvailabilityUnit>> factionUnits;
 
     public GetFactionsCommand(final Collection<String> factions,
-            Map<String, Collection<String>> units) {
+            Map<String, Collection<AvailabilityUnit>> units) {
         super();
 
         factionNames = factions;
@@ -33,37 +29,17 @@ public final class GetFactionsCommand implements
 
         factions = new LinkedHashMap<>();
         for (final String name : getFactionNames()) {
-            factions.put(name, new DefaultFaction(name, getUnits(name)));
+            factions.put(name, new DefaultFaction(name, getUnits().get(name)));
         }
 
         return factions;
-    }
-
-    @Override
-    public final void setUnitDAO(final UnitDAO dao) {
-        daoUnit = dao;
-    }
-
-    private final Collection<AvailabilityUnit> getUnits(final String faction) {
-        final Collection<AvailabilityUnit> units;
-
-        units = new LinkedList<>();
-        for (final String unitName : getUnits().get(faction)) {
-            units.add(getUnitDAO().getAvailabilityUnit(unitName));
-        }
-
-        return units;
     }
 
     protected final Collection<String> getFactionNames() {
         return factionNames;
     }
 
-    protected final UnitDAO getUnitDAO() {
-        return daoUnit;
-    }
-
-    protected final Map<String, Collection<String>> getUnits() {
+    protected final Map<String, Collection<AvailabilityUnit>> getUnits() {
         return factionUnits;
     }
 

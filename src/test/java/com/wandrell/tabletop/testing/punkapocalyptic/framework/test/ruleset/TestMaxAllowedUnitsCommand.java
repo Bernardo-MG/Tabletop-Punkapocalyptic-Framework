@@ -27,7 +27,8 @@ public final class TestMaxAllowedUnitsCommand {
     }
 
     @Test(dataProvider = DataProviderConf.GENERIC_PROVIDER)
-    public final void testCommand(final Integer points, final Integer units) {
+    public final void testCommand(final Integer points, final Integer units)
+            throws Exception {
         final ReturnCommand<Integer> command;
         final Gang gang;
         final ValueHandler valoration;

@@ -9,27 +9,28 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.ArmyBuilderUnitConstraint;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.RulesetDAO;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class UnitConstraintsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<ArmyBuilderUnitConstraint>>> {
+        XMLDocumentReader<Map<String, Collection<GangConstraint>>> {
 
-    private final RulesetDAO daoRuleset;
+    private final Map<String, GangConstraint> constraints;
 
-    public UnitConstraintsXMLDocumentReader(final RulesetDAO daoRuleset) {
+    public UnitConstraintsXMLDocumentReader(
+            final Map<String, GangConstraint> constraints) {
         super();
 
-        this.daoRuleset = daoRuleset;
+        this.constraints = constraints;
     }
 
     @Override
-    public final Map<String, Collection<ArmyBuilderUnitConstraint>> getValue(
+    public final Map<String, Collection<GangConstraint>> getValue(
             final Document doc) {
         final Element root;
-        final Map<String, Collection<ArmyBuilderUnitConstraint>> constraints;
-        Collection<ArmyBuilderUnitConstraint> consts;
+        final Map<String, Collection<GangConstraint>> constraints;
+        Collection<GangConstraint> consts;
         String unit;
 
         root = doc.getRootElement();
@@ -50,23 +51,26 @@ public final class UnitConstraintsXMLDocumentReader implements
         return constraints;
     }
 
-    private final Collection<ArmyBuilderUnitConstraint> getConstraints(
+    private final Collection<GangConstraint> getConstraints(
             final Element nodeConstraints, final String unit) {
-        final Collection<ArmyBuilderUnitConstraint> constraints;
+        final Collection<GangConstraint> constraints;
+        UnitGangConstraint constraint;
 
         constraints = new LinkedList<>();
         if (nodeConstraints != null) {
             for (final Element constraintNode : nodeConstraints.getChildren()) {
-                constraints.add(getRulesetDAO().getUnitConstraint(
-                        constraintNode.getText(), unit));
+                constraint = ((UnitGangConstraint) getConstraints().get(
+                        constraintNode.getText())).createNewInstance();
+                constraint.setUnit(unit);
+                constraints.add(constraint);
             }
         }
 
         return constraints;
     }
 
-    protected final RulesetDAO getRulesetDAO() {
-        return daoRuleset;
+    protected final Map<String, GangConstraint> getConstraints() {
+        return constraints;
     }
 
 }

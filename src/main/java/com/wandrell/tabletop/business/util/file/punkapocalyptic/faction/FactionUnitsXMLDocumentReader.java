@@ -9,20 +9,27 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
 
 public final class FactionUnitsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<String>>> {
+        XMLDocumentReader<Map<String, Collection<AvailabilityUnit>>> {
 
-    public FactionUnitsXMLDocumentReader() {
+    private final Map<String, AvailabilityUnit> units;
+
+    public FactionUnitsXMLDocumentReader(
+            final Map<String, AvailabilityUnit> units) {
         super();
+
+        this.units = units;
     }
 
     @Override
-    public final Map<String, Collection<String>> getValue(final Document doc) {
-        final Map<String, Collection<String>> factionUnits;
+    public final Map<String, Collection<AvailabilityUnit>> getValue(
+            final Document doc) {
+        final Map<String, Collection<AvailabilityUnit>> factionUnits;
         final Element root;
-        Collection<String> units;
+        Collection<AvailabilityUnit> units;
 
         factionUnits = new LinkedHashMap<>();
         root = doc.getRootElement();
@@ -32,13 +39,17 @@ public final class FactionUnitsXMLDocumentReader implements
 
             for (final Element unit : node.getChild(ModelNodeConf.UNITS)
                     .getChildren()) {
-                units.add(unit.getChildText(ModelNodeConf.NAME));
+                units.add(getUnits().get(unit.getChildText(ModelNodeConf.NAME)));
             }
 
             factionUnits.put(node.getChildText(ModelNodeConf.FACTION), units);
         }
 
         return factionUnits;
+    }
+
+    protected final Map<String, AvailabilityUnit> getUnits() {
+        return units;
     }
 
 }
