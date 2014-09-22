@@ -1,20 +1,16 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.ruleset.command;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.wandrell.tabletop.business.conf.SpecialRuleNameConf;
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.DefaultSpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.ruleset.SpecialRulesXMLDocumentReader;
-import com.wandrell.util.ResourceUtils;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.TwoHandedSpecialRule;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
-import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllSpecialRulesCommand implements
         ReturnCommand<Map<String, SpecialRule>> {
@@ -29,21 +25,25 @@ public final class GetAllSpecialRulesCommand implements
 
     @Override
     public final Map<String, SpecialRule> execute() throws Exception {
-        final FileParser<Map<String, SpecialRule>> fileRules;
-        final XMLDocumentReader<Map<String, SpecialRule>> reader;
-        final XMLDocumentValidator validator;
+        final Map<String, SpecialRule> rules;
 
-        reader = new SpecialRulesXMLDocumentReader((MeleeWeapon) getWeapons()
-                .get(WeaponNameConf.IMPROVISED_WEAPON));
-        validator = new XSDValidator(
-                ModelFileConf.VALIDATION_SPECIAL_RULE,
-                ResourceUtils
-                        .getClassPathInputStream(ModelFileConf.VALIDATION_SPECIAL_RULE));
+        rules = new LinkedHashMap<>();
 
-        fileRules = new DefaultXMLFileParser<>(reader, validator);
+        // TODO : Use a Spring context or something
+        rules.put(
+                SpecialRuleNameConf.TWO_HANDED,
+                new TwoHandedSpecialRule(SpecialRuleNameConf.TWO_HANDED,
+                        (MeleeWeapon) getWeapons().get(
+                                WeaponNameConf.IMPROVISED_WEAPON)));
 
-        return fileRules.read(ResourceUtils
-                .getClassPathInputStream(ModelFileConf.SPECIAL_RULE));
+        rules.put("automatic", new DefaultSpecialRule("automatic"));
+        rules.put("cumbersome", new DefaultSpecialRule("cumbersome"));
+        rules.put("dead_slow", new DefaultSpecialRule("dead_slow"));
+        rules.put("firearm", new DefaultSpecialRule("firearm"));
+        rules.put("hard_to_use", new DefaultSpecialRule("hard_to_use"));
+        rules.put("pellets", new DefaultSpecialRule("pellets"));
+
+        return rules;
     }
 
     private final Map<String, Weapon> getWeapons() {
