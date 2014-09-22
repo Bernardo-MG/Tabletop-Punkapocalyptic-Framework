@@ -36,7 +36,6 @@ public final class RangedWeaponsRulesXMLDocumentReader implements
         result = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
             rules = getRules(node.getChild(ModelNodeConf.RULES));
-            rules = new LinkedList<>();
 
             result.put(node.getChildText(ModelNodeConf.NAME), rules);
         }
