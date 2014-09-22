@@ -102,7 +102,7 @@ public final class RangedWeaponsXMLDocumentReader implements
         return weapons;
     }
 
-    protected final MeleeWeapon getDefaultMeleeWeapon() {
+    private final MeleeWeapon getDefaultMeleeWeapon() {
         return melee;
     }
 

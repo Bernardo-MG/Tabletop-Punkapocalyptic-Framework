@@ -132,6 +132,48 @@ public final class DefaultArmyBuilderController implements
         return !failed;
     }
 
+    private final void fireValidationFailedEvent(final EventObject evt) {
+        final ProcedureValidationListener[] ls;
+
+        if (evt == null) {
+            throw new NullPointerException("Received a null pointer as event");
+        }
+
+        ls = getListeners().getListeners(ProcedureValidationListener.class);
+        for (final ProcedureValidationListener l : ls) {
+            l.validationFailed(evt);
+        }
+    }
+
+    private final void fireValidationPassedEvent(final EventObject evt) {
+        final ProcedureValidationListener[] ls;
+
+        if (evt == null) {
+            throw new NullPointerException("Received a null pointer as event");
+        }
+
+        ls = getListeners().getListeners(ProcedureValidationListener.class);
+        for (final ProcedureValidationListener l : ls) {
+            l.validationPassed(evt);
+        }
+    }
+
+    private final Collection<GangConstraint> getConstraints() {
+        return constraints;
+    }
+
+    private final EventListenerList getListeners() {
+        return listeners;
+    }
+
+    private final String getTooManyUnitsWarningMessage() {
+        return tooManyUnitsMessage;
+    }
+
+    private final void setValidationMessage(final String message) {
+        validationMessage = message;
+    }
+
     private final Boolean
             validateUnitConstraints(final StringBuilder textErrors) {
         Boolean failed;
@@ -165,48 +207,6 @@ public final class DefaultArmyBuilderController implements
         }
 
         return failed;
-    }
-
-    protected final void fireValidationFailedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] ls;
-
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
-
-        ls = getListeners().getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : ls) {
-            l.validationFailed(evt);
-        }
-    }
-
-    protected final void fireValidationPassedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] ls;
-
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
-
-        ls = getListeners().getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : ls) {
-            l.validationPassed(evt);
-        }
-    }
-
-    protected final Collection<GangConstraint> getConstraints() {
-        return constraints;
-    }
-
-    protected final EventListenerList getListeners() {
-        return listeners;
-    }
-
-    protected final String getTooManyUnitsWarningMessage() {
-        return tooManyUnitsMessage;
-    }
-
-    protected final void setValidationMessage(final String message) {
-        validationMessage = message;
     }
 
 }

@@ -45,7 +45,7 @@ public final class GetAllUnitConstraintsCommand implements
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));
     }
 
-    protected final Map<String, GangConstraint> getConstraints() {
+    private final Map<String, GangConstraint> getConstraints() {
         return constraints;
     }
 

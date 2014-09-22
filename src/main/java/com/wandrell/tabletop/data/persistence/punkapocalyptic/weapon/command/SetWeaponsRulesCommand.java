@@ -74,11 +74,11 @@ public final class SetWeaponsRulesCommand implements Command {
         }
     }
 
-    protected final Map<String, SpecialRule> getRules() {
+    private final Map<String, SpecialRule> getRules() {
         return rules;
     }
 
-    protected final Map<String, Weapon> getWeapons() {
+    private final Map<String, Weapon> getWeapons() {
         return weapons;
     }
 

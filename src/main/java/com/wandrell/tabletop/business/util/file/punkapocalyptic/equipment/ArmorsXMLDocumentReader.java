@@ -51,6 +51,10 @@ public final class ArmorsXMLDocumentReader implements
         return armors;
     }
 
+    private final Map<String, SpecialRule> getRules() {
+        return rules;
+    }
+
     private final Collection<SpecialRule> getRules(final Element rulesNode) {
         Collection<SpecialRule> rules;
 
@@ -61,10 +65,6 @@ public final class ArmorsXMLDocumentReader implements
             }
         }
 
-        return rules;
-    }
-
-    protected final Map<String, SpecialRule> getRules() {
         return rules;
     }
 

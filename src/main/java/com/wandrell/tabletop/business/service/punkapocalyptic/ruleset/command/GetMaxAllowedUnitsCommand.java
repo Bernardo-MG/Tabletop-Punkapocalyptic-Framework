@@ -38,7 +38,7 @@ public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
         return max;
     }
 
-    protected final Gang getGang() {
+    private final Gang getGang() {
         return gang;
     }
 

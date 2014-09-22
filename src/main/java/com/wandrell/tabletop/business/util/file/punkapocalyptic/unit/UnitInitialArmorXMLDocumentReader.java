@@ -42,7 +42,7 @@ public final class UnitInitialArmorXMLDocumentReader implements
         return armors;
     }
 
-    protected final Map<String, Armor> getArmors() {
+    private final Map<String, Armor> getArmors() {
         return armors;
     }
 

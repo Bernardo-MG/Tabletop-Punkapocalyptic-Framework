@@ -42,7 +42,7 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
         serviceRuleset = service;
     }
 
-    protected final Gang getGang() {
+    private final Gang getGang() {
         return gang;
     }
 

@@ -53,7 +53,7 @@ public final class SpecialRulesXMLDocumentReader implements
         return rules;
     }
 
-    protected final MeleeWeapon getDefaultWeapon() {
+    private final MeleeWeapon getDefaultWeapon() {
         return melee;
     }
 

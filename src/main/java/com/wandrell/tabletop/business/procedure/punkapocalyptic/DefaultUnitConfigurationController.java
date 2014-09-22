@@ -101,6 +101,8 @@ public final class DefaultUnitConfigurationController implements
             valid = true;
         }
 
+        setValidationMessage(textErrors.toString());
+
         if (valid) {
             fireValidationPassedEvent(new EventObject(this));
         } else {
@@ -110,7 +112,7 @@ public final class DefaultUnitConfigurationController implements
         return valid;
     }
 
-    protected final void fireUnitSelectedEvent(final UnitEvent evt) {
+    private final void fireUnitSelectedEvent(final UnitEvent evt) {
         final UnitConfigurationListener[] ls;
 
         if (evt == null) {
@@ -123,7 +125,7 @@ public final class DefaultUnitConfigurationController implements
         }
     }
 
-    protected final void fireValidationFailedEvent(final EventObject evt) {
+    private final void fireValidationFailedEvent(final EventObject evt) {
         final ProcedureValidationListener[] ls;
 
         if (evt == null) {
@@ -136,7 +138,7 @@ public final class DefaultUnitConfigurationController implements
         }
     }
 
-    protected final void fireValidationPassedEvent(final EventObject evt) {
+    private final void fireValidationPassedEvent(final EventObject evt) {
         final ProcedureValidationListener[] ls;
 
         if (evt == null) {
@@ -149,15 +151,15 @@ public final class DefaultUnitConfigurationController implements
         }
     }
 
-    protected final String getCompulsoryWeaponsErrorMessageTemplate() {
+    private final String getCompulsoryWeaponsErrorMessageTemplate() {
         return compulsoryWeaponsError;
     }
 
-    protected final EventListenerList getListeners() {
+    private final EventListenerList getListeners() {
         return listeners;
     }
 
-    protected final void setValidationMessage(final String message) {
+    private final void setValidationMessage(final String message) {
         validationMessage = message;
     }
 

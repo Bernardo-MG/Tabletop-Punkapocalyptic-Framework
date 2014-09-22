@@ -44,7 +44,7 @@ public final class GetAllFactionsUnitsCommand implements
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));
     }
 
-    protected final Map<String, AvailabilityUnit> getUnits() {
+    private final Map<String, AvailabilityUnit> getUnits() {
         return units;
     }
 

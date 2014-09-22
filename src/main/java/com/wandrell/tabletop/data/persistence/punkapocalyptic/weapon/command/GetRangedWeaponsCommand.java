@@ -74,7 +74,7 @@ public final class GetRangedWeaponsCommand implements
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED));
     }
 
-    protected final Map<String, Weapon> getWeapons() {
+    private final Map<String, Weapon> getWeapons() {
         return weapons;
     }
 

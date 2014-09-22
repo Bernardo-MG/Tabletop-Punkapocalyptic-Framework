@@ -94,7 +94,7 @@ public class UnitsXMLDocumentReader implements
         return units;
     }
 
-    protected final RulesetService getRulesetService() {
+    private final RulesetService getRulesetService() {
         return serviceRuleset;
     }
 

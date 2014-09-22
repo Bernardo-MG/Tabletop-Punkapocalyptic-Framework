@@ -42,6 +42,10 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
         return armors;
     }
 
+    private final Map<String, Armor> getArmors() {
+        return armors;
+    }
+
     private final Collection<Armor> getArmors(final Element armorsNode) {
         final Collection<Armor> armorList;
         Armor armr;
@@ -58,10 +62,6 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
         }
 
         return armorList;
-    }
-
-    protected final Map<String, Armor> getArmors() {
-        return armors;
     }
 
 }

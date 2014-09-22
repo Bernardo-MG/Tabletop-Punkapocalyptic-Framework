@@ -31,7 +31,7 @@ public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
         return cost;
     }
 
-    protected final Unit getUnit() {
+    private final Unit getUnit() {
         return unit;
     }
 

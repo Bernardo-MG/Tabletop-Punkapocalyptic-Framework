@@ -35,11 +35,11 @@ public final class GetFactionsCommand implements
         return factions;
     }
 
-    protected final Collection<String> getFactionNames() {
+    private final Collection<String> getFactionNames() {
         return factionNames;
     }
 
-    protected final Map<String, Collection<AvailabilityUnit>> getUnits() {
+    private final Map<String, Collection<AvailabilityUnit>> getUnits() {
         return factionUnits;
     }
 

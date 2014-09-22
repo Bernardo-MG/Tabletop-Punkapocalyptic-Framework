@@ -101,8 +101,32 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceRuleset = service;
     }
 
+    private final ApplicationInfoService getApplicationInfoService() {
+        return serviceApplicationInfo;
+    }
+
     private final CommandExecutor getExecutor() {
         return executor;
+    }
+
+    private final FactionDAO getFactionDAO() {
+        return daoFaction;
+    }
+
+    private final FileService getFileService() {
+        return serviceFile;
+    }
+
+    private final LayoutService getLayoutService() {
+        return serviceLayout;
+    }
+
+    private final LocalizationService getLocalizationService() {
+        return serviceLocalization;
+    }
+
+    private final RulesetService getRulesetService() {
+        return serviceRuleset;
     }
 
     private final void setContext(final Object command) {
@@ -132,30 +156,6 @@ public final class PunkapocalypticContextCommandExecutor implements
         if (command instanceof FactionDAOAware) {
             ((FactionDAOAware) command).setFactionDAO(getFactionDAO());
         }
-    }
-
-    protected final ApplicationInfoService getApplicationInfoService() {
-        return serviceApplicationInfo;
-    }
-
-    protected final FactionDAO getFactionDAO() {
-        return daoFaction;
-    }
-
-    protected final FileService getFileService() {
-        return serviceFile;
-    }
-
-    protected final LayoutService getLayoutService() {
-        return serviceLayout;
-    }
-
-    protected final LocalizationService getLocalizationService() {
-        return serviceLocalization;
-    }
-
-    protected final RulesetService getRulesetService() {
-        return serviceRuleset;
     }
 
 }

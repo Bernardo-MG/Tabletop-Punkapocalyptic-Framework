@@ -43,7 +43,7 @@ public final class GetAllArmorsCommand implements
                 .getClassPathInputStream(ModelFileConf.ARMOR));
     }
 
-    protected final Map<String, SpecialRule> getRules() {
+    private final Map<String, SpecialRule> getRules() {
         return rules;
     }
 

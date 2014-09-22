@@ -51,6 +51,10 @@ public final class UnitConstraintsXMLDocumentReader implements
         return constraints;
     }
 
+    private final Map<String, GangConstraint> getConstraints() {
+        return constraints;
+    }
+
     private final Collection<GangConstraint> getConstraints(
             final Element nodeConstraints, final String unit) {
         final Collection<GangConstraint> constraints;
@@ -66,10 +70,6 @@ public final class UnitConstraintsXMLDocumentReader implements
             }
         }
 
-        return constraints;
-    }
-
-    protected final Map<String, GangConstraint> getConstraints() {
         return constraints;
     }
 

@@ -48,7 +48,7 @@ public final class FactionUnitsXMLDocumentReader implements
         return factionUnits;
     }
 
-    protected final Map<String, AvailabilityUnit> getUnits() {
+    private final Map<String, AvailabilityUnit> getUnits() {
         return units;
     }
 

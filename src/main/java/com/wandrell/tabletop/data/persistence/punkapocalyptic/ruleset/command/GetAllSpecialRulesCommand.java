@@ -46,7 +46,7 @@ public final class GetAllSpecialRulesCommand implements
                 .getClassPathInputStream(ModelFileConf.SPECIAL_RULE));
     }
 
-    protected final Map<String, Weapon> getWeapons() {
+    private final Map<String, Weapon> getWeapons() {
         return weapons;
     }
 

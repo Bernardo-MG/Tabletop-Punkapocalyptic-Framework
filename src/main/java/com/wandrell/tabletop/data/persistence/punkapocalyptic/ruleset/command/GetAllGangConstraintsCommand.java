@@ -37,16 +37,16 @@ public final class GetAllGangConstraintsCommand implements
         serviceLocalization = service;
     }
 
+    private final LocalizationService getLocalizationService() {
+        return serviceLocalization;
+    }
+
     private final GangConstraint getUniqueConstraint() {
         return new UnitUpToACountConstraint(1, getLocalizationService());
     }
 
     private final GangConstraint getUpToHalfPointsConstraint() {
         return new UnitUpToHalfPointsLimitConstraint(getLocalizationService());
-    }
-
-    protected final LocalizationService getLocalizationService() {
-        return serviceLocalization;
     }
 
 }

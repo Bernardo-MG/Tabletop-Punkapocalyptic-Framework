@@ -51,7 +51,7 @@ public final class GetAllUnitsCommand implements
         serviceRuleset = service;
     }
 
-    protected final RulesetService getRulesetService() {
+    private final RulesetService getRulesetService() {
         return serviceRuleset;
     }
 

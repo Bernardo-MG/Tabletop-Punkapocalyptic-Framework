@@ -42,6 +42,10 @@ public final class UnitAvailableWeaponsXMLDocumentReader implements
         return weapons;
     }
 
+    private final Map<String, Weapon> getWeapons() {
+        return weapons;
+    }
+
     private final Collection<Weapon> getWeapons(final Element weaponsNode) {
         final Collection<Weapon> weaponList;
 
@@ -53,10 +57,6 @@ public final class UnitAvailableWeaponsXMLDocumentReader implements
         }
 
         return weaponList;
-    }
-
-    protected final Map<String, Weapon> getWeapons() {
-        return weapons;
     }
 
 }

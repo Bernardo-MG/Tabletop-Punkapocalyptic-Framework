@@ -67,27 +67,27 @@ public final class GetAllUnitsAvailabilityCommand implements
         return mapAvailability;
     }
 
-    protected final Map<String, Armor> getArmor() {
+    private final Map<String, Armor> getArmor() {
         return armor;
     }
 
-    protected final Map<String, Collection<Armor>> getArmors() {
+    private final Map<String, Collection<Armor>> getArmors() {
         return armors;
     }
 
-    protected final Map<String, Collection<GangConstraint>> getConstraints() {
+    private final Map<String, Collection<GangConstraint>> getConstraints() {
         return constraints;
     }
 
-    protected final Map<String, Unit> getUnits() {
+    private final Map<String, Unit> getUnits() {
         return units;
     }
 
-    protected final Map<String, Interval> getWeaponIntervals() {
+    private final Map<String, Interval> getWeaponIntervals() {
         return weaponIntervals;
     }
 
-    protected final Map<String, Collection<Weapon>> getWeapons() {
+    private final Map<String, Collection<Weapon>> getWeapons() {
         return weapons;
     }
 

@@ -43,7 +43,7 @@ public final class GetAllUnitAvailableArmorsCommand implements
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));
     }
 
-    protected final Map<String, Armor> getArmors() {
+    private final Map<String, Armor> getArmors() {
         return armors;
     }
 
