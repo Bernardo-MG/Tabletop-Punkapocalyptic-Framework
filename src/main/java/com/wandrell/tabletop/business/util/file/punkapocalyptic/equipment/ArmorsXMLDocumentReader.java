@@ -12,11 +12,12 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class ArmorsXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Armor>> {
+        JDOMXMLInterpreter<Map<String, Armor>> {
 
+    private Document                       doc;
     private final Map<String, SpecialRule> rules;
 
     public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules) {
@@ -26,7 +27,7 @@ public final class ArmorsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Armor> getValue(final Document doc) {
+    public final Map<String, Armor> getValue() {
         final Element root;
         final Map<String, Armor> armors;
         String name;
@@ -34,7 +35,7 @@ public final class ArmorsXMLDocumentReader implements
         Collection<SpecialRule> rules;
         Armor armor;
 
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -49,6 +50,15 @@ public final class ArmorsXMLDocumentReader implements
         }
 
         return armors;
+    }
+
+    @Override
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
     private final Map<String, SpecialRule> getRules() {

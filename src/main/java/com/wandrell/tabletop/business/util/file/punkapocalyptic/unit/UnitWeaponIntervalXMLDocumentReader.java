@@ -9,17 +9,19 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
 
 public final class UnitWeaponIntervalXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Interval>> {
+        XMLInterpreter<Map<String, Interval>> {
+
+    private Document doc;
 
     public UnitWeaponIntervalXMLDocumentReader() {
         super();
     }
 
     @Override
-    public final Map<String, Interval> getValue(final Document doc) {
+    public final Map<String, Interval> getValue() {
         final Element root;
         final Map<String, Interval> weapons;
         Element nodeInterval;
@@ -27,7 +29,7 @@ public final class UnitWeaponIntervalXMLDocumentReader implements
         Integer lower;
         Integer upper;
 
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -43,6 +45,14 @@ public final class UnitWeaponIntervalXMLDocumentReader implements
         }
 
         return weapons;
+    }
+
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
 }

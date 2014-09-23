@@ -15,8 +15,8 @@ import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
 import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.XMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetRangedWeaponsCommand implements
@@ -44,8 +44,8 @@ public final class GetRangedWeaponsCommand implements
     private final Map<String, Weapon> getMeleeWeapons() throws Exception {
         final FileParser<Map<String, Weapon>> fileMeleeWeapons;
         final XMLAdapter<Map<String, Weapon>> adapter;
-        final XMLDocumentInterpreter<Map<String, Weapon>> reader;
-        final XMLDocumentValidator validator;
+        final XMLInterpreter<Map<String, Weapon>> reader;
+        final XMLValidator validator;
 
         adapter = new JDOMAdapter<>();
         reader = new MeleeWeaponsXMLDocumentReader();
@@ -64,8 +64,8 @@ public final class GetRangedWeaponsCommand implements
     private final Map<String, Weapon> getRangedWeapons() throws Exception {
         final FileParser<Map<String, Weapon>> fileRangedWeapons;
         final XMLAdapter<Map<String, Weapon>> adapter;
-        final XMLDocumentInterpreter<Map<String, Weapon>> reader;
-        final XMLDocumentValidator validator;
+        final XMLInterpreter<Map<String, Weapon>> reader;
+        final XMLValidator validator;
 
         adapter = new JDOMAdapter<>();
         reader = new RangedWeaponsXMLDocumentReader((MeleeWeapon) getWeapons()

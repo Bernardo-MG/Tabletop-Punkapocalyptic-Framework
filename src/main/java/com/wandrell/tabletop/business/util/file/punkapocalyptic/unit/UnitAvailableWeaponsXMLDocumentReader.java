@@ -10,11 +10,12 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
 
 public final class UnitAvailableWeaponsXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Collection<Weapon>>> {
+        XMLInterpreter<Map<String, Collection<Weapon>>> {
 
+    private Document                  doc;
     private final Map<String, Weapon> weapons;
 
     public UnitAvailableWeaponsXMLDocumentReader(
@@ -25,12 +26,12 @@ public final class UnitAvailableWeaponsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<Weapon>> getValue(final Document doc) {
+    public final Map<String, Collection<Weapon>> getValue() {
         final Element root;
         final Map<String, Collection<Weapon>> weapons;
         Collection<Weapon> weaponList;
 
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -40,6 +41,14 @@ public final class UnitAvailableWeaponsXMLDocumentReader implements
         }
 
         return weapons;
+    }
+
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
     private final Map<String, Weapon> getWeapons() {

@@ -10,11 +10,12 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
 
 public final class FactionUnitsXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Collection<AvailabilityUnit>>> {
+        XMLInterpreter<Map<String, Collection<AvailabilityUnit>>> {
 
+    private Document                            doc;
     private final Map<String, AvailabilityUnit> units;
 
     public FactionUnitsXMLDocumentReader(
@@ -25,14 +26,13 @@ public final class FactionUnitsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<AvailabilityUnit>> getValue(
-            final Document doc) {
+    public final Map<String, Collection<AvailabilityUnit>> getValue() {
         final Map<String, Collection<AvailabilityUnit>> factionUnits;
         final Element root;
         Collection<AvailabilityUnit> units;
 
         factionUnits = new LinkedHashMap<>();
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         for (final Element node : root.getChildren()) {
             units = new LinkedList<>();
@@ -46,6 +46,14 @@ public final class FactionUnitsXMLDocumentReader implements
         }
 
         return factionUnits;
+    }
+
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
     private final Map<String, AvailabilityUnit> getUnits() {

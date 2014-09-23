@@ -12,8 +12,8 @@ import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
 import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.XMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllFactionsUnitsCommand implements
@@ -32,8 +32,8 @@ public final class GetAllFactionsUnitsCommand implements
             throws Exception {
         final FileParser<Map<String, Collection<AvailabilityUnit>>> fileFactionUnits;
         final XMLAdapter<Map<String, Collection<AvailabilityUnit>>> adapter;
-        final XMLDocumentInterpreter<Map<String, Collection<AvailabilityUnit>>> reader;
-        final XMLDocumentValidator validator;
+        final XMLInterpreter<Map<String, Collection<AvailabilityUnit>>> reader;
+        final XMLValidator validator;
 
         adapter = new JDOMAdapter<>();
         reader = new FactionUnitsXMLDocumentReader(getUnits());

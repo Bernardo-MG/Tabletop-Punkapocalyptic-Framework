@@ -11,12 +11,13 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
 
 public final class UnitConstraintsXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Collection<GangConstraint>>> {
+        XMLInterpreter<Map<String, Collection<GangConstraint>>> {
 
     private final Map<String, GangConstraint> constraints;
+    private Document                          doc;
 
     public UnitConstraintsXMLDocumentReader(
             final Map<String, GangConstraint> constraints) {
@@ -26,14 +27,13 @@ public final class UnitConstraintsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<GangConstraint>> getValue(
-            final Document doc) {
+    public final Map<String, Collection<GangConstraint>> getValue() {
         final Element root;
         final Map<String, Collection<GangConstraint>> constraints;
         Collection<GangConstraint> consts;
         String unit;
 
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         constraints = new LinkedHashMap<>();
         for (final Element nodeFaction : root.getChildren()) {
@@ -49,6 +49,10 @@ public final class UnitConstraintsXMLDocumentReader implements
         }
 
         return constraints;
+    }
+
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
     }
 
     private final Map<String, GangConstraint> getConstraints() {
@@ -71,6 +75,10 @@ public final class UnitConstraintsXMLDocumentReader implements
         }
 
         return constraints;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
 }

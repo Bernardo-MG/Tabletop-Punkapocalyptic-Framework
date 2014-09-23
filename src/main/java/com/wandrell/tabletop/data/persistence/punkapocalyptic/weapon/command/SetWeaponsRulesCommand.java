@@ -17,8 +17,8 @@ import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
 import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
 import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.XMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class SetWeaponsRulesCommand implements Command {
@@ -38,11 +38,11 @@ public final class SetWeaponsRulesCommand implements Command {
     public final void execute() throws Exception {
         final FileParser<Map<String, Collection<SpecialRule>>> fileRulesMelee;
         final XMLAdapter<Map<String, Collection<SpecialRule>>> adapter;
-        final XMLDocumentInterpreter<Map<String, Collection<SpecialRule>>> readerMelee;
-        final XMLDocumentValidator validatorMelee;
+        final XMLInterpreter<Map<String, Collection<SpecialRule>>> readerMelee;
+        final XMLValidator validatorMelee;
         final FileParser<Map<String, Collection<SpecialRule>>> fileRulesRanged;
-        final XMLDocumentInterpreter<Map<String, Collection<SpecialRule>>> readerRanged;
-        final XMLDocumentValidator validatorRanged;
+        final XMLInterpreter<Map<String, Collection<SpecialRule>>> readerRanged;
+        final XMLValidator validatorRanged;
         final Map<String, Collection<SpecialRule>> rules;
 
         rules = new LinkedHashMap<>();

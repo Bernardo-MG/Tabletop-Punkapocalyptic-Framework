@@ -11,12 +11,13 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
-import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
 
 public final class UnitAvailableArmorsXMLDocumentReader implements
-        XMLDocumentInterpreter<Map<String, Collection<Armor>>> {
+        XMLInterpreter<Map<String, Collection<Armor>>> {
 
     private final Map<String, Armor> armors;
+    private Document                 doc;
 
     public UnitAvailableArmorsXMLDocumentReader(final Map<String, Armor> armors) {
         super();
@@ -25,12 +26,12 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<Armor>> getValue(final Document doc) {
+    public final Map<String, Collection<Armor>> getValue() {
         final Element root;
         final Map<String, Collection<Armor>> armors;
         Collection<Armor> armorList;
 
-        root = doc.getRootElement();
+        root = getDocument().getRootElement();
 
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -40,6 +41,10 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
         }
 
         return armors;
+    }
+
+    public final void setDocument(final Document doc) {
+        this.doc = doc;
     }
 
     private final Map<String, Armor> getArmors() {
@@ -62,6 +67,10 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
         }
 
         return armorList;
+    }
+
+    private final Document getDocument() {
+        return doc;
     }
 
 }
