@@ -10,7 +10,6 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class UnitAvailableArmorsXMLDocumentReader implements
@@ -61,7 +60,7 @@ public final class UnitAvailableArmorsXMLDocumentReader implements
             for (final Element armor : armorsNode.getChildren()) {
                 armr = getArmors().get(armor.getChildText(ModelNodeConf.NAME))
                         .createNewInstance();
-                ((DefaultArmor) armr).setCost(Integer.parseInt(armor
+                armr.setCost(Integer.parseInt(armor
                         .getChildText(ModelNodeConf.COST)));
                 armorList.add(armr);
             }

@@ -40,6 +40,7 @@ public final class GetAllSpecialRulesCommand implements
         rules.put("cumbersome", new DefaultSpecialRule("cumbersome"));
         rules.put("dead_slow", new DefaultSpecialRule("dead_slow"));
         rules.put("firearm", new DefaultSpecialRule("firearm"));
+        rules.put("firearm", new DefaultSpecialRule("firearm"));
         rules.put("hard_to_use", new DefaultSpecialRule("hard_to_use"));
         rules.put("pellets", new DefaultSpecialRule("pellets"));
 

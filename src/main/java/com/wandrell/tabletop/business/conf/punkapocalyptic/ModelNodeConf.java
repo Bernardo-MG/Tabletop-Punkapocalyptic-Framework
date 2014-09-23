@@ -16,6 +16,7 @@ public final class ModelNodeConf {
     public static final String MAX_WEAPONS  = "max_weapons";
     public static final String MEDIUM       = "medium";
     public static final String MIN_WEAPONS  = "min_weapons";
+    public static final String MODIFIERS    = "modifiers";
     public static final String NAME         = "name";
     public static final String PENETRATION  = "penetration";
     public static final String PRECISION    = "precision";

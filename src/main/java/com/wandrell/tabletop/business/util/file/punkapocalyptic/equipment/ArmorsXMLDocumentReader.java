@@ -11,25 +11,30 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class ArmorsXMLDocumentReader implements
         JDOMXMLInterpreter<Map<String, Armor>> {
 
-    private Document                       doc;
-    private final Map<String, SpecialRule> rules;
+    private Document                                    doc;
+    private final Map<String, ArmorInitializerModifier> modifiers;
+    private final Map<String, SpecialRule>              rules;
 
-    public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules) {
+    public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules,
+            final Map<String, ArmorInitializerModifier> modifiers) {
         super();
 
         this.rules = rules;
+        this.modifiers = modifiers;
     }
 
     @Override
     public final Map<String, Armor> getValue() {
         final Element root;
         final Map<String, Armor> armors;
+        Element modifiers;
         String name;
         Integer protection;
         Collection<SpecialRule> rules;
@@ -46,6 +51,14 @@ public final class ArmorsXMLDocumentReader implements
 
             armor = new DefaultArmor(name, protection, rules);
 
+            modifiers = node.getChild(ModelNodeConf.MODIFIERS);
+            if (modifiers != null) {
+                for (final Element modifier : modifiers.getChildren()) {
+                    armor = getModifiers().get(modifier.getText())
+                            .modify(armor);
+                }
+            }
+
             armors.put(name, armor);
         }
 
@@ -59,6 +72,10 @@ public final class ArmorsXMLDocumentReader implements
 
     private final Document getDocument() {
         return doc;
+    }
+
+    private final Map<String, ArmorInitializerModifier> getModifiers() {
+        return modifiers;
     }
 
     private final Map<String, SpecialRule> getRules() {

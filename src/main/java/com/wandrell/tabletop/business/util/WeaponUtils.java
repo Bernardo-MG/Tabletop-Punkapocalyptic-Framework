@@ -1,7 +1,7 @@
 package com.wandrell.tabletop.business.util;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.RangedValue;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon.RangedDistance;
 
 public final class WeaponUtils {
 
@@ -47,15 +47,15 @@ public final class WeaponUtils {
         return strength;
     }
 
-    private static final String getDistanceRanges(final RangedDistance ranges) {
+    private static final String getDistanceRanges(final RangedValue ranges) {
         final String distance;
 
-        if ((ranges.getShortDistance().equals(ranges.getMediumDistance()))
-                && (ranges.getShortDistance().equals(ranges.getLongDistance()))) {
-            distance = ranges.getShortDistance().toString();
+        if ((ranges.getShortValue().equals(ranges.getMediumValue()))
+                && (ranges.getShortValue().equals(ranges.getLongValue()))) {
+            distance = ranges.getShortValue().toString();
         } else {
-            distance = String.format("%d/%d/%d", ranges.getShortDistance(),
-                    ranges.getMediumDistance(), ranges.getLongDistance());
+            distance = String.format("%d/%d/%d", ranges.getShortValue(),
+                    ranges.getMediumValue(), ranges.getLongValue());
         }
 
         return distance;

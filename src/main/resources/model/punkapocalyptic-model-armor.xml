@@ -3,15 +3,10 @@
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-armor.xsd">
 	<armor>
 		<name>bulletproof_vest</name>
-		<constraints>
-			<constraint>firearms_protection</constraint>
-		</constraints>
+		<modifiers>
+			<modifier>firearms_protection</modifier>
+		</modifiers>
 		<protection>3</protection>
-		<protection_ranged>
-			<short>5</short>
-			<medium>6</medium>
-			<long>7</long>
-		</protection_ranged>
 	</armor>
 	<armor>
 		<name>hardened_leather</name>
