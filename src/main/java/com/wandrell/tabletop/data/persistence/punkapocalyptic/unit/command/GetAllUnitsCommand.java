@@ -10,11 +10,9 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetSe
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
-import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLValidator;
+import com.wandrell.util.file.FileParserUtils;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitsCommand implements
@@ -29,17 +27,15 @@ public final class GetAllUnitsCommand implements
     @Override
     public final Map<String, Unit> execute() throws Exception {
         final FileParser<Map<String, Unit>> fileUnits;
-        final XMLAdapter<Map<String, Unit>> adapter;
-        final XMLInterpreter<Map<String, Unit>> reader;
-        final XMLValidator validator;
+        final JDOMXMLInterpreter<Map<String, Unit>> reader;
+        final JDOMXMLValidator validator;
 
-        adapter = new JDOMAdapter<>();
         reader = new UnitsXMLDocumentReader(getRulesetService());
         validator = new XSDValidator(ModelFileConf.VALIDATION_UNIT,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT));
 
-        fileUnits = new DefaultXMLFileParser<>(adapter, reader, validator);
+        fileUnits = FileParserUtils.getJDOMFileParser(reader, validator);
 
         return fileUnits.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT));

@@ -12,11 +12,9 @@ import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.Ranged
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
-import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLValidator;
+import com.wandrell.util.file.FileParserUtils;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetRangedWeaponsCommand implements
@@ -43,19 +41,16 @@ public final class GetRangedWeaponsCommand implements
 
     private final Map<String, Weapon> getMeleeWeapons() throws Exception {
         final FileParser<Map<String, Weapon>> fileMeleeWeapons;
-        final XMLAdapter<Map<String, Weapon>> adapter;
-        final XMLInterpreter<Map<String, Weapon>> reader;
-        final XMLValidator validator;
+        final JDOMXMLInterpreter<Map<String, Weapon>> reader;
+        final JDOMXMLValidator validator;
 
-        adapter = new JDOMAdapter<>();
         reader = new MeleeWeaponsXMLDocumentReader();
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_MELEE,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileMeleeWeapons = new DefaultXMLFileParser<>(adapter, reader,
-                validator);
+        fileMeleeWeapons = FileParserUtils.getJDOMFileParser(reader, validator);
 
         return fileMeleeWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE));
@@ -63,11 +58,9 @@ public final class GetRangedWeaponsCommand implements
 
     private final Map<String, Weapon> getRangedWeapons() throws Exception {
         final FileParser<Map<String, Weapon>> fileRangedWeapons;
-        final XMLAdapter<Map<String, Weapon>> adapter;
-        final XMLInterpreter<Map<String, Weapon>> reader;
-        final XMLValidator validator;
+        final JDOMXMLInterpreter<Map<String, Weapon>> reader;
+        final JDOMXMLValidator validator;
 
-        adapter = new JDOMAdapter<>();
         reader = new RangedWeaponsXMLDocumentReader((MeleeWeapon) getWeapons()
                 .get(WeaponNameConf.LIGHT_MACE));
         validator = new XSDValidator(
@@ -75,8 +68,8 @@ public final class GetRangedWeaponsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRangedWeapons = new DefaultXMLFileParser<>(adapter, reader,
-                validator);
+        fileRangedWeapons = FileParserUtils
+                .getJDOMFileParser(reader, validator);
 
         return fileRangedWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED));

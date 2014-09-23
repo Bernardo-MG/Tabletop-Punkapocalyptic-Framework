@@ -7,10 +7,10 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class FactionNameXMLDocumentReader implements
-        XMLInterpreter<Collection<String>> {
+        JDOMXMLInterpreter<Collection<String>> {
 
     private Document doc;
 
@@ -33,6 +33,7 @@ public final class FactionNameXMLDocumentReader implements
         return names;
     }
 
+    @Override
     public final void setDocument(final Document doc) {
         this.doc = doc;
     }

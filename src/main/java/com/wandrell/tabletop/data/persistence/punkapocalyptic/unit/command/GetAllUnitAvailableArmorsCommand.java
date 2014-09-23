@@ -9,11 +9,9 @@ import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitAvailab
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
-import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLValidator;
+import com.wandrell.util.file.FileParserUtils;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitAvailableArmorsCommand implements
@@ -30,18 +28,16 @@ public final class GetAllUnitAvailableArmorsCommand implements
     @Override
     public final Map<String, Collection<Armor>> execute() throws Exception {
         final FileParser<Map<String, Collection<Armor>>> fileUnitArmors;
-        final XMLAdapter<Map<String, Collection<Armor>>> adapter;
-        final XMLInterpreter<Map<String, Collection<Armor>>> reader;
-        final XMLValidator validator;
+        final JDOMXMLInterpreter<Map<String, Collection<Armor>>> reader;
+        final JDOMXMLValidator validator;
 
-        adapter = new JDOMAdapter<>();
         reader = new UnitAvailableArmorsXMLDocumentReader(getArmors());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_UNIT_AVAILABILITY,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitArmors = new DefaultXMLFileParser<>(adapter, reader, validator);
+        fileUnitArmors = FileParserUtils.getJDOMFileParser(reader, validator);
 
         return fileUnitArmors.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));

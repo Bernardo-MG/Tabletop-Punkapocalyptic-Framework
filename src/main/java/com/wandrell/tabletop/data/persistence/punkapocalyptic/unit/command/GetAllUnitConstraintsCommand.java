@@ -9,11 +9,9 @@ import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitConstra
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
-import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
-import com.wandrell.util.file.xml.module.interpreter.XMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.XMLValidator;
+import com.wandrell.util.file.FileParserUtils;
+import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitConstraintsCommand implements
@@ -32,18 +30,16 @@ public final class GetAllUnitConstraintsCommand implements
     public final Map<String, Collection<GangConstraint>> execute()
             throws Exception {
         final FileParser<Map<String, Collection<GangConstraint>>> fileUnitConstraints;
-        final XMLAdapter<Map<String, Collection<GangConstraint>>> adapter;
-        final XMLInterpreter<Map<String, Collection<GangConstraint>>> reader;
-        final XMLValidator validator;
+        final JDOMXMLInterpreter<Map<String, Collection<GangConstraint>>> reader;
+        final JDOMXMLValidator validator;
 
-        adapter = new JDOMAdapter<>();
         reader = new UnitConstraintsXMLDocumentReader(getConstraints());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_FACTION_UNITS,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileUnitConstraints = new DefaultXMLFileParser<>(adapter, reader,
+        fileUnitConstraints = FileParserUtils.getJDOMFileParser(reader,
                 validator);
 
         return fileUnitConstraints.read(ResourceUtils
