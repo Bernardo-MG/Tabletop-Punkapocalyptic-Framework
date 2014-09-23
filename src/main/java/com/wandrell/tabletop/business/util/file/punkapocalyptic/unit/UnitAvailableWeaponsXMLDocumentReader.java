@@ -10,10 +10,10 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class UnitAvailableWeaponsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<Weapon>>> {
+        XMLDocumentInterpreter<Map<String, Collection<Weapon>>> {
 
     private final Map<String, Weapon> weapons;
 

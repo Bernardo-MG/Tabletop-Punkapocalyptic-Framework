@@ -9,7 +9,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -27,16 +29,18 @@ public final class GetAllUnitsInitialArmorCommand implements
     @Override
     public final Map<String, Armor> execute() throws Exception {
         final FileParser<Map<String, Armor>> fileUnitArmors;
-        final XMLDocumentReader<Map<String, Armor>> reader;
+        final XMLAdapter<Map<String, Armor>> adapter;
+        final XMLDocumentInterpreter<Map<String, Armor>> reader;
         final XMLDocumentValidator validator;
 
+        adapter = new JDOMAdapter<>();
         reader = new UnitInitialArmorXMLDocumentReader(getArmors());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_UNIT_AVAILABILITY,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitArmors = new DefaultXMLFileParser<>(reader, validator);
+        fileUnitArmors = new DefaultXMLFileParser<>(adapter, reader, validator);
 
         return fileUnitArmors.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));

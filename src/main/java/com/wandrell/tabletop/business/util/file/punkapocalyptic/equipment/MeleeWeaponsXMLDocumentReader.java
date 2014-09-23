@@ -9,10 +9,10 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultMeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class MeleeWeaponsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Weapon>> {
+        XMLDocumentInterpreter<Map<String, Weapon>> {
 
     public MeleeWeaponsXMLDocumentReader() {
         super();

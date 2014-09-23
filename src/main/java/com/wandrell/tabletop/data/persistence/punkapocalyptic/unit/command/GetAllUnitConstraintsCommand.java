@@ -10,7 +10,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -30,16 +32,19 @@ public final class GetAllUnitConstraintsCommand implements
     public final Map<String, Collection<GangConstraint>> execute()
             throws Exception {
         final FileParser<Map<String, Collection<GangConstraint>>> fileUnitConstraints;
-        final XMLDocumentReader<Map<String, Collection<GangConstraint>>> reader;
+        final XMLAdapter<Map<String, Collection<GangConstraint>>> adapter;
+        final XMLDocumentInterpreter<Map<String, Collection<GangConstraint>>> reader;
         final XMLDocumentValidator validator;
 
+        adapter = new JDOMAdapter<>();
         reader = new UnitConstraintsXMLDocumentReader(getConstraints());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_FACTION_UNITS,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileUnitConstraints = new DefaultXMLFileParser<>(reader, validator);
+        fileUnitConstraints = new DefaultXMLFileParser<>(adapter, reader,
+                validator);
 
         return fileUnitConstraints.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));

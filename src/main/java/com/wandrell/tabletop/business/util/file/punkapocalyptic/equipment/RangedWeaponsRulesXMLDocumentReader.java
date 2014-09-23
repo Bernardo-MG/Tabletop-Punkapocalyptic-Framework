@@ -10,10 +10,10 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class RangedWeaponsRulesXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<SpecialRule>>> {
+        XMLDocumentInterpreter<Map<String, Collection<SpecialRule>>> {
 
     private final Map<String, SpecialRule> rules;
 

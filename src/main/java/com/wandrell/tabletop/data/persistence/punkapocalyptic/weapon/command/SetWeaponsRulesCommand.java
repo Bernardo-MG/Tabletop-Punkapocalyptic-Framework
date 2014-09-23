@@ -15,7 +15,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -35,22 +37,25 @@ public final class SetWeaponsRulesCommand implements Command {
     @Override
     public final void execute() throws Exception {
         final FileParser<Map<String, Collection<SpecialRule>>> fileRulesMelee;
-        final XMLDocumentReader<Map<String, Collection<SpecialRule>>> readerMelee;
+        final XMLAdapter<Map<String, Collection<SpecialRule>>> adapter;
+        final XMLDocumentInterpreter<Map<String, Collection<SpecialRule>>> readerMelee;
         final XMLDocumentValidator validatorMelee;
         final FileParser<Map<String, Collection<SpecialRule>>> fileRulesRanged;
-        final XMLDocumentReader<Map<String, Collection<SpecialRule>>> readerRanged;
+        final XMLDocumentInterpreter<Map<String, Collection<SpecialRule>>> readerRanged;
         final XMLDocumentValidator validatorRanged;
         final Map<String, Collection<SpecialRule>> rules;
 
         rules = new LinkedHashMap<>();
 
+        adapter = new JDOMAdapter<>();
         readerMelee = new MeleeWeaponsRulesXMLDocumentReader(getRules());
         validatorMelee = new XSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_MELEE,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileRulesMelee = new DefaultXMLFileParser<>(readerMelee, validatorMelee);
+        fileRulesMelee = new DefaultXMLFileParser<>(adapter, readerMelee,
+                validatorMelee);
 
         rules.putAll(fileRulesMelee.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE)));
@@ -61,7 +66,7 @@ public final class SetWeaponsRulesCommand implements Command {
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRulesRanged = new DefaultXMLFileParser<>(readerRanged,
+        fileRulesRanged = new DefaultXMLFileParser<>(adapter, readerRanged,
                 validatorRanged);
 
         rules.putAll(fileRulesRanged.read(ResourceUtils

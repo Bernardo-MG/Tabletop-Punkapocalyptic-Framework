@@ -10,7 +10,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -29,16 +31,19 @@ public final class GetAllFactionsUnitsCommand implements
     public final Map<String, Collection<AvailabilityUnit>> execute()
             throws Exception {
         final FileParser<Map<String, Collection<AvailabilityUnit>>> fileFactionUnits;
-        final XMLDocumentReader<Map<String, Collection<AvailabilityUnit>>> reader;
+        final XMLAdapter<Map<String, Collection<AvailabilityUnit>>> adapter;
+        final XMLDocumentInterpreter<Map<String, Collection<AvailabilityUnit>>> reader;
         final XMLDocumentValidator validator;
 
+        adapter = new JDOMAdapter<>();
         reader = new FactionUnitsXMLDocumentReader(getUnits());
         validator = new XSDValidator(
                 ModelFileConf.VALIDATION_FACTION_UNITS,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileFactionUnits = new DefaultXMLFileParser<>(reader, validator);
+        fileFactionUnits = new DefaultXMLFileParser<>(adapter, reader,
+                validator);
 
         return fileFactionUnits.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));

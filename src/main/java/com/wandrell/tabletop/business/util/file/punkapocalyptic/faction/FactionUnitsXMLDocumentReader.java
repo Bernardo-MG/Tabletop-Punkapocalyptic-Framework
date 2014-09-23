@@ -10,10 +10,10 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class FactionUnitsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<AvailabilityUnit>>> {
+        XMLDocumentInterpreter<Map<String, Collection<AvailabilityUnit>>> {
 
     private final Map<String, AvailabilityUnit> units;
 

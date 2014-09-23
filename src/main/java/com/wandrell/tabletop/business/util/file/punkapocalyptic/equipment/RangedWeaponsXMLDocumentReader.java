@@ -10,10 +10,10 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class RangedWeaponsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Weapon>> {
+        XMLDocumentInterpreter<Map<String, Weapon>> {
 
     private final MeleeWeapon melee;
 

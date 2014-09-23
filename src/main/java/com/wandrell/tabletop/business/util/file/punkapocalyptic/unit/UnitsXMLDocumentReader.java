@@ -17,10 +17,10 @@ import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public class UnitsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Unit>> {
+        XMLDocumentInterpreter<Map<String, Unit>> {
 
     private final RulesetService serviceRuleset;
 

@@ -11,10 +11,10 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 
 public final class UnitConstraintsXMLDocumentReader implements
-        XMLDocumentReader<Map<String, Collection<GangConstraint>>> {
+        XMLDocumentInterpreter<Map<String, Collection<GangConstraint>>> {
 
     private final Map<String, GangConstraint> constraints;
 

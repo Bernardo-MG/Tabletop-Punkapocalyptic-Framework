@@ -11,7 +11,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -27,15 +29,17 @@ public final class GetAllUnitsCommand implements
     @Override
     public final Map<String, Unit> execute() throws Exception {
         final FileParser<Map<String, Unit>> fileUnits;
-        final XMLDocumentReader<Map<String, Unit>> reader;
+        final XMLAdapter<Map<String, Unit>> adapter;
+        final XMLDocumentInterpreter<Map<String, Unit>> reader;
         final XMLDocumentValidator validator;
 
+        adapter = new JDOMAdapter<>();
         reader = new UnitsXMLDocumentReader(getRulesetService());
         validator = new XSDValidator(ModelFileConf.VALIDATION_UNIT,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT));
 
-        fileUnits = new DefaultXMLFileParser<>(reader, validator);
+        fileUnits = new DefaultXMLFileParser<>(adapter, reader, validator);
 
         return fileUnits.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT));

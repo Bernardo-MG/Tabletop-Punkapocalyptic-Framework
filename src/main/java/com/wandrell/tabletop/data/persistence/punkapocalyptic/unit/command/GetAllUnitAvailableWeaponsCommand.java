@@ -10,7 +10,9 @@ import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.file.FileParser;
 import com.wandrell.util.file.xml.DefaultXMLFileParser;
-import com.wandrell.util.file.xml.module.reader.XMLDocumentReader;
+import com.wandrell.util.file.xml.module.adapter.JDOMAdapter;
+import com.wandrell.util.file.xml.module.adapter.XMLAdapter;
+import com.wandrell.util.file.xml.module.interpreter.XMLDocumentInterpreter;
 import com.wandrell.util.file.xml.module.validator.XMLDocumentValidator;
 import com.wandrell.util.file.xml.module.validator.XSDValidator;
 
@@ -28,16 +30,18 @@ public final class GetAllUnitAvailableWeaponsCommand implements
     @Override
     public final Map<String, Collection<Weapon>> execute() throws Exception {
         final FileParser<Map<String, Collection<Weapon>>> fileUnitWeapons;
-        final XMLDocumentReader<Map<String, Collection<Weapon>>> reader;
+        final XMLAdapter<Map<String, Collection<Weapon>>> adapter;
+        final XMLDocumentInterpreter<Map<String, Collection<Weapon>>> reader;
         final XMLDocumentValidator validator;
 
+        adapter = new JDOMAdapter<>();
         reader = new UnitAvailableWeaponsXMLDocumentReader(getWeapons());
         validator = new XSDValidator(
                 ModelFileConf.UNIT_AVAILABILITY,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitWeapons = new DefaultXMLFileParser<>(reader, validator);
+        fileUnitWeapons = new DefaultXMLFileParser<>(adapter, reader, validator);
 
         return fileUnitWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));
