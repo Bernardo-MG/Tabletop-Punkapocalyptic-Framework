@@ -6,7 +6,7 @@ import java.util.Map;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ConstraintsConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToACountConstraint;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToHalfPointsLimitConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
@@ -46,7 +46,7 @@ public final class GetAllGangConstraintsCommand implements
     }
 
     private final GangConstraint getUpToHalfPointsConstraint() {
-        return new UnitUpToHalfPointsLimitConstraint(getLocalizationService());
+        return new UnitUpToHalfGangLimitConstraint(getLocalizationService());
     }
 
 }
