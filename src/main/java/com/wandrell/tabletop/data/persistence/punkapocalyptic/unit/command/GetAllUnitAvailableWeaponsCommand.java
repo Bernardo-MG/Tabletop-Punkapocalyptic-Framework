@@ -8,11 +8,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitAvailableWeaponsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitAvailableWeaponsCommand implements
         ReturnCommand<Map<String, Collection<Weapon>>> {
@@ -27,7 +27,7 @@ public final class GetAllUnitAvailableWeaponsCommand implements
 
     @Override
     public final Map<String, Collection<Weapon>> execute() throws Exception {
-        final FileParser<Map<String, Collection<Weapon>>> fileUnitWeapons;
+        final ObjectParser<Map<String, Collection<Weapon>>> fileUnitWeapons;
         final JDOMXMLInterpreter<Map<String, Collection<Weapon>>> reader;
         final JDOMXMLValidator validator;
 
@@ -37,7 +37,7 @@ public final class GetAllUnitAvailableWeaponsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitWeapons = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileUnitWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileUnitWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));

@@ -6,11 +6,11 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionNameXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetAllFactionsNamesCommand implements
         ReturnCommand<Collection<String>> {
@@ -21,7 +21,7 @@ public final class GetAllFactionsNamesCommand implements
 
     @Override
     public final Collection<String> execute() throws Exception {
-        final FileParser<Collection<String>> fileFactionNames;
+        final ObjectParser<Collection<String>> fileFactionNames;
         final JDOMXMLInterpreter<Collection<String>> reader;
         final JDOMXMLValidator validator;
 
@@ -31,7 +31,7 @@ public final class GetAllFactionsNamesCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION));
 
-        fileFactionNames = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileFactionNames = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileFactionNames.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION));

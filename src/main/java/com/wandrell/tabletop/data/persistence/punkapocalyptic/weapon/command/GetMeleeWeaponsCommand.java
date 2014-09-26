@@ -7,11 +7,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetMeleeWeaponsCommand implements
         ReturnCommand<Map<String, Weapon>> {
@@ -22,7 +22,7 @@ public final class GetMeleeWeaponsCommand implements
 
     @Override
     public final Map<String, Weapon> execute() throws Exception {
-        final FileParser<Map<String, Weapon>> fileMeleeWeapons;
+        final ObjectParser<Map<String, Weapon>> fileMeleeWeapons;
         final JDOMXMLInterpreter<Map<String, Weapon>> reader;
         final JDOMXMLValidator validator;
 
@@ -32,7 +32,7 @@ public final class GetMeleeWeaponsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileMeleeWeapons = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileMeleeWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileMeleeWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE));

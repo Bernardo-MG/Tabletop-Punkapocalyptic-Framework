@@ -8,7 +8,7 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class UnitInitialArmorXMLDocumentReader implements
         JDOMXMLInterpreter<Map<String, Armor>> {

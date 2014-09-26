@@ -11,11 +11,11 @@ import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeW
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetRangedWeaponsCommand implements
         ReturnCommand<Map<String, Weapon>> {
@@ -40,7 +40,7 @@ public final class GetRangedWeaponsCommand implements
     }
 
     private final Map<String, Weapon> getMeleeWeapons() throws Exception {
-        final FileParser<Map<String, Weapon>> fileMeleeWeapons;
+        final ObjectParser<Map<String, Weapon>> fileMeleeWeapons;
         final JDOMXMLInterpreter<Map<String, Weapon>> reader;
         final JDOMXMLValidator validator;
 
@@ -50,14 +50,14 @@ public final class GetRangedWeaponsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileMeleeWeapons = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileMeleeWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileMeleeWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE));
     }
 
     private final Map<String, Weapon> getRangedWeapons() throws Exception {
-        final FileParser<Map<String, Weapon>> fileRangedWeapons;
+        final ObjectParser<Map<String, Weapon>> fileRangedWeapons;
         final JDOMXMLInterpreter<Map<String, Weapon>> reader;
         final JDOMXMLValidator validator;
 
@@ -68,8 +68,7 @@ public final class GetRangedWeaponsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRangedWeapons = FileParserUtils
-                .getJDOMFileParser(reader, validator);
+        fileRangedWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileRangedWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED));

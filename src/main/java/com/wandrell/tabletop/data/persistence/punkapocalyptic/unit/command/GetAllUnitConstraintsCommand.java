@@ -8,11 +8,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.G
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitConstraintsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitConstraintsCommand implements
         ReturnCommand<Map<String, Collection<GangConstraint>>> {
@@ -29,7 +29,7 @@ public final class GetAllUnitConstraintsCommand implements
     @Override
     public final Map<String, Collection<GangConstraint>> execute()
             throws Exception {
-        final FileParser<Map<String, Collection<GangConstraint>>> fileUnitConstraints;
+        final ObjectParser<Map<String, Collection<GangConstraint>>> fileUnitConstraints;
         final JDOMXMLInterpreter<Map<String, Collection<GangConstraint>>> reader;
         final JDOMXMLValidator validator;
 
@@ -39,8 +39,7 @@ public final class GetAllUnitConstraintsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileUnitConstraints = FileParserUtils.getJDOMFileParser(reader,
-                validator);
+        fileUnitConstraints = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileUnitConstraints.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));

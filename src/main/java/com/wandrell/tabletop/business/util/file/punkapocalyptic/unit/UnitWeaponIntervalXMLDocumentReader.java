@@ -9,7 +9,7 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class UnitWeaponIntervalXMLDocumentReader implements
         JDOMXMLInterpreter<Map<String, Interval>> {

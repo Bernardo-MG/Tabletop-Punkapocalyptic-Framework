@@ -7,11 +7,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.unit.UnitInitialArmorXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetAllUnitsInitialArmorCommand implements
         ReturnCommand<Map<String, Armor>> {
@@ -26,7 +26,7 @@ public final class GetAllUnitsInitialArmorCommand implements
 
     @Override
     public final Map<String, Armor> execute() throws Exception {
-        final FileParser<Map<String, Armor>> fileUnitArmors;
+        final ObjectParser<Map<String, Armor>> fileUnitArmors;
         final JDOMXMLInterpreter<Map<String, Armor>> reader;
         final JDOMXMLValidator validator;
 
@@ -36,7 +36,7 @@ public final class GetAllUnitsInitialArmorCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_UNIT_AVAILABILITY));
 
-        fileUnitArmors = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileUnitArmors = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileUnitArmors.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.UNIT_AVAILABILITY));

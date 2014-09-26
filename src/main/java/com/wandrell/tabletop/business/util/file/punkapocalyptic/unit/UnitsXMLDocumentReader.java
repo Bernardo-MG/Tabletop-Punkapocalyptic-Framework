@@ -17,7 +17,7 @@ import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
 
 public class UnitsXMLDocumentReader implements
         JDOMXMLInterpreter<Map<String, Unit>> {

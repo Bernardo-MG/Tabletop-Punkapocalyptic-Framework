@@ -8,11 +8,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUni
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionUnitsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.file.FileParser;
-import com.wandrell.util.file.FileParserUtils;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.file.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.file.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ObjectParser;
+import com.wandrell.util.parser.ParserUtils;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
+import com.wandrell.util.parser.xml.module.validator.XSDValidator;
 
 public final class GetAllFactionsUnitsCommand implements
         ReturnCommand<Map<String, Collection<AvailabilityUnit>>> {
@@ -28,7 +28,7 @@ public final class GetAllFactionsUnitsCommand implements
     @Override
     public final Map<String, Collection<AvailabilityUnit>> execute()
             throws Exception {
-        final FileParser<Map<String, Collection<AvailabilityUnit>>> fileFactionUnits;
+        final ObjectParser<Map<String, Collection<AvailabilityUnit>>> fileFactionUnits;
         final JDOMXMLInterpreter<Map<String, Collection<AvailabilityUnit>>> reader;
         final JDOMXMLValidator validator;
 
@@ -38,7 +38,7 @@ public final class GetAllFactionsUnitsCommand implements
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileFactionUnits = FileParserUtils.getJDOMFileParser(reader, validator);
+        fileFactionUnits = ParserUtils.getJDOMXMLParser(reader, validator);
 
         return fileFactionUnits.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));

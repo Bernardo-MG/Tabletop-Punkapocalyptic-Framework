@@ -13,7 +13,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.util.file.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class ArmorsXMLDocumentReader implements
         JDOMXMLInterpreter<Map<String, Armor>> {
