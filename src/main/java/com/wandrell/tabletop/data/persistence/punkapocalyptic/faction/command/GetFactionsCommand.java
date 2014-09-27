@@ -6,21 +6,17 @@ import java.util.Map;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.DefaultFaction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class GetFactionsCommand implements
         ReturnCommand<Map<String, Faction>> {
 
-    private final Collection<String>                        factionNames;
-    private final Map<String, Collection<AvailabilityUnit>> factionUnits;
+    private final Collection<String> factionNames;
 
-    public GetFactionsCommand(final Collection<String> factions,
-            Map<String, Collection<AvailabilityUnit>> units) {
+    public GetFactionsCommand(final Collection<String> factions) {
         super();
 
         factionNames = factions;
-        factionUnits = units;
     }
 
     @Override
@@ -29,7 +25,7 @@ public final class GetFactionsCommand implements
 
         factions = new LinkedHashMap<>();
         for (final String name : getFactionNames()) {
-            factions.put(name, new DefaultFaction(name, getUnits().get(name)));
+            factions.put(name, new DefaultFaction(name));
         }
 
         return factions;
@@ -37,10 +33,6 @@ public final class GetFactionsCommand implements
 
     private final Collection<String> getFactionNames() {
         return factionNames;
-    }
-
-    private final Map<String, Collection<AvailabilityUnit>> getUnits() {
-        return factionUnits;
     }
 
 }

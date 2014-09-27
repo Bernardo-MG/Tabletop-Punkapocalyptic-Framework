@@ -9,7 +9,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
 
 public final class FactionUnitsXMLDocumentReader implements

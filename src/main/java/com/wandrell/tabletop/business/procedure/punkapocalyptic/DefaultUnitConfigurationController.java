@@ -4,7 +4,7 @@ import java.util.EventObject;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfigurationListener;

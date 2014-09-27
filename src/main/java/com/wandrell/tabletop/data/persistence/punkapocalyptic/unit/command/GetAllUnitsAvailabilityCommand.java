@@ -5,11 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnitWrapper;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultAvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
 
@@ -55,7 +55,7 @@ public final class GetAllUnitsAvailabilityCommand implements
             weaponsInterval = getWeaponIntervals().get(unit.getUnitName());
             constraints = getConstraints().get(unit.getUnitName());
 
-            availability = new DefaultAvailabilityUnit(unit, armors, weapons,
+            availability = new AvailabilityUnitWrapper(unit, armors, weapons,
                     weaponsInterval.getLowerLimit(),
                     weaponsInterval.getUpperLimit(), constraints);
 

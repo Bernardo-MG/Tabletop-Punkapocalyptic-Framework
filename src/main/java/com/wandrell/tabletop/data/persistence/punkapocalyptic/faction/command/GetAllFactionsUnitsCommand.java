@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionUnitsXMLDocumentReader;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
