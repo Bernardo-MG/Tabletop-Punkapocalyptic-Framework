@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports 
+	Library version 5.6.1 -->
+<!-- 2014-09-11T21:58:59 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+	name="ArmorReport" pageWidth="595" pageHeight="842" columnWidth="555"
+	leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30"
+	uuid="9726d212-c85c-475c-a014-17eafcfead77">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter"
+		value="One Empty Record" />
+	<field name="current"
+		class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor">
+		<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+	</field>
+	<field name="name" class="java.lang.String" />
+	<group name="armor_data">
+		<groupExpression><![CDATA[$F{name}]]></groupExpression>
+		<groupHeader>
+			<band height="23" splitType="Stretch">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="535"
+						height="15" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735" />
+					<box>
+						<bottomPen lineWidth="1.0" lineColor="#CCCCCC" />
+					</box>
+					<text><![CDATA[]]>
+					</text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="0" width="136" height="15"
+						uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35" />
+					<textElement textAlignment="Center" verticalAlignment="Middle" />
+					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="70" y="0" width="136" height="15"
+						uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35" />
+					<textElement textAlignment="Center" verticalAlignment="Middle" />
+					<textFieldExpression><![CDATA[$R{attribute.armor} + ": " + $F{current}.getArmor()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="375" height="20"
+					uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c" />
+				<textFieldExpression><![CDATA[$R{label.armors}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

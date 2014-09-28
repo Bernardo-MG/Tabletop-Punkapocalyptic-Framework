@@ -1,40 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports 
+	Library version 5.6.1 -->
 <!-- 2014-09-11T21:45:33 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="UnitReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="9726d212-c85c-475c-a014-17eafcfead77">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<parameter name="weaponsReport" class="net.sf.jasperreports.engine.JasperReport"/>
-	<field name="unitName" class="java.lang.String"/>
-	<field name="actions" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="agility" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="combat" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="precision" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="strength" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="tech" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="toughness" class="com.wandrell.tabletop.business.model.valuehandler.ValueHandler"/>
-	<field name="weapons" class="java.util.Collection"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+	name="UnitReport" pageWidth="595" pageHeight="842" columnWidth="555"
+	leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30"
+	uuid="9726d212-c85c-475c-a014-17eafcfead77">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter"
+		value="One Empty Record" />
+	<parameter name="armorsReport" class="net.sf.jasperreports.engine.JasperReport" />
+	<parameter name="weaponsReport" class="net.sf.jasperreports.engine.JasperReport" />
+	<field name="unitName" class="java.lang.String" />
+	<field name="actions" class="java.lang.Integer" />
+	<field name="agility" class="java.lang.Integer" />
+	<field name="combat" class="java.lang.Integer" />
+	<field name="precision" class="java.lang.Integer" />
+	<field name="strength" class="java.lang.Integer" />
+	<field name="tech" class="java.lang.Integer" />
+	<field name="toughness" class="java.lang.Integer" />
+	<field name="armor"
+		class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor" />
+	<field name="weapons" class="java.util.Collection" />
 	<group name="unit_data">
 		<groupExpression><![CDATA[$F{unitName}]]></groupExpression>
 		<groupHeader>
 			<band height="23" splitType="Stretch">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="535" height="15" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735"/>
+					<reportElement mode="Opaque" x="0" y="0" width="535"
+						height="15" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735" />
 					<box>
-						<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+						<bottomPen lineWidth="1.0" lineColor="#CCCCCC" />
 					</box>
-					<text><![CDATA[]]></text>
+					<text><![CDATA[]]>
+					</text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="0" width="136" height="15" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<reportElement x="0" y="0" width="136" height="15"
+						uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35" />
+					<textElement textAlignment="Center" verticalAlignment="Middle" />
 					<textFieldExpression><![CDATA[$F{unitName}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50" splitType="Stretch">
+			<band height="150" splitType="Stretch">
 				<subreport>
-					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="325" height="50" isRemoveLineWhenBlank="true" backcolor="#FFCC99" uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616"/>
+					<reportElement isPrintRepeatedValues="false" x="0" y="0"
+						width="275" height="50" isRemoveLineWhenBlank="true" backcolor="#FFCC99"
+						uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616" />
+					<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource(new com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor[] {$F{armor}})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{armorsReport}]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement isPrintRepeatedValues="false" x="0" y="75"
+						width="275" height="50" isRemoveLineWhenBlank="true" backcolor="#FFCC99"
+						uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616" />
+					<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
 					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{weapons})]]></dataSourceExpression>
 					<subreportExpression><![CDATA[$P{weaponsReport}]]></subreportExpression>
 				</subreport>
@@ -45,107 +73,125 @@
 		<groupHeader>
 			<band height="23" splitType="Stretch">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="535" height="15" backcolor="#70A9A9" uuid="585fb571-f6a7-4fad-99c7-123ab04d077c"/>
+					<reportElement mode="Opaque" x="0" y="0" width="535"
+						height="15" backcolor="#70A9A9" uuid="585fb571-f6a7-4fad-99c7-123ab04d077c" />
 					<box>
-						<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+						<bottomPen lineWidth="1.0" lineColor="#CCCCCC" />
 					</box>
-					<text><![CDATA[]]></text>
+					<text><![CDATA[]]>
+					</text>
 				</staticText>
-				<staticText>
-					<reportElement x="0" y="0" width="60" height="15" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f"/>
+				<textField>
+					<reportElement x="0" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Actions]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="60" y="0" width="60" height="15" uuid="17ee0280-870e-4a8e-be0c-5cfebfdd0916"/>
+					<textFieldExpression><![CDATA[$R{attribute.actions}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="60" y="0" width="60" height="15"
+						uuid="17ee0280-870e-4a8e-be0c-5cfebfdd0916" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Combat]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="120" y="0" width="60" height="15" uuid="eb87b72a-a624-4a81-971a-a4f9c7740e64"/>
+					<textFieldExpression><![CDATA[$R{attribute.combat}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="120" y="0" width="60" height="15"
+						uuid="eb87b72a-a624-4a81-971a-a4f9c7740e64" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Precision]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="180" y="0" width="60" height="15" uuid="32b23b8a-be71-4b73-a0c4-af18f8d25fd0"/>
+					<textFieldExpression><![CDATA[$R{attribute.precision}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="180" y="0" width="60" height="15"
+						uuid="32b23b8a-be71-4b73-a0c4-af18f8d25fd0" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Agility]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="240" y="0" width="60" height="15" uuid="e08623df-64da-4a27-885b-876545d90774"/>
+					<textFieldExpression><![CDATA[$R{attribute.agility}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="240" y="0" width="60" height="15"
+						uuid="e08623df-64da-4a27-885b-876545d90774" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Strength]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="300" y="0" width="60" height="15" uuid="d707275c-119c-4575-926d-98da7aa5d958"/>
+					<textFieldExpression><![CDATA[$R{attribute.strength}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="300" y="0" width="60" height="15"
+						uuid="d707275c-119c-4575-926d-98da7aa5d958" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Tough.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="360" y="0" width="60" height="15" uuid="3d083cda-1613-471d-89ed-4428e7023faa"/>
+					<textFieldExpression><![CDATA[$R{attribute.toughness}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="360" y="0" width="60" height="15"
+						uuid="3d083cda-1613-471d-89ed-4428e7023faa" />
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Tech]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$R{attribute.tech}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 	</group>
 	<detail>
-		<band height="100" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="535" height="14" backcolor="#E5ECF9" uuid="44ff0e96-6177-4a34-8d59-5ac50c4ea1be"/>
+				<reportElement mode="Opaque" x="0" y="0" width="535"
+					height="14" backcolor="#E5ECF9" uuid="44ff0e96-6177-4a34-8d59-5ac50c4ea1be" />
 				<box>
-					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineColor="#CCCCCC" />
 				</box>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[]]>
+				</text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="0" width="60" height="15" uuid="93bb5973-e44f-4ce3-84e2-4479643c7022"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{actions}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="0" y="0" width="60" height="15"
+					uuid="93bb5973-e44f-4ce3-84e2-4479643c7022" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{actions}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="0" width="60" height="15" uuid="16a330f4-17c0-476c-805a-19f86315b33f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{combat}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="60" y="0" width="60" height="15"
+					uuid="16a330f4-17c0-476c-805a-19f86315b33f" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{combat}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="60" height="15" uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{precision}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="120" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{precision}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="0" width="60" height="15" uuid="086c6493-7af3-4db2-9404-d840a215cece"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{agility}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="180" y="0" width="60" height="15"
+					uuid="086c6493-7af3-4db2-9404-d840a215cece" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{agility}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="0" width="60" height="15" uuid="785fd2d0-2f40-44c0-bcc9-3d3318355c04"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{strength}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="240" y="0" width="60" height="15"
+					uuid="785fd2d0-2f40-44c0-bcc9-3d3318355c04" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{strength}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="0" width="60" height="15" uuid="2c057e75-97d8-4179-bff3-2c2f2fabe5e4"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{toughness}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="300" y="0" width="60" height="15"
+					uuid="2c057e75-97d8-4179-bff3-2c2f2fabe5e4" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{toughness}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="0" width="60" height="15" uuid="a4901757-218d-4af0-b17a-e31d44488d7d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{tech}.getStoredValue()]]></textFieldExpression>
+				<reportElement x="360" y="0" width="60" height="15"
+					uuid="a4901757-218d-4af0-b17a-e31d44488d7d" />
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[$F{tech}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

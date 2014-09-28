@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports 
+	Library version 5.6.1 -->
 <!-- 2014-09-11T21:58:59 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="WeaponReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="9726d212-c85c-475c-a014-17eafcfead77">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<field name="current" class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+	name="WeaponReport" pageWidth="595" pageHeight="842" columnWidth="555"
+	leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30"
+	uuid="9726d212-c85c-475c-a014-17eafcfead77">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter"
+		value="One Empty Record" />
+	<field name="current"
+		class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon">
 		<fieldDescription><![CDATA[_THIS]]></fieldDescription>
 	</field>
-	<field name="name" class="java.lang.String"/>
+	<field name="name" class="java.lang.String" />
 	<group name="weapon_data">
 		<groupExpression><![CDATA[$F{name}]]></groupExpression>
 		<groupHeader>
 			<band height="23" splitType="Stretch">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="535" height="15" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735"/>
+					<reportElement mode="Opaque" x="0" y="0" width="535"
+						height="15" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735" />
 					<box>
-						<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+						<bottomPen lineWidth="1.0" lineColor="#CCCCCC" />
 					</box>
-					<text><![CDATA[]]></text>
+					<text><![CDATA[]]>
+					</text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="0" width="136" height="15" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<reportElement x="0" y="0" width="136" height="15"
+						uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35" />
+					<textElement textAlignment="Center" verticalAlignment="Middle" />
 					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -30,75 +41,155 @@
 		<groupHeader>
 			<band height="23" splitType="Stretch">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="535" height="15" backcolor="#70A9A9" uuid="585fb571-f6a7-4fad-99c7-123ab04d077c"/>
+					<reportElement mode="Opaque" x="0" y="0" width="535"
+						height="15" backcolor="#70A9A9" uuid="585fb571-f6a7-4fad-99c7-123ab04d077c" />
 					<box>
-						<bottomPen lineWidth="1.0" lineColor="#CCCCCC"/>
+						<bottomPen lineWidth="1.0" lineColor="#CCCCCC" />
 					</box>
-					<text><![CDATA[]]></text>
+					<text><![CDATA[]]>
+					</text>
 				</staticText>
-				<staticText>
-					<reportElement x="0" y="0" width="60" height="15" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
-						<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
+				<textField>
+					<reportElement x="0" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Combat]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="60" y="0" width="60" height="15" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
-						<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
+					<textFieldExpression><![CDATA[$R{attribute.combat}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="60" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Strength]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="120" y="0" width="60" height="15" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
-						<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
+					<textFieldExpression><![CDATA[$R{attribute.strength}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="120" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
 					</reportElement>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="true"/>
+						<font isBold="true" />
 					</textElement>
-					<text><![CDATA[Penetration]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$R{attribute.penetration}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="180" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" />
+					</textElement>
+					<textFieldExpression><![CDATA[$R{attribute.distance.metric}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="240" y="0" width="60" height="15"
+						uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" />
+					</textElement>
+					<textFieldExpression><![CDATA[$R{attribute.distance.imperial}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="23" splitType="Stretch"/>
+			<band height="23" splitType="Stretch" />
 		</groupFooter>
 	</group>
 	<title>
 		<band height="20">
-			<staticText>
-				<reportElement x="0" y="0" width="375" height="20" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
-				<text><![CDATA[Weapons]]></text>
-			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="375" height="20"
+					uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c" />
+				<textFieldExpression><![CDATA[$R{label.weapons}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="60" height="15" uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+				<reportElement x="0" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
 					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
 				<textFieldExpression><![CDATA[((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon)$F{current}).getCombat()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<text><![CDATA[-]]></text>
+			</staticText>
 			<textField>
-				<reportElement x="60" y="0" width="60" height="15" uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+				<reportElement x="60" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
 					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
 				<textFieldExpression><![CDATA[((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon)$F{current}).getStrength()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="0" width="60" height="15" uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+				<reportElement x="60" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[com.wandrell.tabletop.business.util.WeaponUtils.getRangedWeaponStrength((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon)$F{current})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
 					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
 				<textFieldExpression><![CDATA[((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon)$F{current}).getPenetration()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[com.wandrell.tabletop.business.util.WeaponUtils.getRangedWeaponPenetration((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon)$F{current})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[com.wandrell.tabletop.business.util.WeaponUtils.getRangedWeaponDistanceMetric((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon)$F{current})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="240" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="0" width="60" height="15"
+					uuid="7389f680-cf69-410d-88cd-3c7a269a9b1c">
+					<printWhenExpression><![CDATA[$F{current} instanceof com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" />
+				<textFieldExpression><![CDATA[com.wandrell.tabletop.business.util.WeaponUtils.getRangedWeaponDistanceImperial((com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon)$F{current})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
