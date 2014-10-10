@@ -17,15 +17,14 @@ import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public class UnitsXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Unit>> {
+public class UnitsParserInterpreter implements
+        ParserInterpreter<Map<String, Unit>, Document> {
 
-    private Document             doc;
     private final RulesetService serviceRuleset;
 
-    public UnitsXMLDocumentReader(final RulesetService service) {
+    public UnitsParserInterpreter(final RulesetService service) {
         super();
 
         if (service == null) {
@@ -37,7 +36,7 @@ public class UnitsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Unit> getValue() {
+    public final Map<String, Unit> parse(final Document doc) {
         final Map<String, Unit> units;
         final Element root;
         final PunkapocalypticFactory factory;
@@ -54,7 +53,7 @@ public class UnitsXMLDocumentReader implements
         Unit unit;
         Integer cost;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         factory = PunkapocalypticFactory.getInstance();
 
@@ -93,15 +92,6 @@ public class UnitsXMLDocumentReader implements
         }
 
         return units;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
     private final RulesetService getRulesetService() {

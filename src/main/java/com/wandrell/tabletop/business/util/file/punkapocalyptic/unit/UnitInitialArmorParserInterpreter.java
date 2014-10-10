@@ -8,27 +8,26 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class UnitInitialArmorXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Armor>> {
+public final class UnitInitialArmorParserInterpreter implements
+        ParserInterpreter<Map<String, Armor>, Document> {
 
     private final Map<String, Armor> armors;
-    private Document                 doc;
 
-    public UnitInitialArmorXMLDocumentReader(final Map<String, Armor> armors) {
+    public UnitInitialArmorParserInterpreter(final Map<String, Armor> armors) {
         super();
 
         this.armors = armors;
     }
 
     @Override
-    public final Map<String, Armor> getValue() {
+    public final Map<String, Armor> parse(final Document doc) {
         final Element root;
         final Map<String, Armor> armors;
         Element armorNode;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -43,17 +42,7 @@ public final class UnitInitialArmorXMLDocumentReader implements
         return armors;
     }
 
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
     private final Map<String, Armor> getArmors() {
         return armors;
     }
-
-    private final Document getDocument() {
-        return doc;
-    }
-
 }

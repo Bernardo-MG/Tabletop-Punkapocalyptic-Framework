@@ -11,15 +11,14 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class UnitConstraintsXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Collection<GangConstraint>>> {
+public final class UnitConstraintsParserInterpreter implements
+        ParserInterpreter<Map<String, Collection<GangConstraint>>, Document> {
 
     private final Map<String, GangConstraint> constraints;
-    private Document                          doc;
 
-    public UnitConstraintsXMLDocumentReader(
+    public UnitConstraintsParserInterpreter(
             final Map<String, GangConstraint> constraints) {
         super();
 
@@ -27,13 +26,14 @@ public final class UnitConstraintsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<GangConstraint>> getValue() {
+    public final Map<String, Collection<GangConstraint>> parse(
+            final Document doc) {
         final Element root;
         final Map<String, Collection<GangConstraint>> constraints;
         Collection<GangConstraint> consts;
         String unit;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         constraints = new LinkedHashMap<>();
         for (final Element nodeFaction : root.getChildren()) {
@@ -49,11 +49,6 @@ public final class UnitConstraintsXMLDocumentReader implements
         }
 
         return constraints;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
     }
 
     private final Map<String, GangConstraint> getConstraints() {
@@ -76,10 +71,6 @@ public final class UnitConstraintsXMLDocumentReader implements
         }
 
         return constraints;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
 }

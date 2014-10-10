@@ -3,16 +3,19 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 import java.util.Collection;
 import java.util.Map;
 
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
+
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionUnitsXMLDocumentReader;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.faction.FactionUnitsParserInterpreter;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.parser.ObjectParser;
-import com.wandrell.util.parser.ParserUtils;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.parser.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ParserFactory;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
+import com.wandrell.util.parser.module.validator.JDOMXSDValidator;
+import com.wandrell.util.parser.module.validator.ParserValidator;
 
 public final class GetAllFactionsUnitsCommand implements
         ReturnCommand<Map<String, Collection<AvailabilityUnit>>> {
@@ -29,16 +32,17 @@ public final class GetAllFactionsUnitsCommand implements
     public final Map<String, Collection<AvailabilityUnit>> execute()
             throws Exception {
         final ObjectParser<Map<String, Collection<AvailabilityUnit>>> fileFactionUnits;
-        final JDOMXMLInterpreter<Map<String, Collection<AvailabilityUnit>>> reader;
-        final JDOMXMLValidator validator;
+        final ParserInterpreter<Map<String, Collection<AvailabilityUnit>>, Document> reader;
+        final ParserValidator<Document, SAXBuilder> validator;
 
-        reader = new FactionUnitsXMLDocumentReader(getUnits());
-        validator = new XSDValidator(
+        reader = new FactionUnitsParserInterpreter(getUnits());
+        validator = new JDOMXSDValidator(
                 ModelFileConf.VALIDATION_FACTION_UNITS,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_FACTION_UNITS));
 
-        fileFactionUnits = ParserUtils.getJDOMXMLParser(reader, validator);
+        fileFactionUnits = ParserFactory.getInstance().getJDOMXMLParser(reader,
+                validator);
 
         return fileFactionUnits.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.FACTION_UNITS));

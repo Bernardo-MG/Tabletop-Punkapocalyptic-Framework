@@ -20,7 +20,7 @@ public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
         Integer value;
         Integer max;
 
-        value = getGang().getValoration().getStoredValue();
+        value = getGang().getValoration().getValue();
         if (value == 0) {
             max = STEP;
         } else {

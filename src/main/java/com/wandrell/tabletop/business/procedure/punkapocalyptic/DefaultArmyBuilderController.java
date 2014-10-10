@@ -196,11 +196,9 @@ public final class DefaultArmyBuilderController implements
     private final Boolean validateUnitsCount(final StringBuilder textErrors) {
         final Boolean failed;
 
-        if (getGang().getUnits().size() > getMaxUnits().getStoredValue()) {
-            textErrors
-                    .append(String.format(getTooManyUnitsWarningMessage(),
-                            getGang().getUnits().size(), getMaxUnits()
-                                    .getStoredValue()));
+        if (getGang().getUnits().size() > getMaxUnits().getValue()) {
+            textErrors.append(String.format(getTooManyUnitsWarningMessage(),
+                    getGang().getUnits().size(), getMaxUnits().getValue()));
             failed = true;
         } else {
             failed = false;

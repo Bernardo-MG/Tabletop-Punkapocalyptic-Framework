@@ -7,39 +7,28 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class FactionNameXMLDocumentReader implements
-        JDOMXMLInterpreter<Collection<String>> {
+public final class FactionNameParserInterpreter implements
+        ParserInterpreter<Collection<String>, Document> {
 
-    private Document doc;
-
-    public FactionNameXMLDocumentReader() {
+    public FactionNameParserInterpreter() {
         super();
     }
 
     @Override
-    public final Collection<String> getValue() {
+    public final Collection<String> parse(final Document doc) {
         final Collection<String> names;
         final Element root;
 
         names = new LinkedList<>();
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         for (final Element node : root.getChildren()) {
             names.add(node.getChildText(ModelNodeConf.NAME));
         }
 
         return names;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
 }

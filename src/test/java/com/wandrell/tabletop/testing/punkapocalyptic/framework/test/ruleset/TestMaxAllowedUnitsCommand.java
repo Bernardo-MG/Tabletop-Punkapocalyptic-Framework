@@ -34,7 +34,7 @@ public final class TestMaxAllowedUnitsCommand {
         final ValueHandler valoration;
 
         valoration = Mockito.mock(ValueHandler.class);
-        Mockito.when(valoration.getStoredValue()).thenReturn(points);
+        Mockito.when(valoration.getValue()).thenReturn(points);
 
         gang = Mockito.mock(Gang.class);
         Mockito.when(gang.getValoration()).thenReturn(valoration);

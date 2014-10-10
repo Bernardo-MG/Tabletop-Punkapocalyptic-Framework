@@ -10,15 +10,14 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class MeleeWeaponsRulesXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Collection<SpecialRule>>> {
+public final class RangedWeaponsRulesParserInterpreter implements
+        ParserInterpreter<Map<String, Collection<SpecialRule>>, Document> {
 
-    private Document                       doc;
     private final Map<String, SpecialRule> rules;
 
-    public MeleeWeaponsRulesXMLDocumentReader(
+    public RangedWeaponsRulesParserInterpreter(
             final Map<String, SpecialRule> rules) {
         super();
 
@@ -26,12 +25,12 @@ public final class MeleeWeaponsRulesXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<SpecialRule>> getValue() {
+    public final Map<String, Collection<SpecialRule>> parse(final Document doc) {
         final Element root;
         final Map<String, Collection<SpecialRule>> result;
         Collection<SpecialRule> rules;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         result = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -41,15 +40,6 @@ public final class MeleeWeaponsRulesXMLDocumentReader implements
         }
 
         return result;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
     private final Map<String, SpecialRule> getRules() {

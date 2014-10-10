@@ -10,15 +10,14 @@ import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class FactionUnitsXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Collection<AvailabilityUnit>>> {
+public final class FactionUnitsParserInterpreter implements
+        ParserInterpreter<Map<String, Collection<AvailabilityUnit>>, Document> {
 
-    private Document                            doc;
     private final Map<String, AvailabilityUnit> units;
 
-    public FactionUnitsXMLDocumentReader(
+    public FactionUnitsParserInterpreter(
             final Map<String, AvailabilityUnit> units) {
         super();
 
@@ -26,13 +25,14 @@ public final class FactionUnitsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Collection<AvailabilityUnit>> getValue() {
+    public final Map<String, Collection<AvailabilityUnit>> parse(
+            final Document doc) {
         final Map<String, Collection<AvailabilityUnit>> factionUnits;
         final Element root;
         Collection<AvailabilityUnit> units;
 
         factionUnits = new LinkedHashMap<>();
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         for (final Element node : root.getChildren()) {
             units = new LinkedList<>();
@@ -46,15 +46,6 @@ public final class FactionUnitsXMLDocumentReader implements
         }
 
         return factionUnits;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
     private final Map<String, AvailabilityUnit> getUnits() {

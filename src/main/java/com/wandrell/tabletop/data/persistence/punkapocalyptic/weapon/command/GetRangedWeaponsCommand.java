@@ -3,19 +3,22 @@ package com.wandrell.tabletop.data.persistence.punkapocalyptic.weapon.command;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
+
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsXMLDocumentReader;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsXMLDocumentReader;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsParserInterpreter;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsParserInterpreter;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 import com.wandrell.util.parser.ObjectParser;
-import com.wandrell.util.parser.ParserUtils;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.parser.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ParserFactory;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
+import com.wandrell.util.parser.module.validator.JDOMXSDValidator;
+import com.wandrell.util.parser.module.validator.ParserValidator;
 
 public final class GetRangedWeaponsCommand implements
         ReturnCommand<Map<String, Weapon>> {
@@ -41,16 +44,17 @@ public final class GetRangedWeaponsCommand implements
 
     private final Map<String, Weapon> getMeleeWeapons() throws Exception {
         final ObjectParser<Map<String, Weapon>> fileMeleeWeapons;
-        final JDOMXMLInterpreter<Map<String, Weapon>> reader;
-        final JDOMXMLValidator validator;
+        final ParserInterpreter<Map<String, Weapon>, Document> reader;
+        final ParserValidator<Document, SAXBuilder> validator;
 
-        reader = new MeleeWeaponsXMLDocumentReader();
-        validator = new XSDValidator(
+        reader = new MeleeWeaponsParserInterpreter();
+        validator = new JDOMXSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_MELEE,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileMeleeWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
+        fileMeleeWeapons = ParserFactory.getInstance().getJDOMXMLParser(reader,
+                validator);
 
         return fileMeleeWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE));
@@ -58,17 +62,18 @@ public final class GetRangedWeaponsCommand implements
 
     private final Map<String, Weapon> getRangedWeapons() throws Exception {
         final ObjectParser<Map<String, Weapon>> fileRangedWeapons;
-        final JDOMXMLInterpreter<Map<String, Weapon>> reader;
-        final JDOMXMLValidator validator;
+        final ParserInterpreter<Map<String, Weapon>, Document> reader;
+        final ParserValidator<Document, SAXBuilder> validator;
 
-        reader = new RangedWeaponsXMLDocumentReader((MeleeWeapon) getWeapons()
+        reader = new RangedWeaponsParserInterpreter((MeleeWeapon) getWeapons()
                 .get(WeaponNameConf.LIGHT_MACE));
-        validator = new XSDValidator(
+        validator = new JDOMXSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_RANGED,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRangedWeapons = ParserUtils.getJDOMXMLParser(reader, validator);
+        fileRangedWeapons = ParserFactory.getInstance().getJDOMXMLParser(
+                reader, validator);
 
         return fileRangedWeapons.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED));

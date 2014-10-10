@@ -13,16 +13,15 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class ArmorsXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Armor>> {
+public final class ArmorsParserInterpreter implements
+        ParserInterpreter<Map<String, Armor>, Document> {
 
-    private Document                                    doc;
     private final Map<String, ArmorInitializerModifier> modifiers;
     private final Map<String, SpecialRule>              rules;
 
-    public ArmorsXMLDocumentReader(final Map<String, SpecialRule> rules,
+    public ArmorsParserInterpreter(final Map<String, SpecialRule> rules,
             final Map<String, ArmorInitializerModifier> modifiers) {
         super();
 
@@ -31,7 +30,7 @@ public final class ArmorsXMLDocumentReader implements
     }
 
     @Override
-    public final Map<String, Armor> getValue() {
+    public final Map<String, Armor> parse(final Document doc) {
         final Element root;
         final Map<String, Armor> armors;
         Element modifiers;
@@ -40,7 +39,7 @@ public final class ArmorsXMLDocumentReader implements
         Collection<SpecialRule> rules;
         Armor armor;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         armors = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -63,15 +62,6 @@ public final class ArmorsXMLDocumentReader implements
         }
 
         return armors;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
     private final Map<String, ArmorInitializerModifier> getModifiers() {

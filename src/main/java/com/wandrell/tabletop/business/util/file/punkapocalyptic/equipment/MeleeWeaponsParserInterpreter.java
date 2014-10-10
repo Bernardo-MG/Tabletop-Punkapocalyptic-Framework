@@ -9,19 +9,17 @@ import org.jdom2.Element;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultMeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
 
-public final class MeleeWeaponsXMLDocumentReader implements
-        JDOMXMLInterpreter<Map<String, Weapon>> {
+public final class MeleeWeaponsParserInterpreter implements
+        ParserInterpreter<Map<String, Weapon>, Document> {
 
-    private Document doc;
-
-    public MeleeWeaponsXMLDocumentReader() {
+    public MeleeWeaponsParserInterpreter() {
         super();
     }
 
     @Override
-    public final Map<String, Weapon> getValue() {
+    public final Map<String, Weapon> parse(final Document doc) {
         final Element root;
         final Map<String, Weapon> weapons;
         String name;
@@ -31,7 +29,7 @@ public final class MeleeWeaponsXMLDocumentReader implements
         Integer cost;
         Weapon weapon;
 
-        root = getDocument().getRootElement();
+        root = doc.getRootElement();
 
         weapons = new LinkedHashMap<>();
         for (final Element node : root.getChildren()) {
@@ -50,15 +48,6 @@ public final class MeleeWeaponsXMLDocumentReader implements
         }
 
         return weapons;
-    }
-
-    @Override
-    public final void setDocument(final Document doc) {
-        this.doc = doc;
-    }
-
-    private final Document getDocument() {
-        return doc;
     }
 
 }

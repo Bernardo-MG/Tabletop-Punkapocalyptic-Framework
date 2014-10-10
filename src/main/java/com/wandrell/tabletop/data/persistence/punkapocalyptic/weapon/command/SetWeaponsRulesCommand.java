@@ -5,19 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.jdom2.Document;
+import org.jdom2.input.SAXBuilder;
+
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelFileConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.AbstractWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsRulesXMLDocumentReader;
-import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsRulesXMLDocumentReader;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.MeleeWeaponsRulesParserInterpreter;
+import com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment.RangedWeaponsRulesParserInterpreter;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.parser.ObjectParser;
-import com.wandrell.util.parser.ParserUtils;
-import com.wandrell.util.parser.xml.module.interpreter.JDOMXMLInterpreter;
-import com.wandrell.util.parser.xml.module.validator.JDOMXMLValidator;
-import com.wandrell.util.parser.xml.module.validator.XSDValidator;
+import com.wandrell.util.parser.ParserFactory;
+import com.wandrell.util.parser.module.interpreter.ParserInterpreter;
+import com.wandrell.util.parser.module.validator.JDOMXSDValidator;
+import com.wandrell.util.parser.module.validator.ParserValidator;
 
 public final class SetWeaponsRulesCommand implements Command {
 
@@ -35,35 +38,35 @@ public final class SetWeaponsRulesCommand implements Command {
     @Override
     public final void execute() throws Exception {
         final ObjectParser<Map<String, Collection<SpecialRule>>> fileRulesMelee;
-        final JDOMXMLInterpreter<Map<String, Collection<SpecialRule>>> readerMelee;
-        final JDOMXMLValidator validatorMelee;
+        final ParserInterpreter<Map<String, Collection<SpecialRule>>, Document> readerMelee;
+        final ParserValidator<Document, SAXBuilder> validatorMelee;
         final ObjectParser<Map<String, Collection<SpecialRule>>> fileRulesRanged;
-        final JDOMXMLInterpreter<Map<String, Collection<SpecialRule>>> readerRanged;
-        final JDOMXMLValidator validatorRanged;
+        final ParserInterpreter<Map<String, Collection<SpecialRule>>, Document> readerRanged;
+        final ParserValidator<Document, SAXBuilder> validatorRanged;
         final Map<String, Collection<SpecialRule>> rules;
 
         rules = new LinkedHashMap<>();
 
-        readerMelee = new MeleeWeaponsRulesXMLDocumentReader(getRules());
-        validatorMelee = new XSDValidator(
+        readerMelee = new MeleeWeaponsRulesParserInterpreter(getRules());
+        validatorMelee = new JDOMXSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_MELEE,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_MELEE));
 
-        fileRulesMelee = ParserUtils.getJDOMXMLParser(readerMelee,
-                validatorMelee);
+        fileRulesMelee = ParserFactory.getInstance().getJDOMXMLParser(
+                readerMelee, validatorMelee);
 
         rules.putAll(fileRulesMelee.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_MELEE)));
 
-        readerRanged = new RangedWeaponsRulesXMLDocumentReader(getRules());
-        validatorRanged = new XSDValidator(
+        readerRanged = new RangedWeaponsRulesParserInterpreter(getRules());
+        validatorRanged = new JDOMXSDValidator(
                 ModelFileConf.VALIDATION_WEAPON_RANGED,
                 ResourceUtils
                         .getClassPathInputStream(ModelFileConf.VALIDATION_WEAPON_RANGED));
 
-        fileRulesRanged = ParserUtils.getJDOMXMLParser(readerRanged,
-                validatorRanged);
+        fileRulesRanged = ParserFactory.getInstance().getJDOMXMLParser(
+                readerRanged, validatorRanged);
 
         rules.putAll(fileRulesRanged.read(ResourceUtils
                 .getClassPathInputStream(ModelFileConf.WEAPON_RANGED)));
