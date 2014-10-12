@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,6 +17,8 @@ public final class GetFactionsCommand implements
 
     public GetFactionsCommand(final Collection<String> factions) {
         super();
+
+        checkNotNull(factions, "Received a null pointer as factions");
 
         factionNames = factions;
     }

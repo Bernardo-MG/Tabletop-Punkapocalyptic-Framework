@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.RangedValue;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
 
@@ -19,6 +21,8 @@ public final class WeaponUtils {
             final RangedWeapon weapon) {
         final String penetration;
 
+        checkNotNull(weapon, "Received a null pointer as weapon");
+
         if ((weapon.getShortPenetration().equals(weapon.getMediumPenetration()))
                 && (weapon.getShortPenetration().equals(weapon
                         .getLongPenetration()))) {
@@ -36,6 +40,8 @@ public final class WeaponUtils {
             getRangedWeaponStrength(final RangedWeapon weapon) {
         final String strength;
 
+        checkNotNull(weapon, "Received a null pointer as weapon");
+
         if ((weapon.getShortStrength().equals(weapon.getMediumStrength()))
                 && (weapon.getShortStrength().equals(weapon.getLongStrength()))) {
             strength = weapon.getShortStrength().toString();
@@ -49,6 +55,8 @@ public final class WeaponUtils {
 
     private static final String getDistanceRanges(final RangedValue ranges) {
         final String distance;
+
+        checkNotNull(ranges, "Received a null pointer as ranges");
 
         if ((ranges.getShortValue().equals(ranges.getMediumValue()))
                 && (ranges.getShortValue().equals(ranges.getLongValue()))) {

@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.faction;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,6 +23,8 @@ public final class FactionUnitsParserInterpreter implements
             final Map<String, AvailabilityUnit> units) {
         super();
 
+        checkNotNull(units, "Received a null pointer as units");
+
         this.units = units;
     }
 
@@ -30,6 +34,8 @@ public final class FactionUnitsParserInterpreter implements
         final Map<String, Collection<AvailabilityUnit>> factionUnits;
         final Element root;
         Collection<AvailabilityUnit> units;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         factionUnits = new LinkedHashMap<>();
         root = doc.getRootElement();

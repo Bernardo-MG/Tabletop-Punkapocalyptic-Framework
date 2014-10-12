@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.command.punkapocalyptic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.service.application.ApplicationInfoService;
 import com.wandrell.service.swing.layout.LayoutService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
@@ -29,11 +31,16 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
         super();
+
+        checkNotNull(executor, "Received a null pointer as base executor");
+
         this.executor = executor;
     }
 
     @Override
     public final void execute(final Command command) {
+        checkNotNull(command, "Received a null pointer as command");
+
         setContext(command);
 
         getExecutor().execute(command);
@@ -41,6 +48,8 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     @Override
     public final <V> V execute(final ReturnCommand<V> command) {
+        checkNotNull(command, "Received a null pointer as command");
+
         setContext(command);
 
         return getExecutor().execute(command);
@@ -48,55 +57,38 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     public final void setApplicationInfoService(
             final ApplicationInfoService service) {
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as application info service");
-        }
+        checkNotNull(service,
+                "Received a null pointer as application info service");
 
         serviceApplicationInfo = service;
     }
 
     public final void setFactionDAO(final FactionDAO dao) {
-        if (dao == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as faction DAO");
-        }
+        checkNotNull(dao, "Received a null pointer as faction DAO");
 
         daoFaction = dao;
     }
 
     public final void setFileService(final FileService service) {
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as file service");
-        }
+        checkNotNull(service, "Received a null pointer as file service");
 
         serviceFile = service;
     }
 
     public final void setLayoutService(final LayoutService service) {
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as layout service");
-        }
+        checkNotNull(service, "Received a null pointer as layout service");
 
         serviceLayout = service;
     }
 
     public final void setLocalizationService(final LocalizationService service) {
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as localization service");
-        }
+        checkNotNull(service, "Received a null pointer as localization service");
 
         serviceLocalization = service;
     }
 
     public final void setRulesetService(final RulesetService service) {
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as ruleset service");
-        }
+        checkNotNull(service, "Received a null pointer as ruleset service");
 
         serviceRuleset = service;
     }

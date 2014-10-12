@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -25,6 +27,8 @@ public final class GetAllUnitConstraintsCommand implements
     public GetAllUnitConstraintsCommand(
             final Map<String, GangConstraint> constraints) {
         super();
+
+        checkNotNull(constraints, "Received a null pointer as constraints");
 
         this.constraints = constraints;
     }

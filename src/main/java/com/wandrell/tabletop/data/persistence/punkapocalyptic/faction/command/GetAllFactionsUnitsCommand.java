@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.faction.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -24,6 +26,8 @@ public final class GetAllFactionsUnitsCommand implements
 
     public GetAllFactionsUnitsCommand(final Map<String, AvailabilityUnit> units) {
         super();
+
+        checkNotNull(units, "Received a null pointer as units");
 
         this.units = units;
     }

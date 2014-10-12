@@ -58,6 +58,7 @@
 		<!-- Manifest data -->
 		<manifest.name>com/wandrell/tabletop/framework</manifest.name>
 		<!-- Dependencies versions -->
+		<guava.version>18.0</guava.version>
 		<jasperreports.version>5.6.1</jasperreports.version>
 		<jdom.version>2.0.5</jdom.version>
 		<mockito.version>1.9.5</mockito.version>
@@ -84,6 +85,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<!-- Guava -->
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
 		<dependency>
 			<!-- JasperReports -->
 			<groupId>net.sf.jasperreports</groupId>

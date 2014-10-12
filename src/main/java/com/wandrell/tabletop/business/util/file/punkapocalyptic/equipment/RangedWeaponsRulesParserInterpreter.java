@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,6 +23,8 @@ public final class RangedWeaponsRulesParserInterpreter implements
             final Map<String, SpecialRule> rules) {
         super();
 
+        checkNotNull(rules, "Received a null pointer as rules");
+
         this.rules = rules;
     }
 
@@ -29,6 +33,8 @@ public final class RangedWeaponsRulesParserInterpreter implements
         final Element root;
         final Map<String, Collection<SpecialRule>> result;
         Collection<SpecialRule> rules;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 

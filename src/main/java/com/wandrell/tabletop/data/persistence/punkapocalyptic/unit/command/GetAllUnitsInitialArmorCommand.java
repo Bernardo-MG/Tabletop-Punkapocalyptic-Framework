@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -23,6 +25,8 @@ public final class GetAllUnitsInitialArmorCommand implements
 
     public GetAllUnitsInitialArmorCommand(final Map<String, Armor> armors) {
         super();
+
+        checkNotNull(armors, "Received a null pointer as armors");
 
         this.armors = armors;
     }

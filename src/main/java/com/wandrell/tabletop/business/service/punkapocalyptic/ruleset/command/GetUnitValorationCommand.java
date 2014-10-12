@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
@@ -10,6 +12,8 @@ public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
 
     public GetUnitValorationCommand(final Unit unit) {
         super();
+
+        checkNotNull(unit, "Received a null pointer as unit");
 
         this.unit = unit;
     }

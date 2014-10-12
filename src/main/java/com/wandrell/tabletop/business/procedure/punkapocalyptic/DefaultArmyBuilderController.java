@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.EventObject;
 import java.util.LinkedHashSet;
@@ -22,19 +24,24 @@ public final class DefaultArmyBuilderController implements
         ArmyBuilderController {
 
     private Collection<GangConstraint>        constraints       = new LinkedHashSet<>();
+    private final UnitConfigurationController controller;
     private final Gang                        gang;
     private final EventListenerList           listeners         = new EventListenerList();
     private final ValueHandler                maxUnits;
     private final String                      tooManyUnitsMessage;
-    private final UnitConfigurationController unitValidator;
     private String                            validationMessage = "";
 
     public DefaultArmyBuilderController(
-            final UnitConfigurationController unitValidator, final Gang gang,
+            final UnitConfigurationController controller, final Gang gang,
             final ValueHandler maxUnits, final String tooManyUnitsMessage) {
         super();
 
-        this.unitValidator = unitValidator;
+        checkNotNull(controller, "Received a null pointer as controller");
+        checkNotNull(gang, "Received a null pointer as gang");
+        checkNotNull(maxUnits, "Received a null pointer as max units");
+        checkNotNull(tooManyUnitsMessage, "Received a null pointer as message");
+
+        this.controller = controller;
         this.gang = gang;
         this.maxUnits = maxUnits;
         this.tooManyUnitsMessage = tooManyUnitsMessage;
@@ -76,10 +83,7 @@ public final class DefaultArmyBuilderController implements
     @Override
     public final void addProcedureValidationListener(
             final ProcedureValidationListener listener) {
-        if (listener == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as listener");
-        }
+        checkNotNull(listener, "Received a null pointer as listener");
 
         getListeners().add(ProcedureValidationListener.class, listener);
     }
@@ -96,7 +100,7 @@ public final class DefaultArmyBuilderController implements
 
     @Override
     public final UnitConfigurationController getUnitConfigurationController() {
-        return unitValidator;
+        return controller;
     }
 
     @Override

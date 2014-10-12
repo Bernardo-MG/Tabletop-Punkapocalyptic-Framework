@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.weapon.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +32,9 @@ public final class SetWeaponsRulesCommand implements Command {
     public SetWeaponsRulesCommand(final Map<String, Weapon> weapons,
             final Map<String, SpecialRule> rules) {
         super();
+
+        checkNotNull(weapons, "Received a null pointer as weapons");
+        checkNotNull(rules, "Received a null pointer as rules");
 
         this.weapons = weapons;
         this.rules = rules;

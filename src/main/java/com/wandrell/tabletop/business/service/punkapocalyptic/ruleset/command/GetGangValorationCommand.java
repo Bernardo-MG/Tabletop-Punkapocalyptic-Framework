@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
@@ -14,6 +16,8 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
 
     public GetGangValorationCommand(final Gang gang) {
         super();
+
+        checkNotNull(gang, "Received a null pointer as gang");
 
         this.gang = gang;
     }
@@ -39,6 +43,8 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
 
     @Override
     public final void setRulesetService(final RulesetService service) {
+        checkNotNull(service, "Received a null pointer as ruleset service");
+
         serviceRuleset = service;
     }
 

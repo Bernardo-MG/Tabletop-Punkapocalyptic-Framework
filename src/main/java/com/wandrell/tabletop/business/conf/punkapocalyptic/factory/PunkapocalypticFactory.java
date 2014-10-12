@@ -1,7 +1,7 @@
 package com.wandrell.tabletop.business.conf.punkapocalyptic.factory;
 
-import com.wandrell.tabletop.business.model.valuehandler.DefaultValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
+import com.wandrell.tabletop.business.model.valuehandler.ModularEditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.generator.DefaultGenerator;
 import com.wandrell.tabletop.business.model.valuehandler.module.interval.DefaultIntervalModule;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.DefaultStore;
@@ -25,7 +25,7 @@ public final class PunkapocalypticFactory {
 
     public final EditableValueHandler getAttribute(final String name,
             final Integer value) {
-        return new DefaultValueHandler(name, new DefaultGenerator(),
+        return new ModularEditableValueHandler(name, new DefaultGenerator(),
                 new DefaultIntervalModule(1, 10), new DefaultStore(value),
                 new IntervalValidator());
     }

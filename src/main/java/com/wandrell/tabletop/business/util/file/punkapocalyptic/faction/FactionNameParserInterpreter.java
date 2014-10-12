@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.faction;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -20,6 +22,8 @@ public final class FactionNameParserInterpreter implements
     public final Collection<String> parse(final Document doc) {
         final Collection<String> names;
         final Element root;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         names = new LinkedList<>();
         root = doc.getRootElement();

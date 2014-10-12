@@ -15,6 +15,8 @@
  */
 package com.wandrell.tabletop.business.model.punkapocalyptic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -40,9 +42,7 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     public AvailabilityUnitWrapper(final AvailabilityUnitWrapper unit) {
         super();
 
-        if (unit == null) {
-            throw new NullPointerException("Received a null pointer as unit");
-        }
+        checkNotNull(unit, "Received a null pointer as the unit");
 
         this.unit = unit.unit.createNewInstance();
 
@@ -61,32 +61,12 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
             final Collection<GangConstraint> constraints) {
         super();
 
-        if (unit == null) {
-            throw new NullPointerException("Received a null pointer as unit");
-        }
-
-        if (armorOptions == null) {
-            throw new NullPointerException("Received a null pointer as armors");
-        }
-
-        if (weaponOptions == null) {
-            throw new NullPointerException("Received a null pointer as weapons");
-        }
-
-        if (maxWeapons == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as maximum weapons");
-        }
-
-        if (minWeapons == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as minimum weapons");
-        }
-
-        if (constraints == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as constraints");
-        }
+        checkNotNull(unit, "Received a null pointer as the unit");
+        checkNotNull(armorOptions, "Received a null pointer as armor options");
+        checkNotNull(weaponOptions, "Received a null pointer as weapon options");
+        checkNotNull(minWeapons, "Received a null pointer as min weapons");
+        checkNotNull(maxWeapons, "Received a null pointer as max weapons");
+        checkNotNull(constraints, "Received a null pointer as constraints");
 
         this.unit = unit;
 
@@ -123,24 +103,21 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     @Override
     public final void addEquipment(final Equipment equipment) {
-        if (equipment == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as equipment");
-        }
+        checkNotNull(equipment, "Received a null pointer as equipment");
 
         getUnit().addEquipment(equipment);
     }
 
     @Override
     public final void addUnitListener(final UnitListener listener) {
+        checkNotNull(listener, "Received a null pointer as listener");
+
         getUnit().addUnitListener(listener);
     }
 
     @Override
     public final void addWeapon(final Weapon weapon) {
-        if (weapon == null) {
-            throw new NullPointerException("Received a null pointer as weapon");
-        }
+        checkNotNull(weapon, "Received a null pointer as weapon");
 
         getUnit().addWeapon(weapon);
     }
@@ -300,6 +277,8 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     @Override
     public final void setArmor(final Armor armor) {
+        checkNotNull(armor, "Received a null pointer as armor");
+
         getUnit().setArmor(armor);
     }
 

@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,6 +21,8 @@ public final class RangedWeaponsParserInterpreter implements
 
     public RangedWeaponsParserInterpreter(final MeleeWeapon defaultWeapon) {
         super();
+
+        checkNotNull(defaultWeapon, "Received a null pointer as default weapon");
 
         melee = defaultWeapon;
     }
@@ -46,6 +50,8 @@ public final class RangedWeaponsParserInterpreter implements
         Integer distanceLongInches;
         Integer cost;
         Weapon weapon;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 

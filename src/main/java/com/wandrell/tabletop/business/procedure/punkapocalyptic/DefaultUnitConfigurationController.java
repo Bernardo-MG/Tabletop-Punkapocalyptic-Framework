@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.EventObject;
 
 import javax.swing.event.EventListenerList;
@@ -21,10 +23,8 @@ public final class DefaultUnitConfigurationController implements
             final String compulsoryWeaponsError) {
         super();
 
-        if (compulsoryWeaponsError == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as the compulsory weapons error message");
-        }
+        checkNotNull(compulsoryWeaponsError,
+                "Received a null pointer as error message");
 
         this.compulsoryWeaponsError = compulsoryWeaponsError;
     }
@@ -32,10 +32,7 @@ public final class DefaultUnitConfigurationController implements
     @Override
     public final void addProcedureValidationListener(
             final ProcedureValidationListener listener) {
-        if (listener == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as listener");
-        }
+        checkNotNull(listener, "Received a null pointer as listener");
 
         getListeners().add(ProcedureValidationListener.class, listener);
     }
@@ -43,10 +40,7 @@ public final class DefaultUnitConfigurationController implements
     @Override
     public final void addUnitConfigurationListener(
             final UnitConfigurationListener listener) {
-        if (listener == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as listener");
-        }
+        checkNotNull(listener, "Received a null pointer as listener");
 
         getListeners().add(UnitConfigurationListener.class, listener);
     }
@@ -75,9 +69,7 @@ public final class DefaultUnitConfigurationController implements
 
     @Override
     public final void setUnit(final AvailabilityUnit unit) {
-        if (unit == null) {
-            throw new NullPointerException("Received a null pointer as unit");
-        }
+        checkNotNull(unit, "Received a null pointer as unit");
 
         this.unit = unit;
 

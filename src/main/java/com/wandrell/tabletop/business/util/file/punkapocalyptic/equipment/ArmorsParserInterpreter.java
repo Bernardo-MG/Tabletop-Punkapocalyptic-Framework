@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -25,6 +27,9 @@ public final class ArmorsParserInterpreter implements
             final Map<String, ArmorInitializerModifier> modifiers) {
         super();
 
+        checkNotNull(rules, "Received a null pointer as rules");
+        checkNotNull(modifiers, "Received a null pointer as modifiers");
+
         this.rules = rules;
         this.modifiers = modifiers;
     }
@@ -38,6 +43,8 @@ public final class ArmorsParserInterpreter implements
         Integer protection;
         Collection<SpecialRule> rules;
         Armor armor;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 

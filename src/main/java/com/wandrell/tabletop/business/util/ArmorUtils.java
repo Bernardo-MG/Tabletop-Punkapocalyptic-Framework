@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedArmor;
 
@@ -11,6 +13,8 @@ public final class ArmorUtils {
         final Integer arms;
         final Integer armm;
         final Integer arml;
+
+        checkNotNull(armor, "Received a null pointer as armor");
 
         if (armor instanceof RangedArmor) {
             arm = armor.getArmor();

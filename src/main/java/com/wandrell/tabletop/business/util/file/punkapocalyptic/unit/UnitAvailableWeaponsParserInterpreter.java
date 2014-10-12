@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,6 +23,8 @@ public final class UnitAvailableWeaponsParserInterpreter implements
             final Map<String, Weapon> weapons) {
         super();
 
+        checkNotNull(weapons, "Received a null pointer as weapons");
+
         this.weapons = weapons;
     }
 
@@ -29,6 +33,8 @@ public final class UnitAvailableWeaponsParserInterpreter implements
         final Element root;
         final Map<String, Collection<Weapon>> weapons;
         Collection<Weapon> weaponList;
+
+        checkNotNull(doc, "Received a null pointer as doc");
 
         root = doc.getRootElement();
 

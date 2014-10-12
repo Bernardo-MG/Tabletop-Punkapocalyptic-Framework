@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -12,8 +14,8 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.factory.Punkapocalypt
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.DefaultDerivedValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
+import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
@@ -27,10 +29,7 @@ public class UnitsParserInterpreter implements
     public UnitsParserInterpreter(final RulesetService service) {
         super();
 
-        if (service == null) {
-            throw new NullPointerException(
-                    "Received a null pointer as ruleset service");
-        }
+        checkNotNull(service, "Received a null pointer as service");
 
         serviceRuleset = service;
     }
@@ -52,6 +51,8 @@ public class UnitsParserInterpreter implements
         UnitValorationStore store;
         Unit unit;
         Integer cost;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 
@@ -80,7 +81,7 @@ public class UnitsParserInterpreter implements
             cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
             store = new UnitValorationStore(getRulesetService());
-            valoration = new DefaultDerivedValueHandler("valoration", store);
+            valoration = new ModularDerivedValueHandler("valoration", store);
 
             unit = new DefaultUnit(name, actions, agility, combat, precision,
                     strength, tech, toughness, cost,

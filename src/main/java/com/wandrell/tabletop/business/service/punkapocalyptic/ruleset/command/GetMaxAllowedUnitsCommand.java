@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.util.command.ReturnCommand;
 
@@ -11,6 +13,8 @@ public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
 
     public GetMaxAllowedUnitsCommand(final Gang gang) {
         super();
+
+        checkNotNull(gang, "Received a null pointer as gang");
 
         this.gang = gang;
     }

@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.equipment;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,6 +30,8 @@ public final class MeleeWeaponsParserInterpreter implements
         Integer combat;
         Integer cost;
         Weapon weapon;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 

@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.armor.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -27,6 +29,9 @@ public final class GetAllArmorsCommand implements
     public GetAllArmorsCommand(final Map<String, SpecialRule> rules,
             final Map<String, ArmorInitializerModifier> modifiers) {
         super();
+
+        checkNotNull(rules, "Received a null pointer as rules");
+        checkNotNull(modifiers, "Received a null pointer as modifiers");
 
         this.rules = rules;
         this.modifiers = modifiers;

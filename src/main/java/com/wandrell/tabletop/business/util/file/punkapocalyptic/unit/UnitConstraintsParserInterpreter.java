@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -22,6 +24,8 @@ public final class UnitConstraintsParserInterpreter implements
             final Map<String, GangConstraint> constraints) {
         super();
 
+        checkNotNull(constraints, "Received a null pointer as constraints");
+
         this.constraints = constraints;
     }
 
@@ -32,6 +36,8 @@ public final class UnitConstraintsParserInterpreter implements
         final Map<String, Collection<GangConstraint>> constraints;
         Collection<GangConstraint> consts;
         String unit;
+
+        checkNotNull(doc, "Received a null pointer as doc");
 
         root = doc.getRootElement();
 

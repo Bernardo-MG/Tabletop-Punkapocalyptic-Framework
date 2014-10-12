@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.util.file.punkapocalyptic.unit;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,6 +28,8 @@ public final class UnitWeaponIntervalParserInterpreter implements
         Interval interval;
         Integer lower;
         Integer upper;
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         root = doc.getRootElement();
 

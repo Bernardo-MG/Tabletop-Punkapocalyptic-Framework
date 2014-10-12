@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.persistence.punkapocalyptic.unit.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +32,13 @@ public final class GetAllUnitsAvailabilityCommand implements
             final Map<String, Interval> weaponIntervals,
             final Map<String, Collection<GangConstraint>> constraints) {
         super();
+
+        checkNotNull(units, "Received a null pointer as units");
+        checkNotNull(armor, "Received a null pointer as armor");
+        checkNotNull(armors, "Received a null pointer as armors");
+        checkNotNull(weaponIntervals,
+                "Received a null pointer as weapon intervals");
+        checkNotNull(constraints, "Received a null pointer as constraints");
 
         this.units = units;
         this.armor = armor;
