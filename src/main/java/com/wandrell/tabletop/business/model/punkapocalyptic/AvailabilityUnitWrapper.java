@@ -20,7 +20,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 
+import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
@@ -146,12 +148,8 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
         if (getClass() != obj.getClass())
             return false;
         AvailabilityUnitWrapper other = (AvailabilityUnitWrapper) obj;
-        if (unit.getUnitName() == null) {
-            if (other.unit.getUnitName() != null)
-                return false;
-        } else if (!unit.getUnitName().equals(other.unit.getUnitName()))
-            return false;
-        return true;
+
+        return Objects.equals(unit, other.unit);
     }
 
     @Override
@@ -251,13 +249,7 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     @Override
     public final int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime
-                * result
-                + ((unit.getUnitName() == null) ? 0 : unit.getUnitName()
-                        .hashCode());
-        return result;
+        return Objects.hashCode(unit);
     }
 
     @Override
@@ -284,7 +276,8 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     @Override
     public final String toString() {
-        return getUnit().toString();
+        return MoreObjects.toStringHelper(this).add("name", getUnitName())
+                .toString();
     }
 
     private final Collection<Armor> getArmorOptionsModifiable() {
