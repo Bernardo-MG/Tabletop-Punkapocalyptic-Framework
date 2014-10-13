@@ -117,13 +117,17 @@ public final class DefaultArmyBuilderController implements
     @Override
     public final Boolean validate() {
         final StringBuilder textErrors;
-        Boolean failed;
+        final Boolean failedCount;
+        final Boolean failedConstraints;
+        final Boolean failed;
 
         textErrors = new StringBuilder();
 
-        failed = validateUnitsCount(textErrors);
+        failedCount = validateUnitsCount(textErrors);
 
-        failed = validateUnitConstraints(textErrors);
+        failedConstraints = validateUnitConstraints(textErrors);
+        
+        failed = (failedCount || failedConstraints);
 
         setValidationMessage(textErrors.toString());
 
@@ -139,10 +143,6 @@ public final class DefaultArmyBuilderController implements
     private final void fireValidationFailedEvent(final EventObject evt) {
         final ProcedureValidationListener[] ls;
 
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
-
         ls = getListeners().getListeners(ProcedureValidationListener.class);
         for (final ProcedureValidationListener l : ls) {
             l.validationFailed(evt);
@@ -151,10 +151,6 @@ public final class DefaultArmyBuilderController implements
 
     private final void fireValidationPassedEvent(final EventObject evt) {
         final ProcedureValidationListener[] ls;
-
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
 
         ls = getListeners().getListeners(ProcedureValidationListener.class);
         for (final ProcedureValidationListener l : ls) {

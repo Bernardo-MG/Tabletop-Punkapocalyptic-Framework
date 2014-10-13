@@ -9,6 +9,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
+import com.wandrell.tabletop.business.model.punkapocalyptic.DefaultRangedValue;
+import com.wandrell.tabletop.business.model.punkapocalyptic.RangedValue;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
@@ -49,6 +51,10 @@ public final class RangedWeaponsParserInterpreter implements
         Integer distanceMediumInches;
         Integer distanceLongInches;
         Integer cost;
+        RangedValue distanceCM;
+        RangedValue distanceInches;
+        RangedValue strengthRanged;
+        RangedValue penetrationRanged;
         Weapon weapon;
 
         checkNotNull(doc, "Received a null pointer as document");
@@ -95,11 +101,18 @@ public final class RangedWeaponsParserInterpreter implements
 
             cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-            weapon = new DefaultRangedWeapon(name, cost, penetrationShort,
-                    penetrationMedium, penetrationLong, strengthShort,
-                    strengthMedium, strengthLong, distanceShortCM,
-                    distanceMediumCM, distanceLongCM, distanceShortInches,
-                    distanceMediumInches, distanceLongInches,
+            distanceCM = new DefaultRangedValue(distanceShortCM,
+                    distanceMediumCM, distanceLongCM);
+            distanceInches = new DefaultRangedValue(distanceShortInches,
+                    distanceMediumInches, distanceLongInches);
+
+            penetrationRanged = new DefaultRangedValue(penetrationShort,
+                    penetrationMedium, penetrationLong);
+            strengthRanged = new DefaultRangedValue(strengthShort,
+                    strengthMedium, strengthLong);
+
+            weapon = new DefaultRangedWeapon(name, cost, penetrationRanged,
+                    strengthRanged, distanceCM, distanceInches,
                     getDefaultMeleeWeapon());
 
             weapons.put(name, weapon);
