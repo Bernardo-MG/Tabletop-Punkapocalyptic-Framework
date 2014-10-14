@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.conf.punkapocalyptic.factory;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.FirearmWeaponEnhancement;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ModularEditableValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.module.generator.DefaultGenerator;
@@ -28,6 +30,19 @@ public final class PunkapocalypticFactory {
         return new ModularEditableValueHandler(name, new DefaultGenerator(),
                 new DefaultIntervalModule(1, 10), new DefaultStore(value),
                 new IntervalValidator());
+    }
+
+    public final WeaponEnhancement getWeaponEnhancement(final String name,
+            final Integer cost) {
+        final WeaponEnhancement enhancement;
+
+        if (name.equals("bayonet")) {
+            enhancement = new FirearmWeaponEnhancement("bayonet", cost);
+        } else {
+            enhancement = null;
+        }
+
+        return enhancement;
     }
 
 }

@@ -2,19 +2,6 @@
 <equipment_pieces xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-equipment.xsd">
 	<equipment_piece>
-		<name>bayonet</name>
-		<constraints>
-			<constraint>firearm_addon</constraint>
-		</constraints>
-		<bonus_list>
-			<bonus>
-				<attribute>penetration</attribute>
-				<value>2</value>
-			</bonus>
-		</bonus_list>
-		<cost>4</cost>
-	</equipment_piece>
-	<equipment_piece>
 		<name>biohazard_protection</name>
 		<cost>8</cost>
 	</equipment_piece>

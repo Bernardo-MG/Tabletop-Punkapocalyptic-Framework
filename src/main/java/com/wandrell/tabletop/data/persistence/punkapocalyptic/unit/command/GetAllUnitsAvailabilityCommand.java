@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
@@ -76,6 +77,10 @@ public final class GetAllUnitsAvailabilityCommand implements
             weaponEnhancements = getWeaponEnhancements()
                     .get(unit.getUnitName());
             equipment = getEquipment().get(unit.getUnitName());
+
+            // TODO: Fix
+            weaponEnhancements = new LinkedList<>();
+            equipment = new LinkedList<>();
 
             availability = new AvailabilityUnitWrapper(unit, armors, weapons,
                     weaponsInterval.getLowerLimit(),
