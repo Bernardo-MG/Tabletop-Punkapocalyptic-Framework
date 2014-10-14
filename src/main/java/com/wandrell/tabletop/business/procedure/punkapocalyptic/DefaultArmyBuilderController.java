@@ -126,7 +126,7 @@ public final class DefaultArmyBuilderController implements
         failedCount = validateUnitsCount(textErrors);
 
         failedConstraints = validateUnitConstraints(textErrors);
-        
+
         failed = (failedCount || failedConstraints);
 
         setValidationMessage(textErrors.toString());
