@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<armors xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<armor_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-armor.xsd">
-	<armor>
+	<armor_profile>
 		<name>bulletproof_vest</name>
 		<modifiers>
 			<modifier>firearms_protection</modifier>
 		</modifiers>
 		<protection>3</protection>
-	</armor>
-	<armor>
+	</armor_profile>
+	<armor_profile>
 		<name>hardened_leather</name>
 		<protection>2</protection>
-	</armor>
-	<armor>
+	</armor_profile>
+	<armor_profile>
 		<name>metal_plate</name>
 		<rules>
 			<rule>cumbersome</rule>
 		</rules>
 		<protection>5</protection>
-	</armor>
-	<armor>
+	</armor_profile>
+	<armor_profile>
 		<name>metallic_armor</name>
 		<protection>4</protection>
-	</armor>
-	<armor>
+	</armor_profile>
+	<armor_profile>
 		<name>thick_clothes</name>
 		<protection>1</protection>
-	</armor>
-</armors>
+	</armor_profile>
+</armor_profiles>

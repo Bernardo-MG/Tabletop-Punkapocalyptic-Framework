@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faction_equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<faction_equipment_pieces xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-faction-equipment.xsd">
-	<availability>
+	<faction_equipment_piece>
 		<faction>gangers</faction>
 		<equipment_pieces>
 			<equipment_piece>
@@ -13,5 +13,5 @@
 				<cost>8</cost>
 			</equipment_piece>
 		</equipment_pieces>
-	</availability>
-</faction_equipment>
+	</faction_equipment_piece>
+</faction_equipment_pieces>

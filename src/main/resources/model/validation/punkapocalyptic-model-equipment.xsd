@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="equipment_pieces">
+	<xs:element name="equipment_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="equipment_piece" type="equipment" />
+				<xs:element name="equipment_profile" type="equipment" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">

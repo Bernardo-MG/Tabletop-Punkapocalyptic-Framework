@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="unit_weapon_enhancements">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="unit_weapon_enhancement" type="availability" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueData">
+			<xs:selector xpath="unit" />
+			<xs:field xpath="." />
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="availability">
+		<xs:sequence>
+			<xs:element name="unit" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="weapon_enhancements" type="enhancementList"
+				maxOccurs="1" minOccurs="0">
+				<xs:unique name="uniqueEnhancement">
+					<xs:selector xpath="weapon_enhancement" />
+					<xs:field xpath="." />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="enhancementList">
+		<xs:sequence>
+			<xs:element name="weapon_enhancement" type="xs:token"
+				maxOccurs="unbounded" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

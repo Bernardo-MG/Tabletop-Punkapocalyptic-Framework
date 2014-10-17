@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="enhacements">
+	<xs:element name="weapon_enhacement_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="enhacement" type="enhacement" />
+				<xs:element name="weapon_enhacement_profile" type="enhacement" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">

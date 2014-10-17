@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weapons xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<weapon_melee_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-melee.xsd">
-	<weapon>
+	<weapon_melee_profile>
 		<name>claws_and_teeth</name>
 		<combat>0</combat>
 		<penetration>2</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>heavy_blade</name>
 		<rules>
 			<rule>cumbersome</rule>
@@ -18,8 +18,8 @@
 		<penetration>4</penetration>
 		<strength>3</strength>
 		<cost>8</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>heavy_mace</name>
 		<rules>
 			<rule>two-handed</rule>
@@ -28,47 +28,47 @@
 		<penetration>2</penetration>
 		<strength>4</strength>
 		<cost>6</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>improvised_weapon</name>
 		<combat>-1</combat>
 		<penetration>0</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>light_mace</name>
 		<combat>0</combat>
 		<penetration>0</penetration>
 		<strength>1</strength>
 		<cost>3</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>mace</name>
 		<combat>0</combat>
 		<penetration>1</penetration>
 		<strength>2</strength>
 		<cost>5</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>medium_blade</name>
 		<combat>1</combat>
 		<penetration>3</penetration>
 		<strength>2</strength>
 		<cost>10</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>small_blade</name>
 		<combat>0</combat>
 		<penetration>2</penetration>
 		<strength>1</strength>
 		<cost>5</cost>
-	</weapon>
-	<weapon>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>unarmed</name>
 		<combat>-2</combat>
 		<penetration>0</penetration>
 		<strength>0</strength>
 		<cost>0</cost>
-	</weapon>
-</weapons>
+	</weapon_melee_profile>
+</weapon_melee_profiles>

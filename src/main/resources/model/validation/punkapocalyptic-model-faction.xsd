@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="factions">
+	<xs:element name="faction_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="faction" type="faction" />
+				<xs:element name="faction_profile" type="faction" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">

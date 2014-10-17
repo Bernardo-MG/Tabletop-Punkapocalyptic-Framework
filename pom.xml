@@ -60,6 +60,7 @@
 		<!-- Dependencies versions -->
 		<guava.version>18.0</guava.version>
 		<jasperreports.version>5.6.1</jasperreports.version>
+		<jaxen.version>1.1.6</jaxen.version>
 		<jdom.version>2.0.5</jdom.version>
 		<mockito.version>1.9.5</mockito.version>
 		<slf4j.version>1.7.7</slf4j.version>
@@ -98,11 +99,16 @@
 			<version>${jasperreports.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Jaxen -->
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
 			<!-- JDom 2 -->
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom2</artifactId>
 			<version>${jdom.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<!-- Mockito -->

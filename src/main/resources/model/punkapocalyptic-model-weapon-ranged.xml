@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weapons xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<weapon_ranged_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-ranged.xsd">
-	<weapon>
+	<weapon_ranged_profile>
 		<name>automatic_rifle</name>
 		<rules>
 			<rule>automatic</rule>
@@ -31,8 +31,8 @@
 			</cm>
 		</range>
 		<cost>10</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>bow</name>
 		<rules>
 			<rule>hard_to_use</rule>
@@ -61,8 +61,8 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>crossbow</name>
 		<rules>
 			<rule>dead_slow</rule>
@@ -91,8 +91,8 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>pistol</name>
 		<rules>
 			<rule>firearm</rule>
@@ -120,8 +120,8 @@
 			</cm>
 		</range>
 		<cost>5</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>rifle</name>
 		<rules>
 			<rule>firearm</rule>
@@ -150,8 +150,8 @@
 			</cm>
 		</range>
 		<cost>8</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>shotgun</name>
 		<rules>
 			<rule>firearm</rule>
@@ -181,8 +181,8 @@
 			</cm>
 		</range>
 		<cost>6</cost>
-	</weapon>
-	<weapon>
+	</weapon_ranged_profile>
+	<weapon_ranged_profile>
 		<name>throwing_knife</name>
 		<constraints>
 			<constraint>add_strength</constraint>
@@ -210,5 +210,5 @@
 			</cm>
 		</range>
 		<cost>3</cost>
-	</weapon>
-</weapons>
+	</weapon_ranged_profile>
+</weapon_ranged_profiles>

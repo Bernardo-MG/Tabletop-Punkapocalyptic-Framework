@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<equipment_pieces xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<equipment_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-equipment.xsd">
-	<equipment_piece>
+	<equipment_profile>
 		<name>biohazard_protection</name>
 		<cost>8</cost>
-	</equipment_piece>
-	<equipment_piece>
+	</equipment_profile>
+	<equipment_profile>
 		<name>shield</name>
 		<constraints>
 			<constraint>weapon_slot</constraint>
@@ -25,5 +25,5 @@
 			</bonus>
 		</bonus_list>
 		<cost>8</cost>
-	</equipment_piece>
-</equipment_pieces>
+	</equipment_profile>
+</equipment_profiles>

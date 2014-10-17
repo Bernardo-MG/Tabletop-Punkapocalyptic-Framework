@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="profiles">
+	<xs:element name="unit_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="profile" type="profile" />
+				<xs:element name="unit_profile" type="profile" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">

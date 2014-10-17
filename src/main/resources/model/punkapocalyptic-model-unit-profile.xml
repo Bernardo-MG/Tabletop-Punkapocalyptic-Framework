@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<unit_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-unit-profile.xsd">
-	<profile>
+	<unit_profile>
 		<name>chief</name>
 		<actions>3</actions>
 		<combat>6</combat>
@@ -11,8 +11,8 @@
 		<toughness>4</toughness>
 		<tech>5</tech>
 		<cost>70</cost>
-	</profile>
-	<profile>
+	</unit_profile>
+	<unit_profile>
 		<name>badass</name>
 		<actions>2</actions>
 		<combat>6</combat>
@@ -22,8 +22,8 @@
 		<toughness>4</toughness>
 		<tech>4</tech>
 		<cost>40</cost>
-	</profile>
-	<profile>
+	</unit_profile>
+	<unit_profile>
 		<name>brute</name>
 		<actions>2</actions>
 		<combat>5</combat>
@@ -33,8 +33,8 @@
 		<toughness>4</toughness>
 		<tech>2</tech>
 		<cost>40</cost>
-	</profile>
-	<profile>
+	</unit_profile>
+	<unit_profile>
 		<name>ganger</name>
 		<actions>2</actions>
 		<combat>5</combat>
@@ -44,8 +44,8 @@
 		<toughness>3</toughness>
 		<tech>3</tech>
 		<cost>30</cost>
-	</profile>
-	<profile>
+	</unit_profile>
+	<unit_profile>
 		<name>scumbag</name>
 		<actions>2</actions>
 		<combat>4</combat>
@@ -55,5 +55,5 @@
 		<toughness>3</toughness>
 		<tech>3</tech>
 		<cost>20</cost>
-	</profile>
-</profiles>
+	</unit_profile>
+</unit_profiles>

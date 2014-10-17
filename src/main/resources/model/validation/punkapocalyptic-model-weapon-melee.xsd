@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="weapons">
+	<xs:element name="weapon_melee_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="weapon" type="weapon" />
+				<xs:element name="weapon_melee_profile" type="weapon" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">

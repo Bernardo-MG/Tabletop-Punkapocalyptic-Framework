@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="unit_equipment_pieces">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="unit_equipment_piece" type="availability" />
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="uniqueData">
+			<xs:selector xpath="unit" />
+			<xs:field xpath="." />
+		</xs:unique>
+	</xs:element>
+
+	<xs:complexType name="availability">
+		<xs:sequence>
+			<xs:element name="unit" type="xs:token" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="equipment_pieces" type="equipmentList"
+				maxOccurs="1" minOccurs="0">
+				<xs:unique name="uniqueEquipment">
+					<xs:selector xpath="equipment_piece" />
+					<xs:field xpath="." />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="equipmentList">
+		<xs:sequence>
+			<xs:element name="equipment_piece" type="xs:token"
+				maxOccurs="unbounded" minOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
