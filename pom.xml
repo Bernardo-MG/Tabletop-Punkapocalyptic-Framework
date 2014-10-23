@@ -62,6 +62,7 @@
 		<jasperreports.version>5.6.1</jasperreports.version>
 		<jaxen.version>1.1.6</jaxen.version>
 		<jdom.version>2.0.5</jdom.version>
+		<jxpath.version>1.3</jxpath.version>
 		<mockito.version>1.9.5</mockito.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<spring.version>4.0.5.RELEASE</spring.version>
@@ -109,6 +110,12 @@
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom2</artifactId>
 			<version>${jdom.version}</version>
+		</dependency>
+		<dependency>
+			<!-- JXpath -->
+			<groupId>commons-jxpath</groupId>
+			<artifactId>commons-jxpath</artifactId>
+			<version>${jxpath.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Mockito -->

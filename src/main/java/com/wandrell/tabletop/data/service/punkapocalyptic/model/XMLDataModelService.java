@@ -5,14 +5,12 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.commons.jxpath.JXPathContext;
 import org.jdom2.Document;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
@@ -75,34 +73,21 @@ public final class XMLDataModelService implements DataModelService {
         return factionUnits.get(faction);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public final Collection<UnitGangConstraint> getUnitConstraints(
             final String unit, final String faction) {
+        final JXPathContext context;
         final Faction fact;
-        final Collection<FactionUnitAvailability> avas;
-        final Collection<UnitGangConstraint> constraints;
-        final Predicate<FactionUnitAvailability> predicate;
+        final String query;
 
         fact = getFactions().get(faction);
+        context = JXPathContext.newContext(fact);
+        query = "units[unit/unitName=$unit]/constraints";
 
-        predicate = new Predicate<FactionUnitAvailability>() {
+        context.getVariables().declareVariable("unit", unit);
 
-            @Override
-            public final boolean apply(final FactionUnitAvailability input) {
-                return input.getUnit().getUnitName().equals(unit);
-            }
-
-        };
-
-        avas = Collections2.filter(fact.getUnits(), predicate);
-
-        if (avas.isEmpty()) {
-            constraints = null;
-        } else {
-            constraints = avas.iterator().next().getConstraints();
-        }
-
-        return constraints;
+        return (Collection<UnitGangConstraint>) context.getValue(query);
     }
 
     private final void build() {
