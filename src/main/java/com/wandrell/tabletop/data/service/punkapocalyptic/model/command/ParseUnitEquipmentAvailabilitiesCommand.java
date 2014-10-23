@@ -10,74 +10,66 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnitWrapper;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultUnitEquipmentAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
 
-public final class ParseUnitAvailabilitiesCommand implements
-        ReturnCommand<Map<String, AvailabilityUnit>> {
+public final class ParseUnitEquipmentAvailabilitiesCommand implements
+        ReturnCommand<Map<String, UnitEquipmentAvailability>> {
 
-    private final Map<String, Armor>             armor;
-    private final Document                       document;
+    private final Document                       doc;
+    private final Map<String, WeaponEnhancement> enhancements;
     private final Map<String, Equipment>         equipment;
     private final Map<String, Unit>              units;
-    private final Map<String, WeaponEnhancement> weaponEnhancements;
 
-    public ParseUnitAvailabilitiesCommand(final Document doc,
-            final Map<String, Unit> units, final Map<String, Armor> armor,
+    public ParseUnitEquipmentAvailabilitiesCommand(final Document doc,
+            final Map<String, Unit> units,
             final Map<String, Equipment> equipment,
-            final Map<String, WeaponEnhancement> weaponEnhancements) {
+            final Map<String, WeaponEnhancement> enhancements) {
         super();
 
-        document = doc;
+        this.doc = doc;
         this.units = units;
-        this.armor = armor;
         this.equipment = equipment;
-        this.weaponEnhancements = weaponEnhancements;
+        this.enhancements = enhancements;
     }
 
     @Override
-    public final Map<String, AvailabilityUnit> execute() throws Exception {
-        final Map<String, AvailabilityUnit> units;
-        AvailabilityUnit availability;
+    public final Map<String, UnitEquipmentAvailability> execute()
+            throws Exception {
+        final Map<String, UnitEquipmentAvailability> availabilities;
+        UnitEquipmentAvailability availability;
 
-        units = new LinkedHashMap<>();
+        availabilities = new LinkedHashMap<>();
 
         for (final Unit unit : getUnits().values()) {
             availability = buildAvailability(unit);
 
-            units.put(availability.getUnitName(), availability);
+            availabilities.put(unit.getUnitName(), availability);
         }
 
-        return units;
+        return availabilities;
     }
 
-    private final AvailabilityUnit buildAvailability(final Unit unit) {
-        final AvailabilityUnit availability;
+    private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
+        final UnitEquipmentAvailability availability;
         final Collection<WeaponEnhancement> weaponEnhancements;
         final Collection<Equipment> equipment;
 
         weaponEnhancements = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
-        availability = new AvailabilityUnitWrapper(unit, weaponEnhancements,
+        availability = new DefaultUnitEquipmentAvailability(weaponEnhancements,
                 equipment);
-
-        availability.setArmor(getArmor().get(unit.getUnitName()));
 
         return availability;
     }
 
-    private final Map<String, Armor> getArmor() {
-        return armor;
-    }
-
     private final Document getDocument() {
-        return document;
+        return doc;
     }
 
     private final Map<String, Equipment> getEquipment() {
@@ -108,7 +100,7 @@ public final class ParseUnitAvailabilitiesCommand implements
     }
 
     private final Map<String, WeaponEnhancement> getWeaponEnhancements() {
-        return weaponEnhancements;
+        return enhancements;
     }
 
     private final Collection<WeaponEnhancement> getWeaponEnhancements(

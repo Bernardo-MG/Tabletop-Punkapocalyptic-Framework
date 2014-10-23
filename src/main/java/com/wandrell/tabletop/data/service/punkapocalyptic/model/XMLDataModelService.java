@@ -2,7 +2,9 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model;
 
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -10,8 +12,8 @@ import org.jdom2.Document;
 
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
@@ -29,14 +31,12 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ModelInp
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorInitializersCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseEquipmentCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseFactionUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseFactionsCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseInitialArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseMeleeWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRangedWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRulesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitArmorAvailabilitiesCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitAvailabilitiesCommand;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitEquipmentAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitGangConstraintsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitWeaponAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitsCommand;
@@ -48,11 +48,11 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
-    private Map<String, UnitArmorAvailability>        availabilitiesArmor;
-    private Map<String, UnitWeaponAvailability>       availabilitiesWeapon;
-    private final CommandExecutor                     executor;
-    private Map<String, Faction>                      factions;
-    private Map<String, Collection<AvailabilityUnit>> factionUnits;
+    private Map<String, UnitArmorAvailability>     availabilitiesArmor;
+    private Map<String, UnitEquipmentAvailability> availabilitiesEquipment;
+    private Map<String, UnitWeaponAvailability>    availabilitiesWeapon;
+    private final CommandExecutor                  executor;
+    private Map<String, Faction>                   factions;
 
     public XMLDataModelService(final CommandExecutor executor) {
         super();
@@ -62,21 +62,28 @@ public final class XMLDataModelService implements DataModelService {
 
     @Override
     public final Collection<Faction> getAllFactions() {
-        if (factions == null) {
-            build();
-        }
-
-        return factions.values();
+        return getFactions().values();
     }
 
     @Override
-    public final Collection<AvailabilityUnit> getFactionUnits(
-            final String faction) {
-        if (factionUnits == null) {
-            build();
+    public final Collection<Unit> getFactionUnits(final String faction) {
+        final JXPathContext context;
+        final Faction fact;
+        final String query;
+        final Collection<Unit> result;
+        Object obj;
+
+        fact = getFactions().get(faction);
+        context = JXPathContext.newContext(fact);
+        query = "units/unit";
+
+        result = new LinkedList<>();
+        for (final Iterator<?> itr = context.iterate(query); itr.hasNext();) {
+            obj = itr.next();
+            result.add((Unit) obj);
         }
 
-        return factionUnits.get(faction);
+        return result;
     }
 
     @Override
@@ -107,6 +114,16 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     @Override
+    public final UnitEquipmentAvailability getUnitEquipmentAvailability(
+            final String unit) {
+        if (availabilitiesEquipment == null) {
+            build();
+        }
+
+        return availabilitiesEquipment.get(unit);
+    }
+
+    @Override
     public final UnitWeaponAvailability getUnitWeaponAvailability(
             final String unit) {
         if (availabilitiesWeapon == null) {
@@ -133,6 +150,10 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     private final Map<String, Faction> getFactions() {
+        if (factions == null) {
+            build();
+        }
+
         return factions;
     }
 
@@ -147,8 +168,6 @@ public final class XMLDataModelService implements DataModelService {
         final Map<String, Unit> units;
         final Map<String, Equipment> equipment;
         final Map<String, WeaponEnhancement> enhancements;
-        final Map<String, AvailabilityUnit> unitAvailabilities;
-        final Map<String, Armor> armorInitial;
         final Map<String, Interval> weaponIntervals;
 
         constraintsUnitGang = getExecutor().execute(
@@ -179,15 +198,8 @@ public final class XMLDataModelService implements DataModelService {
         enhancements = getExecutor().execute(
                 new ParseWeaponEnhancementsCommand(doc));
 
-        armorInitial = getExecutor().execute(
-                new ParseInitialArmorsCommand(doc, armors));
-
         weaponIntervals = getExecutor().execute(
                 new ParseWeaponIntervalsCommand(doc));
-
-        unitAvailabilities = getExecutor().execute(
-                new ParseUnitAvailabilitiesCommand(doc, units, armorInitial,
-                        equipment, enhancements));
 
         availabilitiesWeapon = getExecutor().execute(
                 new ParseUnitWeaponAvailabilitiesCommand(doc, units, weapons,
@@ -195,6 +207,10 @@ public final class XMLDataModelService implements DataModelService {
 
         availabilitiesArmor = getExecutor().execute(
                 new ParseUnitArmorAvailabilitiesCommand(doc, units, armors));
+
+        availabilitiesEquipment = getExecutor().execute(
+                new ParseUnitEquipmentAvailabilitiesCommand(doc, units,
+                        equipment, enhancements));
 
         getExecutor()
                 .execute(new ParseWeaponsRulesCommand(doc, weapons, rules));
@@ -204,9 +220,6 @@ public final class XMLDataModelService implements DataModelService {
         getExecutor().execute(
                 new LoadFactionUnitsCommand(doc, factions.values(), units,
                         constraintsUnitGang));
-
-        factionUnits = getExecutor().execute(
-                new ParseFactionUnitsCommand(doc, unitAvailabilities));
     }
 
 }
