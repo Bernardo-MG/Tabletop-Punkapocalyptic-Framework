@@ -10,12 +10,10 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnitWrapper;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
@@ -29,13 +27,10 @@ public final class ParseUnitAvailabilitiesCommand implements
     private final Map<String, Equipment>         equipment;
     private final Map<String, Unit>              units;
     private final Map<String, WeaponEnhancement> weaponEnhancements;
-    private final Map<String, Interval>          weaponIntervals;
-    private final Map<String, Weapon>            weapons;
 
     public ParseUnitAvailabilitiesCommand(final Document doc,
             final Map<String, Unit> units, final Map<String, Armor> armor,
-            final Map<String, Armor> armors, final Map<String, Weapon> weapons,
-            final Map<String, Interval> weaponIntervals,
+            final Map<String, Armor> armors,
             final Map<String, Equipment> equipment,
             final Map<String, WeaponEnhancement> weaponEnhancements) {
         super();
@@ -44,8 +39,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         this.units = units;
         this.armor = armor;
         this.armors = armors;
-        this.weapons = weapons;
-        this.weaponIntervals = weaponIntervals;
         this.equipment = equipment;
         this.weaponEnhancements = weaponEnhancements;
     }
@@ -69,20 +62,15 @@ public final class ParseUnitAvailabilitiesCommand implements
     private final AvailabilityUnit buildAvailability(final Unit unit) {
         final AvailabilityUnit availability;
         final Collection<Armor> armors;
-        final Collection<Weapon> weapons;
-        final Interval weaponsInterval;
         final Collection<WeaponEnhancement> weaponEnhancements;
         final Collection<Equipment> equipment;
 
         armors = getArmors(unit.getUnitName());
-        weapons = getWeapons(unit.getUnitName());
-        weaponsInterval = getWeaponIntervals().get(unit.getUnitName());
         weaponEnhancements = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
-        availability = new AvailabilityUnitWrapper(unit, armors, weapons,
-                weaponsInterval.getLowerLimit(),
-                weaponsInterval.getUpperLimit(), weaponEnhancements, equipment);
+        availability = new AvailabilityUnitWrapper(unit, armors,
+                weaponEnhancements, equipment);
 
         availability.setArmor(getArmor().get(unit.getUnitName()));
 
@@ -173,32 +161,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         }
 
         return enhancements;
-    }
-
-    private final Map<String, Interval> getWeaponIntervals() {
-        return weaponIntervals;
-    }
-
-    private final Map<String, Weapon> getWeapons() {
-        return weapons;
-    }
-
-    private final Collection<Weapon> getWeapons(final String unit) {
-        final Collection<Weapon> weapons;
-        final Collection<Element> nodes;
-        final String expression;
-
-        expression = String.format(
-                "//unit_weapons/unit_weapon[unit='%s']/weapons/weapon", unit);
-        nodes = XPathFactory.instance().compile(expression, Filters.element())
-                .evaluate(getDocument());
-
-        weapons = new LinkedList<>();
-        for (final Element node : nodes) {
-            weapons.add(getWeapons().get(node.getText()));
-        }
-
-        return weapons;
     }
 
 }

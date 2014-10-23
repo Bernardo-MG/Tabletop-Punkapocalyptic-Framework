@@ -36,11 +36,8 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     private final Collection<Armor>             armorOptions       = new LinkedHashSet<>();
     private final Collection<Equipment>         equipment          = new LinkedHashSet<>();
-    private final Integer                       maxWeapons;
-    private final Integer                       minWeapons;
     private final Unit                          unit;
     private final Collection<WeaponEnhancement> weaponEnhancements = new LinkedHashSet<>();
-    private final Collection<Weapon>            weaponOptions      = new LinkedHashSet<>();
 
     public AvailabilityUnitWrapper(final AvailabilityUnitWrapper unit) {
         super();
@@ -50,41 +47,23 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
         this.unit = unit.unit.createNewInstance();
 
         armorOptions.addAll(unit.armorOptions);
-        weaponOptions.addAll(unit.weaponOptions);
-
-        minWeapons = unit.minWeapons;
-        maxWeapons = unit.maxWeapons;
     }
 
     public AvailabilityUnitWrapper(final Unit unit,
             final Collection<Armor> armorOptions,
-            final Collection<Weapon> weaponOptions, final Integer minWeapons,
-            final Integer maxWeapons,
             final Collection<WeaponEnhancement> weaponEnhancements,
             final Collection<Equipment> equipment) {
         super();
 
         checkNotNull(unit, "Received a null pointer as the unit");
         checkNotNull(armorOptions, "Received a null pointer as armor options");
-        checkNotNull(weaponOptions, "Received a null pointer as weapon options");
-        checkNotNull(minWeapons, "Received a null pointer as min weapons");
-        checkNotNull(maxWeapons, "Received a null pointer as max weapons");
 
         this.unit = unit;
-
-        this.maxWeapons = maxWeapons;
-        this.minWeapons = minWeapons;
 
         for (final Armor armor : armorOptions) {
             checkNotNull(armor, "Received a null pointer as armor");
 
             this.armorOptions.add(armor);
-        }
-
-        for (final Weapon weapon : weaponOptions) {
-            checkNotNull(weapon, "Received a null pointer as weapon");
-
-            this.weaponOptions.add(weapon);
         }
 
         for (final WeaponEnhancement enhancement : weaponEnhancements) {
@@ -193,16 +172,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     }
 
     @Override
-    public final Integer getMaxWeapons() {
-        return maxWeapons;
-    }
-
-    @Override
-    public final Integer getMinWeapons() {
-        return minWeapons;
-    }
-
-    @Override
     public final Integer getPrecision() {
         return getUnit().getPrecision();
     }
@@ -241,11 +210,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     public final Collection<WeaponEnhancement> getWeaponEnhancementOptions() {
         return Collections
                 .unmodifiableCollection(getWeaponEnhancementsModifiable());
-    }
-
-    @Override
-    public final Collection<Weapon> getWeaponOptions() {
-        return Collections.unmodifiableCollection(getWeaponOptionsModifiable());
     }
 
     @Override
@@ -301,10 +265,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     private final Collection<WeaponEnhancement>
             getWeaponEnhancementsModifiable() {
         return weaponEnhancements;
-    }
-
-    private final Collection<Weapon> getWeaponOptionsModifiable() {
-        return weaponOptions;
     }
 
 }

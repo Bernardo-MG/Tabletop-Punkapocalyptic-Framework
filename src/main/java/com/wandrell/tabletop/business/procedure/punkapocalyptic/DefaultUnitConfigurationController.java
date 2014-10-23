@@ -6,7 +6,8 @@ import java.util.EventObject;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfigurationListener;
@@ -14,9 +15,10 @@ import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfig
 public final class DefaultUnitConfigurationController implements
         UnitConfigurationController {
 
+    private UnitWeaponAvailability  availabilityWeapon;
     private final String            compulsoryWeaponsError;
     private final EventListenerList listeners         = new EventListenerList();
-    private AvailabilityUnit        unit;
+    private Unit                    unit;
     private String                  validationMessage = "";
 
     public DefaultUnitConfigurationController(
@@ -46,7 +48,7 @@ public final class DefaultUnitConfigurationController implements
     }
 
     @Override
-    public final AvailabilityUnit getUnit() {
+    public final Unit getUnit() {
         return unit;
     }
 
@@ -68,10 +70,12 @@ public final class DefaultUnitConfigurationController implements
     }
 
     @Override
-    public final void setUnit(final AvailabilityUnit unit) {
+    public final void setUnit(final Unit unit,
+            final UnitWeaponAvailability availability) {
         checkNotNull(unit, "Received a null pointer as unit");
 
         this.unit = unit;
+        availabilityWeapon = availability;
 
         fireUnitSelectedEvent(new UnitEvent(this, getUnit()));
 
@@ -84,11 +88,12 @@ public final class DefaultUnitConfigurationController implements
         final Boolean valid;
 
         textErrors = new StringBuilder();
-        if (getUnit().getWeapons().size() < getUnit().getMinWeapons()) {
+        if (getUnit().getWeapons().size() < getUnitWeaponAvailability()
+                .getMinWeapons()) {
             valid = false;
             textErrors.append(String.format(
-                    getCompulsoryWeaponsErrorMessageTemplate(), getUnit()
-                            .getMinWeapons()));
+                    getCompulsoryWeaponsErrorMessageTemplate(),
+                    getUnitWeaponAvailability().getMinWeapons()));
         } else {
             valid = true;
         }
@@ -149,6 +154,10 @@ public final class DefaultUnitConfigurationController implements
 
     private final EventListenerList getListeners() {
         return listeners;
+    }
+
+    private final UnitWeaponAvailability getUnitWeaponAvailability() {
+        return availabilityWeapon;
     }
 
     private final void setValidationMessage(final String message) {
