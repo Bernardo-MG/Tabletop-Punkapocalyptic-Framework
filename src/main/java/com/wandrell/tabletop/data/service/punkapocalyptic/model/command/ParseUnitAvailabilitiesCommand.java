@@ -22,7 +22,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         ReturnCommand<Map<String, AvailabilityUnit>> {
 
     private final Map<String, Armor>             armor;
-    private final Map<String, Armor>             armors;
     private final Document                       document;
     private final Map<String, Equipment>         equipment;
     private final Map<String, Unit>              units;
@@ -30,7 +29,6 @@ public final class ParseUnitAvailabilitiesCommand implements
 
     public ParseUnitAvailabilitiesCommand(final Document doc,
             final Map<String, Unit> units, final Map<String, Armor> armor,
-            final Map<String, Armor> armors,
             final Map<String, Equipment> equipment,
             final Map<String, WeaponEnhancement> weaponEnhancements) {
         super();
@@ -38,7 +36,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         document = doc;
         this.units = units;
         this.armor = armor;
-        this.armors = armors;
         this.equipment = equipment;
         this.weaponEnhancements = weaponEnhancements;
     }
@@ -61,16 +58,14 @@ public final class ParseUnitAvailabilitiesCommand implements
 
     private final AvailabilityUnit buildAvailability(final Unit unit) {
         final AvailabilityUnit availability;
-        final Collection<Armor> armors;
         final Collection<WeaponEnhancement> weaponEnhancements;
         final Collection<Equipment> equipment;
 
-        armors = getArmors(unit.getUnitName());
         weaponEnhancements = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
-        availability = new AvailabilityUnitWrapper(unit, armors,
-                weaponEnhancements, equipment);
+        availability = new AvailabilityUnitWrapper(unit, weaponEnhancements,
+                equipment);
 
         availability.setArmor(getArmor().get(unit.getUnitName()));
 
@@ -79,32 +74,6 @@ public final class ParseUnitAvailabilitiesCommand implements
 
     private final Map<String, Armor> getArmor() {
         return armor;
-    }
-
-    private final Map<String, Armor> getArmors() {
-        return armors;
-    }
-
-    private final Collection<Armor> getArmors(final String unit) {
-        final Collection<Armor> armors;
-        final Collection<Element> nodes;
-        final String expression;
-        Armor armor;
-
-        armors = new LinkedList<>();
-
-        expression = String.format(
-                "//unit_armors/unit_armor[unit='%s']/armors/armor", unit);
-        nodes = XPathFactory.instance().compile(expression, Filters.element())
-                .evaluate(getDocument());
-
-        for (final Element node : nodes) {
-            armor = getArmors().get(node.getChildText("name"));
-            armor.setCost(Integer.parseInt(node.getChildText("cost")));
-            armors.add(armor);
-        }
-
-        return armors;
     }
 
     private final Document getDocument() {

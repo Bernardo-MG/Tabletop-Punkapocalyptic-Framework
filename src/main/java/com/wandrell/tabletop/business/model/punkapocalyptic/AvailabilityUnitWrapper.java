@@ -34,7 +34,6 @@ import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 
 public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
-    private final Collection<Armor>             armorOptions       = new LinkedHashSet<>();
     private final Collection<Equipment>         equipment          = new LinkedHashSet<>();
     private final Unit                          unit;
     private final Collection<WeaponEnhancement> weaponEnhancements = new LinkedHashSet<>();
@@ -45,26 +44,16 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
         checkNotNull(unit, "Received a null pointer as the unit");
 
         this.unit = unit.unit.createNewInstance();
-
-        armorOptions.addAll(unit.armorOptions);
     }
 
     public AvailabilityUnitWrapper(final Unit unit,
-            final Collection<Armor> armorOptions,
             final Collection<WeaponEnhancement> weaponEnhancements,
             final Collection<Equipment> equipment) {
         super();
 
         checkNotNull(unit, "Received a null pointer as the unit");
-        checkNotNull(armorOptions, "Received a null pointer as armor options");
 
         this.unit = unit;
-
-        for (final Armor armor : armorOptions) {
-            checkNotNull(armor, "Received a null pointer as armor");
-
-            this.armorOptions.add(armor);
-        }
 
         for (final WeaponEnhancement enhancement : weaponEnhancements) {
             checkNotNull(enhancement,
@@ -143,11 +132,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     @Override
     public final Armor getArmor() {
         return getUnit().getArmor();
-    }
-
-    @Override
-    public final Collection<Armor> getArmorOptions() {
-        return Collections.unmodifiableCollection(getArmorOptionsModifiable());
     }
 
     @Override
@@ -248,10 +232,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     public final String toString() {
         return MoreObjects.toStringHelper(this).add("name", getUnitName())
                 .toString();
-    }
-
-    private final Collection<Armor> getArmorOptionsModifiable() {
-        return armorOptions;
     }
 
     private final Collection<Equipment> getEquipmentOptionsModifiable() {

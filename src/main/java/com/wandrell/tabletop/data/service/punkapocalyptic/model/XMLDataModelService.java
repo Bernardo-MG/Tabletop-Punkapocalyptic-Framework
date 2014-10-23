@@ -11,6 +11,7 @@ import org.jdom2.Document;
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
@@ -34,6 +35,7 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseIni
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseMeleeWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRangedWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRulesCommand;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitArmorAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitGangConstraintsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitWeaponAvailabilitiesCommand;
@@ -46,6 +48,7 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
+    private Map<String, UnitArmorAvailability>        availabilitiesArmor;
     private Map<String, UnitWeaponAvailability>       availabilitiesWeapon;
     private final CommandExecutor                     executor;
     private Map<String, Faction>                      factions;
@@ -74,6 +77,16 @@ public final class XMLDataModelService implements DataModelService {
         }
 
         return factionUnits.get(faction);
+    }
+
+    @Override
+    public final UnitArmorAvailability getUnitArmorAvailability(
+            final String unit) {
+        if (availabilitiesArmor == null) {
+            build();
+        }
+
+        return availabilitiesArmor.get(unit);
     }
 
     @SuppressWarnings("unchecked")
@@ -174,11 +187,14 @@ public final class XMLDataModelService implements DataModelService {
 
         unitAvailabilities = getExecutor().execute(
                 new ParseUnitAvailabilitiesCommand(doc, units, armorInitial,
-                        armors, equipment, enhancements));
+                        equipment, enhancements));
 
         availabilitiesWeapon = getExecutor().execute(
                 new ParseUnitWeaponAvailabilitiesCommand(doc, units, weapons,
                         weaponIntervals));
+
+        availabilitiesArmor = getExecutor().execute(
+                new ParseUnitArmorAvailabilitiesCommand(doc, units, armors));
 
         getExecutor()
                 .execute(new ParseWeaponsRulesCommand(doc, weapons, rules));
