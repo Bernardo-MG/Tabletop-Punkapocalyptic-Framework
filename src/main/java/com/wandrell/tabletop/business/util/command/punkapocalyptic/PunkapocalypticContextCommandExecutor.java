@@ -7,13 +7,13 @@ import com.wandrell.service.swing.layout.LayoutService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.dao.FactionDAOAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LayoutServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.tabletop.data.persistence.punkapocalyptic.FactionDAO;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
@@ -21,12 +21,12 @@ import com.wandrell.util.command.ReturnCommand;
 public final class PunkapocalypticContextCommandExecutor implements
         CommandExecutor {
 
-    private FactionDAO             daoFaction;
     private final CommandExecutor  executor;
     private ApplicationInfoService serviceApplicationInfo;
     private FileService            serviceFile;
     private LayoutService          serviceLayout;
     private LocalizationService    serviceLocalization;
+    private DataModelService       serviceModelData;
     private RulesetService         serviceRuleset;
 
     public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
@@ -63,10 +63,11 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceApplicationInfo = service;
     }
 
-    public final void setFactionDAO(final FactionDAO dao) {
-        checkNotNull(dao, "Received a null pointer as faction DAO");
+    public final void setDataModelService(final DataModelService service) {
+        checkNotNull(service,
+                "Received a null pointer as the model data service");
 
-        daoFaction = dao;
+        serviceModelData = service;
     }
 
     public final void setFileService(final FileService service) {
@@ -101,10 +102,6 @@ public final class PunkapocalypticContextCommandExecutor implements
         return executor;
     }
 
-    private final FactionDAO getFactionDAO() {
-        return daoFaction;
-    }
-
     private final FileService getFileService() {
         return serviceFile;
     }
@@ -115,6 +112,10 @@ public final class PunkapocalypticContextCommandExecutor implements
 
     private final LocalizationService getLocalizationService() {
         return serviceLocalization;
+    }
+
+    private final DataModelService getModelDataService() {
+        return serviceModelData;
     }
 
     private final RulesetService getRulesetService() {
@@ -145,8 +146,9 @@ public final class PunkapocalypticContextCommandExecutor implements
             ((FileServiceAware) command).setFileService(getFileService());
         }
 
-        if (command instanceof FactionDAOAware) {
-            ((FactionDAOAware) command).setFactionDAO(getFactionDAO());
+        if (command instanceof DataModelServiceAware) {
+            ((DataModelServiceAware) command)
+                    .setModelDataService(getModelDataService());
         }
     }
 

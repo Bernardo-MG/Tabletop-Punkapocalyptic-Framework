@@ -10,31 +10,32 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ConstraintsConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToACountConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
-public class ParseGangConstraintsCommand implements
-        ReturnCommand<Map<String, GangConstraint>>, LocalizationServiceAware {
+public class ParseUnitGangConstraintsCommand implements
+        ReturnCommand<Map<String, UnitGangConstraint>>,
+        LocalizationServiceAware {
 
     private final Document      document;
     private LocalizationService serviceLocalization;
 
-    public ParseGangConstraintsCommand(final Document doc) {
+    public ParseUnitGangConstraintsCommand(final Document doc) {
         super();
 
         document = doc;
     }
 
     @Override
-    public final Map<String, GangConstraint> execute() throws Exception {
-        final Map<String, GangConstraint> constraints;
-        final Map<String, GangConstraint> result;
+    public final Map<String, UnitGangConstraint> execute() throws Exception {
+        final Map<String, UnitGangConstraint> constraints;
+        final Map<String, UnitGangConstraint> result;
         final Collection<Element> nodes;
-        GangConstraint constraint;
+        UnitGangConstraint constraint;
 
         // TODO: Use Spring
         constraints = new LinkedHashMap<>();
@@ -69,12 +70,12 @@ public class ParseGangConstraintsCommand implements
         return serviceLocalization;
     }
 
-    private final GangConstraint getUniqueConstraint() {
+    private final UnitGangConstraint getUniqueConstraint() {
         return new UnitUpToACountConstraint("unique", 1,
                 getLocalizationService());
     }
 
-    private final GangConstraint getUpToHalfPointsConstraint() {
+    private final UnitGangConstraint getUpToHalfPointsConstraint() {
         return new UnitUpToHalfGangLimitConstraint(getLocalizationService());
     }
 

@@ -27,7 +27,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitListener;
@@ -36,7 +35,6 @@ import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     private final Collection<Armor>             armorOptions       = new LinkedHashSet<>();
-    private final Collection<GangConstraint>    constraints        = new LinkedHashSet<>();
     private final Collection<Equipment>         equipment          = new LinkedHashSet<>();
     private final Integer                       maxWeapons;
     private final Integer                       minWeapons;
@@ -53,7 +51,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
         armorOptions.addAll(unit.armorOptions);
         weaponOptions.addAll(unit.weaponOptions);
-        constraints.addAll(unit.constraints);
 
         minWeapons = unit.minWeapons;
         maxWeapons = unit.maxWeapons;
@@ -63,7 +60,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
             final Collection<Armor> armorOptions,
             final Collection<Weapon> weaponOptions, final Integer minWeapons,
             final Integer maxWeapons,
-            final Collection<GangConstraint> constraints,
             final Collection<WeaponEnhancement> weaponEnhancements,
             final Collection<Equipment> equipment) {
         super();
@@ -73,7 +69,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
         checkNotNull(weaponOptions, "Received a null pointer as weapon options");
         checkNotNull(minWeapons, "Received a null pointer as min weapons");
         checkNotNull(maxWeapons, "Received a null pointer as max weapons");
-        checkNotNull(constraints, "Received a null pointer as constraints");
 
         this.unit = unit;
 
@@ -90,12 +85,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
             checkNotNull(weapon, "Received a null pointer as weapon");
 
             this.weaponOptions.add(weapon);
-        }
-
-        for (final GangConstraint constraint : constraints) {
-            checkNotNull(constraint, "Received a null pointer as constraint");
-
-            this.constraints.add(constraint);
         }
 
         for (final WeaponEnhancement enhancement : weaponEnhancements) {
@@ -190,11 +179,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
     @Override
     public final Integer getCombat() {
         return getUnit().getCombat();
-    }
-
-    @Override
-    public final Collection<GangConstraint> getConstraints() {
-        return Collections.unmodifiableCollection(getConstraintsModifiable());
     }
 
     @Override
@@ -304,10 +288,6 @@ public final class AvailabilityUnitWrapper implements AvailabilityUnit {
 
     private final Collection<Armor> getArmorOptionsModifiable() {
         return armorOptions;
-    }
-
-    private final Collection<GangConstraint> getConstraintsModifiable() {
-        return constraints;
     }
 
     private final Collection<Equipment> getEquipmentOptionsModifiable() {

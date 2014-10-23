@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import org.jdom2.Element;
 
-import com.wandrell.util.parser.module.interpreter.JDOMFilteredXMLInterpreter.FilteredNodesParser;
+import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesParser;
 
 public final class MaxAllowedUnitsNodesReader implements
         FilteredNodesParser<Collection<Collection<Integer>>> {

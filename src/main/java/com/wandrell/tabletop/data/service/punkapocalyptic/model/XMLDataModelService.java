@@ -7,9 +7,12 @@ import java.util.Map;
 
 import org.jdom2.Document;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
@@ -17,22 +20,23 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapo
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.LoadFactionUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ModelInputStreamsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorInitializersCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseEquipmentCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseFactionUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseFactionsCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseGangConstraintsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseInitialArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseMeleeWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRangedWeaponsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRulesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitAvailabilitiesCommand;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitGangConstraintsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseWeaponEnhancementsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseWeaponIntervalsCommand;
@@ -40,35 +44,65 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseWea
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
-public final class XMLPunkapocalypticModelDataService implements
-        PunkapocalypticModelDataService {
+public final class XMLDataModelService implements DataModelService {
 
     private final CommandExecutor                     executor;
     private Map<String, Faction>                      factions;
     private Map<String, Collection<AvailabilityUnit>> factionUnits;
 
-    public XMLPunkapocalypticModelDataService(final CommandExecutor executor) {
+    public XMLDataModelService(final CommandExecutor executor) {
         super();
 
         this.executor = executor;
     }
 
     @Override
-    public final Map<String, Faction> getFactions() {
+    public final Collection<Faction> getAllFactions() {
         if (factions == null) {
             build();
         }
 
-        return factions;
+        return factions.values();
     }
 
     @Override
-    public final Map<String, Collection<AvailabilityUnit>> getFactionUnits() {
+    public final Collection<AvailabilityUnit> getFactionUnits(
+            final String faction) {
         if (factionUnits == null) {
             build();
         }
 
-        return factionUnits;
+        return factionUnits.get(faction);
+    }
+
+    @Override
+    public final Collection<UnitGangConstraint> getUnitConstraints(
+            final String unit, final String faction) {
+        final Faction fact;
+        final Collection<FactionUnitAvailability> avas;
+        final Collection<UnitGangConstraint> constraints;
+        final Predicate<FactionUnitAvailability> predicate;
+
+        fact = getFactions().get(faction);
+
+        predicate = new Predicate<FactionUnitAvailability>() {
+
+            @Override
+            public final boolean apply(final FactionUnitAvailability input) {
+                return input.getUnit().getUnitName().equals(unit);
+            }
+
+        };
+
+        avas = Collections2.filter(fact.getUnits(), predicate);
+
+        if (avas.isEmpty()) {
+            constraints = null;
+        } else {
+            constraints = avas.iterator().next().getConstraints();
+        }
+
+        return constraints;
     }
 
     private final void build() {
@@ -87,8 +121,12 @@ public final class XMLPunkapocalypticModelDataService implements
         return executor;
     }
 
+    private final Map<String, Faction> getFactions() {
+        return factions;
+    }
+
     private final void parseModel(final Document doc) {
-        final Map<String, GangConstraint> constraintsGang;
+        final Map<String, UnitGangConstraint> constraintsUnitGang;
         final Map<String, ArmorInitializerModifier> initializersArmor;
         final Map<String, MeleeWeapon> weaponsMelee;
         final Map<String, RangedWeapon> weaponsRanged;
@@ -102,8 +140,8 @@ public final class XMLPunkapocalypticModelDataService implements
         final Map<String, Armor> armorInitial;
         final Map<String, Interval> weaponIntervals;
 
-        constraintsGang = getExecutor().execute(
-                new ParseGangConstraintsCommand(doc));
+        constraintsUnitGang = getExecutor().execute(
+                new ParseUnitGangConstraintsCommand(doc));
         initializersArmor = getExecutor().execute(
                 new ParseArmorInitializersCommand(doc));
 
@@ -138,13 +176,18 @@ public final class XMLPunkapocalypticModelDataService implements
 
         unitAvailabilities = getExecutor().execute(
                 new ParseUnitAvailabilitiesCommand(doc, units, armorInitial,
-                        armors, weapons, weaponIntervals, constraintsGang,
-                        equipment, enhancements));
+                        armors, weapons, weaponIntervals, equipment,
+                        enhancements));
 
         getExecutor()
                 .execute(new ParseWeaponsRulesCommand(doc, weapons, rules));
 
         factions = getExecutor().execute(new ParseFactionsCommand(doc));
+
+        getExecutor().execute(
+                new LoadFactionUnitsCommand(doc, factions.values(), units,
+                        constraintsUnitGang));
+
         factionUnits = getExecutor().execute(
                 new ParseFactionUnitsCommand(doc, unitAvailabilities));
     }

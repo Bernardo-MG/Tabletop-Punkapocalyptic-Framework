@@ -8,7 +8,6 @@ import java.util.LinkedHashSet;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.AvailabilityUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -19,6 +18,7 @@ import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultArmyBuilderController implements
         ArmyBuilderController {
@@ -28,23 +28,27 @@ public final class DefaultArmyBuilderController implements
     private final Gang                        gang;
     private final EventListenerList           listeners         = new EventListenerList();
     private final ValueHandler                maxUnits;
+    private final DataModelService            serviceModel;
     private final String                      tooManyUnitsMessage;
     private String                            validationMessage = "";
 
     public DefaultArmyBuilderController(
             final UnitConfigurationController controller, final Gang gang,
-            final ValueHandler maxUnits, final String tooManyUnitsMessage) {
+            final ValueHandler maxUnits, final String tooManyUnitsMessage,
+            final DataModelService serviceModel) {
         super();
 
         checkNotNull(controller, "Received a null pointer as controller");
         checkNotNull(gang, "Received a null pointer as gang");
         checkNotNull(maxUnits, "Received a null pointer as max units");
         checkNotNull(tooManyUnitsMessage, "Received a null pointer as message");
+        checkNotNull(serviceModel, "Received a null pointer as model service");
 
         this.controller = controller;
         this.gang = gang;
         this.maxUnits = maxUnits;
         this.tooManyUnitsMessage = tooManyUnitsMessage;
+        this.serviceModel = serviceModel;
 
         ((AbstractValueHandler) gang.getBullets())
                 .addValueEventListener(new ValueHandlerListener() {
@@ -61,7 +65,9 @@ public final class DefaultArmyBuilderController implements
             @Override
             public final void unitAdded(final UnitEvent e) {
                 getConstraints().addAll(
-                        ((AvailabilityUnit) e.getUnit()).getConstraints());
+                        getDataModelService().getUnitConstraints(
+                                e.getUnit().getUnitName(),
+                                getGang().getFaction().getName()));
 
                 validate();
             }
@@ -71,7 +77,9 @@ public final class DefaultArmyBuilderController implements
                 getConstraints().clear();
                 for (final Unit unit : getGang().getUnits()) {
                     getConstraints().addAll(
-                            ((AvailabilityUnit) unit).getConstraints());
+                            getDataModelService().getUnitConstraints(
+                                    unit.getUnitName(),
+                                    getGang().getFaction().getName()));
                 }
 
                 validate();
@@ -160,6 +168,10 @@ public final class DefaultArmyBuilderController implements
 
     private final Collection<GangConstraint> getConstraints() {
         return constraints;
+    }
+
+    private final DataModelService getDataModelService() {
+        return serviceModel;
     }
 
     private final EventListenerList getListeners() {

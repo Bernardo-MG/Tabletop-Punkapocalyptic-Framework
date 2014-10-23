@@ -9,10 +9,10 @@ import org.springframework.context.ApplicationContext;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ParameterContext;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.RulesetParametersConf;
-import com.wandrell.testing.TestUtils;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
 import com.wandrell.util.ResourceUtils;
+import com.wandrell.util.TestUtils;
 
 public final class RulesetParametersFactory {
 

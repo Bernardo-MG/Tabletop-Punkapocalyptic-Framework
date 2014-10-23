@@ -17,7 +17,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
 
@@ -26,7 +25,6 @@ public final class ParseUnitAvailabilitiesCommand implements
 
     private final Map<String, Armor>             armor;
     private final Map<String, Armor>             armors;
-    private final Map<String, GangConstraint>    constraints;
     private final Document                       document;
     private final Map<String, Equipment>         equipment;
     private final Map<String, Unit>              units;
@@ -38,7 +36,6 @@ public final class ParseUnitAvailabilitiesCommand implements
             final Map<String, Unit> units, final Map<String, Armor> armor,
             final Map<String, Armor> armors, final Map<String, Weapon> weapons,
             final Map<String, Interval> weaponIntervals,
-            final Map<String, GangConstraint> constraints,
             final Map<String, Equipment> equipment,
             final Map<String, WeaponEnhancement> weaponEnhancements) {
         super();
@@ -49,7 +46,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         this.armors = armors;
         this.weapons = weapons;
         this.weaponIntervals = weaponIntervals;
-        this.constraints = constraints;
         this.equipment = equipment;
         this.weaponEnhancements = weaponEnhancements;
     }
@@ -75,21 +71,18 @@ public final class ParseUnitAvailabilitiesCommand implements
         final Collection<Armor> armors;
         final Collection<Weapon> weapons;
         final Interval weaponsInterval;
-        final Collection<GangConstraint> constraints;
         final Collection<WeaponEnhancement> weaponEnhancements;
         final Collection<Equipment> equipment;
 
         armors = getArmors(unit.getUnitName());
         weapons = getWeapons(unit.getUnitName());
         weaponsInterval = getWeaponIntervals().get(unit.getUnitName());
-        constraints = getConstraints(unit.getUnitName());
         weaponEnhancements = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
         availability = new AvailabilityUnitWrapper(unit, armors, weapons,
                 weaponsInterval.getLowerLimit(),
-                weaponsInterval.getUpperLimit(), constraints,
-                weaponEnhancements, equipment);
+                weaponsInterval.getUpperLimit(), weaponEnhancements, equipment);
 
         availability.setArmor(getArmor().get(unit.getUnitName()));
 
@@ -124,28 +117,6 @@ public final class ParseUnitAvailabilitiesCommand implements
         }
 
         return armors;
-    }
-
-    private final Map<String, GangConstraint> getConstraints() {
-        return constraints;
-    }
-
-    private final Collection<GangConstraint> getConstraints(final String unit) {
-        final Collection<GangConstraint> constraints;
-        final Collection<Element> nodes;
-        final String expression;
-
-        expression = String.format(
-                "//unit_availability/units/unit[name='%s']/constraints", unit);
-        nodes = XPathFactory.instance().compile(expression, Filters.element())
-                .evaluate(getDocument());
-
-        constraints = new LinkedList<>();
-        for (final Element node : nodes) {
-            constraints.add(getConstraints().get(node.getText()));
-        }
-
-        return constraints;
     }
 
     private final Document getDocument() {
