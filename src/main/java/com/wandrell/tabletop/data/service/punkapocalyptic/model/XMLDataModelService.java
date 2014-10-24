@@ -1,5 +1,6 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.InputStream;
@@ -29,7 +30,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.Arm
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.LoadFactionUnitsCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ModelInputStreamsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorInitializersCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseEquipmentCommand;
@@ -55,13 +55,20 @@ public final class XMLDataModelService implements DataModelService {
     private Map<String, UnitWeaponAvailability>    avaWeapon;
     private final CommandExecutor                  executor;
     private Map<String, Faction>                   factions;
+    private final Collection<InputStream>          sources;
 
-    public XMLDataModelService(final CommandExecutor executor) {
+    public XMLDataModelService(final CommandExecutor executor,
+            final Collection<InputStream> sources) {
         super();
 
         checkNotNull(executor, "Received a null pointer as executor");
+        checkNotNull(sources, "Received a null pointer as sources");
+
+        checkArgument((sources.size() % 2) == 0,
+                "The sources should be an even number");
 
         this.executor = executor;
+        this.sources = sources;
     }
 
     @Override
@@ -97,11 +104,7 @@ public final class XMLDataModelService implements DataModelService {
             final String unit) {
         checkNotNull(unit, "Received a null pointer as unit name");
 
-        if (avaArmor == null) {
-            build();
-        }
-
-        return avaArmor.get(unit);
+        return getArmorAvailabilities().get(unit);
     }
 
     @SuppressWarnings("unchecked")
@@ -129,11 +132,7 @@ public final class XMLDataModelService implements DataModelService {
             final String unit) {
         checkNotNull(unit, "Received a null pointer as unit name");
 
-        if (avaEquipment == null) {
-            build();
-        }
-
-        return avaEquipment.get(unit);
+        return getEquipmentAvailabilities().get(unit);
     }
 
     @Override
@@ -141,23 +140,24 @@ public final class XMLDataModelService implements DataModelService {
             final String unit) {
         checkNotNull(unit, "Received a null pointer as unit name");
 
-        if (avaWeapon == null) {
-            build();
+        return getWeaponAvailabilities().get(unit);
+    }
+
+    private final Map<String, UnitArmorAvailability> getArmorAvailabilities() {
+        if (avaArmor == null) {
+            initialize();
         }
 
-        return avaWeapon.get(unit);
+        return avaArmor;
     }
 
-    private final void build() {
-        parseModel(getDocument());
-    }
+    private final Map<String, UnitEquipmentAvailability>
+            getEquipmentAvailabilities() {
+        if (avaEquipment == null) {
+            initialize();
+        }
 
-    private final Document getDocument() {
-        final Map<InputStream, InputStream> sources;
-
-        sources = getExecutor().execute(new ModelInputStreamsCommand());
-
-        return getExecutor().execute(new JDOMCombineFilesCommand(sources));
+        return avaEquipment;
     }
 
     private final CommandExecutor getExecutor() {
@@ -166,10 +166,27 @@ public final class XMLDataModelService implements DataModelService {
 
     private final Map<String, Faction> getFactions() {
         if (factions == null) {
-            build();
+            initialize();
         }
 
         return factions;
+    }
+
+    private final Collection<InputStream> getSources() {
+        return sources;
+    }
+
+    private final Map<String, UnitWeaponAvailability> getWeaponAvailabilities() {
+        if (avaWeapon == null) {
+            initialize();
+        }
+
+        return avaWeapon;
+    }
+
+    private final void initialize() {
+        parseModel(getExecutor().execute(
+                new JDOMCombineFilesCommand(getSources())));
     }
 
     private final void parseModel(final Document doc) {
