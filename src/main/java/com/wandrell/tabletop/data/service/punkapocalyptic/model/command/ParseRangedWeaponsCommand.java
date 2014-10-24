@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +27,9 @@ public final class ParseRangedWeaponsCommand implements
 
     public ParseRangedWeaponsCommand(final Document doc, final MeleeWeapon melee) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(melee, "Received a null pointer as melee weapon");
 
         document = doc;
         this.melee = melee;

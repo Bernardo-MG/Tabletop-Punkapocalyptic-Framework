@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.business.conf.punkapocalyptic.factory;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.FirearmWeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
@@ -23,6 +25,9 @@ public final class PunkapocalypticFactory {
 
     public final EditableValueHandler getAttribute(final String name,
             final Integer value) {
+        checkNotNull(name, "Received a null pointer as name");
+        checkNotNull(value, "Received a null pointer as value");
+
         return new ModularEditableValueHandler(name, new DefaultGenerator(),
                 new DefaultIntervalModule(1, 10), new DefaultStore(value),
                 new IntervalValidator());
@@ -31,6 +36,9 @@ public final class PunkapocalypticFactory {
     public final WeaponEnhancement getWeaponEnhancement(final String name,
             final Integer cost) {
         final WeaponEnhancement enhancement;
+
+        checkNotNull(name, "Received a null pointer as name");
+        checkNotNull(cost, "Received a null pointer as cost");
 
         if ("bayonet".equals(name)) {
             enhancement = new FirearmWeaponEnhancement("bayonet", cost);

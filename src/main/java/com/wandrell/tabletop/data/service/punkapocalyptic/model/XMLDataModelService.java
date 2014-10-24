@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
@@ -57,6 +59,8 @@ public final class XMLDataModelService implements DataModelService {
     public XMLDataModelService(final CommandExecutor executor) {
         super();
 
+        checkNotNull(executor, "Received a null pointer as executor");
+
         this.executor = executor;
     }
 
@@ -72,6 +76,8 @@ public final class XMLDataModelService implements DataModelService {
         final String query;
         final Collection<Unit> result;
         Object obj;
+
+        checkNotNull(faction, "Received a null pointer as faction name");
 
         fact = getFactions().get(faction);
         context = JXPathContext.newContext(fact);
@@ -89,6 +95,8 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final UnitArmorAvailability getUnitArmorAvailability(
             final String unit) {
+        checkNotNull(unit, "Received a null pointer as unit name");
+
         if (avaArmor == null) {
             build();
         }
@@ -104,6 +112,9 @@ public final class XMLDataModelService implements DataModelService {
         final Faction fact;
         final String query;
 
+        checkNotNull(unit, "Received a null pointer as unit name");
+        checkNotNull(faction, "Received a null pointer as faction name");
+
         fact = getFactions().get(faction);
         context = JXPathContext.newContext(fact);
         query = "units[unit/unitName=$unit]/constraints";
@@ -116,6 +127,8 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final UnitEquipmentAvailability getUnitEquipmentAvailability(
             final String unit) {
+        checkNotNull(unit, "Received a null pointer as unit name");
+
         if (avaEquipment == null) {
             build();
         }
@@ -126,6 +139,8 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final UnitWeaponAvailability getUnitWeaponAvailability(
             final String unit) {
+        checkNotNull(unit, "Received a null pointer as unit name");
+
         if (avaWeapon == null) {
             build();
         }

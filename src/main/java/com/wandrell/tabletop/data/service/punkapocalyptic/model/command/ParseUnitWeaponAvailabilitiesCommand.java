@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -29,6 +31,12 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
             final Map<String, Unit> units, final Map<String, Weapon> weapons,
             final Map<String, Interval> weaponIntervals) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(units, "Received a null pointer as units");
+        checkNotNull(weapons, "Received a null pointer as weapons");
+        checkNotNull(weaponIntervals,
+                "Received a null pointer as weapon intervals");
 
         this.doc = doc;
         this.units = units;

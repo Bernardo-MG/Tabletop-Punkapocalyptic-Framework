@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,6 +22,8 @@ public final class ParseFactionsCommand implements
 
     public ParseFactionsCommand(final Document doc) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
 
         document = doc;
     }

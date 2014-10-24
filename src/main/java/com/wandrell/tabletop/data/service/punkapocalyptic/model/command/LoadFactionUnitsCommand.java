@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
@@ -27,6 +29,10 @@ public final class LoadFactionUnitsCommand implements Command {
             final Collection<Faction> factions, final Map<String, Unit> units,
             final Map<String, UnitGangConstraint> constraints) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(units, "Received a null pointer as units");
+        checkNotNull(constraints, "Received a null pointer as constraints");
 
         document = doc;
         this.units = units;

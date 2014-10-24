@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -27,6 +29,10 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
     public ParseUnitArmorAvailabilitiesCommand(final Document doc,
             final Map<String, Unit> units, final Map<String, Armor> armors) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(units, "Received a null pointer as units");
+        checkNotNull(armors, "Received a null pointer as armors");
 
         this.doc = doc;
         this.units = units;

@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +27,9 @@ public final class ParseRulesCommand implements
 
     public ParseRulesCommand(final Document doc, final MeleeWeapon weapon) {
         super();
+
+        checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(weapon, "Received a null pointer as weapon");
 
         document = doc;
         weaponDefault = weapon;
