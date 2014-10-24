@@ -56,13 +56,13 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
 
     private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
         final UnitEquipmentAvailability availability;
-        final Collection<WeaponEnhancement> weaponEnhancements;
+        final Collection<WeaponEnhancement> weaponEnh;
         final Collection<Equipment> equipment;
 
-        weaponEnhancements = getWeaponEnhancements(unit.getUnitName());
+        weaponEnh = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
-        availability = new DefaultUnitEquipmentAvailability(weaponEnhancements,
+        availability = new DefaultUnitEquipmentAvailability(weaponEnh,
                 equipment);
 
         return availability;

@@ -22,11 +22,11 @@ public final class PunkapocalypticContextCommandExecutor implements
         CommandExecutor {
 
     private final CommandExecutor  executor;
-    private ApplicationInfoService serviceApplicationInfo;
+    private ApplicationInfoService serviceAppInfo;
     private DataModelService       serviceDataModel;
     private FileService            serviceFile;
     private LayoutService          serviceLayout;
-    private LocalizationService    serviceLocalization;
+    private LocalizationService    serviceLoc;
     private RulesetService         serviceRuleset;
 
     public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
@@ -60,7 +60,7 @@ public final class PunkapocalypticContextCommandExecutor implements
         checkNotNull(service,
                 "Received a null pointer as application info service");
 
-        serviceApplicationInfo = service;
+        serviceAppInfo = service;
     }
 
     public final void setDataModelService(final DataModelService service) {
@@ -85,7 +85,7 @@ public final class PunkapocalypticContextCommandExecutor implements
     public final void setLocalizationService(final LocalizationService service) {
         checkNotNull(service, "Received a null pointer as localization service");
 
-        serviceLocalization = service;
+        serviceLoc = service;
     }
 
     public final void setRulesetService(final RulesetService service) {
@@ -95,7 +95,7 @@ public final class PunkapocalypticContextCommandExecutor implements
     }
 
     private final ApplicationInfoService getApplicationInfoService() {
-        return serviceApplicationInfo;
+        return serviceAppInfo;
     }
 
     private final DataModelService getDataModelService() {
@@ -115,7 +115,7 @@ public final class PunkapocalypticContextCommandExecutor implements
     }
 
     private final LocalizationService getLocalizationService() {
-        return serviceLocalization;
+        return serviceLoc;
     }
 
     private final RulesetService getRulesetService() {

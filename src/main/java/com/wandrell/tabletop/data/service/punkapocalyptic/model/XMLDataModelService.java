@@ -48,9 +48,9 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
-    private Map<String, UnitArmorAvailability>     availabilitiesArmor;
-    private Map<String, UnitEquipmentAvailability> availabilitiesEquipment;
-    private Map<String, UnitWeaponAvailability>    availabilitiesWeapon;
+    private Map<String, UnitArmorAvailability>     avaArmor;
+    private Map<String, UnitEquipmentAvailability> avaEquipment;
+    private Map<String, UnitWeaponAvailability>    avaWeapon;
     private final CommandExecutor                  executor;
     private Map<String, Faction>                   factions;
 
@@ -89,11 +89,11 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final UnitArmorAvailability getUnitArmorAvailability(
             final String unit) {
-        if (availabilitiesArmor == null) {
+        if (avaArmor == null) {
             build();
         }
 
-        return availabilitiesArmor.get(unit);
+        return avaArmor.get(unit);
     }
 
     @SuppressWarnings("unchecked")
@@ -116,21 +116,21 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final UnitEquipmentAvailability getUnitEquipmentAvailability(
             final String unit) {
-        if (availabilitiesEquipment == null) {
+        if (avaEquipment == null) {
             build();
         }
 
-        return availabilitiesEquipment.get(unit);
+        return avaEquipment.get(unit);
     }
 
     @Override
     public final UnitWeaponAvailability getUnitWeaponAvailability(
             final String unit) {
-        if (availabilitiesWeapon == null) {
+        if (avaWeapon == null) {
             build();
         }
 
-        return availabilitiesWeapon.get(unit);
+        return avaWeapon.get(unit);
     }
 
     private final void build() {
@@ -158,7 +158,7 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     private final void parseModel(final Document doc) {
-        final Map<String, UnitGangConstraint> constraintsUnitGang;
+        final Map<String, UnitGangConstraint> constUnitGang;
         final Map<String, ArmorInitializerModifier> initializersArmor;
         final Map<String, MeleeWeapon> weaponsMelee;
         final Map<String, RangedWeapon> weaponsRanged;
@@ -170,7 +170,7 @@ public final class XMLDataModelService implements DataModelService {
         final Map<String, WeaponEnhancement> enhancements;
         final Map<String, Interval> weaponIntervals;
 
-        constraintsUnitGang = getExecutor().execute(
+        constUnitGang = getExecutor().execute(
                 new ParseUnitGangConstraintsCommand(doc));
         initializersArmor = getExecutor().execute(
                 new ParseArmorInitializersCommand(doc));
@@ -201,14 +201,14 @@ public final class XMLDataModelService implements DataModelService {
         weaponIntervals = getExecutor().execute(
                 new ParseWeaponIntervalsCommand(doc));
 
-        availabilitiesWeapon = getExecutor().execute(
+        avaWeapon = getExecutor().execute(
                 new ParseUnitWeaponAvailabilitiesCommand(doc, units, weapons,
                         weaponIntervals));
 
-        availabilitiesArmor = getExecutor().execute(
+        avaArmor = getExecutor().execute(
                 new ParseUnitArmorAvailabilitiesCommand(doc, units, armors));
 
-        availabilitiesEquipment = getExecutor().execute(
+        avaEquipment = getExecutor().execute(
                 new ParseUnitEquipmentAvailabilitiesCommand(doc, units,
                         equipment, enhancements));
 
@@ -219,7 +219,7 @@ public final class XMLDataModelService implements DataModelService {
 
         getExecutor().execute(
                 new LoadFactionUnitsCommand(doc, factions.values(), units,
-                        constraintsUnitGang));
+                        constUnitGang));
     }
 
 }

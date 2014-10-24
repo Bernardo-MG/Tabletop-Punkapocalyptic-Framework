@@ -11,13 +11,9 @@ import com.wandrell.tabletop.business.model.valuehandler.module.validator.Interv
 
 public final class PunkapocalypticFactory {
 
-    private static PunkapocalypticFactory instance;
+    private static final PunkapocalypticFactory instance = new PunkapocalypticFactory();
 
-    public static final synchronized PunkapocalypticFactory getInstance() {
-        if (instance == null) {
-            instance = new PunkapocalypticFactory();
-        }
-
+    public static final PunkapocalypticFactory getInstance() {
         return instance;
     }
 
@@ -36,7 +32,7 @@ public final class PunkapocalypticFactory {
             final Integer cost) {
         final WeaponEnhancement enhancement;
 
-        if (name.equals("bayonet")) {
+        if ("bayonet".equals(name)) {
             enhancement = new FirearmWeaponEnhancement("bayonet", cost);
         } else {
             enhancement = null;

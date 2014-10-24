@@ -63,7 +63,7 @@ public final class ParseRangedWeaponsCommand implements
         final Element penetration;
         final Element range;
         final Element distanceCMNode;
-        final Element distanceInchesNode;
+        final Element distanceInchNode;
         final Integer strengthShort;
         final Integer strengthMedium;
         final Integer strengthLong;
@@ -103,15 +103,15 @@ public final class ParseRangedWeaponsCommand implements
 
         range = node.getChild(ModelNodeConf.RANGE);
 
-        distanceInchesNode = range.getChild(ModelNodeConf.INCHES);
-        distanceShortInches = Integer.parseInt(distanceInchesNode
+        distanceInchNode = range.getChild(ModelNodeConf.INCHES);
+        distanceShortInches = Integer.parseInt(distanceInchNode
                 .getChildText(ModelNodeConf.SHORT));
-        distanceMediumInches = Integer.parseInt(distanceInchesNode
+        distanceMediumInches = Integer.parseInt(distanceInchNode
                 .getChildText(ModelNodeConf.MEDIUM));
-        distanceLongInches = Integer.parseInt(distanceInchesNode
+        distanceLongInches = Integer.parseInt(distanceInchNode
                 .getChildText(ModelNodeConf.LONG));
 
-        distanceCMNode = range.getChild(ModelNodeConf.CM);
+        distanceCMNode = range.getChild(ModelNodeConf.CENTIMETERS);
         distanceShortCM = Integer.parseInt(distanceCMNode
                 .getChildText(ModelNodeConf.SHORT));
         distanceMediumCM = Integer.parseInt(distanceCMNode

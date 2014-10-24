@@ -15,20 +15,19 @@ import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfig
 public final class DefaultUnitConfigurationController implements
         UnitConfigurationController {
 
-    private UnitWeaponAvailability  availabilityWeapon;
-    private final String            compulsoryWeaponsError;
+    private UnitWeaponAvailability  avaWeapon;
+    private final String            compulsoryError;
     private final EventListenerList listeners         = new EventListenerList();
     private Unit                    unit;
     private String                  validationMessage = "";
 
-    public DefaultUnitConfigurationController(
-            final String compulsoryWeaponsError) {
+    public DefaultUnitConfigurationController(final String compulsoryError) {
         super();
 
-        checkNotNull(compulsoryWeaponsError,
+        checkNotNull(compulsoryError,
                 "Received a null pointer as error message");
 
-        this.compulsoryWeaponsError = compulsoryWeaponsError;
+        this.compulsoryError = compulsoryError;
     }
 
     @Override
@@ -75,7 +74,7 @@ public final class DefaultUnitConfigurationController implements
         checkNotNull(unit, "Received a null pointer as unit");
 
         this.unit = unit;
-        availabilityWeapon = availability;
+        avaWeapon = availability;
 
         fireUnitSelectedEvent(new UnitEvent(this, getUnit()));
 
@@ -110,37 +109,26 @@ public final class DefaultUnitConfigurationController implements
     }
 
     private final void fireUnitSelectedEvent(final UnitEvent evt) {
-        final UnitConfigurationListener[] ls;
+        final UnitConfigurationListener[] listnrs;
 
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
-
-        ls = getListeners().getListeners(UnitConfigurationListener.class);
-        for (final UnitConfigurationListener l : ls) {
+        listnrs = getListeners().getListeners(UnitConfigurationListener.class);
+        for (final UnitConfigurationListener l : listnrs) {
             l.unitSelected(evt);
         }
     }
 
     private final void fireValidationFailedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] ls;
+        final ProcedureValidationListener[] listnrs;
 
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
-
-        ls = getListeners().getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : ls) {
+        listnrs = getListeners()
+                .getListeners(ProcedureValidationListener.class);
+        for (final ProcedureValidationListener l : listnrs) {
             l.validationFailed(evt);
         }
     }
 
     private final void fireValidationPassedEvent(final EventObject evt) {
         final ProcedureValidationListener[] ls;
-
-        if (evt == null) {
-            throw new NullPointerException("Received a null pointer as event");
-        }
 
         ls = getListeners().getListeners(ProcedureValidationListener.class);
         for (final ProcedureValidationListener l : ls) {
@@ -149,7 +137,7 @@ public final class DefaultUnitConfigurationController implements
     }
 
     private final String getCompulsoryWeaponsErrorMessageTemplate() {
-        return compulsoryWeaponsError;
+        return compulsoryError;
     }
 
     private final EventListenerList getListeners() {
@@ -157,7 +145,7 @@ public final class DefaultUnitConfigurationController implements
     }
 
     private final UnitWeaponAvailability getUnitWeaponAvailability() {
-        return availabilityWeapon;
+        return avaWeapon;
     }
 
     private final void setValidationMessage(final String message) {

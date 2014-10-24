@@ -23,31 +23,31 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService
 public final class DefaultArmyBuilderController implements
         ArmyBuilderController {
 
-    private Collection<GangConstraint>        constraints       = new LinkedHashSet<>();
+    private final Collection<GangConstraint>  constraints       = new LinkedHashSet<>();
     private final UnitConfigurationController controller;
     private final Gang                        gang;
     private final EventListenerList           listeners         = new EventListenerList();
     private final ValueHandler                maxUnits;
     private final DataModelService            serviceModel;
-    private final String                      tooManyUnitsMessage;
+    private final String                      tooMany;
     private String                            validationMessage = "";
 
     public DefaultArmyBuilderController(
             final UnitConfigurationController controller, final Gang gang,
-            final ValueHandler maxUnits, final String tooManyUnitsMessage,
+            final ValueHandler maxUnits, final String tooMany,
             final DataModelService serviceModel) {
         super();
 
         checkNotNull(controller, "Received a null pointer as controller");
         checkNotNull(gang, "Received a null pointer as gang");
         checkNotNull(maxUnits, "Received a null pointer as max units");
-        checkNotNull(tooManyUnitsMessage, "Received a null pointer as message");
+        checkNotNull(tooMany, "Received a null pointer as message");
         checkNotNull(serviceModel, "Received a null pointer as model service");
 
         this.controller = controller;
         this.gang = gang;
         this.maxUnits = maxUnits;
-        this.tooManyUnitsMessage = tooManyUnitsMessage;
+        this.tooMany = tooMany;
         this.serviceModel = serviceModel;
 
         ((AbstractValueHandler) gang.getBullets())
@@ -63,17 +63,17 @@ public final class DefaultArmyBuilderController implements
         gang.addGangListener(new GangListenerAdapter() {
 
             @Override
-            public final void unitAdded(final UnitEvent e) {
+            public final void unitAdded(final UnitEvent event) {
                 getConstraints().addAll(
                         getDataModelService().getUnitConstraints(
-                                e.getUnit().getUnitName(),
+                                event.getUnit().getUnitName(),
                                 getGang().getFaction().getName()));
 
                 validate();
             }
 
             @Override
-            public final void unitRemoved(final UnitEvent e) {
+            public final void unitRemoved(final UnitEvent event) {
                 getConstraints().clear();
                 for (final Unit unit : getGang().getUnits()) {
                     getConstraints().addAll(
@@ -149,10 +149,11 @@ public final class DefaultArmyBuilderController implements
     }
 
     private final void fireValidationFailedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] ls;
+        final ProcedureValidationListener[] listnrs;
 
-        ls = getListeners().getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : ls) {
+        listnrs = getListeners()
+                .getListeners(ProcedureValidationListener.class);
+        for (final ProcedureValidationListener l : listnrs) {
             l.validationFailed(evt);
         }
     }
@@ -179,7 +180,7 @@ public final class DefaultArmyBuilderController implements
     }
 
     private final String getTooManyUnitsWarningMessage() {
-        return tooManyUnitsMessage;
+        return tooMany;
     }
 
     private final void setValidationMessage(final String message) {
@@ -193,7 +194,7 @@ public final class DefaultArmyBuilderController implements
         failed = false;
         for (final GangConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getGang())) {
-                if (textErrors.toString().length() > 0) {
+                if (textErrors.length() > 0) {
                     textErrors.append(System.lineSeparator());
                 }
                 textErrors.append(constraint.getErrorMessage());

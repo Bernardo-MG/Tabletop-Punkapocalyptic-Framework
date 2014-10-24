@@ -35,7 +35,7 @@ public final class ParseArmorInitializersCommand implements
 
         // TODO: Use Spring
         modifiers = new LinkedHashMap<>();
-        modifiers.put(ModifiersConf.FIREARMS_PROTECTION,
+        modifiers.put(ModifiersConf.FIREARMS_PROT,
                 new BulletproofArmorInitializerModifier());
 
         nodes = XPathFactory

@@ -22,7 +22,7 @@ public class ParseUnitGangConstraintsCommand implements
         LocalizationServiceAware {
 
     private final Document      document;
-    private LocalizationService serviceLocalization;
+    private LocalizationService serviceLoc;
 
     public ParseUnitGangConstraintsCommand(final Document doc) {
         super();
@@ -59,7 +59,7 @@ public class ParseUnitGangConstraintsCommand implements
 
     @Override
     public void setLocalizationService(final LocalizationService service) {
-        serviceLocalization = service;
+        serviceLoc = service;
     }
 
     private final Document getDocument() {
@@ -67,7 +67,7 @@ public class ParseUnitGangConstraintsCommand implements
     }
 
     private final LocalizationService getLocalizationService() {
-        return serviceLocalization;
+        return serviceLoc;
     }
 
     private final UnitGangConstraint getUniqueConstraint() {
