@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import org.springframework.context.ApplicationContext;
 
-import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ParameterContext;
+import com.wandrell.conf.TestingConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.RulesetParametersConf;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
@@ -16,14 +16,11 @@ import com.wandrell.util.TestUtils;
 
 public final class RulesetParametersFactory {
 
-    private static RulesetParametersFactory       instance;
+    private static final RulesetParametersFactory instance            = new RulesetParametersFactory();
+    private static Object                         lockMaxAllowedUnits = new Object();
     private static Collection<Collection<Object>> valuesMaxUnits;
 
-    public static final synchronized RulesetParametersFactory getInstance() {
-        if (instance == null) {
-            instance = new RulesetParametersFactory();
-        }
-
+    public static final RulesetParametersFactory getInstance() {
         return instance;
     }
 
@@ -43,18 +40,22 @@ public final class RulesetParametersFactory {
         super();
     }
 
-    public final synchronized Iterator<Object[]> getMaxAllowedUnitsValues() {
+    public final Iterator<Object[]> getMaxAllowedUnitsValues() {
         final ApplicationContext context;
         final Properties properties;
 
         if (valuesMaxUnits == null) {
-            properties = FileUtils
-                    .getProperties(ResourceUtils
-                            .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
-            context = ContextUtils.getClassPathContext(
-                    ParameterContext.DEFAULT, properties);
+            synchronized (lockMaxAllowedUnits) {
+                if (valuesMaxUnits == null) {
+                    properties = FileUtils
+                            .getProperties(ResourceUtils
+                                    .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
+                    context = ContextUtils.getClassPathContext(
+                            TestingConf.CONTEXT_DEFAULT, properties);
 
-            valuesMaxUnits = TestUtils.getParameters(context);
+                    valuesMaxUnits = TestUtils.getParameters(context);
+                }
+            }
         }
 
         return getParameters(valuesMaxUnits);

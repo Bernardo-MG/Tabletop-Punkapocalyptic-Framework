@@ -1,26 +1,28 @@
 package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.file.reader;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.jdom2.Element;
 
 import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesParser;
 
 public final class MaxAllowedUnitsNodesReader implements
-        FilteredNodesParser<Collection<Collection<Integer>>> {
+        FilteredNodesParser<Set<Collection<Integer>>> {
 
     public MaxAllowedUnitsNodesReader() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Integer>> readNodes(
+    public final Set<Collection<Integer>> readNodes(
             final Collection<Element> nodes) {
-        final Collection<Collection<Integer>> data;
+        final Set<Collection<Integer>> data;
         Collection<Integer> pair;
 
-        data = new LinkedList<>();
+        data = new LinkedHashSet<>();
         for (final Element node : nodes) {
             pair = new LinkedList<>();
             pair.add(Integer.parseInt(node.getChildText("points")));
