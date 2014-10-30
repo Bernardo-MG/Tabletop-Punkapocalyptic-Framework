@@ -50,8 +50,8 @@ public final class RulesetParametersFactory {
                     properties = FileUtils
                             .getProperties(ResourceUtils
                                     .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
-                    context = ContextUtils.getClassPathContext(
-                            TestingConf.CONTEXT_DEFAULT, properties);
+                    context = ContextUtils.getClassPathContext(properties,
+                            TestingConf.CONTEXT_DEFAULT);
 
                     valuesMaxUnits = TestUtils.getParameters(context);
                 }
