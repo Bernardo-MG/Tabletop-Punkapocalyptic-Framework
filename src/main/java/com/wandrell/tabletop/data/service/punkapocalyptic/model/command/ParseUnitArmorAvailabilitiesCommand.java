@@ -12,7 +12,6 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultUnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
@@ -101,16 +100,18 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
     private final Armor getInitialArmor(final String unit) {
         final Collection<Element> nodes;
         final Armor armor;
+        final String expression;
         Element armorNode;
 
-        nodes = XPathFactory.instance()
-                .compile("//unit_armor", Filters.element())
+        expression = String.format("//unit_armors/unit_armor[unit='%s']/armor",
+                unit);
+        nodes = XPathFactory.instance().compile(expression, Filters.element())
                 .evaluate(getDocument());
 
         if (nodes.isEmpty()) {
             armor = null;
         } else {
-            armorNode = nodes.iterator().next().getChild(ModelNodeConf.ARMOR);
+            armorNode = nodes.iterator().next();
 
             if (armorNode == null) {
                 armor = null;
