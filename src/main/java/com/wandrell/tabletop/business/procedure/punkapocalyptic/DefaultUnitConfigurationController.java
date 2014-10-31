@@ -11,23 +11,28 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitConfigurationListener;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultUnitConfigurationController implements
         UnitConfigurationController {
 
-    private UnitWeaponAvailability  avaWeapon;
     private final String            compulsoryError;
+    private final DataModelService  dataModelService;
     private final EventListenerList listeners         = new EventListenerList();
     private Unit                    unit;
     private String                  validationMessage = "";
 
-    public DefaultUnitConfigurationController(final String compulsoryError) {
+    public DefaultUnitConfigurationController(final String compulsoryError,
+            final DataModelService dataModelService) {
         super();
 
         checkNotNull(compulsoryError,
                 "Received a null pointer as error message");
+        checkNotNull(dataModelService,
+                "Received a null pointer as the data model service");
 
         this.compulsoryError = compulsoryError;
+        this.dataModelService = dataModelService;
     }
 
     @Override
@@ -69,12 +74,10 @@ public final class DefaultUnitConfigurationController implements
     }
 
     @Override
-    public final void setUnit(final Unit unit,
-            final UnitWeaponAvailability availability) {
+    public final void setUnit(final Unit unit) {
         checkNotNull(unit, "Received a null pointer as unit");
 
         this.unit = unit;
-        avaWeapon = availability;
 
         fireUnitSelectedEvent(new UnitEvent(this, getUnit()));
 
@@ -85,14 +88,17 @@ public final class DefaultUnitConfigurationController implements
     public final Boolean validate() {
         final StringBuilder textErrors;
         final Boolean valid;
+        final UnitWeaponAvailability availability;
+
+        availability = getDataModelService().getUnitWeaponAvailability(
+                getUnit().getUnitName());
 
         textErrors = new StringBuilder();
-        if (getUnit().getWeapons().size() < getUnitWeaponAvailability()
-                .getMinWeapons()) {
+        if (getUnit().getWeapons().size() < availability.getMinWeapons()) {
             valid = false;
             textErrors.append(String.format(
                     getCompulsoryWeaponsErrorMessageTemplate(),
-                    getUnitWeaponAvailability().getMinWeapons()));
+                    availability.getMinWeapons()));
         } else {
             valid = true;
         }
@@ -140,12 +146,12 @@ public final class DefaultUnitConfigurationController implements
         return compulsoryError;
     }
 
-    private final EventListenerList getListeners() {
-        return listeners;
+    private final DataModelService getDataModelService() {
+        return dataModelService;
     }
 
-    private final UnitWeaponAvailability getUnitWeaponAvailability() {
-        return avaWeapon;
+    private final EventListenerList getListeners() {
+        return listeners;
     }
 
     private final void setValidationMessage(final String message) {
