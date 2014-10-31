@@ -85,7 +85,8 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
                 .evaluate(getDocument());
 
         for (final Element node : nodes) {
-            armor = getArmors().get(node.getChildText("name"));
+            armor = getArmors().get(node.getChildText("name"))
+                    .createNewInstance();
             armor.setCost(Integer.parseInt(node.getChildText("cost")));
             armors.add(armor);
         }
