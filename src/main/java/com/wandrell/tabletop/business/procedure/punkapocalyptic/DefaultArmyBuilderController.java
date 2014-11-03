@@ -8,12 +8,17 @@ import java.util.LinkedHashSet;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
+import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
+import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
+import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.MaxUnitsStore;
+import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultArmyBuilderController implements
@@ -21,41 +26,48 @@ public final class DefaultArmyBuilderController implements
 
     private final Collection<GangConstraint>  constraints       = new LinkedHashSet<>();
     private final UnitConfigurationController controller;
-    private final Gang                        gang;
-    private final ValueHandler                maxUnits;
+    private Gang                              gang;
+    private final GangListener                gangListener;
+    private final ModularDerivedValueHandler  maxUnits;
     private final DataModelService            serviceModel;
+    private RulesetService                    serviceRuleset;
     private final String                      tooMany;
     private String                            validationMessage = "";
 
     public DefaultArmyBuilderController(
-            final UnitConfigurationController controller, final Gang gang,
-            final ValueHandler maxUnits, final String tooMany,
-            final DataModelService serviceModel) {
+            final UnitConfigurationController unitController,
+            final String tooManyError, final DataModelService dataModelService,
+            final RulesetService rulesetService) {
         super();
 
-        checkNotNull(controller, "Received a null pointer as controller");
-        checkNotNull(gang, "Received a null pointer as gang");
-        checkNotNull(maxUnits, "Received a null pointer as max units");
-        checkNotNull(tooMany, "Received a null pointer as message");
-        checkNotNull(serviceModel, "Received a null pointer as model service");
+        checkNotNull(unitController, "Received a null pointer as controller");
+        checkNotNull(tooManyError, "Received a null pointer as message");
+        checkNotNull(dataModelService,
+                "Received a null pointer as model service");
+        checkNotNull(rulesetService,
+                "Received a null pointer as rule set service");
 
-        this.controller = controller;
-        this.gang = gang;
-        this.maxUnits = maxUnits;
-        this.tooMany = tooMany;
-        this.serviceModel = serviceModel;
-
-        ((AbstractValueHandler) gang.getBullets())
-                .addValueEventListener(new ValueHandlerListener() {
+        maxUnits = new ModularDerivedValueHandler("max_units",
+                new AbstractStoreModule() {
 
                     @Override
-                    public final void valueChanged(final ValueHandlerEvent evt) {
-                        validate();
+                    public final AbstractStoreModule createNewInstance() {
+                        return this;
+                    }
+
+                    @Override
+                    public final Integer getValue() {
+                        return 0;
                     }
 
                 });
 
-        gang.addGangListener(new GangListenerAdapter() {
+        this.controller = unitController;
+        this.tooMany = tooManyError;
+        this.serviceModel = dataModelService;
+        serviceRuleset = rulesetService;
+
+        gangListener = new GangListenerAdapter() {
 
             @Override
             public final void unitAdded(final UnitEvent event) {
@@ -80,7 +92,7 @@ public final class DefaultArmyBuilderController implements
                 validate();
             }
 
-        });
+        };
     }
 
     @Override
@@ -101,6 +113,29 @@ public final class DefaultArmyBuilderController implements
     @Override
     public final String getValidationMessage() {
         return validationMessage;
+    }
+
+    @Override
+    public final void setGang(final Gang gang) {
+        checkNotNull(gang, "Received a null pointer as gang");
+
+        gang.removeGangListener(getGangListener());
+
+        this.gang = gang;
+
+        maxUnits.setStore(new MaxUnitsStore(getGang(), getRulesetService()));
+
+        ((AbstractValueHandler) gang.getBullets())
+                .addValueEventListener(new ValueHandlerListener() {
+
+                    @Override
+                    public final void valueChanged(final ValueHandlerEvent evt) {
+                        validate();
+                    }
+
+                });
+
+        gang.addGangListener(getGangListener());
     }
 
     @Override
@@ -129,6 +164,14 @@ public final class DefaultArmyBuilderController implements
 
     private final DataModelService getDataModelService() {
         return serviceModel;
+    }
+
+    private final GangListener getGangListener() {
+        return gangListener;
+    }
+
+    private final RulesetService getRulesetService() {
+        return serviceRuleset;
     }
 
     private final String getTooManyUnitsWarningMessage() {

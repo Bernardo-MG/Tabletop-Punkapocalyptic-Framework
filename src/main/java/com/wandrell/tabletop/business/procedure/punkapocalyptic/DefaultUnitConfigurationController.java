@@ -14,16 +14,15 @@ public final class DefaultUnitConfigurationController implements
     private Unit                   unit;
     private String                 validationMessage = "";
 
-    public DefaultUnitConfigurationController(final String compulsoryError,
+    public DefaultUnitConfigurationController(final String weaponError,
             final DataModelService dataModelService) {
         super();
 
-        checkNotNull(compulsoryError,
-                "Received a null pointer as error message");
+        checkNotNull(weaponError, "Received a null pointer as error message");
         checkNotNull(dataModelService,
                 "Received a null pointer as the data model service");
 
-        this.compulsoryError = compulsoryError;
+        this.compulsoryError = weaponError;
         this.dataModelService = dataModelService;
     }
 
