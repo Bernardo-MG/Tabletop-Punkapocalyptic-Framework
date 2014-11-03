@@ -3,10 +3,7 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.EventObject;
 import java.util.LinkedHashSet;
-
-import javax.swing.event.EventListenerList;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
@@ -17,7 +14,6 @@ import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
-import com.wandrell.tabletop.business.procedure.event.ProcedureValidationListener;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultArmyBuilderController implements
@@ -26,7 +22,6 @@ public final class DefaultArmyBuilderController implements
     private final Collection<GangConstraint>  constraints       = new LinkedHashSet<>();
     private final UnitConfigurationController controller;
     private final Gang                        gang;
-    private final EventListenerList           listeners         = new EventListenerList();
     private final ValueHandler                maxUnits;
     private final DataModelService            serviceModel;
     private final String                      tooMany;
@@ -89,14 +84,6 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
-    public final void addProcedureValidationListener(
-            final ProcedureValidationListener listener) {
-        checkNotNull(listener, "Received a null pointer as listener");
-
-        getListeners().add(ProcedureValidationListener.class, listener);
-    }
-
-    @Override
     public final Gang getGang() {
         return gang;
     }
@@ -117,12 +104,6 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
-    public final void removeProcedureValidationListener(
-            final ProcedureValidationListener listener) {
-        getListeners().remove(ProcedureValidationListener.class, listener);
-    }
-
-    @Override
     public final Boolean validate() {
         final StringBuilder textErrors;
         final Boolean failedCount;
@@ -139,32 +120,7 @@ public final class DefaultArmyBuilderController implements
 
         setValidationMessage(textErrors.toString());
 
-        if (failed) {
-            fireValidationFailedEvent(new EventObject(this));
-        } else {
-            fireValidationPassedEvent(new EventObject(this));
-        }
-
         return !failed;
-    }
-
-    private final void fireValidationFailedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] listnrs;
-
-        listnrs = getListeners()
-                .getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : listnrs) {
-            l.validationFailed(evt);
-        }
-    }
-
-    private final void fireValidationPassedEvent(final EventObject evt) {
-        final ProcedureValidationListener[] ls;
-
-        ls = getListeners().getListeners(ProcedureValidationListener.class);
-        for (final ProcedureValidationListener l : ls) {
-            l.validationPassed(evt);
-        }
     }
 
     private final Collection<GangConstraint> getConstraints() {
@@ -173,10 +129,6 @@ public final class DefaultArmyBuilderController implements
 
     private final DataModelService getDataModelService() {
         return serviceModel;
-    }
-
-    private final EventListenerList getListeners() {
-        return listeners;
     }
 
     private final String getTooManyUnitsWarningMessage() {
