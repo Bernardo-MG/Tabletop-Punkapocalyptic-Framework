@@ -5,6 +5,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import javax.swing.event.EventListenerList;
+
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -18,6 +20,8 @@ import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.MaxUnitsStore;
+import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
+import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
@@ -28,6 +32,7 @@ public final class DefaultArmyBuilderController implements
     private final UnitConfigurationController controller;
     private Gang                              gang;
     private final GangListener                gangListener;
+    private final EventListenerList           listeners         = new EventListenerList();
     private final ModularDerivedValueHandler  maxUnits;
     private final DataModelService            serviceModel;
     private RulesetService                    serviceRuleset;
@@ -96,6 +101,14 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
+    public final void
+            addGangChangedListener(final GangChangedListener listener) {
+        checkNotNull(listener, "Received a null pointer as listener");
+
+        getListeners().add(GangChangedListener.class, listener);
+    }
+
+    @Override
     public final Gang getGang() {
         return gang;
     }
@@ -116,8 +129,18 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
+    public final void removeGangChangedListener(
+            final GangChangedListener listener) {
+        checkNotNull(listener, "Received a null pointer as listener");
+
+        getListeners().remove(GangChangedListener.class, listener);
+    }
+
+    @Override
     public final void setGang(final Gang gang) {
         checkNotNull(gang, "Received a null pointer as gang");
+
+        fireValueChangedEvent(new GangChangedEvent(this, this.gang, gang));
 
         gang.removeGangListener(getGangListener());
 
@@ -170,6 +193,10 @@ public final class DefaultArmyBuilderController implements
         return gangListener;
     }
 
+    private final EventListenerList getListeners() {
+        return listeners;
+    }
+
     private final RulesetService getRulesetService() {
         return serviceRuleset;
     }
@@ -213,6 +240,17 @@ public final class DefaultArmyBuilderController implements
         }
 
         return failed;
+    }
+
+    protected final void fireValueChangedEvent(final GangChangedEvent event) {
+        final GangChangedListener[] listnrs;
+
+        checkNotNull(event, "Received a null pointer as event");
+
+        listnrs = getListeners().getListeners(GangChangedListener.class);
+        for (final GangChangedListener l : listnrs) {
+            l.gangChanged(event);
+        }
     }
 
 }
