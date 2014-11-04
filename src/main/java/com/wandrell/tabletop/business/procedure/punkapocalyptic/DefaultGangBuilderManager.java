@@ -25,22 +25,21 @@ import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChange
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
-public final class DefaultArmyBuilderController implements
-        ArmyBuilderController {
+public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private final Collection<GangConstraint>  constraints       = new LinkedHashSet<>();
-    private final UnitConfigurationController controller;
-    private Gang                              gang;
-    private final GangListener                gangListener;
-    private final EventListenerList           listeners         = new EventListenerList();
-    private final ModularDerivedValueHandler  maxUnits;
-    private final DataModelService            serviceModel;
-    private RulesetService                    serviceRuleset;
-    private final String                      tooMany;
-    private String                            validationMessage = "";
+    private final Collection<GangConstraint> constraints       = new LinkedHashSet<>();
+    private final UnitConfigurationManager   controller;
+    private Gang                             gang;
+    private final GangListener               gangListener;
+    private final EventListenerList          listeners         = new EventListenerList();
+    private final ModularDerivedValueHandler maxUnits;
+    private final DataModelService           serviceModel;
+    private RulesetService                   serviceRuleset;
+    private final String                     tooMany;
+    private String                           validationMessage = "";
 
-    public DefaultArmyBuilderController(
-            final UnitConfigurationController unitController,
+    public DefaultGangBuilderManager(
+            final UnitConfigurationManager unitController,
             final String tooManyError, final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
@@ -119,7 +118,7 @@ public final class DefaultArmyBuilderController implements
     }
 
     @Override
-    public final UnitConfigurationController getUnitConfigurationController() {
+    public final UnitConfigurationManager getUnitConfigurationController() {
         return controller;
     }
 

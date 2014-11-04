@@ -6,15 +6,15 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWea
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
-public final class DefaultUnitConfigurationController implements
-        UnitConfigurationController {
+public final class DefaultUnitConfigurationManager implements
+        UnitConfigurationManager {
 
     private final String           compulsoryError;
     private final DataModelService dataModelService;
     private Unit                   unit;
     private String                 validationMessage = "";
 
-    public DefaultUnitConfigurationController(final String weaponError,
+    public DefaultUnitConfigurationManager(final String weaponError,
             final DataModelService dataModelService) {
         super();
 
