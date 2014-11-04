@@ -28,7 +28,6 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     private final Collection<GangConstraint> constraints       = new LinkedHashSet<>();
-    private final UnitConfigurationManager   controller;
     private Gang                             gang;
     private final GangListener               gangListener;
     private final EventListenerList          listeners         = new EventListenerList();
@@ -36,15 +35,16 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private final DataModelService           serviceModel;
     private RulesetService                   serviceRuleset;
     private final String                     tooMany;
+    private final UnitConfigurationManager   unitConfigManager;
     private String                           validationMessage = "";
 
     public DefaultGangBuilderManager(
-            final UnitConfigurationManager unitController,
+            final UnitConfigurationManager unitConfigManager,
             final String tooManyError, final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(unitController, "Received a null pointer as controller");
+        checkNotNull(unitConfigManager, "Received a null pointer as controller");
         checkNotNull(tooManyError, "Received a null pointer as message");
         checkNotNull(dataModelService,
                 "Received a null pointer as model service");
@@ -66,7 +66,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
                 });
 
-        this.controller = unitController;
+        this.unitConfigManager = unitConfigManager;
         this.tooMany = tooManyError;
         this.serviceModel = dataModelService;
         serviceRuleset = rulesetService;
@@ -119,7 +119,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final UnitConfigurationManager getUnitConfigurationController() {
-        return controller;
+        return unitConfigManager;
     }
 
     @Override
