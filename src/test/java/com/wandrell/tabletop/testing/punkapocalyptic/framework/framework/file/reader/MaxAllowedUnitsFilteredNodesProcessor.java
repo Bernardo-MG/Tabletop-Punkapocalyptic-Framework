@@ -7,12 +7,12 @@ import java.util.Set;
 
 import org.jdom2.Element;
 
-import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesParser;
+import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesProcessor;
 
-public final class MaxAllowedUnitsNodesReader implements
-        FilteredNodesParser<Set<Collection<Integer>>> {
+public final class MaxAllowedUnitsFilteredNodesProcessor implements
+        FilteredNodesProcessor<Set<Collection<Integer>>> {
 
-    public MaxAllowedUnitsNodesReader() {
+    public MaxAllowedUnitsFilteredNodesProcessor() {
         super();
     }
 
