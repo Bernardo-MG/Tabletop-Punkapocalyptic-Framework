@@ -37,6 +37,10 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
         return cost;
     }
 
+    private final Gang getGang() {
+        return gang;
+    }
+
     public final RulesetService getRulesetService() {
         return serviceRuleset;
     }
@@ -46,10 +50,6 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
         checkNotNull(service, "Received a null pointer as ruleset service");
 
         serviceRuleset = service;
-    }
-
-    private final Gang getGang() {
-        return gang;
     }
 
 }

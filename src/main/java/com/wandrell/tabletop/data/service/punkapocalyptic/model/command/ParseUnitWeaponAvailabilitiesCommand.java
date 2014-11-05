@@ -44,22 +44,6 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         this.weaponIntervals = weaponIntervals;
     }
 
-    @Override
-    public final Map<String, UnitWeaponAvailability> execute() throws Exception {
-        final Map<String, UnitWeaponAvailability> availabilities;
-        UnitWeaponAvailability availability;
-
-        availabilities = new LinkedHashMap<>();
-
-        for (final Unit unit : getUnits().values()) {
-            availability = buildAvailability(unit);
-
-            availabilities.put(unit.getUnitName(), availability);
-        }
-
-        return availabilities;
-    }
-
     private final UnitWeaponAvailability buildAvailability(final Unit unit) {
         final UnitWeaponAvailability availability;
         final Collection<Weapon> weaponOptions;
@@ -76,6 +60,22 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
                 minWeapons, maxWeapons);
 
         return availability;
+    }
+
+    @Override
+    public final Map<String, UnitWeaponAvailability> execute() throws Exception {
+        final Map<String, UnitWeaponAvailability> availabilities;
+        UnitWeaponAvailability availability;
+
+        availabilities = new LinkedHashMap<>();
+
+        for (final Unit unit : getUnits().values()) {
+            availability = buildAvailability(unit);
+
+            availabilities.put(unit.getUnitName(), availability);
+        }
+
+        return availabilities;
     }
 
     private final Document getDocument() {

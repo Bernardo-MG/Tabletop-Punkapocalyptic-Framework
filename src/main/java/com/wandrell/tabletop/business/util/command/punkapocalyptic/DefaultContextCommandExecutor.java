@@ -52,6 +52,30 @@ public final class DefaultContextCommandExecutor implements
         return getExecutor().execute(command);
     }
 
+    private final ApplicationInfoService getApplicationInfoService() {
+        return serviceAppInfo;
+    }
+
+    private final DataModelService getDataModelService() {
+        return serviceDataModel;
+    }
+
+    private final CommandExecutor getExecutor() {
+        return executor;
+    }
+
+    private final FileService getFileService() {
+        return serviceFile;
+    }
+
+    private final LocalizationService getLocalizationService() {
+        return serviceLoc;
+    }
+
+    private final RulesetService getRulesetService() {
+        return serviceRuleset;
+    }
+
     @Override
     public final void setApplicationInfoService(
             final ApplicationInfoService service) {
@@ -59,6 +83,32 @@ public final class DefaultContextCommandExecutor implements
                 "Received a null pointer as application info service");
 
         serviceAppInfo = service;
+    }
+
+    private final void setContext(final Object command) {
+        if (command instanceof ApplicationInfoServiceAware) {
+            ((ApplicationInfoServiceAware) command)
+                    .setApplicationInfoService(getApplicationInfoService());
+        }
+
+        if (command instanceof LocalizationServiceAware) {
+            ((LocalizationServiceAware) command)
+                    .setLocalizationService(getLocalizationService());
+        }
+
+        if (command instanceof RulesetServiceAware) {
+            ((RulesetServiceAware) command)
+                    .setRulesetService(getRulesetService());
+        }
+
+        if (command instanceof FileServiceAware) {
+            ((FileServiceAware) command).setFileService(getFileService());
+        }
+
+        if (command instanceof DataModelServiceAware) {
+            ((DataModelServiceAware) command)
+                    .setDataModelService(getDataModelService());
+        }
     }
 
     @Override
@@ -88,56 +138,6 @@ public final class DefaultContextCommandExecutor implements
         checkNotNull(service, "Received a null pointer as ruleset service");
 
         serviceRuleset = service;
-    }
-
-    private final ApplicationInfoService getApplicationInfoService() {
-        return serviceAppInfo;
-    }
-
-    private final DataModelService getDataModelService() {
-        return serviceDataModel;
-    }
-
-    private final CommandExecutor getExecutor() {
-        return executor;
-    }
-
-    private final FileService getFileService() {
-        return serviceFile;
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return serviceLoc;
-    }
-
-    private final RulesetService getRulesetService() {
-        return serviceRuleset;
-    }
-
-    private final void setContext(final Object command) {
-        if (command instanceof ApplicationInfoServiceAware) {
-            ((ApplicationInfoServiceAware) command)
-                    .setApplicationInfoService(getApplicationInfoService());
-        }
-
-        if (command instanceof LocalizationServiceAware) {
-            ((LocalizationServiceAware) command)
-                    .setLocalizationService(getLocalizationService());
-        }
-
-        if (command instanceof RulesetServiceAware) {
-            ((RulesetServiceAware) command)
-                    .setRulesetService(getRulesetService());
-        }
-
-        if (command instanceof FileServiceAware) {
-            ((FileServiceAware) command).setFileService(getFileService());
-        }
-
-        if (command instanceof DataModelServiceAware) {
-            ((DataModelServiceAware) command)
-                    .setDataModelService(getDataModelService());
-        }
     }
 
 }

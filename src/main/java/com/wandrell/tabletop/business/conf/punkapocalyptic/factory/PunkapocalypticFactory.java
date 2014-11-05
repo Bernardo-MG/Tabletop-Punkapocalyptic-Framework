@@ -20,11 +20,11 @@ import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 
 public final class PunkapocalypticFactory {
 
-    private static final PunkapocalypticFactory instance = new PunkapocalypticFactory();
-
     public static final PunkapocalypticFactory getInstance() {
         return instance;
     }
+
+    private static final PunkapocalypticFactory instance = new PunkapocalypticFactory();
 
     private PunkapocalypticFactory() {
         super();

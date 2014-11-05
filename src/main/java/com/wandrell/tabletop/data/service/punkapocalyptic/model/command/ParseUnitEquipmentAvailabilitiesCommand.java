@@ -44,6 +44,20 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         this.enhancements = enhancements;
     }
 
+    private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
+        final UnitEquipmentAvailability availability;
+        final Collection<WeaponEnhancement> weaponEnh;
+        final Collection<Equipment> equipment;
+
+        weaponEnh = getWeaponEnhancements(unit.getUnitName());
+        equipment = getEquipment(unit.getUnitName());
+
+        availability = new DefaultUnitEquipmentAvailability(weaponEnh,
+                equipment);
+
+        return availability;
+    }
+
     @Override
     public final Map<String, UnitEquipmentAvailability> execute()
             throws Exception {
@@ -59,20 +73,6 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         }
 
         return availabilities;
-    }
-
-    private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
-        final UnitEquipmentAvailability availability;
-        final Collection<WeaponEnhancement> weaponEnh;
-        final Collection<Equipment> equipment;
-
-        weaponEnh = getWeaponEnhancements(unit.getUnitName());
-        equipment = getEquipment(unit.getUnitName());
-
-        availability = new DefaultUnitEquipmentAvailability(weaponEnh,
-                equipment);
-
-        return availability;
     }
 
     private final Document getDocument() {

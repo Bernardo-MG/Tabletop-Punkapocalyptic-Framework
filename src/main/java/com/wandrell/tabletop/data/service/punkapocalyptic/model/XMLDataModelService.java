@@ -76,6 +76,35 @@ public final class XMLDataModelService implements DataModelService {
         return getFactions().values();
     }
 
+    private final Map<String, UnitArmorAvailability> getArmorAvailabilities() {
+        if (avaArmor == null) {
+            initialize();
+        }
+
+        return avaArmor;
+    }
+
+    private final Map<String, UnitEquipmentAvailability>
+            getEquipmentAvailabilities() {
+        if (avaEquipment == null) {
+            initialize();
+        }
+
+        return avaEquipment;
+    }
+
+    private final CommandExecutor getExecutor() {
+        return executor;
+    }
+
+    private final Map<String, Faction> getFactions() {
+        if (factions == null) {
+            initialize();
+        }
+
+        return factions;
+    }
+
     @Override
     public final Collection<Unit> getFactionUnits(final String faction) {
         final JXPathContext context;
@@ -97,6 +126,10 @@ public final class XMLDataModelService implements DataModelService {
         }
 
         return result;
+    }
+
+    private final Collection<InputStream> getSources() {
+        return sources;
     }
 
     @Override
@@ -141,39 +174,6 @@ public final class XMLDataModelService implements DataModelService {
         checkNotNull(unit, "Received a null pointer as unit name");
 
         return getWeaponAvailabilities().get(unit);
-    }
-
-    private final Map<String, UnitArmorAvailability> getArmorAvailabilities() {
-        if (avaArmor == null) {
-            initialize();
-        }
-
-        return avaArmor;
-    }
-
-    private final Map<String, UnitEquipmentAvailability>
-            getEquipmentAvailabilities() {
-        if (avaEquipment == null) {
-            initialize();
-        }
-
-        return avaEquipment;
-    }
-
-    private final CommandExecutor getExecutor() {
-        return executor;
-    }
-
-    private final Map<String, Faction> getFactions() {
-        if (factions == null) {
-            initialize();
-        }
-
-        return factions;
-    }
-
-    private final Collection<InputStream> getSources() {
-        return sources;
     }
 
     private final Map<String, UnitWeaponAvailability> getWeaponAvailabilities() {

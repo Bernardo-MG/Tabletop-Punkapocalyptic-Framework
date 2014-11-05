@@ -16,10 +16,6 @@ import com.wandrell.util.TestUtils;
 
 public final class RulesetParametersFactory {
 
-    private static final RulesetParametersFactory instance            = new RulesetParametersFactory();
-    private static Object                         lockMaxAllowedUnits = new Object();
-    private static Collection<Collection<Object>> valuesMaxUnits;
-
     public static final RulesetParametersFactory getInstance() {
         return instance;
     }
@@ -35,6 +31,12 @@ public final class RulesetParametersFactory {
 
         return result.iterator();
     }
+
+    private static final RulesetParametersFactory instance            = new RulesetParametersFactory();
+
+    private static Object                         lockMaxAllowedUnits = new Object();
+
+    private static Collection<Collection<Object>> valuesMaxUnits;
 
     private RulesetParametersFactory() {
         super();

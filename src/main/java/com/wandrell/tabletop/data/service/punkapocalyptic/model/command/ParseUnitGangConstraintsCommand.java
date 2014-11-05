@@ -61,11 +61,6 @@ public class ParseUnitGangConstraintsCommand implements
         return result;
     }
 
-    @Override
-    public void setLocalizationService(final LocalizationService service) {
-        serviceLoc = service;
-    }
-
     private final Document getDocument() {
         return document;
     }
@@ -81,6 +76,11 @@ public class ParseUnitGangConstraintsCommand implements
 
     private final UnitGangConstraint getUpToHalfPointsConstraint() {
         return new UnitUpToHalfGangLimitConstraint(getLocalizationService());
+    }
+
+    @Override
+    public void setLocalizationService(final LocalizationService service) {
+        serviceLoc = service;
     }
 
 }

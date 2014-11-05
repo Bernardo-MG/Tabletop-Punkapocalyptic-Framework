@@ -120,14 +120,71 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         getListeners().add(UnitChangedListener.class, listener);
     }
 
+    private final void fireGangChangedEvent(final GangChangedEvent event) {
+        final GangChangedListener[] listnrs;
+
+        checkNotNull(event, "Received a null pointer as event");
+
+        listnrs = getListeners().getListeners(GangChangedListener.class);
+        for (final GangChangedListener l : listnrs) {
+            l.gangChanged(event);
+        }
+    }
+
+    private final void fireUnitAddedEvent(final UnitEvent event) {
+        final UnitChangedListener[] listnrs;
+
+        checkNotNull(event, "Received a null pointer as event");
+
+        listnrs = getListeners().getListeners(UnitChangedListener.class);
+        for (final UnitChangedListener l : listnrs) {
+            l.unitAdded(event);
+        }
+    }
+
+    private final void fireUnitRemovedEvent(final UnitEvent event) {
+        final UnitChangedListener[] listnrs;
+
+        checkNotNull(event, "Received a null pointer as event");
+
+        listnrs = getListeners().getListeners(UnitChangedListener.class);
+        for (final UnitChangedListener l : listnrs) {
+            l.unitRemoved(event);
+        }
+    }
+
+    private final Collection<GangConstraint> getConstraints() {
+        return constraints;
+    }
+
+    private final DataModelService getDataModelService() {
+        return serviceModel;
+    }
+
     @Override
     public final Gang getGang() {
         return gang;
     }
 
+    private final GangListener getGangListener() {
+        return gangListener;
+    }
+
+    private final EventListenerList getListeners() {
+        return listeners;
+    }
+
     @Override
     public final ValueHandler getMaxUnits() {
         return maxUnits;
+    }
+
+    private final RulesetService getRulesetService() {
+        return serviceRuleset;
+    }
+
+    private final String getTooManyUnitsWarningMessage() {
+        return tooMany;
     }
 
     @Override
@@ -183,6 +240,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         gang.addGangListener(getGangListener());
     }
 
+    private final void setValidationMessage(final String message) {
+        validationMessage = message;
+    }
+
     @Override
     public final Boolean validate() {
         final StringBuilder textErrors;
@@ -201,67 +262,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         setValidationMessage(textErrors.toString());
 
         return !failed;
-    }
-
-    private final void fireGangChangedEvent(final GangChangedEvent event) {
-        final GangChangedListener[] listnrs;
-
-        checkNotNull(event, "Received a null pointer as event");
-
-        listnrs = getListeners().getListeners(GangChangedListener.class);
-        for (final GangChangedListener l : listnrs) {
-            l.gangChanged(event);
-        }
-    }
-
-    private final void fireUnitAddedEvent(final UnitEvent event) {
-        final UnitChangedListener[] listnrs;
-
-        checkNotNull(event, "Received a null pointer as event");
-
-        listnrs = getListeners().getListeners(UnitChangedListener.class);
-        for (final UnitChangedListener l : listnrs) {
-            l.unitAdded(event);
-        }
-    }
-
-    private final void fireUnitRemovedEvent(final UnitEvent event) {
-        final UnitChangedListener[] listnrs;
-
-        checkNotNull(event, "Received a null pointer as event");
-
-        listnrs = getListeners().getListeners(UnitChangedListener.class);
-        for (final UnitChangedListener l : listnrs) {
-            l.unitRemoved(event);
-        }
-    }
-
-    private final Collection<GangConstraint> getConstraints() {
-        return constraints;
-    }
-
-    private final DataModelService getDataModelService() {
-        return serviceModel;
-    }
-
-    private final GangListener getGangListener() {
-        return gangListener;
-    }
-
-    private final EventListenerList getListeners() {
-        return listeners;
-    }
-
-    private final RulesetService getRulesetService() {
-        return serviceRuleset;
-    }
-
-    private final String getTooManyUnitsWarningMessage() {
-        return tooMany;
-    }
-
-    private final void setValidationMessage(final String message) {
-        validationMessage = message;
     }
 
     private final Boolean
