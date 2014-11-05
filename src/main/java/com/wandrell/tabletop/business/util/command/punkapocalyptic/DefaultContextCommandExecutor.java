@@ -3,14 +3,12 @@ package com.wandrell.tabletop.business.util.command.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.wandrell.service.application.ApplicationInfoService;
-import com.wandrell.service.swing.layout.LayoutService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LayoutServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
@@ -18,18 +16,17 @@ import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
 
-public final class PunkapocalypticContextCommandExecutor implements
-        CommandExecutor {
+public final class DefaultContextCommandExecutor implements
+        ContextCommandExecutor {
 
     private final CommandExecutor  executor;
     private ApplicationInfoService serviceAppInfo;
     private DataModelService       serviceDataModel;
     private FileService            serviceFile;
-    private LayoutService          serviceLayout;
     private LocalizationService    serviceLoc;
     private RulesetService         serviceRuleset;
 
-    public PunkapocalypticContextCommandExecutor(final CommandExecutor executor) {
+    public DefaultContextCommandExecutor(final CommandExecutor executor) {
         super();
 
         checkNotNull(executor, "Received a null pointer as base executor");
@@ -55,6 +52,7 @@ public final class PunkapocalypticContextCommandExecutor implements
         return getExecutor().execute(command);
     }
 
+    @Override
     public final void setApplicationInfoService(
             final ApplicationInfoService service) {
         checkNotNull(service,
@@ -63,6 +61,7 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceAppInfo = service;
     }
 
+    @Override
     public final void setDataModelService(final DataModelService service) {
         checkNotNull(service,
                 "Received a null pointer as the model data service");
@@ -70,24 +69,21 @@ public final class PunkapocalypticContextCommandExecutor implements
         serviceDataModel = service;
     }
 
+    @Override
     public final void setFileService(final FileService service) {
         checkNotNull(service, "Received a null pointer as file service");
 
         serviceFile = service;
     }
 
-    public final void setLayoutService(final LayoutService service) {
-        checkNotNull(service, "Received a null pointer as layout service");
-
-        serviceLayout = service;
-    }
-
+    @Override
     public final void setLocalizationService(final LocalizationService service) {
         checkNotNull(service, "Received a null pointer as localization service");
 
         serviceLoc = service;
     }
 
+    @Override
     public final void setRulesetService(final RulesetService service) {
         checkNotNull(service, "Received a null pointer as ruleset service");
 
@@ -110,10 +106,6 @@ public final class PunkapocalypticContextCommandExecutor implements
         return serviceFile;
     }
 
-    private final LayoutService getLayoutService() {
-        return serviceLayout;
-    }
-
     private final LocalizationService getLocalizationService() {
         return serviceLoc;
     }
@@ -131,10 +123,6 @@ public final class PunkapocalypticContextCommandExecutor implements
         if (command instanceof LocalizationServiceAware) {
             ((LocalizationServiceAware) command)
                     .setLocalizationService(getLocalizationService());
-        }
-
-        if (command instanceof LayoutServiceAware) {
-            ((LayoutServiceAware) command).setLayoutService(getLayoutService());
         }
 
         if (command instanceof RulesetServiceAware) {
