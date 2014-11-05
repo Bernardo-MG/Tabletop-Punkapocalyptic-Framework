@@ -58,6 +58,11 @@ public final class ParseUnitsCommand implements
         return units;
     }
 
+    @Override
+    public final void setRulesetService(final RulesetService service) {
+        serviceRuleset = service;
+    }
+
     private final Document getDocument() {
         return document;
     }
@@ -112,11 +117,6 @@ public final class ParseUnitsCommand implements
         store.setUnit(unit);
 
         return unit;
-    }
-
-    @Override
-    public final void setRulesetService(final RulesetService service) {
-        serviceRuleset = service;
     }
 
 }

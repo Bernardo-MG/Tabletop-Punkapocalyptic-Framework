@@ -7,22 +7,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeap
 
 public final class WeaponUtils {
 
-    private static final String getDistanceRanges(final RangedValue ranges) {
-        final String distance;
-
-        checkNotNull(ranges, "Received a null pointer as ranges");
-
-        if ((ranges.getShortValue().equals(ranges.getMediumValue()))
-                && (ranges.getShortValue().equals(ranges.getLongValue()))) {
-            distance = ranges.getShortValue().toString();
-        } else {
-            distance = String.format("%d/%d/%d", ranges.getShortValue(),
-                    ranges.getMediumValue(), ranges.getLongValue());
-        }
-
-        return distance;
-    }
-
     public static final String getRangedWeaponDistanceImperial(
             final RangedWeapon weapon) {
         return getDistanceRanges(weapon.getDistancesImperialUnits());
@@ -67,6 +51,22 @@ public final class WeaponUtils {
         }
 
         return strength;
+    }
+
+    private static final String getDistanceRanges(final RangedValue ranges) {
+        final String distance;
+
+        checkNotNull(ranges, "Received a null pointer as ranges");
+
+        if ((ranges.getShortValue().equals(ranges.getMediumValue()))
+                && (ranges.getShortValue().equals(ranges.getLongValue()))) {
+            distance = ranges.getShortValue().toString();
+        } else {
+            distance = String.format("%d/%d/%d", ranges.getShortValue(),
+                    ranges.getMediumValue(), ranges.getLongValue());
+        }
+
+        return distance;
     }
 
     private WeaponUtils() {

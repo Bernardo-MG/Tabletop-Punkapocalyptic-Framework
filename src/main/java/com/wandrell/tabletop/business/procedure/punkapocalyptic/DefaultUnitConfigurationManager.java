@@ -26,14 +26,6 @@ public final class DefaultUnitConfigurationManager implements
         this.dataModelService = dataModelService;
     }
 
-    private final String getCompulsoryWeaponsErrorMessageTemplate() {
-        return compulsoryError;
-    }
-
-    private final DataModelService getDataModelService() {
-        return dataModelService;
-    }
-
     @Override
     public final Unit getUnit() {
         return unit;
@@ -51,10 +43,6 @@ public final class DefaultUnitConfigurationManager implements
         this.unit = unit;
 
         validate();
-    }
-
-    private final void setValidationMessage(final String message) {
-        validationMessage = message;
     }
 
     @Override
@@ -79,6 +67,18 @@ public final class DefaultUnitConfigurationManager implements
         setValidationMessage(textErrors.toString());
 
         return valid;
+    }
+
+    private final String getCompulsoryWeaponsErrorMessageTemplate() {
+        return compulsoryError;
+    }
+
+    private final DataModelService getDataModelService() {
+        return dataModelService;
+    }
+
+    private final void setValidationMessage(final String message) {
+        validationMessage = message;
     }
 
 }

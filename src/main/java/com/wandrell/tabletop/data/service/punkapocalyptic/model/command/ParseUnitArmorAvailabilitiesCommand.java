@@ -38,19 +38,6 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
         this.armors = armors;
     }
 
-    private final UnitArmorAvailability buildAvailability(final Unit unit) {
-        final Collection<Armor> armors;
-        final Armor armor;
-        final UnitArmorAvailability availability;
-
-        armors = getArmors(unit.getUnitName());
-        armor = getInitialArmor(unit.getUnitName());
-
-        availability = new DefaultUnitArmorAvailability(armors, armor);
-
-        return availability;
-    }
-
     @Override
     public final Map<String, UnitArmorAvailability> execute() throws Exception {
         final Map<String, UnitArmorAvailability> availabilities;
@@ -65,6 +52,19 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
         }
 
         return availabilities;
+    }
+
+    private final UnitArmorAvailability buildAvailability(final Unit unit) {
+        final Collection<Armor> armors;
+        final Armor armor;
+        final UnitArmorAvailability availability;
+
+        armors = getArmors(unit.getUnitName());
+        armor = getInitialArmor(unit.getUnitName());
+
+        availability = new DefaultUnitArmorAvailability(armors, armor);
+
+        return availability;
     }
 
     private final Map<String, Armor> getArmors() {
