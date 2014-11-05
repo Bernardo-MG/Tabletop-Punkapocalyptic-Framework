@@ -235,7 +235,7 @@ public final class XMLDataModelService implements DataModelService {
 
         avaWeapon = getExecutor().execute(
                 new ParseUnitWeaponAvailabilitiesCommand(doc, units, weapons,
-                        weaponIntervals));
+                        enhancements, weaponIntervals));
 
         avaArmor = getExecutor().execute(
                 new ParseUnitArmorAvailabilitiesCommand(doc, units, armors));

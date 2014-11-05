@@ -5,10 +5,6 @@
 		<faction>gangers</faction>
 		<equipment_pieces>
 			<equipment_piece>
-				<name>bayonet</name>
-				<cost>4</cost>
-			</equipment_piece>
-			<equipment_piece>
 				<name>biohazard_suit</name>
 				<cost>8</cost>
 			</equipment_piece>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="weapon_enhacement_profiles">
+	<xs:element name="weapon_enhancement_profiles">
 		<xs:complexType>
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="weapon_enhacement_profile" type="enhacement" />
+				<xs:element name="weapon_enhancement_profile" type="enhancement" />
 			</xs:sequence>
 		</xs:complexType>
 		<xs:unique name="uniqueData">
-			<xs:selector xpath="enhacement" />
+			<xs:selector xpath="enhancement" />
 			<xs:field xpath="name" />
 		</xs:unique>
 	</xs:element>
 
-	<xs:complexType name="enhacement">
+	<xs:complexType name="enhancement">
 		<xs:sequence>
 			<xs:element name="name" type="xs:token" maxOccurs="1"
 				minOccurs="1" />

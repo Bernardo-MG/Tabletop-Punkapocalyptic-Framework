@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<weapon_enhacement_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<weapon_enhancement_profiles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-enhancement.xsd">
-	<weapon_enhacement_profile>
+	<weapon_enhancement_profile>
 		<name>bayonet</name>
 		<bonus_list>
 			<bonus>
@@ -10,5 +10,5 @@
 			</bonus>
 		</bonus_list>
 		<cost>4</cost>
-	</weapon_enhacement_profile>
-</weapon_enhacement_profiles>
+	</weapon_enhancement_profile>
+</weapon_enhancement_profiles>
