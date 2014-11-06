@@ -136,6 +136,12 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
+    public final Collection<Unit> getUnitOptions() {
+        return getDataModelService().getFactionUnits(
+                getGang().getFaction().getName());
+    }
+
+    @Override
     public final String getValidationMessage() {
         return validationMessage;
     }

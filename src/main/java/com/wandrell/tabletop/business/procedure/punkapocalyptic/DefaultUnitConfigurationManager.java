@@ -2,7 +2,12 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
@@ -24,6 +29,22 @@ public final class DefaultUnitConfigurationManager implements
 
         this.compulsoryError = weaponError;
         this.dataModelService = dataModelService;
+    }
+
+    @Override
+    public final Collection<Armor> getArmorOptions() {
+        final UnitArmorAvailability availability;
+        final Collection<Armor> armors;
+
+        armors = new LinkedList<>();
+
+        availability = getDataModelService().getUnitArmorAvailability(
+                getUnit().getUnitName());
+
+        armors.add(availability.getInitialArmor());
+        armors.addAll(availability.getArmorOptions());
+
+        return armors;
     }
 
     @Override
