@@ -36,7 +36,7 @@ public final class ParseWeaponEnhancementsCommand implements
         WeaponEnhancement enhancement;
 
         nodes = XPathFactory.instance()
-                .compile("//weapon_enhacement_profile", Filters.element())
+                .compile("//weapon_enhancement_profile", Filters.element())
                 .evaluate(getDocument());
 
         enhancements = new LinkedHashMap<>();

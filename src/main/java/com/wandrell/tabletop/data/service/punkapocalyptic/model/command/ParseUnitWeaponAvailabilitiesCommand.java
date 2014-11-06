@@ -112,6 +112,9 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         final String expFaction;
         final String expEnhancements;
         final String faction;
+        Collection<WeaponEnhancement> enhanWeapon;
+        WeaponEnhancement enhancement;
+        Weapon weapon;
 
         expWeapons = String.format(
                 "//unit_weapons/unit_weapon[unit='%s']/weapons/weapon", unit);
@@ -132,7 +135,9 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
 
         enhancements = new LinkedList<>();
         for (final Element node : nodesEnhancements) {
-            enhancements.add(getWeaponEnhancements().get(node.getText()));
+            enhancement = getWeaponEnhancements().get(
+                    node.getChild("name").getText());
+            enhancements.add(enhancement);
         }
 
         nodesWeapons = XPathFactory.instance()
@@ -140,8 +145,16 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
 
         weapons = new LinkedList<>();
         for (final Element node : nodesWeapons) {
-            weapons.add(new DefaultWeaponOption(getWeapons()
-                    .get(node.getText()), enhancements));
+            enhanWeapon = new LinkedList<>();
+            weapon = getWeapons().get(node.getText());
+
+            for (final WeaponEnhancement enhanc : enhancements) {
+                if (enhanc.isValid(weapon)) {
+                    enhancements.add(enhanc);
+                }
+            }
+
+            weapons.add(new DefaultWeaponOption(weapon, enhanWeapon));
         }
 
         return weapons;
