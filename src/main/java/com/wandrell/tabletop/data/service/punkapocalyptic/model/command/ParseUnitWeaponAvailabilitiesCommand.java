@@ -150,7 +150,7 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
 
             for (final WeaponEnhancement enhanc : enhancements) {
                 if (enhanc.isValid(weapon)) {
-                    enhancements.add(enhanc);
+                    enhanWeapon.add(enhanc);
                 }
             }
 
