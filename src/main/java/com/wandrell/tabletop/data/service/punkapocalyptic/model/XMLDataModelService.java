@@ -50,12 +50,11 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
-    private Map<String, UnitArmorAvailability>     avaArmor;
-    private Map<String, UnitEquipmentAvailability> avaEquipment;
-    private Map<String, UnitWeaponAvailability>    avaWeapon;
-    private final CommandExecutor                  executor;
-    private Map<String, Faction>                   factions;
-    private final Collection<InputStream>          sources;
+    private Map<String, UnitArmorAvailability>  avaArmor;
+    private Map<String, UnitWeaponAvailability> avaWeapon;
+    private final CommandExecutor               executor;
+    private Map<String, Faction>                factions;
+    private final Collection<InputStream>       sources;
 
     public XMLDataModelService(final CommandExecutor executor,
             final Collection<InputStream> sources) {
@@ -128,14 +127,6 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     @Override
-    public final UnitEquipmentAvailability getUnitEquipmentAvailability(
-            final String unit) {
-        checkNotNull(unit, "Received a null pointer as unit name");
-
-        return getEquipmentAvailabilities().get(unit);
-    }
-
-    @Override
     public final UnitWeaponAvailability getUnitWeaponAvailability(
             final String unit) {
         checkNotNull(unit, "Received a null pointer as unit name");
@@ -149,15 +140,6 @@ public final class XMLDataModelService implements DataModelService {
         }
 
         return avaArmor;
-    }
-
-    private final Map<String, UnitEquipmentAvailability>
-            getEquipmentAvailabilities() {
-        if (avaEquipment == null) {
-            initialize();
-        }
-
-        return avaEquipment;
     }
 
     private final CommandExecutor getExecutor() {
@@ -201,6 +183,8 @@ public final class XMLDataModelService implements DataModelService {
         final Map<String, Equipment> equipment;
         final Map<String, WeaponEnhancement> enhancements;
         final Map<String, Interval> weaponIntervals;
+        @SuppressWarnings("unused")
+        final Map<String, UnitEquipmentAvailability> avaEquipment;
 
         constUnitGang = getExecutor().execute(
                 new ParseUnitGangConstraintsCommand(doc));
