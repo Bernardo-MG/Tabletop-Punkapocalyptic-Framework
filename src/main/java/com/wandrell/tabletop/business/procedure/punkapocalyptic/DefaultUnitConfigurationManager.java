@@ -4,15 +4,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
-import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
@@ -44,13 +41,8 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Interval getAllowedWeaponsInterval() {
-        final UnitWeaponAvailability availability;
-
-        availability = getDataModelService().getUnitWeaponAvailability(
+        return getDataModelService().getUnitAllowedWeaponsInterval(
                 getUnit().getUnitName());
-
-        return new DefaultInterval(availability.getMinWeapons(),
-                availability.getMaxWeapons());
     }
 
     @Override
@@ -80,20 +72,18 @@ public final class DefaultUnitConfigurationManager implements
     }
 
     @Override
+    public final Collection<WeaponEnhancement> getWeaponEnhancements(
+            final Weapon weapon) {
+        return getDataModelService().getWeaponEnhancements(
+                getUnit().getUnitName(), weapon.getName());
+    }
+
+    @Override
     public final Collection<Weapon> getWeaponOptions() {
-        final List<Weapon> weapons;
-        final Collection<WeaponOption> options;
-        final UnitWeaponAvailability availability;
+        final Collection<Weapon> weapons;
 
-        availability = getDataModelService().getUnitWeaponAvailability(
+        weapons = getDataModelService().getWeaponOptions(
                 getUnit().getUnitName());
-
-        weapons = new LinkedList<>();
-
-        options = availability.getWeaponOptions();
-        for (final WeaponOption option : options) {
-            weapons.add(option.getWeapon());
-        }
 
         return getRulesetService().filterWeaponOptions(getUnit(), weapons);
     }
@@ -111,17 +101,17 @@ public final class DefaultUnitConfigurationManager implements
     public final Boolean validate() {
         final StringBuilder textErrors;
         final Boolean valid;
-        final UnitWeaponAvailability availability;
+        final Interval interval;
 
-        availability = getDataModelService().getUnitWeaponAvailability(
+        interval = getDataModelService().getUnitAllowedWeaponsInterval(
                 getUnit().getUnitName());
 
         textErrors = new StringBuilder();
-        if (getUnit().getWeapons().size() < availability.getMinWeapons()) {
+        if (getUnit().getWeapons().size() < interval.getLowerLimit()) {
             valid = false;
             textErrors.append(String.format(
                     getCompulsoryWeaponsErrorMessageTemplate(),
-                    availability.getMinWeapons()));
+                    interval.getLowerLimit()));
         } else {
             valid = true;
         }

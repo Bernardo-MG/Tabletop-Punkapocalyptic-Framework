@@ -8,16 +8,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.jdom2.Document;
 
 import com.wandrell.tabletop.business.conf.WeaponNameConf;
+import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
@@ -99,6 +102,16 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     @Override
+    public final Interval getUnitAllowedWeaponsInterval(final String unit) {
+        final UnitWeaponAvailability availability;
+
+        availability = getUnitWeaponAvailability(unit);
+
+        return new DefaultInterval(availability.getMinWeapons(),
+                availability.getMaxWeapons());
+    }
+
+    @Override
     public final UnitArmorAvailability getUnitArmorAvailability(
             final String unit) {
         checkNotNull(unit, "Received a null pointer as unit name");
@@ -126,12 +139,39 @@ public final class XMLDataModelService implements DataModelService {
         return (Collection<UnitGangConstraint>) context.getValue(query);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public final UnitWeaponAvailability getUnitWeaponAvailability(
-            final String unit) {
-        checkNotNull(unit, "Received a null pointer as unit name");
+    public final Collection<WeaponEnhancement> getWeaponEnhancements(
+            final String unit, final String weapon) {
+        final JXPathContext context;
+        final UnitWeaponAvailability availability;
+        final String query;
 
-        return getWeaponAvailabilities().get(unit);
+        availability = getUnitWeaponAvailability(unit);
+        context = JXPathContext.newContext(availability);
+        query = "weaponOptions[weapon/name=$weapon]/enhancements";
+
+        context.getVariables().declareVariable("weapon", weapon);
+
+        return (Collection<WeaponEnhancement>) context.getValue(query);
+    }
+
+    @Override
+    public final Collection<Weapon> getWeaponOptions(final String unit) {
+        final List<Weapon> weapons;
+        final Collection<WeaponOption> options;
+        final UnitWeaponAvailability availability;
+
+        availability = getUnitWeaponAvailability(unit);
+
+        weapons = new LinkedList<>();
+
+        options = availability.getWeaponOptions();
+        for (final WeaponOption option : options) {
+            weapons.add(option.getWeapon());
+        }
+
+        return weapons;
     }
 
     private final Map<String, UnitArmorAvailability> getArmorAvailabilities() {
@@ -156,6 +196,13 @@ public final class XMLDataModelService implements DataModelService {
 
     private final Collection<InputStream> getSources() {
         return sources;
+    }
+
+    private final UnitWeaponAvailability getUnitWeaponAvailability(
+            final String unit) {
+        checkNotNull(unit, "Received a null pointer as unit name");
+
+        return getWeaponAvailabilities().get(unit);
     }
 
     private final Map<String, UnitWeaponAvailability> getWeaponAvailabilities() {
