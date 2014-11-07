@@ -264,6 +264,11 @@ public final class XMLDataModelService implements DataModelService {
         weaponIntervals = getExecutor().execute(
                 new ParseWeaponIntervalsCommand(doc));
 
+        getExecutor()
+                .execute(new ParseWeaponsRulesCommand(doc, weapons, rules));
+
+        factions = getExecutor().execute(new ParseFactionsCommand(doc));
+
         avaWeapon = getExecutor().execute(
                 new ParseUnitWeaponAvailabilitiesCommand(doc, units, weapons,
                         enhancements, weaponIntervals));
@@ -274,11 +279,6 @@ public final class XMLDataModelService implements DataModelService {
         avaEquipment = getExecutor().execute(
                 new ParseUnitEquipmentAvailabilitiesCommand(doc, units,
                         equipment, enhancements));
-
-        getExecutor()
-                .execute(new ParseWeaponsRulesCommand(doc, weapons, rules));
-
-        factions = getExecutor().execute(new ParseFactionsCommand(doc));
 
         getExecutor().execute(
                 new LoadFactionUnitsCommand(doc, factions.values(), units,
