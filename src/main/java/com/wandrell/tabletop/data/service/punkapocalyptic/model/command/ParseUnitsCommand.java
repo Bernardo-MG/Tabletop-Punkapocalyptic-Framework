@@ -13,23 +13,17 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.conf.punkapocalyptic.factory.PunkapocalypticFactory;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.DefaultUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.EditableValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.UnitValorationStore;
-import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseUnitsCommand implements
-        ReturnCommand<Map<String, Unit>>, RulesetServiceAware {
+        ReturnCommand<Map<String, Unit>>, ModelServiceAware {
 
     private final Document document;
-    private RulesetService serviceRuleset;
+    private ModelService   modelService;
 
     public ParseUnitsCommand(final Document doc) {
         super();
@@ -59,62 +53,47 @@ public final class ParseUnitsCommand implements
     }
 
     @Override
-    public final void setRulesetService(final RulesetService service) {
-        serviceRuleset = service;
+    public final void setModelService(final ModelService service) {
+        modelService = service;
     }
 
     private final Document getDocument() {
         return document;
     }
 
-    private final RulesetService getRulesetService() {
-        return serviceRuleset;
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Unit parseNode(final Element node) {
-        final PunkapocalypticFactory factory;
         final String name;
-        final EditableValueHandler actions;
-        final EditableValueHandler combat;
-        final EditableValueHandler precision;
-        final EditableValueHandler agility;
-        final EditableValueHandler strength;
-        final EditableValueHandler toughness;
-        final EditableValueHandler tech;
-        final ValueHandler valoration;
-        final UnitValorationStore store;
+        final Integer actions;
+        final Integer combat;
+        final Integer precision;
+        final Integer agility;
+        final Integer strength;
+        final Integer toughness;
+        final Integer tech;
         final Unit unit;
         final Integer cost;
 
-        factory = PunkapocalypticFactory.getInstance();
-
         name = node.getChildText(ModelNodeConf.NAME);
 
-        actions = factory.getAttribute(ModelNodeConf.ACTIONS,
-                Integer.parseInt(node.getChildText(ModelNodeConf.ACTIONS)));
-        combat = factory.getAttribute(ModelNodeConf.COMBAT,
-                Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT)));
-        precision = factory.getAttribute(ModelNodeConf.PRECISION,
-                Integer.parseInt(node.getChildText(ModelNodeConf.PRECISION)));
-        agility = factory.getAttribute(ModelNodeConf.AGILITY,
-                Integer.parseInt(node.getChildText(ModelNodeConf.AGILITY)));
-        strength = factory.getAttribute(ModelNodeConf.STRENGTH,
-                Integer.parseInt(node.getChildText(ModelNodeConf.STRENGTH)));
-        toughness = factory.getAttribute(ModelNodeConf.TOUGHNESS,
-                Integer.parseInt(node.getChildText(ModelNodeConf.TOUGHNESS)));
-        tech = factory.getAttribute(ModelNodeConf.TECH,
-                Integer.parseInt(node.getChildText(ModelNodeConf.TECH)));
+        actions = Integer.parseInt(node.getChildText(ModelNodeConf.ACTIONS));
+        combat = Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT));
+        precision = Integer
+                .parseInt(node.getChildText(ModelNodeConf.PRECISION));
+        agility = Integer.parseInt(node.getChildText(ModelNodeConf.AGILITY));
+        strength = Integer.parseInt(node.getChildText(ModelNodeConf.STRENGTH));
+        toughness = Integer
+                .parseInt(node.getChildText(ModelNodeConf.TOUGHNESS));
+        tech = Integer.parseInt(node.getChildText(ModelNodeConf.TECH));
 
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-        store = new UnitValorationStore(getRulesetService());
-        valoration = new ModularDerivedValueHandler("valoration", store);
-
-        unit = new DefaultUnit(name, actions, agility, combat, precision,
-                strength, tech, toughness, cost, new LinkedList<SpecialRule>(),
-                valoration);
-
-        store.setUnit(unit);
+        unit = getModelService().getUnit(name, actions, agility, combat,
+                precision, strength, tech, toughness, cost,
+                new LinkedList<SpecialRule>());
 
         return unit;
     }

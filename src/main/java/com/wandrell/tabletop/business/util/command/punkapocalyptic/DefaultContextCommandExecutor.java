@@ -5,11 +5,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.wandrell.service.application.ApplicationInfoService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 import com.wandrell.util.command.Command;
@@ -20,6 +22,7 @@ public final class DefaultContextCommandExecutor implements
         ContextCommandExecutor {
 
     private final CommandExecutor  executor;
+    private ModelService           modelService;
     private ApplicationInfoService serviceAppInfo;
     private DataModelService       serviceDataModel;
     private FileService            serviceFile;
@@ -84,6 +87,11 @@ public final class DefaultContextCommandExecutor implements
     }
 
     @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
+    @Override
     public final void setRulesetService(final RulesetService service) {
         checkNotNull(service, "Received a null pointer as ruleset service");
 
@@ -110,6 +118,10 @@ public final class DefaultContextCommandExecutor implements
         return serviceLoc;
     }
 
+    private final ModelService getModelService() {
+        return modelService;
+    }
+
     private final RulesetService getRulesetService() {
         return serviceRuleset;
     }
@@ -132,6 +144,10 @@ public final class DefaultContextCommandExecutor implements
 
         if (command instanceof FileServiceAware) {
             ((FileServiceAware) command).setFileService(getFileService());
+        }
+
+        if (command instanceof ModelServiceAware) {
+            ((ModelServiceAware) command).setModelService(getModelService());
         }
 
         if (command instanceof DataModelServiceAware) {
