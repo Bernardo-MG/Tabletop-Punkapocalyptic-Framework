@@ -11,18 +11,20 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultFactionUnitAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.faction.DefaultFaction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.Command;
 
-public final class LoadFactionUnitsCommand implements Command {
+public final class LoadFactionUnitsCommand implements Command,
+        ModelServiceAware {
 
     private final Map<String, UnitGangConstraint> constraintsGang;
     private final Document                        document;
     private final Collection<Faction>             factions;
+    private ModelService                          modelService;
     private final Map<String, Unit>               units;
 
     public LoadFactionUnitsCommand(final Document doc,
@@ -47,12 +49,21 @@ public final class LoadFactionUnitsCommand implements Command {
         }
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
     }
 
     private final Collection<Faction> getFactions() {
         return factions;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Map<String, UnitGangConstraint> getUnitConstraints() {
@@ -97,9 +108,8 @@ public final class LoadFactionUnitsCommand implements Command {
                 constraints.add(constr);
             }
 
-            ((DefaultFaction) faction)
-                    .addUnit(new DefaultFactionUnitAvailability(unit,
-                            constraints));
+            faction.addUnit(getModelService().getFactionUnitAvailability(unit,
+                    constraints));
         }
     }
 

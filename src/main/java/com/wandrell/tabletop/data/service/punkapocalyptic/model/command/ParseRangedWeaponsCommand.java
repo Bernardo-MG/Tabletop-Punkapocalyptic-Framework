@@ -12,18 +12,19 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.DefaultRangedValue;
 import com.wandrell.tabletop.business.model.punkapocalyptic.RangedValue;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultRangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseRangedWeaponsCommand implements
-        ReturnCommand<Map<String, RangedWeapon>> {
+        ReturnCommand<Map<String, RangedWeapon>>, ModelServiceAware {
 
     private final Document    document;
     private final MeleeWeapon melee;
+    private ModelService      modelService;
 
     public ParseRangedWeaponsCommand(final Document doc, final MeleeWeapon melee) {
         super();
@@ -54,12 +55,21 @@ public final class ParseRangedWeaponsCommand implements
         return weapons;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final MeleeWeapon getDefaultMeleeWeapon() {
         return melee;
     }
 
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final RangedWeapon parseNode(final Element node) {
@@ -126,18 +136,18 @@ public final class ParseRangedWeaponsCommand implements
 
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-        distanceCM = new DefaultRangedValue(distanceShortCM, distanceMediumCM,
-                distanceLongCM);
-        distanceInches = new DefaultRangedValue(distanceShortInches,
+        distanceCM = getModelService().getRangedValue(distanceShortCM,
+                distanceMediumCM, distanceLongCM);
+        distanceInches = getModelService().getRangedValue(distanceShortInches,
                 distanceMediumInches, distanceLongInches);
 
-        penetrationRanged = new DefaultRangedValue(penetrationShort,
+        penetrationRanged = getModelService().getRangedValue(penetrationShort,
                 penetrationMedium, penetrationLong);
-        strengthRanged = new DefaultRangedValue(strengthShort, strengthMedium,
-                strengthLong);
+        strengthRanged = getModelService().getRangedValue(strengthShort,
+                strengthMedium, strengthLong);
 
-        weapon = new DefaultRangedWeapon(name, cost, penetrationRanged,
-                strengthRanged, distanceCM, distanceInches,
+        weapon = getModelService().getRangedWeapon(name, cost,
+                penetrationRanged, strengthRanged, distanceCM, distanceInches,
                 getDefaultMeleeWeapon());
 
         return weapon;

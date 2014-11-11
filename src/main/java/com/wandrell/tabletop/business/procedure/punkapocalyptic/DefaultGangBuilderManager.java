@@ -19,7 +19,6 @@ import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
 import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic.MaxUnitsStore;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
@@ -165,7 +164,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
         this.gang = gang;
 
-        maxUnits.setStore(new MaxUnitsStore(getGang(), getRulesetService()));
+        getRulesetService().setUpMaxUnitsValueHandler(maxUnits, getGang());
 
         ((AbstractValueHandler) gang.getBullets())
                 .addValueEventListener(new ValueHandlerListener() {

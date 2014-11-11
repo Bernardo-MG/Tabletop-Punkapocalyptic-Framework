@@ -12,7 +12,6 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.AbstractWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
@@ -59,7 +58,7 @@ public final class ParseWeaponsRulesCommand implements
             for (final Element rule : node.getChild("rules").getChildren()) {
                 rules.add(getRules().get(rule.getText()));
             }
-            ((AbstractWeapon) weapon).setRules(rules);
+            weapon.setRules(rules);
         }
 
         return weapons;

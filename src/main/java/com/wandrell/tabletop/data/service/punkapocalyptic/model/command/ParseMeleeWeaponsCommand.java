@@ -12,14 +12,16 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultMeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseMeleeWeaponsCommand implements
-        ReturnCommand<Map<String, MeleeWeapon>> {
+        ReturnCommand<Map<String, MeleeWeapon>>, ModelServiceAware {
 
     private final Document document;
+    private ModelService   modelService;
 
     public ParseMeleeWeaponsCommand(final Document doc) {
         super();
@@ -48,8 +50,17 @@ public final class ParseMeleeWeaponsCommand implements
         return weapons;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final MeleeWeapon parseNode(final Element node) {
@@ -67,8 +78,8 @@ public final class ParseMeleeWeaponsCommand implements
         combat = Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT));
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-        weapon = new DefaultMeleeWeapon(name, cost, strength, penetration,
-                combat);
+        weapon = getModelService().getMeleeWeapon(name, cost, strength,
+                penetration, combat);
 
         return weapon;
     }

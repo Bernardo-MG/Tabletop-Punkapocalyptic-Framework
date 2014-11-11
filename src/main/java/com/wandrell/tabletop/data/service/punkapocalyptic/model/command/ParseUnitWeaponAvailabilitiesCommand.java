@@ -13,20 +13,21 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultUnitWeaponAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultWeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseUnitWeaponAvailabilitiesCommand implements
-        ReturnCommand<Map<String, UnitWeaponAvailability>> {
+        ReturnCommand<Map<String, UnitWeaponAvailability>>, ModelServiceAware {
 
     private final Document                       doc;
     private final Map<String, WeaponEnhancement> enhancements;
+    private ModelService                         modelService;
     private final Map<String, Unit>              units;
     private final Map<String, Interval>          weaponIntervals;
     private final Map<String, Weapon>            weapons;
@@ -68,6 +69,11 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         return availabilities;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final UnitWeaponAvailability buildAvailability(final Unit unit) {
         final UnitWeaponAvailability availability;
         final Collection<WeaponOption> weaponOptions;
@@ -80,14 +86,18 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         maxWeapons = getWeaponIntervals().get(unit.getUnitName())
                 .getUpperLimit();
 
-        availability = new DefaultUnitWeaponAvailability(weaponOptions,
-                minWeapons, maxWeapons);
+        availability = getModelService().getUnitWeaponAvailability(
+                weaponOptions, minWeapons, maxWeapons);
 
         return availability;
     }
 
     private final Document getDocument() {
         return doc;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Map<String, Unit> getUnits() {
@@ -154,7 +164,7 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
                 }
             }
 
-            weapons.add(new DefaultWeaponOption(weapon, enhanWeapon));
+            weapons.add(getModelService().getWeaponOption(weapon, enhanWeapon));
         }
 
         return weapons;

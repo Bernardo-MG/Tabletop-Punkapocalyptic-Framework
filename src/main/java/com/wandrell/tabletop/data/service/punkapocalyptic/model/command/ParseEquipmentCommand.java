@@ -12,14 +12,16 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultEquipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseEquipmentCommand implements
-        ReturnCommand<Map<String, Equipment>> {
+        ReturnCommand<Map<String, Equipment>>, ModelServiceAware {
 
     private final Document document;
+    private ModelService   modelService;
 
     public ParseEquipmentCommand(final Document doc) {
         super();
@@ -48,8 +50,17 @@ public final class ParseEquipmentCommand implements
         return equipment;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Equipment parseNode(final Element node) {
@@ -60,7 +71,7 @@ public final class ParseEquipmentCommand implements
         name = node.getChildText(ModelNodeConf.NAME);
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
-        equip = new DefaultEquipment(name, cost);
+        equip = getModelService().getEquipment(name, cost);
 
         return equip;
     }

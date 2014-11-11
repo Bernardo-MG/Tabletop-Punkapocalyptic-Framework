@@ -12,19 +12,22 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultUnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseUnitEquipmentAvailabilitiesCommand implements
-        ReturnCommand<Map<String, UnitEquipmentAvailability>> {
+        ReturnCommand<Map<String, UnitEquipmentAvailability>>,
+        ModelServiceAware {
 
     private final Document                       doc;
     private final Map<String, WeaponEnhancement> enhancements;
     private final Map<String, Equipment>         equipment;
+    private ModelService                         modelService;
     private final Map<String, Unit>              units;
 
     public ParseUnitEquipmentAvailabilitiesCommand(final Document doc,
@@ -61,6 +64,11 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         return availabilities;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
         final UnitEquipmentAvailability availability;
         final Collection<WeaponEnhancement> weaponEnh;
@@ -69,8 +77,8 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         weaponEnh = getWeaponEnhancements(unit.getUnitName());
         equipment = getEquipment(unit.getUnitName());
 
-        availability = new DefaultUnitEquipmentAvailability(weaponEnh,
-                equipment);
+        availability = getModelService().getUnitEquipmentAvailability(
+                weaponEnh, equipment);
 
         return availability;
     }
@@ -102,6 +110,10 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         return equipment;
     }
 
+    private final ModelService getModelService() {
+        return modelService;
+    }
+
     private final Map<String, Unit> getUnits() {
         return units;
     }
@@ -122,7 +134,6 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
         nodes = XPathFactory.instance().compile(expression, Filters.element())
                 .evaluate(getDocument());
 
-        // TODO
         enhancements = new LinkedList<>();
         for (final Element node : nodes) {
             enhancements.add(getWeaponEnhancements().get(node.getText()));

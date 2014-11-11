@@ -11,14 +11,16 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.faction.DefaultFaction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseFactionsCommand implements
-        ReturnCommand<Map<String, Faction>> {
+        ReturnCommand<Map<String, Faction>>, ModelServiceAware {
 
     private final Document document;
+    private ModelService   modelService;
 
     public ParseFactionsCommand(final Document doc) {
         super();
@@ -41,14 +43,23 @@ public final class ParseFactionsCommand implements
         factions = new LinkedHashMap<>();
         for (final Element node : nodes) {
             name = node.getChildText("name");
-            factions.put(name, new DefaultFaction(name));
+            factions.put(name, getModelService().getFaction(name));
         }
 
         return factions;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
 }

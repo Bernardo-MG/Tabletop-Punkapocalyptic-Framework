@@ -14,15 +14,17 @@ import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.DefaultArmor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseArmorsCommand implements
-        ReturnCommand<Map<String, Armor>> {
+        ReturnCommand<Map<String, Armor>>, ModelServiceAware {
 
     private final Document                              document;
+    private ModelService                                modelService;
     private final Map<String, ArmorInitializerModifier> modifiers;
     private final Map<String, SpecialRule>              rules;
 
@@ -59,8 +61,17 @@ public final class ParseArmorsCommand implements
         return armors;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Map<String, ArmorInitializerModifier> getModifiers() {
@@ -96,7 +107,7 @@ public final class ParseArmorsCommand implements
                 .getChildText(ModelNodeConf.PROTECTION));
         rules = getRules(node.getChild(ModelNodeConf.RULES));
 
-        armor = new DefaultArmor(name, protection, rules);
+        armor = getModelService().getArmor(name, protection, rules);
 
         modifiers = node.getChild(ModelNodeConf.MODIFIERS);
         if (modifiers != null) {

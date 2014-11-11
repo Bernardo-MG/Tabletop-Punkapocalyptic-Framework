@@ -58,6 +58,7 @@ public final class XMLDataModelService implements DataModelService {
     private final CommandExecutor               executor;
     private Map<String, Faction>                factions;
     private final Collection<InputStream>       sources;
+    private Map<String, MeleeWeapon>            weaponsMelee;
 
     public XMLDataModelService(final CommandExecutor executor,
             final Collection<InputStream> sources) {
@@ -99,6 +100,11 @@ public final class XMLDataModelService implements DataModelService {
         }
 
         return result;
+    }
+
+    @Override
+    public final MeleeWeapon getMeleeWeapon(final String weapon) {
+        return weaponsMelee.get(weapon);
     }
 
     @Override
@@ -221,7 +227,6 @@ public final class XMLDataModelService implements DataModelService {
     private final void parseModel(final Document doc) {
         final Map<String, UnitGangConstraint> constUnitGang;
         final Map<String, ArmorInitializerModifier> initializersArmor;
-        final Map<String, MeleeWeapon> weaponsMelee;
         final Map<String, RangedWeapon> weaponsRanged;
         final Map<String, Weapon> weapons;
         final Map<String, SpecialRule> rules;
@@ -247,9 +252,7 @@ public final class XMLDataModelService implements DataModelService {
         weapons.putAll(weaponsMelee);
         weapons.putAll(weaponsRanged);
 
-        rules = getExecutor().execute(
-                new ParseRulesCommand(doc, weaponsMelee
-                        .get(WeaponNameConf.IMPROVISED_WEAPON)));
+        rules = getExecutor().execute(new ParseRulesCommand(doc));
 
         armors = getExecutor().execute(
                 new ParseArmorsCommand(doc, rules, initializersArmor));

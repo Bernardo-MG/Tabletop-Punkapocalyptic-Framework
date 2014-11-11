@@ -12,17 +12,19 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.DefaultUnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseUnitArmorAvailabilitiesCommand implements
-        ReturnCommand<Map<String, UnitArmorAvailability>> {
+        ReturnCommand<Map<String, UnitArmorAvailability>>, ModelServiceAware {
 
     private final Map<String, Armor> armors;
     private final Document           doc;
+    private ModelService             modelService;
     private final Map<String, Unit>  units;
 
     public ParseUnitArmorAvailabilitiesCommand(final Document doc,
@@ -54,6 +56,11 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
         return availabilities;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final UnitArmorAvailability buildAvailability(final Unit unit) {
         final Collection<Armor> armors;
         final Armor armor;
@@ -62,7 +69,8 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
         armors = getArmors(unit.getUnitName());
         armor = getInitialArmor(unit.getUnitName());
 
-        availability = new DefaultUnitArmorAvailability(armors, armor);
+        availability = getModelService()
+                .getUnitArmorAvailability(armors, armor);
 
         return availability;
     }
@@ -123,6 +131,10 @@ public final class ParseUnitArmorAvailabilitiesCommand implements
         }
 
         return armor;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
     private final Map<String, Unit> getUnits() {

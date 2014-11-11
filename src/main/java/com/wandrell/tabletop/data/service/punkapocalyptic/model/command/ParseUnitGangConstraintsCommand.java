@@ -11,20 +11,16 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ConstraintsConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToACountConstraint;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitUpToHalfGangLimitConstraint;
-import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public class ParseUnitGangConstraintsCommand implements
-        ReturnCommand<Map<String, UnitGangConstraint>>,
-        LocalizationServiceAware {
+        ReturnCommand<Map<String, UnitGangConstraint>>, ModelServiceAware {
 
-    private final Document      document;
-    private LocalizationService serviceLoc;
+    private final Document document;
+    private ModelService   modelService;
 
     public ParseUnitGangConstraintsCommand(final Document doc) {
         super();
@@ -36,16 +32,9 @@ public class ParseUnitGangConstraintsCommand implements
 
     @Override
     public final Map<String, UnitGangConstraint> execute() throws Exception {
-        final Map<String, UnitGangConstraint> constraints;
         final Map<String, UnitGangConstraint> result;
         final Collection<Element> nodes;
         UnitGangConstraint constraint;
-
-        // TODO: Use Spring
-        constraints = new LinkedHashMap<>();
-        constraints.put(ConstraintsConf.UNIQUE, getUniqueConstraint());
-        constraints.put(ConstraintsConf.UP_TO_HALF_POINTS,
-                getUpToHalfPointsConstraint());
 
         nodes = XPathFactory.instance()
                 .compile("//faction_unit//constraint", Filters.element())
@@ -53,7 +42,8 @@ public class ParseUnitGangConstraintsCommand implements
 
         result = new LinkedHashMap<>();
         for (final Element node : nodes) {
-            constraint = constraints.get(node.getText());
+            constraint = getModelService()
+                    .getUnitGangConstraint(node.getText());
 
             result.put(constraint.getName(), constraint);
         }
@@ -62,25 +52,16 @@ public class ParseUnitGangConstraintsCommand implements
     }
 
     @Override
-    public void setLocalizationService(final LocalizationService service) {
-        serviceLoc = service;
+    public final void setModelService(final ModelService service) {
+        modelService = service;
     }
 
     private final Document getDocument() {
         return document;
     }
 
-    private final LocalizationService getLocalizationService() {
-        return serviceLoc;
-    }
-
-    private final UnitGangConstraint getUniqueConstraint() {
-        return new UnitUpToACountConstraint("unique", 1,
-                getLocalizationService());
-    }
-
-    private final UnitGangConstraint getUpToHalfPointsConstraint() {
-        return new UnitUpToHalfGangLimitConstraint(getLocalizationService());
+    private final ModelService getModelService() {
+        return modelService;
     }
 
 }

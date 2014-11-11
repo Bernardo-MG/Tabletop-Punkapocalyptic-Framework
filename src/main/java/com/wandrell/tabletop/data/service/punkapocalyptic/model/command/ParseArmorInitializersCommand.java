@@ -11,15 +11,16 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ModifiersConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.BulletproofArmorInitializerModifier;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseArmorInitializersCommand implements
-        ReturnCommand<Map<String, ArmorInitializerModifier>> {
+        ReturnCommand<Map<String, ArmorInitializerModifier>>, ModelServiceAware {
 
     private final Document document;
+    private ModelService   modelService;
 
     public ParseArmorInitializersCommand(final Document doc) {
         super();
@@ -32,15 +33,9 @@ public final class ParseArmorInitializersCommand implements
     @Override
     public final Map<String, ArmorInitializerModifier> execute()
             throws Exception {
-        final Map<String, ArmorInitializerModifier> modifiers;
         final Map<String, ArmorInitializerModifier> result;
         final Collection<Element> nodes;
         ArmorInitializerModifier modifier;
-
-        // TODO: Use Spring
-        modifiers = new LinkedHashMap<>();
-        modifiers.put(ModifiersConf.FIREARMS_PROT,
-                new BulletproofArmorInitializerModifier());
 
         nodes = XPathFactory
                 .instance()
@@ -49,7 +44,8 @@ public final class ParseArmorInitializersCommand implements
 
         result = new LinkedHashMap<>();
         for (final Element node : nodes) {
-            modifier = modifiers.get(node.getText());
+            modifier = getModelService().getArmorInitializerModifier(
+                    node.getText());
 
             result.put(modifier.getName(), modifier);
         }
@@ -57,8 +53,17 @@ public final class ParseArmorInitializersCommand implements
         return result;
     }
 
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
+    }
+
     private final Document getDocument() {
         return document;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
     }
 
 }
