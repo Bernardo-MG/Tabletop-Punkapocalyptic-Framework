@@ -14,7 +14,6 @@ import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
@@ -23,23 +22,19 @@ import com.wandrell.util.command.ReturnCommand;
 public final class ParseArmorsCommand implements
         ReturnCommand<Map<String, Armor>>, ModelServiceAware {
 
-    private final Document                              document;
-    private ModelService                                modelService;
-    private final Map<String, ArmorInitializerModifier> modifiers;
-    private final Map<String, SpecialRule>              rules;
+    private final Document                 document;
+    private ModelService                   modelService;
+    private final Map<String, SpecialRule> rules;
 
     public ParseArmorsCommand(final Document doc,
-            final Map<String, SpecialRule> rules,
-            final Map<String, ArmorInitializerModifier> modifiers) {
+            final Map<String, SpecialRule> rules) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
         checkNotNull(rules, "Received a null pointer as rules");
-        checkNotNull(modifiers, "Received a null pointer as modifiers");
 
         document = doc;
         this.rules = rules;
-        this.modifiers = modifiers;
     }
 
     @Override
@@ -74,10 +69,6 @@ public final class ParseArmorsCommand implements
         return modelService;
     }
 
-    private final Map<String, ArmorInitializerModifier> getModifiers() {
-        return modifiers;
-    }
-
     private final Map<String, SpecialRule> getRules() {
         return rules;
     }
@@ -96,7 +87,6 @@ public final class ParseArmorsCommand implements
     }
 
     private final Armor parseNode(final Element node) {
-        final Element modifiers;
         final String name;
         final Integer protection;
         final Collection<SpecialRule> rules;
@@ -108,13 +98,6 @@ public final class ParseArmorsCommand implements
         rules = getRules(node.getChild(ModelNodeConf.RULES));
 
         armor = getModelService().getArmor(name, protection, rules);
-
-        modifiers = node.getChild(ModelNodeConf.MODIFIERS);
-        if (modifiers != null) {
-            for (final Element modifier : modifiers.getChildren()) {
-                armor = getModifiers().get(modifier.getText()).modify(armor);
-            }
-        }
 
         return armor;
     }

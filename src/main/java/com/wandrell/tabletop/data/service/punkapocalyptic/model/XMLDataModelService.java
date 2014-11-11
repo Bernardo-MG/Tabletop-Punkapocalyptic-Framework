@@ -29,11 +29,9 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeap
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.modifier.ArmorInitializerModifier;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.LoadFactionUnitsCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorInitializersCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseEquipmentCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseFactionsCommand;
@@ -226,7 +224,6 @@ public final class XMLDataModelService implements DataModelService {
 
     private final void parseModel(final Document doc) {
         final Map<String, UnitGangConstraint> constUnitGang;
-        final Map<String, ArmorInitializerModifier> initializersArmor;
         final Map<String, RangedWeapon> weaponsRanged;
         final Map<String, Weapon> weapons;
         final Map<String, SpecialRule> rules;
@@ -240,8 +237,6 @@ public final class XMLDataModelService implements DataModelService {
 
         constUnitGang = getExecutor().execute(
                 new ParseUnitGangConstraintsCommand(doc));
-        initializersArmor = getExecutor().execute(
-                new ParseArmorInitializersCommand(doc));
 
         weaponsMelee = getExecutor().execute(new ParseMeleeWeaponsCommand(doc));
         weaponsRanged = getExecutor().execute(
@@ -254,8 +249,7 @@ public final class XMLDataModelService implements DataModelService {
 
         rules = getExecutor().execute(new ParseRulesCommand(doc));
 
-        armors = getExecutor().execute(
-                new ParseArmorsCommand(doc, rules, initializersArmor));
+        armors = getExecutor().execute(new ParseArmorsCommand(doc, rules));
 
         units = getExecutor().execute(new ParseUnitsCommand(doc));
 

@@ -3,9 +3,6 @@
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-armor.xsd">
 	<armor_profile>
 		<name>bulletproof_vest</name>
-		<modifiers>
-			<modifier>firearms_protection</modifier>
-		</modifiers>
 		<protection>3</protection>
 	</armor_profile>
 	<armor_profile>
