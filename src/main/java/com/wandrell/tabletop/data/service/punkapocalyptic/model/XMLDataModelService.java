@@ -28,7 +28,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapo
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.specialrule.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.LoadFactionUnitsCommand;
@@ -40,7 +40,6 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRan
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseRulesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitArmorAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitEquipmentAvailabilitiesCommand;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitGangConstraintsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitWeaponAvailabilitiesCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseWeaponEnhancementsCommand;
@@ -125,7 +124,7 @@ public final class XMLDataModelService implements DataModelService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public final Collection<UnitGangConstraint> getUnitConstraints(
+    public final Collection<GangConstraint> getUnitConstraints(
             final String unit, final String faction) {
         final JXPathContext context;
         final Faction fact;
@@ -140,7 +139,7 @@ public final class XMLDataModelService implements DataModelService {
 
         context.getVariables().declareVariable("unit", unit);
 
-        return (Collection<UnitGangConstraint>) context.getValue(query);
+        return (Collection<GangConstraint>) context.getValue(query);
     }
 
     @SuppressWarnings("unchecked")
@@ -223,7 +222,6 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     private final void parseModel(final Document doc) {
-        final Map<String, UnitGangConstraint> constUnitGang;
         final Map<String, RangedWeapon> weaponsRanged;
         final Map<String, Weapon> weapons;
         final Map<String, SpecialRule> rules;
@@ -234,9 +232,6 @@ public final class XMLDataModelService implements DataModelService {
         final Map<String, Interval> weaponIntervals;
         @SuppressWarnings("unused")
         final Map<String, UnitEquipmentAvailability> avaEquipment;
-
-        constUnitGang = getExecutor().execute(
-                new ParseUnitGangConstraintsCommand(doc));
 
         weaponsMelee = getExecutor().execute(new ParseMeleeWeaponsCommand(doc));
         weaponsRanged = getExecutor().execute(
@@ -278,8 +273,7 @@ public final class XMLDataModelService implements DataModelService {
                         equipment, enhancements));
 
         getExecutor().execute(
-                new LoadFactionUnitsCommand(doc, factions.values(), units,
-                        constUnitGang));
+                new LoadFactionUnitsCommand(doc, factions.values(), units));
     }
 
 }

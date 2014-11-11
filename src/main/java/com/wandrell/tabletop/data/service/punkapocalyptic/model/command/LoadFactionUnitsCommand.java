@@ -12,7 +12,7 @@ import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitGangConstraint;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
@@ -21,25 +21,22 @@ import com.wandrell.util.command.Command;
 public final class LoadFactionUnitsCommand implements Command,
         ModelServiceAware {
 
-    private final Map<String, UnitGangConstraint> constraintsGang;
-    private final Document                        document;
-    private final Collection<Faction>             factions;
-    private ModelService                          modelService;
-    private final Map<String, Unit>               units;
+    private final Document            document;
+    private final Collection<Faction> factions;
+    private ModelService              modelService;
+    private final Map<String, Unit>   units;
 
     public LoadFactionUnitsCommand(final Document doc,
-            final Collection<Faction> factions, final Map<String, Unit> units,
-            final Map<String, UnitGangConstraint> constraints) {
+            final Collection<Faction> factions, final Map<String, Unit> units) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(factions, "Received a null pointer as factions");
         checkNotNull(units, "Received a null pointer as units");
-        checkNotNull(constraints, "Received a null pointer as constraints");
 
         document = doc;
         this.units = units;
         this.factions = factions;
-        constraintsGang = constraints;
     }
 
     @Override
@@ -66,10 +63,6 @@ public final class LoadFactionUnitsCommand implements Command,
         return modelService;
     }
 
-    private final Map<String, UnitGangConstraint> getUnitConstraints() {
-        return constraintsGang;
-    }
-
     private final Map<String, Unit> getUnits() {
         return units;
     }
@@ -79,9 +72,9 @@ public final class LoadFactionUnitsCommand implements Command,
         final String expression;
         String expConstraint;
         Unit unit;
-        Collection<UnitGangConstraint> constraints;
+        Collection<GangConstraint> constraints;
         Collection<Element> nodesConstr;
-        UnitGangConstraint constr;
+        GangConstraint constr;
 
         expression = String.format("//faction_unit[faction='%s']//unit",
                 faction.getName());
@@ -101,9 +94,8 @@ public final class LoadFactionUnitsCommand implements Command,
 
             constraints = new LinkedList<>();
             for (final Element constraint : nodesConstr) {
-                constr = getUnitConstraints().get(constraint.getText())
-                        .createNewInstance();
-                constr.setUnit(unit.getUnitName());
+                constr = getModelService().getUnitGangConstraint(
+                        constraint.getText(), unit.getUnitName());
 
                 constraints.add(constr);
             }
