@@ -5,7 +5,7 @@
 		<faction>gangers</faction>
 		<equipment_pieces>
 			<equipment_piece>
-				<name>biohazard_suit</name>
+				<name>biohazard_protection</name>
 				<cost>8</cost>
 			</equipment_piece>
 		</equipment_pieces>

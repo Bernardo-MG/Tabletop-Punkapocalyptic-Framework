@@ -3,12 +3,6 @@
 	xsi:noNamespaceSchemaLocation="validation/punkapocalyptic-model-weapon-enhancement.xsd">
 	<weapon_enhancement_profile>
 		<name>bayonet</name>
-		<bonus_list>
-			<bonus>
-				<attribute>penetration</attribute>
-				<value>2</value>
-			</bonus>
-		</bonus_list>
 		<cost>4</cost>
 	</weapon_enhancement_profile>
 </weapon_enhancement_profiles>

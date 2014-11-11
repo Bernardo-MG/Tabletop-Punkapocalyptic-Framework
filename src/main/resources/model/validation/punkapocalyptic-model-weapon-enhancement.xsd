@@ -17,20 +17,6 @@
 		<xs:sequence>
 			<xs:element name="name" type="xs:token" maxOccurs="1"
 				minOccurs="1" />
-			<xs:element name="constraints" type="constraints"
-				maxOccurs="1" minOccurs="0">
-				<xs:unique name="uniqueConstraint">
-					<xs:selector xpath="constraint" />
-					<xs:field xpath="." />
-				</xs:unique>
-			</xs:element>
-			<xs:element name="bonus_list" type="bonusList"
-				maxOccurs="1" minOccurs="0">
-				<xs:unique name="uniqueBonus">
-					<xs:selector xpath="bonus" />
-					<xs:field xpath="attribute" />
-				</xs:unique>
-			</xs:element>
 			<xs:element name="cost" type="xs:int" maxOccurs="1"
 				minOccurs="1" />
 		</xs:sequence>
@@ -52,46 +38,5 @@
 			<xs:enumeration value="cover" />
 		</xs:restriction>
 	</xs:simpleType>
-
-	<xs:complexType name="constraints">
-		<xs:sequence>
-			<xs:element name="constraint" type="xs:token" maxOccurs="unbounded"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="rules">
-		<xs:sequence>
-			<xs:element name="rule" type="xs:token" maxOccurs="unbounded"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="bonusList">
-		<xs:sequence>
-			<xs:element name="bonus" type="bonus" maxOccurs="unbounded"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="bonus">
-		<xs:sequence>
-			<xs:element name="attribute" type="attribute"
-				maxOccurs="1" minOccurs="1" />
-			<xs:element name="value" type="xs:int" maxOccurs="1"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="ranges">
-		<xs:sequence>
-			<xs:element name="short" type="xs:int" maxOccurs="1"
-				minOccurs="1" />
-			<xs:element name="medium" type="xs:int" maxOccurs="1"
-				minOccurs="1" />
-			<xs:element name="long" type="xs:int" maxOccurs="1"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
 
 </xs:schema>
