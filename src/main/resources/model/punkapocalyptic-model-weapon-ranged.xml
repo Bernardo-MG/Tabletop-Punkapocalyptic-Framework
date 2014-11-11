@@ -184,9 +184,6 @@
 	</weapon_ranged_profile>
 	<weapon_ranged_profile>
 		<name>throwing_knife</name>
-		<constraints>
-			<constraint>add_strength</constraint>
-		</constraints>
 		<penetration>
 			<short>2</short>
 			<medium>1</medium>

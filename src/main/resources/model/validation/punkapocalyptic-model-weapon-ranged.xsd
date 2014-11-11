@@ -17,13 +17,6 @@
 		<xs:sequence>
 			<xs:element name="name" type="xs:token" maxOccurs="1"
 				minOccurs="1" />
-			<xs:element name="constraints" type="constraints"
-				maxOccurs="1" minOccurs="0">
-				<xs:unique name="uniqueConstraint">
-					<xs:selector xpath="constraint" />
-					<xs:field xpath="." />
-				</xs:unique>
-			</xs:element>
 			<xs:element name="rules" type="rules" maxOccurs="1"
 				minOccurs="0">
 				<xs:unique name="uniqueRule">
@@ -67,13 +60,6 @@
 			<xs:enumeration value="cover" />
 		</xs:restriction>
 	</xs:simpleType>
-
-	<xs:complexType name="constraints">
-		<xs:sequence>
-			<xs:element name="constraint" type="xs:token" maxOccurs="unbounded"
-				minOccurs="1" />
-		</xs:sequence>
-	</xs:complexType>
 
 	<xs:complexType name="rules">
 		<xs:sequence>
