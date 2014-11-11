@@ -58,6 +58,16 @@
 		<cost>10</cost>
 	</weapon_melee_profile>
 	<weapon_melee_profile>
+		<name>shield</name>
+		<rules>
+			<rule>two-handed</rule>
+		</rules>
+		<combat>0</combat>
+		<penetration>0</penetration>
+		<strength>0</strength>
+		<cost>6</cost>
+	</weapon_melee_profile>
+	<weapon_melee_profile>
 		<name>small_blade</name>
 		<combat>0</combat>
 		<penetration>2</penetration>

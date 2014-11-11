@@ -43,6 +43,7 @@
 			<weapon>heavy_blade</weapon>
 			<weapon>heavy_mace</weapon>
 			<weapon>mace</weapon>
+			<weapon>shield</weapon>
 			<weapon>shotgun</weapon>
 		</weapons>
 	</unit_weapon>

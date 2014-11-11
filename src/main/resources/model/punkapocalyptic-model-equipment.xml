@@ -5,25 +5,4 @@
 		<name>biohazard_protection</name>
 		<cost>8</cost>
 	</equipment_profile>
-	<equipment_profile>
-		<name>shield</name>
-		<constraints>
-			<constraint>weapon_slot</constraint>
-		</constraints>
-		<bonus_list>
-			<bonus>
-				<attribute>armor</attribute>
-				<value>2</value>
-			</bonus>
-			<bonus>
-				<attribute>combat</attribute>
-				<value>-1</value>
-			</bonus>
-			<bonus>
-				<attribute>cover</attribute>
-				<value>2</value>
-			</bonus>
-		</bonus_list>
-		<cost>8</cost>
-	</equipment_profile>
 </equipment_profiles>
