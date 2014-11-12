@@ -2,6 +2,7 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
@@ -26,6 +27,10 @@ public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
 
         for (final Weapon weapon : getUnit().getWeapons()) {
             cost += weapon.getCost();
+        }
+
+        for (final Equipment equipment : getUnit().getEquipment()) {
+            cost += equipment.getCost();
         }
 
         if (getUnit().getArmor() != null) {

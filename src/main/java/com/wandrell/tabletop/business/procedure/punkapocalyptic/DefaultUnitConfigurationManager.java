@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -59,6 +60,12 @@ public final class DefaultUnitConfigurationManager implements
         armors.addAll(availability.getArmorOptions());
 
         return armors;
+    }
+
+    @Override
+    public final Collection<Equipment> getEquipmentOptions() {
+        return getDataModelService().getEquipmentOptions(
+                getUnit().getUnitName());
     }
 
     @Override

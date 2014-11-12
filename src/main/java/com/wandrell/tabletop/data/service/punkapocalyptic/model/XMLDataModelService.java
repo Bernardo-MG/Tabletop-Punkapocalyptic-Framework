@@ -18,7 +18,6 @@ import com.wandrell.tabletop.business.conf.WeaponNameConf;
 import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
@@ -51,6 +50,7 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 public final class XMLDataModelService implements DataModelService {
 
     private Map<String, UnitArmorAvailability>  avaArmor;
+    private Map<String, Collection<Equipment>>  avaEquipment;
     private Map<String, UnitWeaponAvailability> avaWeapon;
     private final CommandExecutor               executor;
     private Map<String, Faction>                factions;
@@ -74,6 +74,11 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final Collection<Faction> getAllFactions() {
         return getFactions().values();
+    }
+
+    @Override
+    public final Collection<Equipment> getEquipmentOptions(final String unit) {
+        return avaEquipment.get(unit);
     }
 
     @Override
@@ -230,8 +235,6 @@ public final class XMLDataModelService implements DataModelService {
         final Map<String, Equipment> equipment;
         final Map<String, WeaponEnhancement> enhancements;
         final Map<String, Interval> weaponIntervals;
-        @SuppressWarnings("unused")
-        final Map<String, UnitEquipmentAvailability> avaEquipment;
 
         weaponsMelee = getExecutor().execute(new ParseMeleeWeaponsCommand(doc));
         weaponsRanged = getExecutor().execute(
@@ -270,7 +273,7 @@ public final class XMLDataModelService implements DataModelService {
 
         avaEquipment = getExecutor().execute(
                 new ParseUnitEquipmentAvailabilitiesCommand(doc, units,
-                        equipment, enhancements));
+                        equipment));
 
         getExecutor().execute(
                 new LoadFactionUnitsCommand(doc, factions.values(), units));

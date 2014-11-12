@@ -12,75 +12,43 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseUnitEquipmentAvailabilitiesCommand implements
-        ReturnCommand<Map<String, UnitEquipmentAvailability>>,
-        ModelServiceAware {
+        ReturnCommand<Map<String, Collection<Equipment>>> {
 
-    private final Document                       doc;
-    private final Map<String, WeaponEnhancement> enhancements;
-    private final Map<String, Equipment>         equipment;
-    private ModelService                         modelService;
-    private final Map<String, Unit>              units;
+    private final Document               doc;
+    private final Map<String, Equipment> equipment;
+    private final Map<String, Unit>      units;
 
     public ParseUnitEquipmentAvailabilitiesCommand(final Document doc,
             final Map<String, Unit> units,
-            final Map<String, Equipment> equipment,
-            final Map<String, WeaponEnhancement> enhancements) {
+            final Map<String, Equipment> equipment) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
         checkNotNull(units, "Received a null pointer as units");
         checkNotNull(equipment, "Received a null pointer as equipment");
-        checkNotNull(enhancements, "Received a null pointer as enhancements");
 
         this.doc = doc;
         this.units = units;
         this.equipment = equipment;
-        this.enhancements = enhancements;
     }
 
     @Override
-    public final Map<String, UnitEquipmentAvailability> execute()
-            throws Exception {
-        final Map<String, UnitEquipmentAvailability> availabilities;
-        UnitEquipmentAvailability availability;
+    public final Map<String, Collection<Equipment>> execute() throws Exception {
+        final Map<String, Collection<Equipment>> availabilities;
 
         availabilities = new LinkedHashMap<>();
 
         for (final Unit unit : getUnits().values()) {
-            availability = buildAvailability(unit);
-
-            availabilities.put(unit.getUnitName(), availability);
+            availabilities.put(unit.getUnitName(),
+                    getEquipment(unit.getUnitName()));
         }
 
         return availabilities;
-    }
-
-    @Override
-    public final void setModelService(final ModelService service) {
-        modelService = service;
-    }
-
-    private final UnitEquipmentAvailability buildAvailability(final Unit unit) {
-        final UnitEquipmentAvailability availability;
-        final Collection<WeaponEnhancement> weaponEnh;
-        final Collection<Equipment> equipment;
-
-        weaponEnh = getWeaponEnhancements(unit.getUnitName());
-        equipment = getEquipment(unit.getUnitName());
-
-        availability = getModelService().getUnitEquipmentAvailability(
-                weaponEnh, equipment);
-
-        return availability;
     }
 
     private final Document getDocument() {
@@ -94,52 +62,34 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
     private final Collection<Equipment> getEquipment(final String unit) {
         final Collection<Equipment> equipment;
         final Collection<Element> nodes;
+        final Collection<Element> nodesFactions;
         final String expression;
+        final String expFaction;
+        final String faction;
 
-        expression = String
-                .format("//unit_equipment_pieces/unit_equipment_piece[unit='%s']/equipment_pieces/equipment_piece",
-                        unit);
+        expFaction = String.format(
+                "//faction_unit//unit[name='%s']/../../faction", unit);
+
+        nodesFactions = XPathFactory.instance()
+                .compile(expFaction, Filters.element()).evaluate(getDocument());
+        faction = nodesFactions.iterator().next().getText();
+
+        expression = String.format(
+                "//faction_equipment_piece[faction='%s']//equipment_piece",
+                faction);
         nodes = XPathFactory.instance().compile(expression, Filters.element())
                 .evaluate(getDocument());
 
         equipment = new LinkedList<>();
         for (final Element node : nodes) {
-            equipment.add(getEquipment().get(node.getText()));
+            equipment.add(getEquipment().get(node.getChild("name").getText()));
         }
 
         return equipment;
     }
 
-    private final ModelService getModelService() {
-        return modelService;
-    }
-
     private final Map<String, Unit> getUnits() {
         return units;
-    }
-
-    private final Map<String, WeaponEnhancement> getWeaponEnhancements() {
-        return enhancements;
-    }
-
-    private final Collection<WeaponEnhancement> getWeaponEnhancements(
-            final String unit) {
-        final Collection<WeaponEnhancement> enhancements;
-        final Collection<Element> nodes;
-        final String expression;
-
-        expression = String
-                .format("//unit_weapon_enhancements/unit_weapon_enhancement[unit='%s']/weapon_enhancements/weapon_enhancement",
-                        unit);
-        nodes = XPathFactory.instance().compile(expression, Filters.element())
-                .evaluate(getDocument());
-
-        enhancements = new LinkedList<>();
-        for (final Element node : nodes) {
-            enhancements.add(getWeaponEnhancements().get(node.getText()));
-        }
-
-        return enhancements;
     }
 
 }
