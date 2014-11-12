@@ -3,6 +3,7 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
@@ -18,11 +19,11 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final String           compulsoryError;
-    private final DataModelService dataModelService;
-    private final RulesetService   rulesetService;
-    private Unit                   unit;
-    private String                 validationMessage = "";
+    private final String             compulsoryError;
+    private final DataModelService   dataModelService;
+    private final RulesetService     rulesetService;
+    private Unit                     unit;
+    private final Collection<String> validationMessages = new LinkedHashSet<>();
 
     public DefaultUnitConfigurationManager(final String weaponError,
             final DataModelService dataModelService,
@@ -74,8 +75,8 @@ public final class DefaultUnitConfigurationManager implements
     }
 
     @Override
-    public final String getValidationMessage() {
-        return validationMessage;
+    public final Collection<String> getValidationMessages() {
+        return validationMessages;
     }
 
     @Override
@@ -106,24 +107,20 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Boolean validate() {
-        final StringBuilder textErrors;
         final Boolean valid;
         final Interval interval;
 
         interval = getDataModelService().getUnitAllowedWeaponsInterval(
                 getUnit().getUnitName());
 
-        textErrors = new StringBuilder();
         if (getUnit().getWeapons().size() < interval.getLowerLimit()) {
             valid = false;
-            textErrors.append(String.format(
-                    getCompulsoryWeaponsErrorMessageTemplate(),
-                    interval.getLowerLimit()));
+            getValidationMessages().add(
+                    String.format(getCompulsoryWeaponsErrorMessageTemplate(),
+                            interval.getLowerLimit()));
         } else {
             valid = true;
         }
-
-        setValidationMessage(textErrors.toString());
 
         return valid;
     }
@@ -138,10 +135,6 @@ public final class DefaultUnitConfigurationManager implements
 
     private final RulesetService getRulesetService() {
         return rulesetService;
-    }
-
-    private final void setValidationMessage(final String message) {
-        validationMessage = message;
     }
 
 }

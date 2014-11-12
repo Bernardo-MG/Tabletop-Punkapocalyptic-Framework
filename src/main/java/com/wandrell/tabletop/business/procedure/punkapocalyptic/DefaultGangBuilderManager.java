@@ -27,15 +27,15 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private final Collection<GangConstraint> constraints       = new LinkedHashSet<>();
+    private final Collection<GangConstraint> constraints        = new LinkedHashSet<>();
     private Gang                             gang;
     private final GangListener               gangListener;
-    private final EventListenerList          listeners         = new EventListenerList();
+    private final EventListenerList          listeners          = new EventListenerList();
     private final ModularDerivedValueHandler maxUnits;
     private final DataModelService           serviceModel;
     private RulesetService                   serviceRuleset;
     private final String                     tooMany;
-    private String                           validationMessage = "";
+    private final Collection<String>         validationMessages = new LinkedHashSet<>();
 
     public DefaultGangBuilderManager(final String tooManyError,
             final DataModelService dataModelService,
@@ -132,8 +132,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
-    public final String getValidationMessage() {
-        return validationMessage;
+    public final Collection<String> getValidationMessages() {
+        return validationMessages;
     }
 
     @Override
@@ -181,20 +181,15 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final Boolean validate() {
-        final StringBuilder textErrors;
         final Boolean failedCount;
         final Boolean failedConstraints;
         final Boolean failed;
 
-        textErrors = new StringBuilder();
+        failedCount = validateUnitsCount();
 
-        failedCount = validateUnitsCount(textErrors);
-
-        failedConstraints = validateUnitConstraints(textErrors);
+        failedConstraints = validateUnitConstraints();
 
         failed = (failedCount || failedConstraints);
-
-        setValidationMessage(textErrors.toString());
 
         return !failed;
     }
@@ -256,21 +251,13 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return tooMany;
     }
 
-    private final void setValidationMessage(final String message) {
-        validationMessage = message;
-    }
-
-    private final Boolean
-            validateUnitConstraints(final StringBuilder textErrors) {
+    private final Boolean validateUnitConstraints() {
         Boolean failed;
 
         failed = false;
         for (final GangConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getGang())) {
-                if (textErrors.length() > 0) {
-                    textErrors.append(System.lineSeparator());
-                }
-                textErrors.append(constraint.getErrorMessage());
+                getValidationMessages().add(constraint.getErrorMessage());
 
                 failed = true;
             }
@@ -279,12 +266,13 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return failed;
     }
 
-    private final Boolean validateUnitsCount(final StringBuilder textErrors) {
+    private final Boolean validateUnitsCount() {
         final Boolean failed;
 
         if (getGang().getUnits().size() > getMaxUnits().getValue()) {
-            textErrors.append(String.format(getTooManyUnitsWarningMessage(),
-                    getGang().getUnits().size(), getMaxUnits().getValue()));
+            getValidationMessages().add(
+                    String.format(getTooManyUnitsWarningMessage(), getGang()
+                            .getUnits().size(), getMaxUnits().getValue()));
             failed = true;
         } else {
             failed = false;
