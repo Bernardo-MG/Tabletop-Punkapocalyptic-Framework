@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
@@ -49,13 +48,18 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
-    private Map<String, UnitArmorAvailability>  avaArmor;
-    private Map<String, Collection<Equipment>>  avaEquipment;
-    private Map<String, UnitWeaponAvailability> avaWeapon;
-    private final CommandExecutor               executor;
-    private Map<String, Faction>                factions;
-    private final Collection<InputStream>       sources;
-    private Map<String, MeleeWeapon>            weaponsMelee;
+    private Map<String, UnitArmorAvailability>                           avaArmor;
+    private Map<String, Collection<Equipment>>                           avaEquipment;
+    private Map<String, UnitWeaponAvailability>                          avaWeapon;
+    private final CommandExecutor                                        executor;
+    private Map<String, Faction>                                         factions;
+    private final Map<String, Collection<Unit>>                          factionUnits           = new LinkedHashMap<>();
+    private final Collection<InputStream>                                sources;
+    private final Map<Collection<String>, Collection<GangConstraint>>    unitConstraints        = new LinkedHashMap<>();
+    private final Map<String, Interval>                                  unitIntervals          = new LinkedHashMap<>();
+    private final Map<Collection<String>, Collection<WeaponEnhancement>> unitWeaponEnhancements = new LinkedHashMap<>();
+    private final Map<String, Collection<Weapon>>                        unitWeapons            = new LinkedHashMap<>();
+    private Map<String, MeleeWeapon>                                     weaponsMelee;
 
     public XMLDataModelService(final CommandExecutor executor,
             final Collection<InputStream> sources) {
@@ -91,14 +95,20 @@ public final class XMLDataModelService implements DataModelService {
 
         checkNotNull(faction, "Received a null pointer as faction name");
 
-        fact = getFactions().get(faction);
-        context = JXPathContext.newContext(fact);
-        query = "units/unit";
+        if (factionUnits.containsKey(faction)) {
+            result = factionUnits.get(faction);
+        } else {
+            fact = getFactions().get(faction);
+            context = JXPathContext.newContext(fact);
+            query = "units/unit";
 
-        result = new LinkedList<>();
-        for (final Iterator<?> itr = context.iterate(query); itr.hasNext();) {
-            obj = itr.next();
-            result.add((Unit) obj);
+            result = new LinkedList<>();
+            for (final Iterator<?> itr = context.iterate(query); itr.hasNext();) {
+                obj = itr.next();
+                result.add((Unit) obj);
+            }
+
+            factionUnits.put(faction, result);
         }
 
         return result;
@@ -112,11 +122,20 @@ public final class XMLDataModelService implements DataModelService {
     @Override
     public final Interval getUnitAllowedWeaponsInterval(final String unit) {
         final UnitWeaponAvailability availability;
+        final Interval result;
 
-        availability = getUnitWeaponAvailability(unit);
+        if (unitIntervals.containsKey(unit)) {
+            result = unitIntervals.get(unit);
+        } else {
+            availability = getUnitWeaponAvailability(unit);
 
-        return new DefaultInterval(availability.getMinWeapons(),
-                availability.getMaxWeapons());
+            result = new DefaultInterval(availability.getMinWeapons(),
+                    availability.getMaxWeapons());
+
+            unitIntervals.put(unit, result);
+        }
+
+        return result;
     }
 
     @Override
@@ -132,19 +151,33 @@ public final class XMLDataModelService implements DataModelService {
     public final Collection<GangConstraint> getUnitConstraints(
             final String unit, final String faction) {
         final JXPathContext context;
+        final Collection<String> key;
         final Faction fact;
         final String query;
+        final Collection<GangConstraint> result;
 
         checkNotNull(unit, "Received a null pointer as unit name");
         checkNotNull(faction, "Received a null pointer as faction name");
 
-        fact = getFactions().get(faction);
-        context = JXPathContext.newContext(fact);
-        query = "units[unit/unitName=$unit]/constraints";
+        key = new LinkedList<>();
+        key.add(unit);
+        key.add(faction);
 
-        context.getVariables().declareVariable("unit", unit);
+        if (unitConstraints.containsKey(key)) {
+            result = unitConstraints.get(key);
+        } else {
+            fact = getFactions().get(faction);
+            context = JXPathContext.newContext(fact);
+            query = "units[unit/unitName=$unit]/constraints";
 
-        return (Collection<GangConstraint>) context.getValue(query);
+            context.getVariables().declareVariable("unit", unit);
+
+            result = (Collection<GangConstraint>) context.getValue(query);
+
+            unitConstraints.put(key, result);
+        }
+
+        return result;
     }
 
     @SuppressWarnings("unchecked")
@@ -154,32 +187,52 @@ public final class XMLDataModelService implements DataModelService {
         final JXPathContext context;
         final UnitWeaponAvailability availability;
         final String query;
+        final Collection<WeaponEnhancement> result;
+        final Collection<String> key;
 
-        availability = getUnitWeaponAvailability(unit);
-        context = JXPathContext.newContext(availability);
-        query = "weaponOptions[weapon/name=$weapon]/enhancements";
+        key = new LinkedList<>();
+        key.add(unit);
+        key.add(weapon);
 
-        context.getVariables().declareVariable("weapon", weapon);
+        if (unitWeaponEnhancements.containsKey(key)) {
+            result = unitWeaponEnhancements.get(key);
+        } else {
+            availability = getUnitWeaponAvailability(unit);
+            context = JXPathContext.newContext(availability);
+            query = "weaponOptions[weapon/name=$weapon]/enhancements";
 
-        return (Collection<WeaponEnhancement>) context.getValue(query);
+            context.getVariables().declareVariable("weapon", weapon);
+
+            result = (Collection<WeaponEnhancement>) context.getValue(query);
+
+            unitWeaponEnhancements.put(key, result);
+        }
+
+        return result;
     }
 
     @Override
     public final Collection<Weapon> getWeaponOptions(final String unit) {
-        final List<Weapon> weapons;
+        final Collection<Weapon> result;
         final Collection<WeaponOption> options;
         final UnitWeaponAvailability availability;
 
-        availability = getUnitWeaponAvailability(unit);
+        if (unitWeapons.containsKey(unit)) {
+            result = unitWeapons.get(unit);
+        } else {
+            availability = getUnitWeaponAvailability(unit);
 
-        weapons = new LinkedList<>();
+            result = new LinkedList<>();
 
-        options = availability.getWeaponOptions();
-        for (final WeaponOption option : options) {
-            weapons.add(option.getWeapon());
+            options = availability.getWeaponOptions();
+            for (final WeaponOption option : options) {
+                result.add(option.getWeapon());
+            }
+
+            unitWeapons.put(unit, result);
         }
 
-        return weapons;
+        return result;
     }
 
     private final Map<String, UnitArmorAvailability> getArmorAvailabilities() {
