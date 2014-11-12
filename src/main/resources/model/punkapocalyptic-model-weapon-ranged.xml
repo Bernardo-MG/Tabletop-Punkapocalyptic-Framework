@@ -60,7 +60,7 @@
 				<long>60</long>
 			</cm>
 		</range>
-		<cost>8</cost>
+		<cost>10</cost>
 	</weapon_ranged_profile>
 	<weapon_ranged_profile>
 		<name>crossbow</name>
@@ -69,14 +69,14 @@
 			<rule>two-handed</rule>
 		</rules>
 		<penetration>
-			<short>2</short>
-			<medium>2</medium>
-			<long>2</long>
-		</penetration>
-		<strength>
 			<short>3</short>
 			<medium>3</medium>
 			<long>3</long>
+		</penetration>
+		<strength>
+			<short>4</short>
+			<medium>4</medium>
+			<long>4</long>
 		</strength>
 		<range>
 			<inches>
