@@ -5,20 +5,19 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class FilterWeaponOptionsCommand implements
         ReturnCommand<Collection<Weapon>> {
 
-    private final Unit               unit;
     private final Collection<Weapon> weapons;
+    private final Collection<Weapon> weaponsHas;
 
-    public FilterWeaponOptionsCommand(final Unit unit,
+    public FilterWeaponOptionsCommand(final Collection<Weapon> weaponsHas,
             final Collection<Weapon> weapons) {
         super();
 
-        this.unit = unit;
+        this.weaponsHas = weaponsHas;
         this.weapons = weapons;
     }
 
@@ -31,14 +30,14 @@ public final class FilterWeaponOptionsCommand implements
         Boolean hasTwoHanded;
 
         hasTwoHanded = false;
-        itrWeapons = getUnit().getWeapons().iterator();
+        itrWeapons = getUnitWeapons().iterator();
         while ((!hasTwoHanded) && (itrWeapons.hasNext())) {
             weapon = itrWeapons.next();
             hasTwoHanded = weapon.isTwoHanded();
         }
 
         result = new LinkedHashSet<>();
-        weapons = getUnit().getWeapons();
+        weapons = getUnitWeapons();
         for (final Weapon w : getWeapons()) {
             if (!weapons.contains(w)) {
                 if (hasTwoHanded) {
@@ -54,8 +53,8 @@ public final class FilterWeaponOptionsCommand implements
         return result;
     }
 
-    private final Unit getUnit() {
-        return unit;
+    private final Collection<Weapon> getUnitWeapons() {
+        return weaponsHas;
     }
 
     private final Collection<Weapon> getWeapons() {

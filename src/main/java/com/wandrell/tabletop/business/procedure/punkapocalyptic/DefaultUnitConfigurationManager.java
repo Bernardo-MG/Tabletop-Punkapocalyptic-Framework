@@ -93,7 +93,8 @@ public final class DefaultUnitConfigurationManager implements
         weapons = getDataModelService().getWeaponOptions(
                 getUnit().getUnitName());
 
-        return getRulesetService().filterWeaponOptions(getUnit(), weapons);
+        return getRulesetService().filterWeaponOptions(getUnit().getWeapons(),
+                weapons);
     }
 
     @Override
