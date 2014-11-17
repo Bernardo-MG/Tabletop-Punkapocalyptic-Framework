@@ -12,6 +12,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
@@ -19,24 +20,26 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final String             compulsoryError;
     private final DataModelService   dataModelService;
     private final RulesetService     rulesetService;
     private Unit                     unit;
+    private final UnitConstraint     unitsWeaponsIntervalConstraint;
     private final Collection<String> validationMessages = new LinkedHashSet<>();
 
-    public DefaultUnitConfigurationManager(final String weaponError,
+    public DefaultUnitConfigurationManager(
+            final UnitConstraint weaponsIntervalConstraint,
             final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(weaponError, "Received a null pointer as error message");
+        checkNotNull(weaponsIntervalConstraint,
+                "Received a null pointer as weapons interval constraint");
         checkNotNull(dataModelService,
                 "Received a null pointer as the data model service");
         checkNotNull(rulesetService,
                 "Received a null pointer as the ruleset service");
 
-        this.compulsoryError = weaponError;
+        this.unitsWeaponsIntervalConstraint = weaponsIntervalConstraint;
         this.dataModelService = dataModelService;
         this.rulesetService = rulesetService;
     }
@@ -108,26 +111,23 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Boolean validate() {
-        final Boolean valid;
         final Interval interval;
+        final Boolean valid;
 
-        interval = getDataModelService().getUnitAllowedWeaponsInterval(
-                getUnit().getUnitName());
+        valid = getUnitWeaponsInIntervalConstraint().isValid(getUnit());
 
-        if (getUnit().getWeapons().size() < interval.getLowerLimit()) {
-            valid = false;
+        if (!valid) {
+            interval = getDataModelService().getUnitAllowedWeaponsInterval(
+                    getUnit().getUnitName());
+
             getValidationMessages().add(
-                    String.format(getCompulsoryWeaponsErrorMessageTemplate(),
-                            interval.getLowerLimit()));
+                    String.format(getUnitWeaponsInIntervalConstraint()
+                            .getErrorMessage(), interval.getLowerLimit()));
         } else {
-            valid = true;
+            getValidationMessages().clear();
         }
 
         return valid;
-    }
-
-    private final String getCompulsoryWeaponsErrorMessageTemplate() {
-        return compulsoryError;
     }
 
     private final DataModelService getDataModelService() {
@@ -136,6 +136,10 @@ public final class DefaultUnitConfigurationManager implements
 
     private final RulesetService getRulesetService() {
         return rulesetService;
+    }
+
+    private final UnitConstraint getUnitWeaponsInIntervalConstraint() {
+        return unitsWeaponsIntervalConstraint;
     }
 
 }

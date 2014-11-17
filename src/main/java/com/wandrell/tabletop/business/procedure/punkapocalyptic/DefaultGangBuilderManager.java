@@ -73,7 +73,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitRemoved(final UnitEvent event) {
-                getConstraints().clear();
                 for (final Unit unit : getGang().getUnits()) {
                     getConstraints().addAll(
                             getDataModelService().getUnitConstraints(
@@ -181,6 +180,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         failedConstraints = validateUnitConstraints();
 
         failed = (failedCount || failedConstraints);
+
+        if (!failed) {
+            getValidationMessages().clear();
+        }
 
         return !failed;
     }
