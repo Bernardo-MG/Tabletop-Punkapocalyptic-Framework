@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.util;
+package com.wandrell.tabletop.business.util.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
