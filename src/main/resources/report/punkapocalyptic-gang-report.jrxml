@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 5.6.2.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-13T21:30:29 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GangReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96334126-f8cc-46aa-967d-d2753ceaad14">
-	<property name="com.jasperassistant.designer.Grid" value="false"/>
-	<property name="com.jasperassistant.designer.SnapToGrid" value="false"/>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2014-11-15T15:22:37 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GangReport" pageWidth="600" pageHeight="1200" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="report/GangReportBundle" uuid="96334126-f8cc-46aa-967d-d2753ceaad14">
+	<property name="com.jasperassistant.designer.Grid" value="true"/>
+	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
 	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
 	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Gang Data Adapter "/>
 	<parameter name="unitsReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="armorsReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<parameter name="weaponsReport" class="net.sf.jasperreports.engine.JasperReport"/>
@@ -14,67 +15,70 @@
 	<field name="faction" class="com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction"/>
 	<group name="band_info"/>
 	<title>
-		<band height="100">
-			<elementGroup>
-				<line>
-					<reportElement x="0" y="0" width="555" height="1" uuid="63839f75-1eb7-42c4-9320-6d62a93b2f9c"/>
-				</line>
-			</elementGroup>
+		<band height="140">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<line>
+				<reportElement x="0" y="0" width="560" height="1" uuid="63839f75-1eb7-42c4-9320-6d62a93b2f9c"/>
+			</line>
 			<textField>
-				<reportElement x="180" y="5" width="375" height="35" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
+				<reportElement x="0" y="1" width="560" height="30" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
 				<textElement textAlignment="Right">
 					<font size="22"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{title.header}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="40" width="375" height="15" uuid="e78d004f-665a-4dd4-b627-9616b55a3230"/>
+				<reportElement x="0" y="30" width="560" height="21" uuid="e78d004f-665a-4dd4-b627-9616b55a3230"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{title.header.credits}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="50" width="561" height="1" uuid="63839f75-1eb7-42c4-9320-6d62a93b2f9c"/>
+			</line>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="50" width="50" height="15" uuid="4bf87b07-a73e-4349-8681-36b60634e437"/>
+				<reportElement mode="Opaque" x="10" y="60" width="50" height="20" uuid="4bf87b07-a73e-4349-8681-36b60634e437"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{label.faction}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="50" width="136" height="15" uuid="1c993b21-6d08-42ed-accf-9e0471a681cb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="60" y="60" width="120" height="20" uuid="1c993b21-6d08-42ed-accf-9e0471a681cb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{faction}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="70" width="50" height="15" uuid="050c5547-ed84-4240-95fb-28338df69a6b">
-					<printWhenExpression><![CDATA[$F{bullets}.getValue()>0]]></printWhenExpression>
-				</reportElement>
+				<reportElement mode="Opaque" x="10" y="80" width="50" height="20" uuid="050c5547-ed84-4240-95fb-28338df69a6b"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{label.bullets}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="70" width="136" height="15" uuid="a1ed0307-41e7-459c-a0dc-390020d2c09c">
-					<printWhenExpression><![CDATA[$F{bullets}.getValue()>0]]></printWhenExpression>
-				</reportElement>
+				<reportElement x="60" y="80" width="120" height="20" uuid="a1ed0307-41e7-459c-a0dc-390020d2c09c"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{bullets}.getValue()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="70" width="50" height="15" uuid="f29a45c5-880c-4963-81e4-888a683ca5c6"/>
+				<reportElement mode="Opaque" x="10" y="100" width="50" height="20" uuid="f29a45c5-880c-4963-81e4-888a683ca5c6"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$R{label.units}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="70" width="136" height="15" uuid="fc79127d-24de-455a-9a09-7f8d6bb51fb3"/>
+				<reportElement x="60" y="100" width="120" height="20" uuid="fc79127d-24de-455a-9a09-7f8d6bb51fb3"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{units}.size()]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="130" width="560" height="1" uuid="63839f75-1eb7-42c4-9320-6d62a93b2f9c"/>
+			</line>
 		</band>
 	</title>
 	<detail>
 		<band height="50">
 			<subreport>
-				<reportElement isPrintRepeatedValues="false" x="5" y="20" width="325" height="20" isRemoveLineWhenBlank="true" backcolor="#FFCC99" uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="561" height="50" isRemoveLineWhenBlank="true" backcolor="#FFCC99" uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616"/>
 				<subreportParameter name="armorsReport">
 					<subreportParameterExpression><![CDATA[$P{armorsReport}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="weaponsReport">
 					<subreportParameterExpression><![CDATA[$P{weaponsReport}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
-					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
 				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{units})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{unitsReport}]]></subreportExpression>
@@ -84,7 +88,7 @@
 	<pageFooter>
 		<band height="30">
 			<rectangle>
-				<reportElement mode="Transparent" x="0" y="5" width="555" height="25" uuid="7c2c763b-c587-44e4-b979-d647a633dcc8"/>
+				<reportElement mode="Transparent" x="0" y="5" width="560" height="25" uuid="7c2c763b-c587-44e4-b979-d647a633dcc8"/>
 			</rectangle>
 			<textField>
 				<reportElement x="200" y="10" width="75" height="20" uuid="a62587cf-20e4-4d86-85df-8ee0cfa9666e"/>
