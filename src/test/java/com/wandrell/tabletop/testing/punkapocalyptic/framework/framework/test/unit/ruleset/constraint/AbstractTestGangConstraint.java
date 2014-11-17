@@ -3,7 +3,7 @@ package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.u
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint.GangConstraint;
+import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 
 public abstract class AbstractTestGangConstraint {

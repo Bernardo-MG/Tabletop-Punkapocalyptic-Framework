@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint;
+package com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
+import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 

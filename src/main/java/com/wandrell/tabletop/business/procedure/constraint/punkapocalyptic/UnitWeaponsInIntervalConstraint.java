@@ -1,10 +1,11 @@
-package com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.constraint;
+package com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Objects;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
