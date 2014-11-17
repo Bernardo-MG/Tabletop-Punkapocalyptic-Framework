@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.ruleset;
+package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.unit.ruleset;
 
 import java.util.Iterator;
 

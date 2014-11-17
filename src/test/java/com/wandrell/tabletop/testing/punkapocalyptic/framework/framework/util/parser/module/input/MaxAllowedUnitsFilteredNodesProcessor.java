@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.file.reader;
+package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.module.input;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

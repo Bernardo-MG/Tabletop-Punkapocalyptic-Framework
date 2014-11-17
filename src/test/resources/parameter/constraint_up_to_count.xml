@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="constraint_up_to_count.xsd">
+	<!-- Empty list -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list></list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list></list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list></list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list></list>
+	</data>
+	<!-- Count: 0 -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>0</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<!-- Count: 1 -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>1</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<!-- Count: 5 -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>5</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>5</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="false">
+		<unit>unit1</unit>
+		<count>5</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>5</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<!-- Count: 10 -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>10</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<!-- Count: MAX -->
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit2</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit3</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit2</unit>
+		</list>
+	</data>
+	<data valid="true">
+		<unit>unit1</unit>
+		<count>2147483647</count>
+		<list>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+			<unit>unit1</unit>
+		</list>
+	</data>
+</test_data>

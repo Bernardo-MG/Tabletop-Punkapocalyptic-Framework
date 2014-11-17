@@ -73,6 +73,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitRemoved(final UnitEvent event) {
+                getConstraints().clear();
+
                 for (final Unit unit : getGang().getUnits()) {
                     getConstraints().addAll(
                             getDataModelService().getUnitConstraints(
@@ -171,21 +173,21 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final Boolean validate() {
-        final Boolean failedCount;
-        final Boolean failedConstraints;
-        final Boolean failed;
+        final Boolean count;
+        final Boolean constraints;
+        final Boolean valid;
 
-        failedCount = validateUnitsCount();
+        count = validateUnitsCount();
 
-        failedConstraints = validateUnitConstraints();
+        constraints = validateUnitConstraints();
 
-        failed = (failedCount || failedConstraints);
+        valid = (count && constraints);
 
-        if (!failed) {
+        if (valid) {
             getValidationMessages().clear();
         }
 
-        return !failed;
+        return valid;
     }
 
     private final void fireGangChangedEvent(final GangChangedEvent event) {
@@ -246,18 +248,18 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     private final Boolean validateUnitConstraints() {
-        Boolean failed;
+        Boolean valid;
 
-        failed = false;
+        valid = false;
         for (final GangConstraint constraint : getConstraints()) {
             if (!constraint.isValid(getGang())) {
                 getValidationMessages().add(constraint.getErrorMessage());
 
-                failed = true;
+                valid = true;
             }
         }
 
-        return failed;
+        return valid;
     }
 
     private final Boolean validateUnitsCount() {

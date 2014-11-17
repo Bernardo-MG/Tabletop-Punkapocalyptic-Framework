@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="test_data">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="data" type="checkList" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="checkList">
+		<xs:sequence>
+			<xs:element name="unit" type="xs:string" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="count" type="xs:integer" maxOccurs="1"
+				minOccurs="1" />
+			<xs:element name="list" type="unitList" maxOccurs="1"
+				minOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="valid" type="xs:boolean" use="required" />
+	</xs:complexType>
+
+	<xs:complexType name="unitList">
+		<xs:sequence>
+			<xs:element name="unit" type="xs:string" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>
