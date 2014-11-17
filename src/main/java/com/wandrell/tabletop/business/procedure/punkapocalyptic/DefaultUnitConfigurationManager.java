@@ -7,27 +7,28 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final DataModelService   dataModelService;
-    private final RulesetService     rulesetService;
-    private Unit                     unit;
-    private final UnitConstraint     unitsWeaponsIntervalConstraint;
-    private final Collection<String> validationMessages = new LinkedHashSet<>();
+    private final DataModelService    dataModelService;
+    private final RulesetService      rulesetService;
+    private Unit                      unit;
+    private final ProcedureConstraint unitsWeaponsIntervalConstraint;
+    private final Collection<String>  validationMessages = new LinkedHashSet<>();
 
     public DefaultUnitConfigurationManager(
-            final UnitConstraint weaponsIntervalConstraint,
+            final ProcedureConstraint weaponsIntervalConstraint,
             final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
@@ -114,7 +115,8 @@ public final class DefaultUnitConfigurationManager implements
         final Interval interval;
         final Boolean valid;
 
-        valid = getUnitWeaponsInIntervalConstraint().isValid(getUnit());
+        ((UnitAware) getUnitWeaponsInIntervalConstraint()).setUnit(getUnit());
+        valid = getUnitWeaponsInIntervalConstraint().isValid();
 
         if (!valid) {
             interval = getDataModelService().getUnitAllowedWeaponsInterval(
@@ -138,7 +140,7 @@ public final class DefaultUnitConfigurationManager implements
         return rulesetService;
     }
 
-    private final UnitConstraint getUnitWeaponsInIntervalConstraint() {
+    private final ProcedureConstraint getUnitWeaponsInIntervalConstraint() {
         return unitsWeaponsIntervalConstraint;
     }
 

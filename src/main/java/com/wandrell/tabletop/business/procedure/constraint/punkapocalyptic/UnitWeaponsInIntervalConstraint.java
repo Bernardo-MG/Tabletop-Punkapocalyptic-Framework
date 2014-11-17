@@ -6,14 +6,17 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.interval.Interval;
-import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
-public final class UnitWeaponsInIntervalConstraint implements UnitConstraint {
+public final class UnitWeaponsInIntervalConstraint implements
+        ProcedureConstraint, UnitAware {
 
     private final DataModelService dataModelService;
     private final String           message;
+    private Unit                   unit;
 
     public UnitWeaponsInIntervalConstraint(final DataModelService service,
             final String message) {
@@ -49,17 +52,26 @@ public final class UnitWeaponsInIntervalConstraint implements UnitConstraint {
     }
 
     @Override
-    public final Boolean isValid(final Unit unit) {
+    public final Boolean isValid() {
         final Boolean valid;
         final Interval interval;
 
-        interval = getDataModelService().getUnitAllowedWeaponsInterval(
-                unit.getUnitName());
+        checkNotNull(unit, "Validating a null unit");
 
-        valid = ((unit.getWeapons().size() >= interval.getLowerLimit()) && (unit
+        interval = getDataModelService().getUnitAllowedWeaponsInterval(
+                getUnit().getUnitName());
+
+        valid = ((getUnit().getWeapons().size() >= interval.getLowerLimit()) && (getUnit()
                 .getWeapons().size() <= interval.getUpperLimit()));
 
         return valid;
+    }
+
+    @Override
+    public final void setUnit(final Unit unit) {
+        checkNotNull(unit, "Received a null pointer as unit");
+
+        this.unit = unit;
     }
 
     @Override
@@ -69,6 +81,10 @@ public final class UnitWeaponsInIntervalConstraint implements UnitConstraint {
 
     private final DataModelService getDataModelService() {
         return dataModelService;
+    }
+
+    private final Unit getUnit() {
+        return unit;
     }
 
 }

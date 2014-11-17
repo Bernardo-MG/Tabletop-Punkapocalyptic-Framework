@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
@@ -18,25 +17,28 @@ import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHand
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
+import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private final Collection<GangConstraint> constraints        = new LinkedHashSet<>();
-    private Gang                             gang;
-    private final GangListener               gangListener;
-    private final EventListenerList          listeners          = new EventListenerList();
-    private final ModularDerivedValueHandler maxUnits;
-    private final DataModelService           serviceModel;
-    private RulesetService                   serviceRuleset;
-    private final GangConstraint             unitLimitConstraint;
-    private final Collection<String>         validationMessages = new LinkedHashSet<>();
+    private final Collection<ProcedureConstraint> constraints        = new LinkedHashSet<>();
+    private Gang                                  gang;
+    private final GangListener                    gangListener;
+    private final EventListenerList               listeners          = new EventListenerList();
+    private final ModularDerivedValueHandler      maxUnits;
+    private final DataModelService                serviceModel;
+    private RulesetService                        serviceRuleset;
+    private final ProcedureConstraint             unitLimitConstraint;
+    private final Collection<String>              validationMessages = new LinkedHashSet<>();
 
-    public DefaultGangBuilderManager(final GangConstraint unitLimitConstraint,
+    public DefaultGangBuilderManager(
+            final ProcedureConstraint unitLimitConstraint,
             final ModularDerivedValueHandler maxUnits,
             final DataModelService dataModelService,
             final RulesetService rulesetService) {
@@ -223,7 +225,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         }
     }
 
-    private final Collection<GangConstraint> getConstraints() {
+    private final Collection<ProcedureConstraint> getConstraints() {
         return constraints;
     }
 
@@ -243,7 +245,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return serviceRuleset;
     }
 
-    private final GangConstraint getUnitLimitConstraint() {
+    private final ProcedureConstraint getUnitLimitConstraint() {
         return unitLimitConstraint;
     }
 
@@ -251,8 +253,9 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         Boolean valid;
 
         valid = false;
-        for (final GangConstraint constraint : getConstraints()) {
-            if (!constraint.isValid(getGang())) {
+        for (final ProcedureConstraint constraint : getConstraints()) {
+            ((GangAware) constraint).setGang(getGang());
+            if (!constraint.isValid()) {
                 getValidationMessages().add(constraint.getErrorMessage());
 
                 valid = true;
@@ -265,7 +268,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private final Boolean validateUnitsCount() {
         final Boolean valid;
 
-        valid = getUnitLimitConstraint().isValid(getGang());
+        ((GangAware) getUnitLimitConstraint()).setGang(getGang());
+        valid = getUnitLimitConstraint().isValid();
 
         if (!valid) {
             getValidationMessages().add(

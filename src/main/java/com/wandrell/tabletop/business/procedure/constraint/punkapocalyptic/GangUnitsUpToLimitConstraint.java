@@ -6,12 +6,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
-import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
-public final class GangUnitsUpToLimitConstraint implements GangConstraint {
+public final class GangUnitsUpToLimitConstraint implements ProcedureConstraint,
+        GangAware {
 
+    private Gang               gang;
     private final String       message;
     private final ValueHandler unitsLimit;
 
@@ -49,17 +52,29 @@ public final class GangUnitsUpToLimitConstraint implements GangConstraint {
     }
 
     @Override
-    public final Boolean isValid(final Gang gang) {
+    public final Boolean isValid() {
+        checkNotNull(gang, "Validating a null gang");
         checkArgument(getUnitsLimit() >= 0,
                 "The limit should be positive or zero");
 
-        return (gang.getUnits().size() <= getUnitsLimit());
+        return (getGang().getUnits().size() <= getUnitsLimit());
+    }
+
+    @Override
+    public final void setGang(final Gang gang) {
+        checkNotNull(gang, "Received a null pointer as gang");
+
+        this.gang = gang;
     }
 
     @Override
     public final String toString() {
         return MoreObjects.toStringHelper(this).add("limit", unitsLimit)
                 .toString();
+    }
+
+    private final Gang getGang() {
+        return gang;
     }
 
     private final Integer getUnitsLimit() {

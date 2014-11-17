@@ -8,12 +8,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
-import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
-public final class UnitUpToHalfGangLimitConstraint implements GangConstraint {
+public final class UnitUpToHalfGangLimitConstraint implements
+        ProcedureConstraint, GangAware {
 
+    private Gang         gang;
     private final String message;
     private final String unit;
 
@@ -59,23 +62,34 @@ public final class UnitUpToHalfGangLimitConstraint implements GangConstraint {
     }
 
     @Override
-    public final Boolean isValid(final Gang gang) {
+    public final Boolean isValid() {
         final Predicate<Unit> isUnit;
         final Collection<Unit> units;
 
-        checkNotNull(gang, "Received a null pointer as gang");
+        checkNotNull(getGang(), "Validating a null gang");
 
         isUnit = (final Unit u) -> u.getUnitName().equals(getUnit());
 
-        units = gang.getUnits().stream().filter(isUnit)
+        units = getGang().getUnits().stream().filter(isUnit)
                 .collect(Collectors.toList());
 
-        return (units.size() <= (gang.getUnits().size() / 2));
+        return (units.size() <= (getGang().getUnits().size() / 2));
+    }
+
+    @Override
+    public final void setGang(final Gang gang) {
+        checkNotNull(gang, "Received a null pointer as gang");
+
+        this.gang = gang;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).add("unit", unit).toString();
+    }
+
+    private final Gang getGang() {
+        return gang;
     }
 
     private final String getUnit() {
