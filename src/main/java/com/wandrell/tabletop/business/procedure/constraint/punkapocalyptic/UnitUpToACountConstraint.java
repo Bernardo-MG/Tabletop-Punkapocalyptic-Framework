@@ -3,8 +3,10 @@ package com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
@@ -65,20 +67,17 @@ public final class UnitUpToACountConstraint implements GangConstraint {
 
     @Override
     public final Boolean isValid(final Gang gang) {
-        final Iterator<Unit> itr;
-        Integer number;
+        final Predicate<Unit> isUnit;
+        final Collection<Unit> units;
 
         checkNotNull(gang, "Received a null pointer as gang");
 
-        itr = gang.getUnits().iterator();
-        number = 0;
-        while ((itr.hasNext()) && (number <= getCount())) {
-            if (itr.next().getUnitName().equals(getUnit())) {
-                number++;
-            }
-        }
+        isUnit = (final Unit u) -> u.getUnitName().equals(getUnit());
 
-        return (number <= getCount());
+        units = gang.getUnits().stream().filter(isUnit)
+                .collect(Collectors.toList());
+
+        return (units.size() <= getCount());
     }
 
     @Override

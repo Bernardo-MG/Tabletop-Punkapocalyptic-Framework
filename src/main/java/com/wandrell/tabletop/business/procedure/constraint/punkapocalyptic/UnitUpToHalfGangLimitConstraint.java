@@ -2,8 +2,10 @@ package com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
@@ -58,22 +60,17 @@ public final class UnitUpToHalfGangLimitConstraint implements GangConstraint {
 
     @Override
     public final Boolean isValid(final Gang gang) {
-        final Iterator<Unit> itr;
-        Unit unit;
-        Integer count;
+        final Predicate<Unit> isUnit;
+        final Collection<Unit> units;
 
         checkNotNull(gang, "Received a null pointer as gang");
 
-        itr = gang.getUnits().iterator();
-        count = 0;
-        while (itr.hasNext()) {
-            unit = itr.next();
-            if (unit.getUnitName().equals(getUnit())) {
-                count++;
-            }
-        }
+        isUnit = (final Unit u) -> u.getUnitName().equals(getUnit());
 
-        return (count <= (gang.getUnits().size() / 2));
+        units = gang.getUnits().stream().filter(isUnit)
+                .collect(Collectors.toList());
+
+        return (units.size() <= (gang.getUnits().size() / 2));
     }
 
     @Override

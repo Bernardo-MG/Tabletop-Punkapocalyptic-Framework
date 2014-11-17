@@ -16,10 +16,20 @@
 
 	<xs:complexType name="checkList">
 		<xs:sequence>
-			<xs:element name="units" type="xs:integer" maxOccurs="1"
-				minOccurs="1" />
-			<xs:element name="limit" type="xs:integer" maxOccurs="1"
-				minOccurs="1" />
+			<xs:element name="units" maxOccurs="1" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="limit" maxOccurs="1" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="valid" type="xs:boolean" use="required" />
 	</xs:complexType>

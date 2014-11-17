@@ -11,17 +11,17 @@ import org.slf4j.LoggerFactory;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
 import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesProcessor;
 
-public final class UpToCountFilteredNodesProcessor implements
+public final class UpToHalfFilteredNodesProcessor implements
         FilteredNodesProcessor<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToCountFilteredNodesProcessor.class);
+                                               .getLogger(UpToHalfFilteredNodesProcessor.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UpToCountFilteredNodesProcessor() {
+    public UpToHalfFilteredNodesProcessor() {
         super();
     }
 
@@ -40,21 +40,21 @@ public final class UpToCountFilteredNodesProcessor implements
 
     private final Collection<Object> readNode(final Element node) {
         final Collection<Object> data;
-        final Integer count;
-        final Integer valid;
+        final Integer units;
+        final Integer total;
 
-        count = Integer.parseInt(node.getChild(TestXMLConf.NODE_COUNT)
+        units = Integer.parseInt(node.getChild(TestXMLConf.NODE_UNITS)
                 .getText());
-        valid = Integer.parseInt(node.getChild(TestXMLConf.NODE_VALID)
+        total = Integer.parseInt(node.getChild(TestXMLConf.NODE_TOTAL)
                 .getText());
 
         data = new LinkedList<>();
-        data.add(count);
-        data.add(valid);
+        data.add(units);
+        data.add(total);
 
         getLogger().debug(
-                String.format("Read constraint for %d units having %d valid",
-                        count, valid));
+                String.format("Read constraint for %d units of a total of %d",
+                        units, total));
 
         return data;
     }

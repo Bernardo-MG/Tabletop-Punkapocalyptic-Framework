@@ -1,5 +1,6 @@
 package com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Objects;
@@ -49,6 +50,9 @@ public final class GangUnitsUpToLimitConstraint implements GangConstraint {
 
     @Override
     public final Boolean isValid(final Gang gang) {
+        checkArgument(getUnitsLimit() >= 0,
+                "The limit should be positive or zero");
+
         return (gang.getUnits().size() <= getUnitsLimit());
     }
 

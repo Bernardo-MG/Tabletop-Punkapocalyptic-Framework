@@ -13,6 +13,7 @@ public abstract class AbstractTestGangConstraint {
 
     public AbstractTestGangConstraint() {
         super();
+        // TODO: Test with an empty list
     }
 
     @Test(dataProvider = NOT_VALIDATES)

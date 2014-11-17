@@ -1,326 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <test_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="constraint_up_to_count.xsd">
-	<!-- Empty list -->
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>0</count>
-		<list></list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>1</count>
-		<list></list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>10</count>
-		<list></list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>2147483647</count>
-		<list></list>
-	</data>
 	<!-- Count: 0 -->
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>0</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>0</valid>
 	</data>
 	<data valid="false">
-		<unit>unit1</unit>
 		<count>0</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>1</valid>
 	</data>
 	<data valid="false">
-		<unit>unit1</unit>
 		<count>0</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>3</valid>
 	</data>
 	<data valid="false">
-		<unit>unit1</unit>
 		<count>0</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="false">
-		<unit>unit1</unit>
-		<count>0</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>3</valid>
 	</data>
 	<!-- Count: 1 -->
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>1</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>0</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>1</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>1</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>1</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>1</valid>
 	</data>
 	<data valid="false">
-		<unit>unit1</unit>
 		<count>1</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>2</valid>
 	</data>
 	<data valid="false">
-		<unit>unit1</unit>
 		<count>1</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="false">
-		<unit>unit1</unit>
-		<count>1</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>3</valid>
 	</data>
 	<!-- Count: 5 -->
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>5</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
-	</data>
-	<data valid="false">
-		<unit>unit1</unit>
-		<count>5</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
-	</data>
-	<data valid="false">
-		<unit>unit1</unit>
-		<count>5</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>0</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>5</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>1</valid>
+	</data>
+	<data valid="true">
+		<count>5</count>
+		<valid>2</valid>
+	</data>
+	<data valid="true">
+		<count>5</count>
+		<valid>3</valid>
+	</data>
+	<data valid="true">
+		<count>5</count>
+		<valid>4</valid>
+	</data>
+	<data valid="true">
+		<count>5</count>
+		<valid>5</valid>
+	</data>
+	<data valid="false">
+		<count>5</count>
+		<valid>6</valid>
+	</data>
+	<data valid="false">
+		<count>5</count>
+		<valid>10</valid>
 	</data>
 	<!-- Count: 10 -->
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>10</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>0</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>10</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>1</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>10</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>2</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>10</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>10</valid>
 	</data>
-	<data valid="true">
-		<unit>unit1</unit>
+	<data valid="false">
 		<count>10</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>11</valid>
 	</data>
-	<data valid="true">
-		<unit>unit1</unit>
+	<data valid="false">
 		<count>10</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>10</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>100</valid>
 	</data>
 	<!-- Count: MAX -->
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>2147483647</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>0</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>2147483647</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit2</unit>
-		</list>
+		<valid>1</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>2147483647</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>10</valid>
 	</data>
 	<data valid="true">
-		<unit>unit1</unit>
 		<count>2147483647</count>
-		<list>
-			<unit>unit2</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>2147483647</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit3</unit>
-			<unit>unit1</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>2147483647</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit2</unit>
-		</list>
-	</data>
-	<data valid="true">
-		<unit>unit1</unit>
-		<count>2147483647</count>
-		<list>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-			<unit>unit1</unit>
-		</list>
+		<valid>100</valid>
 	</data>
 </test_data>

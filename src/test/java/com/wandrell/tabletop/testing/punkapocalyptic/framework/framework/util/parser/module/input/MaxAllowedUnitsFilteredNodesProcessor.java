@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.jdom2.Element;
 
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
 import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesProcessor;
 
 public final class MaxAllowedUnitsFilteredNodesProcessor implements
@@ -25,8 +26,9 @@ public final class MaxAllowedUnitsFilteredNodesProcessor implements
         data = new LinkedHashSet<>();
         for (final Element node : nodes) {
             pair = new LinkedList<>();
-            pair.add(Integer.parseInt(node.getChildText("points")));
-            pair.add(Integer.parseInt(node.getChildText("units")));
+            pair.add(Integer.parseInt(node
+                    .getChildText(TestXMLConf.NODE_POINTS)));
+            pair.add(Integer.parseInt(node.getChildText(TestXMLConf.NODE_UNITS)));
 
             data.add(pair);
         }
