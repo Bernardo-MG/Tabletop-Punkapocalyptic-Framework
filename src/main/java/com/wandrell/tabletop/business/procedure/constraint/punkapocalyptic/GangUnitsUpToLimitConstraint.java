@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Objects;
 
+import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.GangConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
@@ -48,7 +49,13 @@ public final class GangUnitsUpToLimitConstraint implements GangConstraint {
 
     @Override
     public final Boolean isValid(final Gang gang) {
-        return (gang.getUnits().size() < getUnitsLimit());
+        return (gang.getUnits().size() <= getUnitsLimit());
+    }
+
+    @Override
+    public final String toString() {
+        return MoreObjects.toStringHelper(this).add("limit", unitsLimit)
+                .toString();
     }
 
     private final Integer getUnitsLimit() {

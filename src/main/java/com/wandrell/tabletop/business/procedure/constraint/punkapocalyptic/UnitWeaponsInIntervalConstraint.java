@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Objects;
 
+import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.procedure.constraint.punkapocalyptic.UnitConstraint;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -59,6 +60,11 @@ public final class UnitWeaponsInIntervalConstraint implements UnitConstraint {
                 .getWeapons().size() <= interval.getUpperLimit()));
 
         return valid;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).toString();
     }
 
     private final DataModelService getDataModelService() {

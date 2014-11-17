@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="constraint_unit_limit.xsd">
+	<!-- Limit 0 -->
+	<data valid="true">
+		<units>0</units>
+		<limit>0</limit>
+	</data>
+	<data valid="false">
+		<units>1</units>
+		<limit>0</limit>
+	</data>
+	<data valid="false">
+		<units>10</units>
+		<limit>0</limit>
+	</data>
+	<data valid="false">
+		<units>2147483647</units>
+		<limit>0</limit>
+	</data>
+	<!-- Limit 1 -->
+	<data valid="true">
+		<units>0</units>
+		<limit>1</limit>
+	</data>
+	<data valid="true">
+		<units>1</units>
+		<limit>1</limit>
+	</data>
+	<data valid="false">
+		<units>10</units>
+		<limit>1</limit>
+	</data>
+	<data valid="false">
+		<units>2147483647</units>
+		<limit>1</limit>
+	</data>
+	<!-- Limit 100 -->
+	<data valid="true">
+		<units>0</units>
+		<limit>100</limit>
+	</data>
+	<data valid="true">
+		<units>1</units>
+		<limit>100</limit>
+	</data>
+	<data valid="true">
+		<units>10</units>
+		<limit>100</limit>
+	</data>
+	<data valid="true">
+		<units>99</units>
+		<limit>100</limit>
+	</data>
+	<data valid="true">
+		<units>100</units>
+		<limit>100</limit>
+	</data>
+	<data valid="false">
+		<units>101</units>
+		<limit>100</limit>
+	</data>
+	<data valid="false">
+		<units>2147483647</units>
+		<limit>100</limit>
+	</data>
+	<!-- Limit MAX -->
+	<data valid="true">
+		<units>0</units>
+		<limit>2147483647</limit>
+	</data>
+	<data valid="true">
+		<units>1</units>
+		<limit>2147483647</limit>
+	</data>
+	<data valid="true">
+		<units>10</units>
+		<limit>2147483647</limit>
+	</data>
+	<data valid="true">
+		<units>2147483647</units>
+		<limit>2147483647</limit>
+	</data>
+</test_data>

@@ -17,9 +17,7 @@ import com.wandrell.util.TestUtils;
 public final class RulesetParametersFactory {
 
     private static final RulesetParametersFactory instance            = new RulesetParametersFactory();
-
     private static Object                         lockMaxAllowedUnits = new Object();
-
     private static Collection<Collection<Object>> valuesMaxUnits;
 
     public static final RulesetParametersFactory getInstance() {
@@ -49,13 +47,15 @@ public final class RulesetParametersFactory {
         if (valuesMaxUnits == null) {
             synchronized (lockMaxAllowedUnits) {
                 if (valuesMaxUnits == null) {
-                    properties = FileUtils
-                            .getProperties(ResourceUtils
-                                    .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
-                    context = ContextUtils.getClassPathContext(properties,
-                            TestingConf.CONTEXT_DEFAULT);
+                    synchronized (lockMaxAllowedUnits) {
+                        properties = FileUtils
+                                .getProperties(ResourceUtils
+                                        .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
+                        context = ContextUtils.getClassPathContext(properties,
+                                TestingConf.CONTEXT_DEFAULT);
 
-                    valuesMaxUnits = TestUtils.getParameters(context);
+                        valuesMaxUnits = TestUtils.getParameters(context);
+                    }
                 }
             }
         }
