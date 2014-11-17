@@ -18,7 +18,6 @@ import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHand
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
@@ -34,36 +33,27 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private final ModularDerivedValueHandler maxUnits;
     private final DataModelService           serviceModel;
     private RulesetService                   serviceRuleset;
-    private final String                     tooMany;
+    private final GangConstraint             unitLimitConstraint;
     private final Collection<String>         validationMessages = new LinkedHashSet<>();
 
-    public DefaultGangBuilderManager(final String tooManyError,
+    public DefaultGangBuilderManager(final GangConstraint unitLimitConstraint,
+            final ModularDerivedValueHandler maxUnits,
             final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(tooManyError, "Received a null pointer as message");
+        checkNotNull(unitLimitConstraint,
+                "Received a null pointer as units limit constraint");
+        checkNotNull(maxUnits,
+                "Received a null pointer as units units limit value handler");
         checkNotNull(dataModelService,
                 "Received a null pointer as model service");
         checkNotNull(rulesetService,
                 "Received a null pointer as rule set service");
 
-        maxUnits = new ModularDerivedValueHandler("max_units",
-                new AbstractStoreModule() {
+        this.maxUnits = maxUnits;
 
-                    @Override
-                    public final AbstractStoreModule createNewInstance() {
-                        return this;
-                    }
-
-                    @Override
-                    public final Integer getValue() {
-                        return 0;
-                    }
-
-                });
-
-        this.tooMany = tooManyError;
+        this.unitLimitConstraint = unitLimitConstraint;
         this.serviceModel = dataModelService;
         serviceRuleset = rulesetService;
 
@@ -164,7 +154,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
         this.gang = gang;
 
-        getRulesetService().setUpMaxUnitsValueHandler(maxUnits, getGang());
+        getRulesetService().setUpMaxUnitsValueHandler(
+                (ModularDerivedValueHandler) getMaxUnits(), getGang());
 
         ((AbstractValueHandler) gang.getBullets())
                 .addValueEventListener(new ValueHandlerListener() {
@@ -247,8 +238,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return serviceRuleset;
     }
 
-    private final String getTooManyUnitsWarningMessage() {
-        return tooMany;
+    private final GangConstraint getUnitLimitConstraint() {
+        return unitLimitConstraint;
     }
 
     private final Boolean validateUnitConstraints() {
@@ -267,18 +258,18 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     private final Boolean validateUnitsCount() {
-        final Boolean failed;
+        final Boolean valid;
 
-        if (getGang().getUnits().size() > getMaxUnits().getValue()) {
+        valid = getUnitLimitConstraint().isValid(getGang());
+
+        if (!valid) {
             getValidationMessages().add(
-                    String.format(getTooManyUnitsWarningMessage(), getGang()
-                            .getUnits().size(), getMaxUnits().getValue()));
-            failed = true;
-        } else {
-            failed = false;
+                    String.format(getUnitLimitConstraint().getErrorMessage(),
+                            getGang().getUnits().size(), getMaxUnits()
+                                    .getValue()));
         }
 
-        return failed;
+        return valid;
     }
 
 }
