@@ -18,6 +18,7 @@ import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToACountConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToHalfGangLimitConstraint;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
@@ -67,7 +68,9 @@ public final class ConstraintParameterFactory {
             Mockito.when(gang.toString()).thenReturn(
                     String.format("Gang with %d units", unitsCount));
 
-            result.add(new Object[] { constraint, gang });
+            ((GangAware) constraint).setGang(gang);
+
+            result.add(new Object[] { constraint });
         }
 
         return result.iterator();
@@ -113,7 +116,9 @@ public final class ConstraintParameterFactory {
             Mockito.when(gang.toString()).thenReturn(
                     String.format("Gang with %d valid units", valid));
 
-            result.add(new Object[] { constraint, gang });
+            ((GangAware) constraint).setGang(gang);
+
+            result.add(new Object[] { constraint });
         }
 
         return result.iterator();
@@ -167,7 +172,9 @@ public final class ConstraintParameterFactory {
                     String.format("Gang with %d valid units in a total of %d",
                             valid, total));
 
-            result.add(new Object[] { constraint, gang });
+            ((GangAware) constraint).setGang(gang);
+
+            result.add(new Object[] { constraint });
         }
 
         return result.iterator();

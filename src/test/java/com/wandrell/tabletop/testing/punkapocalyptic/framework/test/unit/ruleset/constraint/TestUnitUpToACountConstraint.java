@@ -5,24 +5,25 @@ import java.util.Iterator;
 import org.testng.annotations.DataProvider;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter.ConstraintParameterFactory;
-import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.unit.ruleset.constraint.AbstractTestGangConstraint;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.unit.ruleset.constraint.AbstractTestConstraint;
 
-public class TestUnitLimitGangConstraint extends AbstractTestGangConstraint {
+public class TestUnitUpToACountConstraint extends AbstractTestConstraint {
 
     @DataProvider(name = NOT_VALIDATES)
     public final static Iterator<Object[]> getNotValid() {
         return ConstraintParameterFactory.getInstance()
-                .getNotValidUnitLimitConstraintParameters();
+                .getNotValidUpToCountConstraintParameters();
     }
 
     @DataProvider(name = VALIDATES)
     public final static Iterator<Object[]> getValid() {
         return ConstraintParameterFactory.getInstance()
-                .getValidUnitLimitConstraintParameters();
+                .getValidUpToCountConstraintParameters();
     }
 
-    public TestUnitLimitGangConstraint() {
+    public TestUnitUpToACountConstraint() {
         super();
+        // TODO: Test with an empty list
     }
 
 }
