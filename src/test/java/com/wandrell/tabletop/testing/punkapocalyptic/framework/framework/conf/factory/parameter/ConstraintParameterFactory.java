@@ -7,10 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import com.wandrell.conf.TestingConf;
+import com.wandrell.tabletop.business.model.interval.DefaultInterval;
+import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
@@ -18,7 +22,10 @@ import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToACountConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToHalfGangLimitConstraint;
+import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitWeaponsInIntervalConstraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
@@ -36,8 +43,54 @@ public final class ConstraintParameterFactory {
         return instance;
     }
 
+    private ConstraintParameterFactory() {
+        super();
+    }
+
+    public final Iterator<Object[]> getNotValidUnitLimitConstraintParameters() {
+        return getUnitLimitConstraintParameters(getValues(
+                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, false));
+    }
+
+    public final Iterator<Object[]> getNotValidUpToCountConstraintParameters() {
+        return getUpToCountConstraintParameters(getValues(
+                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, false));
+    }
+
+    public final Iterator<Object[]> getNotValidUpToHalfConstraintParameters() {
+        return getUpToHalfConstraintParameters(getValues(
+                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, false));
+    }
+
+    public final Iterator<Object[]>
+            getNotValidWeaponIntervalConstraintParameters() {
+        return getWeaponIntervalConstraintParameters(getValues(
+                ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, false));
+    }
+
+    public final Iterator<Object[]> getValidUnitLimitConstraintParameters() {
+        return getUnitLimitConstraintParameters(getValues(
+                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, true));
+    }
+
+    public final Iterator<Object[]> getValidUpToCountConstraintParameters() {
+        return getUpToCountConstraintParameters(getValues(
+                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, true));
+    }
+
+    public final Iterator<Object[]> getValidUpToHalfConstraintParameters() {
+        return getUpToHalfConstraintParameters(getValues(
+                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, true));
+    }
+
+    public final Iterator<Object[]>
+            getValidWeaponIntervalConstraintParameters() {
+        return getWeaponIntervalConstraintParameters(getValues(
+                ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, true));
+    }
+
     @SuppressWarnings("unchecked")
-    private static final Iterator<Object[]> getUnitLimitConstraintParameters(
+    private final Iterator<Object[]> getUnitLimitConstraintParameters(
             final Collection<Collection<Object>> valuesTable) {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
@@ -76,7 +129,7 @@ public final class ConstraintParameterFactory {
         return result.iterator();
     }
 
-    private static final Iterator<Object[]> getUpToCountConstraintParameters(
+    private final Iterator<Object[]> getUpToCountConstraintParameters(
             final Collection<Collection<Object>> valuesTable) {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
@@ -124,7 +177,7 @@ public final class ConstraintParameterFactory {
         return result.iterator();
     }
 
-    private static final Iterator<Object[]> getUpToHalfConstraintParameters(
+    private final Iterator<Object[]> getUpToHalfConstraintParameters(
             final Collection<Collection<Object>> valuesTable) {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
@@ -180,40 +233,6 @@ public final class ConstraintParameterFactory {
         return result.iterator();
     }
 
-    private ConstraintParameterFactory() {
-        super();
-    }
-
-    public final Iterator<Object[]> getNotValidUnitLimitConstraintParameters() {
-        return getUnitLimitConstraintParameters(getValues(
-                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, false));
-    }
-
-    public final Iterator<Object[]> getNotValidUpToCountConstraintParameters() {
-        return getUpToCountConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, false));
-    }
-
-    public final Iterator<Object[]> getNotValidUpToHalfConstraintParameters() {
-        return getUpToHalfConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, false));
-    }
-
-    public final Iterator<Object[]> getValidUnitLimitConstraintParameters() {
-        return getUnitLimitConstraintParameters(getValues(
-                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, true));
-    }
-
-    public final Iterator<Object[]> getValidUpToCountConstraintParameters() {
-        return getUpToCountConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, true));
-    }
-
-    public final Iterator<Object[]> getValidUpToHalfConstraintParameters() {
-        return getUpToHalfConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, true));
-    }
-
     private final Collection<Collection<Object>> getValues(final String file,
             final Boolean valid) {
         final ApplicationContext context;
@@ -236,6 +255,52 @@ public final class ConstraintParameterFactory {
         }
 
         return TestUtils.getParameters(context, required, rejected);
+    }
+
+    @SuppressWarnings("unchecked")
+    private final Iterator<Object[]> getWeaponIntervalConstraintParameters(
+            final Collection<Collection<Object>> valuesTable) {
+        final Collection<Object[]> result;
+        Iterator<Object> itrValues;
+        Constraint constraint;
+        Unit unit;
+        Integer weapons;
+        Integer min;
+        Integer max;
+        DataModelService service;
+        Interval interval;
+        Collection<Weapon> weaponsCol;
+
+        result = new LinkedList<>();
+        for (final Collection<Object> values : valuesTable) {
+            itrValues = values.iterator();
+
+            weapons = (Integer) itrValues.next();
+            min = (Integer) itrValues.next();
+            max = (Integer) itrValues.next();
+
+            interval = new DefaultInterval(min, max);
+
+            service = Mockito.mock(DataModelService.class);
+            Mockito.when(
+                    service.getUnitAllowedWeaponsInterval(Matchers.anyString()))
+                    .thenReturn(interval);
+
+            weaponsCol = Mockito.mock(Collection.class);
+
+            Mockito.when(weaponsCol.size()).thenReturn(weapons);
+
+            unit = Mockito.mock(Unit.class);
+            Mockito.when(unit.getWeapons()).thenReturn(weaponsCol);
+
+            constraint = new UnitWeaponsInIntervalConstraint(service, "message");
+
+            ((UnitAware) constraint).setUnit(unit);
+
+            result.add(new Object[] { constraint });
+        }
+
+        return result.iterator();
     }
 
 }

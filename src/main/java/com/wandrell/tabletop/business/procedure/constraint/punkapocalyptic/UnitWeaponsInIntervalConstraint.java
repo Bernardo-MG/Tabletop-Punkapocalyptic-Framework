@@ -55,14 +55,17 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
     public final Boolean isValid() {
         final Boolean valid;
         final Interval interval;
+        final Integer weapons;
 
         checkNotNull(unit, "Validating a null unit");
 
         interval = getDataModelService().getUnitAllowedWeaponsInterval(
                 getUnit().getUnitName());
 
-        valid = ((getUnit().getWeapons().size() >= interval.getLowerLimit()) && (getUnit()
-                .getWeapons().size() <= interval.getUpperLimit()));
+        weapons = getUnit().getWeapons().size();
+
+        valid = ((weapons >= interval.getLowerLimit()) && (weapons <= interval
+                .getUpperLimit()));
 
         return valid;
     }
