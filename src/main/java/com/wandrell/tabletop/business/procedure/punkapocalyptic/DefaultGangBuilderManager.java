@@ -3,7 +3,7 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 import javax.swing.event.EventListenerList;
 
@@ -17,53 +17,31 @@ import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHand
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
 import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
+import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private final Collection<ProcedureConstraint> constraints        = new LinkedHashSet<>();
-    private Gang                                  gang;
-    private final GangListener                    gangListener;
-    private final EventListenerList               listeners          = new EventListenerList();
-    private final ModularDerivedValueHandler      maxUnits;
-    private final DataModelService                serviceModel;
-    private RulesetService                        serviceRuleset;
-    private final ProcedureConstraint             unitLimitConstraint;
-    private final Collection<String>              validationMessages = new LinkedHashSet<>();
+    private Gang                             gang;
+    private final GangListener               gangListener;
+    private final EventListenerList          listeners = new EventListenerList();
+    private final ModularDerivedValueHandler maxUnits;
+    private final DataModelService           serviceModel;
+    private RulesetService                   serviceRuleset;
+    private final Constraint                 unitLimitConstraint;
+    private final ConstraintValidator        validator;
 
-    public DefaultGangBuilderManager(
-            final ProcedureConstraint unitLimitConstraint,
-            final ModularDerivedValueHandler maxUnits,
-            final DataModelService dataModelService,
-            final RulesetService rulesetService) {
-        super();
-
-        checkNotNull(unitLimitConstraint,
-                "Received a null pointer as units limit constraint");
-        checkNotNull(maxUnits,
-                "Received a null pointer as units units limit value handler");
-        checkNotNull(dataModelService,
-                "Received a null pointer as model service");
-        checkNotNull(rulesetService,
-                "Received a null pointer as rule set service");
-
-        this.maxUnits = maxUnits;
-
-        this.unitLimitConstraint = unitLimitConstraint;
-        this.serviceModel = dataModelService;
-        serviceRuleset = rulesetService;
-
+    {
         gangListener = new GangListenerAdapter() {
 
             @Override
             public final void unitAdded(final UnitEvent event) {
-                getConstraints().addAll(
+                getConstraintValidator().setConstraints(
                         getDataModelService().getUnitConstraints(
                                 event.getUnit().getUnitName(),
                                 getGang().getFaction().getName()));
@@ -75,14 +53,19 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitRemoved(final UnitEvent event) {
-                getConstraints().clear();
+                final Collection<Constraint> constraints;
 
+                constraints = new LinkedList<>();
                 for (final Unit unit : getGang().getUnits()) {
-                    getConstraints().addAll(
-                            getDataModelService().getUnitConstraints(
-                                    unit.getUnitName(),
+                    constraints.addAll(getDataModelService()
+                            .getUnitConstraints(unit.getUnitName(),
                                     getGang().getFaction().getName()));
                 }
+
+                getConstraintValidator().clearConstraints();
+                getConstraintValidator().setConstraints(constraints);
+                getConstraintValidator()
+                        .addConstraint(getUnitLimitConstraint());
 
                 validate();
 
@@ -90,6 +73,34 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
             }
 
         };
+    }
+
+    public DefaultGangBuilderManager(final Constraint unitLimitConstraint,
+            final ConstraintValidator validator,
+            final ModularDerivedValueHandler maxUnits,
+            final DataModelService dataModelService,
+            final RulesetService rulesetService) {
+        super();
+
+        checkNotNull(unitLimitConstraint,
+                "Received a null pointer as units limit constraint");
+        checkNotNull(validator,
+                "Received a null pointer as units constraint validator");
+        checkNotNull(maxUnits,
+                "Received a null pointer as units limit value handler");
+        checkNotNull(dataModelService,
+                "Received a null pointer as model service");
+        checkNotNull(rulesetService,
+                "Received a null pointer as rule set service");
+
+        this.maxUnits = maxUnits;
+
+        this.unitLimitConstraint = unitLimitConstraint;
+        this.validator = validator;
+        this.serviceModel = dataModelService;
+        serviceRuleset = rulesetService;
+
+        getConstraintValidator().addConstraint(getUnitLimitConstraint());
     }
 
     @Override
@@ -126,7 +137,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final Collection<String> getValidationMessages() {
-        return validationMessages;
+        return getConstraintValidator().getValidationMessages();
     }
 
     @Override
@@ -175,21 +186,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final Boolean validate() {
-        final Boolean count;
-        final Boolean constraints;
-        final Boolean valid;
-
-        count = validateUnitsCount();
-
-        constraints = validateUnitConstraints();
-
-        valid = (count && constraints);
-
-        if (valid) {
-            getValidationMessages().clear();
-        }
-
-        return valid;
+        return getConstraintValidator().validate();
     }
 
     private final void fireGangChangedEvent(final GangChangedEvent event) {
@@ -225,8 +222,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         }
     }
 
-    private final Collection<ProcedureConstraint> getConstraints() {
-        return constraints;
+    private final ConstraintValidator getConstraintValidator() {
+        return validator;
     }
 
     private final DataModelService getDataModelService() {
@@ -245,40 +242,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return serviceRuleset;
     }
 
-    private final ProcedureConstraint getUnitLimitConstraint() {
+    private final Constraint getUnitLimitConstraint() {
         return unitLimitConstraint;
-    }
-
-    private final Boolean validateUnitConstraints() {
-        Boolean valid;
-
-        valid = false;
-        for (final ProcedureConstraint constraint : getConstraints()) {
-            ((GangAware) constraint).setGang(getGang());
-            if (!constraint.isValid()) {
-                getValidationMessages().add(constraint.getErrorMessage());
-
-                valid = true;
-            }
-        }
-
-        return valid;
-    }
-
-    private final Boolean validateUnitsCount() {
-        final Boolean valid;
-
-        ((GangAware) getUnitLimitConstraint()).setGang(getGang());
-        valid = getUnitLimitConstraint().isValid();
-
-        if (!valid) {
-            getValidationMessages().add(
-                    String.format(getUnitLimitConstraint().getErrorMessage(),
-                            getGang().getUnits().size(), getMaxUnits()
-                                    .getValue()));
-        }
-
-        return valid;
     }
 
 }

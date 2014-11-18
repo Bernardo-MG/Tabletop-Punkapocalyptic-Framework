@@ -13,7 +13,7 @@ import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.Command;
@@ -72,9 +72,9 @@ public final class LoadFactionUnitsCommand implements Command,
         final String expression;
         String expConstraint;
         Unit unit;
-        Collection<ProcedureConstraint> constraints;
+        Collection<Constraint> constraints;
         Collection<Element> nodesConstr;
-        ProcedureConstraint constr;
+        Constraint constr;
 
         expression = String.format("//faction_unit[faction='%s']//unit",
                 faction.getName());

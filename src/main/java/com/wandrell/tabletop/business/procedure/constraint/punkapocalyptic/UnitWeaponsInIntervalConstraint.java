@@ -7,12 +7,12 @@ import java.util.Objects;
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
-public final class UnitWeaponsInIntervalConstraint implements
-        ProcedureConstraint, UnitAware {
+public final class UnitWeaponsInIntervalConstraint implements Constraint,
+        UnitAware {
 
     private final DataModelService dataModelService;
     private final String           message;

@@ -3,7 +3,6 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.wandrell.tabletop.business.model.interval.Interval;
@@ -13,9 +12,8 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
 
 public final class DefaultUnitConfigurationManager implements
@@ -24,23 +22,21 @@ public final class DefaultUnitConfigurationManager implements
     private final DataModelService    dataModelService;
     private final RulesetService      rulesetService;
     private Unit                      unit;
-    private final ProcedureConstraint unitsWeaponsIntervalConstraint;
-    private final Collection<String>  validationMessages = new LinkedHashSet<>();
+    private final ConstraintValidator validator;
 
-    public DefaultUnitConfigurationManager(
-            final ProcedureConstraint weaponsIntervalConstraint,
+    public DefaultUnitConfigurationManager(final ConstraintValidator validator,
             final DataModelService dataModelService,
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(weaponsIntervalConstraint,
-                "Received a null pointer as weapons interval constraint");
+        checkNotNull(validator,
+                "Received a null pointer as constraint validator");
         checkNotNull(dataModelService,
                 "Received a null pointer as the data model service");
         checkNotNull(rulesetService,
                 "Received a null pointer as the ruleset service");
 
-        this.unitsWeaponsIntervalConstraint = weaponsIntervalConstraint;
+        this.validator = validator;
         this.dataModelService = dataModelService;
         this.rulesetService = rulesetService;
     }
@@ -80,7 +76,7 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Collection<String> getValidationMessages() {
-        return validationMessages;
+        return getConstraintValidator().getValidationMessages();
     }
 
     @Override
@@ -112,24 +108,11 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Boolean validate() {
-        final Interval interval;
-        final Boolean valid;
+        return getConstraintValidator().validate();
+    }
 
-        ((UnitAware) getUnitWeaponsInIntervalConstraint()).setUnit(getUnit());
-        valid = getUnitWeaponsInIntervalConstraint().isValid();
-
-        if (!valid) {
-            interval = getDataModelService().getUnitAllowedWeaponsInterval(
-                    getUnit().getUnitName());
-
-            getValidationMessages().add(
-                    String.format(getUnitWeaponsInIntervalConstraint()
-                            .getErrorMessage(), interval.getLowerLimit()));
-        } else {
-            getValidationMessages().clear();
-        }
-
-        return valid;
+    private final ConstraintValidator getConstraintValidator() {
+        return validator;
     }
 
     private final DataModelService getDataModelService() {
@@ -138,10 +121,6 @@ public final class DefaultUnitConfigurationManager implements
 
     private final RulesetService getRulesetService() {
         return rulesetService;
-    }
-
-    private final ProcedureConstraint getUnitWeaponsInIntervalConstraint() {
-        return unitsWeaponsIntervalConstraint;
     }
 
 }

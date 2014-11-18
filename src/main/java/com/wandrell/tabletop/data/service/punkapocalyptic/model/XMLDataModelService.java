@@ -28,7 +28,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.LoadFactionUnitsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseArmorsCommand;
 import com.wandrell.tabletop.data.service.punkapocalyptic.model.command.ParseEquipmentCommand;
@@ -48,18 +48,18 @@ import com.wandrell.util.command.jdom.JDOMCombineFilesCommand;
 
 public final class XMLDataModelService implements DataModelService {
 
-    private Map<String, UnitArmorAvailability>                             avaArmor;
-    private Map<String, Collection<Equipment>>                             avaEquipment;
-    private Map<String, UnitWeaponAvailability>                            avaWeapon;
-    private final CommandExecutor                                          executor;
-    private Map<String, Faction>                                           factions;
-    private final Map<String, Collection<Unit>>                            factionUnits           = new LinkedHashMap<>();
-    private final Collection<InputStream>                                  sources;
-    private final Map<Collection<String>, Collection<ProcedureConstraint>> unitConstraints        = new LinkedHashMap<>();
-    private final Map<String, Interval>                                    unitIntervals          = new LinkedHashMap<>();
-    private final Map<Collection<String>, Collection<WeaponEnhancement>>   unitWeaponEnhancements = new LinkedHashMap<>();
-    private final Map<String, Collection<Weapon>>                          unitWeapons            = new LinkedHashMap<>();
-    private Map<String, MeleeWeapon>                                       weaponsMelee;
+    private Map<String, UnitArmorAvailability>                           avaArmor;
+    private Map<String, Collection<Equipment>>                           avaEquipment;
+    private Map<String, UnitWeaponAvailability>                          avaWeapon;
+    private final CommandExecutor                                        executor;
+    private Map<String, Faction>                                         factions;
+    private final Map<String, Collection<Unit>>                          factionUnits           = new LinkedHashMap<>();
+    private final Collection<InputStream>                                sources;
+    private final Map<Collection<String>, Collection<Constraint>>        unitConstraints        = new LinkedHashMap<>();
+    private final Map<String, Interval>                                  unitIntervals          = new LinkedHashMap<>();
+    private final Map<Collection<String>, Collection<WeaponEnhancement>> unitWeaponEnhancements = new LinkedHashMap<>();
+    private final Map<String, Collection<Weapon>>                        unitWeapons            = new LinkedHashMap<>();
+    private Map<String, MeleeWeapon>                                     weaponsMelee;
 
     public XMLDataModelService(final CommandExecutor executor,
             final Collection<InputStream> sources) {
@@ -143,11 +143,11 @@ public final class XMLDataModelService implements DataModelService {
     }
 
     @Override
-    public final Collection<ProcedureConstraint> getUnitConstraints(
-            final String unit, final String faction) {
+    public final Collection<Constraint> getUnitConstraints(final String unit,
+            final String faction) {
         final Collection<String> key;
         final Faction fact;
-        final Collection<ProcedureConstraint> result;
+        final Collection<Constraint> result;
         final Collection<FactionUnitAvailability> units;
 
         checkNotNull(unit, "Received a null pointer as unit name");

@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
-public final class UnitUpToHalfGangLimitConstraint implements
-        ProcedureConstraint, GangAware {
+public final class UnitUpToHalfGangLimitConstraint implements Constraint,
+        GangAware {
 
     private Gang         gang;
     private final String message;

@@ -8,10 +8,10 @@ import java.util.Objects;
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
-public final class GangUnitsUpToLimitConstraint implements ProcedureConstraint,
+public final class GangUnitsUpToLimitConstraint implements Constraint,
         GangAware {
 
     private Gang               gang;

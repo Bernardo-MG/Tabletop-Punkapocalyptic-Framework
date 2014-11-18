@@ -14,7 +14,7 @@ import com.wandrell.conf.TestingConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.tabletop.business.procedure.ProcedureConstraint;
+import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToACountConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToHalfGangLimitConstraint;
@@ -40,7 +40,7 @@ public final class ConstraintParameterFactory {
             final Collection<Collection<Object>> valuesTable) {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
-        ProcedureConstraint constraint;
+        Constraint constraint;
         ValueHandler limit;
         Integer valueLimit;
         Integer unitsCount;
@@ -78,7 +78,7 @@ public final class ConstraintParameterFactory {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
         List<Unit> units;
-        ProcedureConstraint constraint;
+        Constraint constraint;
         Gang gang;
         Unit unit;
         Integer valid;
@@ -124,7 +124,7 @@ public final class ConstraintParameterFactory {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
         List<Unit> units;
-        ProcedureConstraint constraint;
+        Constraint constraint;
         Gang gang;
         Unit unit;
         Integer valid;
