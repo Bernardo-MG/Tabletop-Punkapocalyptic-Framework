@@ -243,7 +243,7 @@ public final class ConstraintParameterFactory {
         properties = FileUtils.getProperties(ResourceUtils
                 .getClassPathInputStream(file));
         context = ContextUtils.getClassPathContext(properties,
-                TestingConf.CONTEXT_DEFAULT);
+                TestingConf.CONTEXT_FILTERED);
 
         required = new LinkedList<>();
         rejected = new LinkedList<>();

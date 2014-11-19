@@ -5,26 +5,26 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesProcessor;
+import com.wandrell.util.parser.module.input.JDOMDocumentProcessor;
 
-public final class MaxAllowedUnitsFilteredNodesProcessor implements
-        FilteredNodesProcessor<Set<Collection<Integer>>> {
+public final class MaxAllowedUnitsDocumentProcessor implements
+        JDOMDocumentProcessor<Set<Collection<Integer>>> {
 
-    public MaxAllowedUnitsFilteredNodesProcessor() {
+    public MaxAllowedUnitsDocumentProcessor() {
         super();
     }
 
     @Override
-    public final Set<Collection<Integer>> readNodes(
-            final Collection<Element> nodes) {
+    public final Set<Collection<Integer>> process(final Document doc) {
         final Set<Collection<Integer>> data;
         Collection<Integer> pair;
 
         data = new LinkedHashSet<>();
-        for (final Element node : nodes) {
+        for (final Element node : doc.getRootElement().getChildren()) {
             pair = new LinkedList<>();
             pair.add(Integer.parseInt(node
                     .getChildText(TestXMLConf.NODE_POINTS)));

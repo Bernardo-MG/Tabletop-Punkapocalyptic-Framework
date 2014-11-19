@@ -4,34 +4,34 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
+import org.jdom2.Document;
 import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.module.input.FilteredJDOMInputParserProcessor.FilteredNodesProcessor;
+import com.wandrell.util.parser.module.input.JDOMDocumentProcessor;
 
-public final class UpToCountFilteredNodesProcessor implements
-        FilteredNodesProcessor<Collection<Collection<Object>>> {
+public final class UpToCountDocumentProcessor implements
+        JDOMDocumentProcessor<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToCountFilteredNodesProcessor.class);
+                                               .getLogger(UpToCountDocumentProcessor.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UpToCountFilteredNodesProcessor() {
+    public UpToCountDocumentProcessor() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Object>> readNodes(
-            final Collection<Element> nodes) {
+    public final Collection<Collection<Object>> process(final Document doc) {
         final Collection<Collection<Object>> colData;
 
         colData = new LinkedHashSet<>();
-        for (final Element node : nodes) {
+        for (final Element node : doc.getRootElement().getChildren()) {
             colData.add(readNode(node));
         }
 
