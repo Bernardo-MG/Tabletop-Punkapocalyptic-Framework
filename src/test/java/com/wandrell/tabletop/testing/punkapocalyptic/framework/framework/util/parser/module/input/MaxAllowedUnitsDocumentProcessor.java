@@ -9,10 +9,10 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.module.input.JDOMDocumentProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
 
 public final class MaxAllowedUnitsDocumentProcessor implements
-        JDOMDocumentProcessor<Set<Collection<Integer>>> {
+        JDOMDocumentInputProcessor<Set<Collection<Integer>>> {
 
     public MaxAllowedUnitsDocumentProcessor() {
         super();

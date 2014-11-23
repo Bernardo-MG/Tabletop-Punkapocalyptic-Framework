@@ -10,10 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.module.input.JDOMDocumentProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
 
 public final class UpToCountDocumentProcessor implements
-        JDOMDocumentProcessor<Collection<Collection<Object>>> {
+        JDOMDocumentInputProcessor<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
                                                .getLogger(UpToCountDocumentProcessor.class);
