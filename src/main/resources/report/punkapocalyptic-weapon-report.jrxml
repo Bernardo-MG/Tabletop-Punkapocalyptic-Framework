@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-16T12:23:37 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="WeaponReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="report/WeaponReportBundle" uuid="9726d212-c85c-475c-a014-17eafcfead77">
+<!-- 2014-11-24T21:27:33 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="WeaponReport" pageWidth="560" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="report/WeaponReportBundle" uuid="9726d212-c85c-475c-a014-17eafcfead77">
 	<property name="com.jasperassistant.designer.Grid" value="true"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
 	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
 	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Weapon Data Adapter"/>
+	<parameter name="enhancementsReport" class="net.sf.jasperreports.engine.JasperReport"/>
 	<field name="current" class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon">
 		<fieldDescription><![CDATA[_THIS]]></fieldDescription>
 	</field>
 	<field name="name" class="java.lang.String"/>
+	<field name="enhancements" class="java.util.Collection"/>
 	<group name="weapon_data">
 		<groupExpression><![CDATA[$F{name}]]></groupExpression>
 		<groupHeader>
@@ -67,7 +69,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{attribute.combat}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{combat}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="60" y="0" width="60" height="20" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
@@ -77,7 +79,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{attribute.strength}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{strength}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="120" y="0" width="60" height="20" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
@@ -87,7 +89,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{attribute.penetration}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{penetration}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="180" y="0" width="60" height="20" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
@@ -97,7 +99,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{attribute.distance.metric}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{distance.metric}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="240" y="0" width="60" height="20" uuid="e148def8-7597-47f7-8b8c-4031b4a6342f">
@@ -107,20 +109,29 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$R{attribute.distance.imperial}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$R{distance.imperial}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="23" splitType="Stretch"/>
+			<band height="20" splitType="Stretch">
+				<subreport runToBottom="false">
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="560" height="20" isRemoveLineWhenBlank="true" backcolor="#FFCC99" uuid="fb3c504e-a25d-44e2-8d7e-26bc3bf82616">
+						<property name="local_mesure_unitheight" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{enhancements})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{enhancementsReport}]]></subreportExpression>
+				</subreport>
+			</band>
 		</groupFooter>
 	</group>
 	<title>
 		<band height="20">
 			<textField>
-				<reportElement x="0" y="0" width="375" height="20" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
+				<reportElement x="10" y="0" width="190" height="20" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{label.weapons}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{weapons}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

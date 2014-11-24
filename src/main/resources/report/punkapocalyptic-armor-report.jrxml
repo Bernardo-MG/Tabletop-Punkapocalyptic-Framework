@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
-<!-- 2014-11-16T12:23:37 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ArmorReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="report/ArmorReportBundle" uuid="9726d212-c85c-475c-a014-17eafcfead77">
+<!-- 2014-11-24T14:34:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ArmorReport" pageWidth="560" pageHeight="842" columnWidth="40" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="report/ArmorReportBundle" uuid="9726d212-c85c-475c-a014-17eafcfead77">
 	<property name="com.jasperassistant.designer.Grid" value="true"/>
 	<property name="com.jasperassistant.designer.SnapToGrid" value="true"/>
 	<property name="com.jasperassistant.designer.GridWidth" value="12"/>
 	<property name="com.jasperassistant.designer.GridHeight" value="12"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Armor Data Adapter"/>
 	<field name="current" class="com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor">
 		<fieldDescription><![CDATA[_THIS]]></fieldDescription>
 	</field>
 	<field name="name" class="java.lang.String"/>
+	<field name="armor" class="java.lang.Integer"/>
 	<group name="armor_data">
 		<groupExpression><![CDATA[$F{name}]]></groupExpression>
 		<groupHeader>
-			<band height="23" splitType="Stretch">
+			<band height="20" splitType="Stretch">
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="0" width="560" height="20" backcolor="#70A9A9" uuid="d1d91cca-7b41-4a47-a149-a0f4ae1b1735">
 						<property name="local_mesure_unitwidth" value="pixel"/>
@@ -27,7 +28,7 @@
 					]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="0" width="60" height="20" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35">
+					<reportElement x="0" y="0" width="80" height="20" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35">
 						<property name="local_mesure_unitwidth" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="local_mesure_unitheight" value="pixel"/>
@@ -37,9 +38,14 @@
 					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="60" y="0" width="136" height="20" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$R{attribute.armor} + ": " + $F{current}.getArmor()]]></textFieldExpression>
+					<reportElement x="80" y="0" width="60" height="20" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{armor}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="140" y="0" width="80" height="20" uuid="3ccc86a2-3396-4b38-a8de-e702ad4d7e35"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{armor}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -47,9 +53,9 @@
 	<title>
 		<band height="20">
 			<textField>
-				<reportElement x="0" y="0" width="375" height="20" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$R{label.armors}]]></textFieldExpression>
+				<reportElement x="10" y="0" width="90" height="20" uuid="799cfbbc-cc10-4db9-8a9b-34d4f549ab9c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{armors}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
