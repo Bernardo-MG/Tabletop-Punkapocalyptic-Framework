@@ -59,7 +59,7 @@ public final class UnitUpToACountConstraint implements Constraint, GangAware {
 
     @Override
     public final String getErrorMessage() {
-        return message;
+        return String.format(getMessage(), getUnit(), getCount());
     }
 
     @Override
@@ -101,6 +101,10 @@ public final class UnitUpToACountConstraint implements Constraint, GangAware {
 
     private final Gang getGang() {
         return gang;
+    }
+
+    private final String getMessage() {
+        return message;
     }
 
     private final String getUnit() {

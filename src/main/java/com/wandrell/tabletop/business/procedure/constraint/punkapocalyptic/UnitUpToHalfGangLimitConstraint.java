@@ -53,7 +53,7 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint,
 
     @Override
     public final String getErrorMessage() {
-        return message;
+        return String.format(getMessage(), getUnit());
     }
 
     @Override
@@ -84,12 +84,16 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint,
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return MoreObjects.toStringHelper(this).add("unit", unit).toString();
     }
 
     private final Gang getGang() {
         return gang;
+    }
+
+    private final String getMessage() {
+        return message;
     }
 
     private final String getUnit() {

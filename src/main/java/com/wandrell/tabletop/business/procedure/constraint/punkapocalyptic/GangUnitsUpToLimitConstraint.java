@@ -43,7 +43,8 @@ public final class GangUnitsUpToLimitConstraint implements Constraint,
 
     @Override
     public final String getErrorMessage() {
-        return message;
+        return String.format(getMessage(), getGang().getUnits().size(),
+                getUnitsLimit());
     }
 
     @Override
@@ -75,6 +76,10 @@ public final class GangUnitsUpToLimitConstraint implements Constraint,
 
     private final Gang getGang() {
         return gang;
+    }
+
+    private final String getMessage() {
+        return message;
     }
 
     private final Integer getUnitsLimit() {

@@ -15,6 +15,7 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         UnitAware {
 
     private final DataModelService dataModelService;
+    private String                 formattedMessage;
     private final String           message;
     private Unit                   unit;
 
@@ -43,7 +44,7 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
 
     @Override
     public final String getErrorMessage() {
-        return message;
+        return formattedMessage;
     }
 
     @Override
@@ -67,6 +68,11 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         valid = ((weapons >= interval.getLowerLimit()) && (weapons <= interval
                 .getUpperLimit()));
 
+        if (!valid) {
+            formattedMessage = String.format(getMessage(),
+                    interval.getLowerLimit(), interval.getUpperLimit());
+        }
+
         return valid;
     }
 
@@ -84,6 +90,10 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
 
     private final DataModelService getDataModelService() {
         return dataModelService;
+    }
+
+    private final String getMessage() {
+        return message;
     }
 
     private final Unit getUnit() {
