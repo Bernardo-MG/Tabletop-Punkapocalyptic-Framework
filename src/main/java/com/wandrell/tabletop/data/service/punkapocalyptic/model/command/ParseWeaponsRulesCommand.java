@@ -58,7 +58,7 @@ public final class ParseWeaponsRulesCommand implements
             for (final Element rule : node.getChild("rules").getChildren()) {
                 rules.add(getRules().get(rule.getText()));
             }
-            weapon.setRules(rules);
+            weapon.setSpecialRules(rules);
         }
 
         return weapons;

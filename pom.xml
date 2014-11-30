@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wandrell.tabletop</groupId>
@@ -59,6 +59,7 @@
 		<!-- Manifest data -->
 		<manifest.name>com/wandrell/tabletop/framework</manifest.name>
 		<!-- Dependencies versions -->
+		<dynreports.version>3.2.1</dynreports.version>
 		<guava.version>18.0</guava.version>
 		<jasperreports.version>5.6.1</jasperreports.version>
 		<jaxen.version>1.1.6</jaxen.version>
@@ -86,6 +87,18 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<!-- Dynamic Reports adhoc -->
+			<groupId>net.sourceforge.dynamicreports</groupId>
+			<artifactId>dynamicreports-adhoc</artifactId>
+			<version>${dynreports.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Dynamic Reports Core -->
+			<groupId>net.sourceforge.dynamicreports</groupId>
+			<artifactId>dynamicreports-core</artifactId>
+			<version>${dynreports.version}</version>
+		</dependency>
 		<dependency>
 			<!-- Guava -->
 			<groupId>com.google.guava</groupId>
