@@ -104,17 +104,19 @@ public final class BuildGangReportCommand implements
                 .newRow()
                 .add(cmp.line())
                 .newRow()
-                .add(cmp.text(getLocalizationService().getViewString("faction")))
+                .add(cmp.text(getLocalizationService().getReportString(
+                        "faction")))
                 .add(cmp.text(factory.getFactionField("faction")))
                 .newRow()
-                .add(cmp.text(getLocalizationService().getViewString(
+                .add(cmp.text(getLocalizationService().getReportString(
                         "valoration")))
                 .add(cmp.text(factory.getValueHandlerValueField("valoration")))
                 .newRow()
-                .add(cmp.text(getLocalizationService().getViewString("bullets")))
+                .add(cmp.text(getLocalizationService().getReportString(
+                        "bullets")))
                 .add(cmp.text(factory.getValueHandlerValueField("bullets")))
                 .newRow()
-                .add(cmp.text(getLocalizationService().getViewString("units")))
+                .add(cmp.text(getLocalizationService().getReportString("units")))
                 .add(cmp.text(factory.getCollectionSizeField("units")))
                 .newRow().add(cmp.line()).newRow().add(cmp.verticalGap(10));
     }
@@ -165,11 +167,11 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> armorName;
         final ComponentBuilder<?, ?> armorArmor;
 
-        armorName = factory
-                .getBorderedCellComponent(cmp.horizontalList(cmp.text("armor"),
-                        cmp.text(factory.getArmorNameField("armor"))));
-        armorArmor = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("armor"),
+        armorName = factory.getBorderedCellComponent(cmp.horizontalList(cmp
+                .text(getLocalizationService().getReportString("armor.name")),
+                cmp.text(factory.getArmorNameField("armor"))));
+        armorArmor = factory.getBorderedCellComponent(cmp.horizontalList(cmp
+                .text(getLocalizationService().getReportString("armor.armor")),
                 cmp.text(factory.getArmorArmorField("armor"))));
 
         return cmp.horizontalList(armorName, armorArmor);
@@ -185,19 +187,32 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> tech;
 
         actions = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("a"), cmp.text(factory.getIntegerField("actions"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "actions.short")),
+                cmp.text(factory.getIntegerField("actions"))));
         combat = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("c"), cmp.text(factory.getIntegerField("combat"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "combat.short")),
+                cmp.text(factory.getIntegerField("combat"))));
         precision = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("p"), cmp.text(factory.getIntegerField("precision"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "precision.short")),
+                cmp.text(factory.getIntegerField("precision"))));
         agility = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("ag"), cmp.text(factory.getIntegerField("agility"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "agility.short")),
+                cmp.text(factory.getIntegerField("agility"))));
         strength = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("f"), cmp.text(factory.getIntegerField("strength"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "strength.short")),
+                cmp.text(factory.getIntegerField("strength"))));
         toughness = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("d"), cmp.text(factory.getIntegerField("toughness"))));
-        tech = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("t"), cmp.text(factory.getIntegerField("tech"))));
+                cmp.text(getLocalizationService().getReportString(
+                        "toughness.short")),
+                cmp.text(factory.getIntegerField("toughness"))));
+        tech = factory.getBorderedCellComponent(cmp.horizontalList(cmp
+                .text(getLocalizationService().getReportString("tech.short")),
+                cmp.text(factory.getIntegerField("tech"))));
 
         return cmp.horizontalList(actions, combat, precision, agility,
                 strength, toughness, tech);
@@ -218,7 +233,8 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> equipment;
         final ComponentBuilder<?, ?> weapons;
 
-        rules = factory.getBorderedCellComponent(factory.getRulesSubreport()
+        rules = factory.getBorderedCellComponent(factory.getRulesSubreport(
+                getLocalizationService().getReportString("rules"))
                 .setDataSource(
                         DynamicReports.exp
                                 .subDatasourceBeanCollection("specialRules")));
@@ -228,7 +244,9 @@ public final class BuildGangReportCommand implements
         armor = getArmorComponent();
 
         equipment = factory.getBorderedCellComponent(factory
-                .getEquipmentSubreport().setDataSource(
+                .getEquipmentSubreport(
+                        getLocalizationService().getReportString("equipment"))
+                .setDataSource(
                         DynamicReports.exp
                                 .subDatasourceBeanCollection("equipment")));
 
@@ -246,8 +264,8 @@ public final class BuildGangReportCommand implements
 
         name = factory.getBorderedCellComponent(cmp.text(new DRField<String>(
                 "unitName", String.class)));
-        points = factory.getBorderedCellComponent(cmp.horizontalList(
-                cmp.text("points"),
+        points = factory.getBorderedCellComponent(cmp.horizontalList(cmp
+                .text(getLocalizationService().getReportString("valoration")),
                 cmp.text(factory.getValueHandlerValueField("valoration"))));
 
         return cmp.horizontalList(name, points);
@@ -257,25 +275,31 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> data;
         final SubreportBuilder rules;
 
-        rules = factory.getRulesSubreport();
+        rules = factory.getRulesSubreport(getLocalizationService()
+                .getReportString("rules"));
         rules.setDataSource(DynamicReports.exp
                 .subDatasourceBeanCollection("specialRules"));
 
         data = cmp
                 .verticalList(
                         cmp.text(factory.getStringField("name")),
-                        cmp.horizontalList(cmp.text("combat"),
-                                cmp.text(factory.getWeaponCombatField("_THIS"))),
-                        cmp.horizontalList(cmp.text("strength"), cmp
-                                .text(factory.getWeaponStrengthField("_THIS"))),
-                        cmp.horizontalList(cmp.text("penetration"), cmp
+                        cmp.horizontalList(cmp.text(getLocalizationService()
+                                .getReportString("combat")), cmp.text(factory
+                                .getWeaponCombatField("_THIS"))),
+                        cmp.horizontalList(cmp.text(getLocalizationService()
+                                .getReportString("strength")), cmp.text(factory
+                                .getWeaponStrengthField("_THIS"))),
+                        cmp.horizontalList(cmp.text(getLocalizationService()
+                                .getReportString("penetration")), cmp
                                 .text(factory
                                         .getWeaponPenetrationField("_THIS"))),
-                        cmp.horizontalList(cmp.text("distancem"), cmp
+                        cmp.horizontalList(cmp.text(getLocalizationService()
+                                .getReportString("distance.metric")), cmp
                                 .text(factory
                                         .getWeaponDistanceMetricField("_THIS"))),
                         cmp.horizontalList(
-                                cmp.text("distancei"),
+                                cmp.text(getLocalizationService()
+                                        .getReportString("distance.imperial")),
                                 cmp.text(factory
                                         .getWeaponDistanceImperialField("_THIS"))),
                         factory.getBorderedCellComponent(rules));

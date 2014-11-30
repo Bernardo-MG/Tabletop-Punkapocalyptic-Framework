@@ -148,10 +148,10 @@ public final class ReportStylesFactory {
         return field;
     }
 
-    public final SubreportBuilder getEquipmentSubreport() {
+    public final SubreportBuilder getEquipmentSubreport(final String column) {
         JasperReportBuilder report = DynamicReports.report();
 
-        report.columns(DynamicReports.col.column("equipment", "name",
+        report.columns(DynamicReports.col.column(column, "name",
                 DynamicReports.type.stringType()));
 
         return cmp.subreport(report);
@@ -183,10 +183,10 @@ public final class ReportStylesFactory {
         return reportTemplate;
     }
 
-    public final SubreportBuilder getRulesSubreport() {
+    public final SubreportBuilder getRulesSubreport(final String column) {
         JasperReportBuilder report = DynamicReports.report();
 
-        report.columns(DynamicReports.col.column("rules", "name",
+        report.columns(DynamicReports.col.column(column, "name",
                 DynamicReports.type.stringType()));
 
         return cmp.subreport(report);
