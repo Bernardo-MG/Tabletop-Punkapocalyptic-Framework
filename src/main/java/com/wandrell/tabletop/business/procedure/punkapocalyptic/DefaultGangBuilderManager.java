@@ -41,10 +41,15 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitAdded(final UnitEvent event) {
-                getConstraintValidator().setConstraints(
-                        getDataModelService().getUnitConstraints(
-                                event.getUnit().getUnitName(),
-                                getGang().getFaction().getName()));
+                final Collection<Constraint> constraints;
+
+                constraints = getDataModelService().getUnitConstraints(
+                        event.getUnit().getUnitName(),
+                        getGang().getFaction().getName());
+
+                for (final Constraint constraint : constraints) {
+                    getConstraintValidator().addConstraint(constraint);
+                }
 
                 validate();
 
@@ -62,7 +67,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                                     getGang().getFaction().getName()));
                 }
 
-                getConstraintValidator().clearConstraints();
                 getConstraintValidator().setConstraints(constraints);
                 getConstraintValidator()
                         .addConstraint(getUnitLimitConstraint());
