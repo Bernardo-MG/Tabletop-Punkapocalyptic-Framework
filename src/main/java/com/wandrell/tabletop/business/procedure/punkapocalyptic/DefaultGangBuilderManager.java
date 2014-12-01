@@ -158,9 +158,11 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final void setGang(final Gang gang) {
+        final GangChangedEvent event;
+
         checkNotNull(gang, "Received a null pointer as gang");
 
-        fireGangChangedEvent(new GangChangedEvent(this, this.gang, gang));
+        event = new GangChangedEvent(this, this.gang, gang);
 
         if (this.gang != null) {
             this.gang.removeGangListener(getGangListener());
@@ -182,6 +184,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 });
 
         gang.addGangListener(getGangListener());
+
+        fireGangChangedEvent(event);
     }
 
     @Override
