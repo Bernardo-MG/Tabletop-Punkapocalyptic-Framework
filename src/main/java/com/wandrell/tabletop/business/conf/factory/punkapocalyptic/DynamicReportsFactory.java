@@ -127,7 +127,7 @@ public final class DynamicReportsFactory {
         JasperReportBuilder report;
 
         report = DynamicReports.report();
-        report.columns(DynamicReports.col.column(column, "name",
+        report.columns(DynamicReports.col.column(column, "_THIS",
                 new EquipmentDataType(service)));
 
         return Components.subreport(report);
