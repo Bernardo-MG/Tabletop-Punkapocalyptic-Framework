@@ -1,5 +1,8 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.file.command;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -10,20 +13,25 @@ import com.wandrell.util.command.Command;
 
 public final class PrintDynamicReportToPDF implements Command {
 
+    private final File                file;
     private final JasperReportBuilder report;
-    private final OutputStream        stream;
 
     public PrintDynamicReportToPDF(final JasperReportBuilder report,
-            final OutputStream stream) {
+            final File file) {
         super();
 
         this.report = report;
-        this.stream = stream;
+        this.file = file;
     }
 
     @Override
     public final void execute() throws DRException, IOException {
+        final OutputStream stream;
+
+        stream = new BufferedOutputStream(new FileOutputStream(file));
+
         report.toPdf(stream);
+
         stream.close();
     }
 

@@ -1,9 +1,7 @@
 package com.wandrell.tabletop.business.conf.factory.punkapocalyptic;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.hyperLink;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-import static net.sf.dynamicreports.report.builder.DynamicReports.tableOfContentsCustomizer;
 import static net.sf.dynamicreports.report.builder.DynamicReports.template;
 
 import java.awt.Color;
@@ -17,10 +15,10 @@ import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.HyperLinkBuilder;
 import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
+import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
-import net.sf.dynamicreports.report.builder.tableofcontents.TableOfContentsCustomizerBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 
@@ -55,7 +53,6 @@ public final class ReportStylesFactory {
     private static final StyleBuilder           italicStyle;
     private static final ReportTemplateBuilder  reportTemplate;
     private static final StyleBuilder           rootStyle;
-    private static final StyleBuilder           subtotalStyle;
 
     static {
         rootStyle = stl.style().setPadding(2);
@@ -75,33 +72,13 @@ public final class ReportStylesFactory {
         groupStyle = stl.style(boldStyle).setHorizontalAlignment(
                 HorizontalAlignment.LEFT);
 
-        subtotalStyle = stl.style(boldStyle).setTopBorder(stl.pen1Point());
-
-        StyleBuilder crosstabGroupStyle = stl.style(columnTitleStyle);
-        StyleBuilder crosstabGroupTotalStyle = stl.style(columnTitleStyle)
-                .setBackgroundColor(new Color(170, 170, 170));
-        StyleBuilder crosstabGrandTotalStyle = stl.style(columnTitleStyle)
-                .setBackgroundColor(new Color(140, 140, 140));
-        StyleBuilder crosstabCellStyle = stl.style(columnStyle).setBorder(
-                stl.pen1Point());
-
-        TableOfContentsCustomizerBuilder tableOfContentsCustomizer = tableOfContentsCustomizer()
-                .setHeadingStyle(0, stl.style(rootStyle).bold());
-
-        footerComponent = cmp.pageXofY().setStyle(
-                stl.style(boldCenteredStyle).setTopBorder(stl.pen1Point()));
+        footerComponent = Components.pageXofY();
 
         reportTemplate = template().setLocale(Locale.ENGLISH)
                 .setColumnStyle(columnStyle)
                 .setColumnTitleStyle(columnTitleStyle)
                 .setGroupStyle(groupStyle).setGroupTitleStyle(groupStyle)
-                .setSubtotalStyle(subtotalStyle).highlightDetailEvenRows()
-                .crosstabHighlightEvenRows()
-                .setCrosstabGroupStyle(crosstabGroupStyle)
-                .setCrosstabGroupTotalStyle(crosstabGroupTotalStyle)
-                .setCrosstabGrandTotalStyle(crosstabGrandTotalStyle)
-                .setCrosstabCellStyle(crosstabCellStyle)
-                .setTableOfContentsCustomizer(tableOfContentsCustomizer);
+                .crosstabHighlightEvenRows();
     }
 
     public static final ReportStylesFactory getInstance() {
@@ -132,8 +109,9 @@ public final class ReportStylesFactory {
 
     public final ComponentBuilder<?, ?> getBorderedCellComponent(
             ComponentBuilder<?, ?> content) {
-        VerticalListBuilder cell = cmp.verticalList(cmp.horizontalList(
-                cmp.horizontalGap(20), content, cmp.horizontalGap(5)));
+        VerticalListBuilder cell = Components.verticalList(Components
+                .horizontalList(Components.horizontalGap(20), content,
+                        Components.horizontalGap(5)));
         cell.setStyle(stl.style(stl.pen2Point()));
         return cell;
     }
@@ -154,7 +132,7 @@ public final class ReportStylesFactory {
         report.columns(DynamicReports.col.column(column, "name",
                 DynamicReports.type.stringType()));
 
-        return cmp.subreport(report);
+        return Components.subreport(report);
     }
 
     public final DRField<Faction> getFactionField(final String fieldName) {
@@ -189,7 +167,7 @@ public final class ReportStylesFactory {
         report.columns(DynamicReports.col.column(column, "name",
                 DynamicReports.type.stringType()));
 
-        return cmp.subreport(report);
+        return Components.subreport(report);
     }
 
     public final DRField<String> getStringField(final String fieldName) {
@@ -209,14 +187,15 @@ public final class ReportStylesFactory {
 
         link = hyperLink(downloadURL);
 
-        titleLabelComponent = cmp.horizontalList(
-                cmp.image(image).setFixedDimension(60, 60),
-                cmp.verticalList(
-                        cmp.text(appName)
+        titleLabelComponent = Components.horizontalList(
+                Components.image(image).setFixedDimension(60, 60),
+                Components.verticalList(
+                        Components
+                                .text(appName)
                                 .setStyle(bold22CenteredStyle)
                                 .setHorizontalAlignment(
-                                        HorizontalAlignment.LEFT),
-                        cmp.text(downloadURL).setStyle(italicStyle)
+                                        HorizontalAlignment.LEFT), Components
+                                .text(downloadURL).setStyle(italicStyle)
                                 .setHyperLink(link))).setFixedWidth(300);
 
         return titleLabelComponent;

@@ -59,13 +59,13 @@
 		<!-- Manifest data -->
 		<manifest.name>com/wandrell/tabletop/framework</manifest.name>
 		<!-- Dependencies versions -->
-		<dynreports.version>3.2.1</dynreports.version>
+		<dynamicreports.version>3.2.1</dynamicreports.version>
 		<guava.version>18.0</guava.version>
-		<jasperreports.version>5.6.1</jasperreports.version>
 		<jaxen.version>1.1.6</jaxen.version>
 		<jdom.version>2.0.5</jdom.version>
 		<mockito.version>1.9.5</mockito.version>
 		<slf4j.version>1.7.7</slf4j.version>
+		<spring.version>4.1.1.RELEASE</spring.version>
 		<tabletop.version>alpha</tabletop.version>
 		<testng.version>6.8.8</testng.version>
 		<wandrell.version>alpha</wandrell.version>
@@ -88,28 +88,16 @@
 
 	<dependencies>
 		<dependency>
-			<!-- Dynamic Reports adhoc -->
-			<groupId>net.sourceforge.dynamicreports</groupId>
-			<artifactId>dynamicreports-adhoc</artifactId>
-			<version>${dynreports.version}</version>
-		</dependency>
-		<dependency>
 			<!-- Dynamic Reports Core -->
 			<groupId>net.sourceforge.dynamicreports</groupId>
 			<artifactId>dynamicreports-core</artifactId>
-			<version>${dynreports.version}</version>
+			<version>${dynamicreports.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Guava -->
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
-		</dependency>
-		<dependency>
-			<!-- JasperReports -->
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>${jasperreports.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Jaxen -->
@@ -143,6 +131,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<!-- Spring Framework Context -->
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<!-- Tabletop Core -->
 			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>tabletop-core</artifactId>
@@ -171,12 +166,6 @@
 			<!-- Wandrell's Core library -->
 			<groupId>com.wandrell</groupId>
 			<artifactId>wandrell-core</artifactId>
-			<version>${wandrell.version}</version>
-		</dependency>
-		<dependency>
-			<!-- Wandrell's Swing library -->
-			<groupId>com.wandrell</groupId>
-			<artifactId>wandrell-swing</artifactId>
 			<version>${wandrell.version}</version>
 		</dependency>
 	</dependencies>
@@ -467,5 +456,12 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<repositories>
+		<repository>
+			<id>fdvsolution.public</id>
+			<url>http://archiva.fdvs.com.ar/repository/public1/</url>
+		</repository>
+	</repositories>
 
 </project>
