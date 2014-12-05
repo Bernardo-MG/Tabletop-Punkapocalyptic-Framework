@@ -5,15 +5,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.base.DRField;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.expression.AbstractSubDatasourceExpression;
 import net.sf.dynamicreports.report.builder.expression.Expressions;
-import net.sf.dynamicreports.report.builder.style.FontBuilder;
-import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.Constants;
 import net.sf.dynamicreports.report.definition.expression.DRIExpression;
 import net.sf.dynamicreports.report.exception.DRException;
@@ -75,9 +72,6 @@ public final class BuildGangReportCommand implements
         subreport = createUnitListSubreport(Expressions
                 .subDatasourceBeanCollection("units"));
 
-        FontBuilder defaultFont = Styles.fontArial();
-
-        report.setDefaultFont(defaultFont);
         report.setTemplate(factory.getReportTemplate());
         report.title(createTitleComponent());
         report.pageFooter(factory.getReportFooter());
@@ -111,7 +105,8 @@ public final class BuildGangReportCommand implements
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
                         "faction")))
-                .add(Components.text(factory.getFactionField("faction")))
+                .add(Components.text(factory.getFactionField("faction",
+                        getLocalizationService())))
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
                         "valoration")))
@@ -176,10 +171,11 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> armorName;
         final ComponentBuilder<?, ?> armorArmor;
 
-        armorName = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "armor.name")),
-                Components.text(factory.getArmorNameField("armor"))));
+        armorName = factory
+                .getBorderedCellComponent(Components.horizontalList(Components
+                        .text(getLocalizationService().getReportString(
+                                "armor.name")), Components.text(factory
+                        .getArmorNameField("armor", getLocalizationService()))));
         armorArmor = factory.getBorderedCellComponent(Components
                 .horizontalList(Components.text(getLocalizationService()
                         .getReportString("armor.armor")), Components
@@ -245,14 +241,10 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> equipment;
         final ComponentBuilder<?, ?> weapons;
 
-        rules = factory
-                .getBorderedCellComponent(factory
-                        .getRulesSubreport(
-                                getLocalizationService().getReportString(
-                                        "rules"))
-                        .setDataSource(
-                                Expressions
-                                        .subDatasourceBeanCollection("specialRules")));
+        rules = factory.getBorderedCellComponent(factory.getRulesSubreport(
+                getLocalizationService().getReportString("rules"),
+                getLocalizationService()).setDataSource(
+                Expressions.subDatasourceBeanCollection("specialRules")));
 
         attributes = getAttributesComponent();
 
@@ -260,8 +252,8 @@ public final class BuildGangReportCommand implements
 
         equipment = factory.getBorderedCellComponent(factory
                 .getEquipmentSubreport(
-                        getLocalizationService().getReportString("equipment"))
-                .setDataSource(
+                        getLocalizationService().getReportString("equipment"),
+                        getLocalizationService()).setDataSource(
                         Expressions.subDatasourceBeanCollection("equipment")));
 
         weapons = factory.getBorderedCellComponent(createWeaponsSubreport()
@@ -276,8 +268,8 @@ public final class BuildGangReportCommand implements
         ComponentBuilder<?, ?> name;
         ComponentBuilder<?, ?> points;
 
-        name = factory.getBorderedCellComponent(Components
-                .text(new DRField<String>("unitName", String.class)));
+        name = factory.getBorderedCellComponent(Components.text(factory
+                .getUnitNameField("_THIS", getLocalizationService())));
         points = factory.getBorderedCellComponent(Components.horizontalList(
                 Components.text(getLocalizationService().getReportString(
                         "valoration")), Components.text(factory
@@ -289,17 +281,25 @@ public final class BuildGangReportCommand implements
     private final ComponentBuilder<?, ?> getWeaponDetailComponent() {
         final ComponentBuilder<?, ?> data;
         final SubreportBuilder rules;
+        final SubreportBuilder equipment;
 
         rules = factory.getRulesSubreport(getLocalizationService()
-                .getReportString("rules"));
+                .getReportString("rules"), getLocalizationService());
         rules.setDataSource(Expressions
                 .subDatasourceBeanCollection("specialRules"));
 
+        equipment = factory.getWeaponEnhancementsSubreport(
+                getLocalizationService().getReportString("enhancements"),
+                getLocalizationService());
+        equipment.setDataSource(Expressions
+                .subDatasourceBeanCollection("enhancements"));
+
         data = Components.verticalList(Components.text(factory
-                .getStringField("name")), Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "combat")),
-                Components.text(factory.getWeaponCombatField("_THIS"))),
+                .getWeaponNameField("_THIS", getLocalizationService())),
+                Components.horizontalList(Components
+                        .text(getLocalizationService()
+                                .getReportString("combat")), Components
+                        .text(factory.getWeaponCombatField("_THIS"))),
                 Components.horizontalList(Components
                         .text(getLocalizationService().getReportString(
                                 "strength")), Components.text(factory
@@ -317,6 +317,7 @@ public final class BuildGangReportCommand implements
                         .text(getLocalizationService().getReportString(
                                 "distance.imperial")), Components.text(factory
                         .getWeaponDistanceImperialField("_THIS"))), factory
+                        .getBorderedCellComponent(equipment), factory
                         .getBorderedCellComponent(rules));
 
         return data;

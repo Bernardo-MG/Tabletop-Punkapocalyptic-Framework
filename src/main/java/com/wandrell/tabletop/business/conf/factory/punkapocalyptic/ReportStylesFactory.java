@@ -25,20 +25,27 @@ import net.sf.dynamicreports.report.constant.VerticalAlignment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
 import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.ArmorDataType;
 import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.CollectionDataType;
+import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.EquipmentDataType;
 import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.FactionDataType;
+import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.SpecialRulesDataType;
+import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.UnitDataType;
 import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.ValueHandlerDataType;
 import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.WeaponDataType;
+import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.WeaponEnhancementDataType;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.ArmorArmorFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.ArmorNameFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.CollectionSizeFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponCombatFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponDistanceImperialFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponDistanceMetricFormatter;
+import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponNameFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponPenetrationFormatter;
 import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponStrengthFormatter;
+import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
 public final class ReportStylesFactory {
 
@@ -98,11 +105,12 @@ public final class ReportStylesFactory {
         return field;
     }
 
-    public final DRField<Armor> getArmorNameField(final String fieldName) {
+    public final DRField<Armor> getArmorNameField(final String fieldName,
+            final LocalizationService service) {
         final DRField<Armor> field;
 
         field = new DRField<Armor>(fieldName, Armor.class);
-        field.setDataType(new ArmorDataType(new ArmorNameFormatter()));
+        field.setDataType(new ArmorDataType(new ArmorNameFormatter(service)));
 
         return field;
     }
@@ -126,20 +134,22 @@ public final class ReportStylesFactory {
         return field;
     }
 
-    public final SubreportBuilder getEquipmentSubreport(final String column) {
+    public final SubreportBuilder getEquipmentSubreport(final String column,
+            final LocalizationService service) {
         JasperReportBuilder report = DynamicReports.report();
 
         report.columns(DynamicReports.col.column(column, "name",
-                DynamicReports.type.stringType()));
+                new EquipmentDataType(service)));
 
         return Components.subreport(report);
     }
 
-    public final DRField<Faction> getFactionField(final String fieldName) {
+    public final DRField<Faction> getFactionField(final String fieldName,
+            final LocalizationService service) {
         final DRField<Faction> field;
 
         field = new DRField<Faction>(fieldName, Faction.class);
-        field.setDataType(new FactionDataType());
+        field.setDataType(new FactionDataType(service));
 
         return field;
     }
@@ -161,11 +171,12 @@ public final class ReportStylesFactory {
         return reportTemplate;
     }
 
-    public final SubreportBuilder getRulesSubreport(final String column) {
+    public final SubreportBuilder getRulesSubreport(final String column,
+            final LocalizationService service) {
         JasperReportBuilder report = DynamicReports.report();
 
-        report.columns(DynamicReports.col.column(column, "name",
-                DynamicReports.type.stringType()));
+        report.columns(DynamicReports.col.column(column, "_THIS",
+                new SpecialRulesDataType(service)));
 
         return Components.subreport(report);
     }
@@ -199,6 +210,16 @@ public final class ReportStylesFactory {
                                 .setHyperLink(link))).setFixedWidth(300);
 
         return titleLabelComponent;
+    }
+
+    public final DRField<Unit> getUnitNameField(final String fieldName,
+            final LocalizationService service) {
+        final DRField<Unit> field;
+
+        field = new DRField<Unit>(fieldName, Unit.class);
+        field.setDataType(new UnitDataType(service));
+
+        return field;
     }
 
     public final DRField<ValueHandler> getValueHandlerValueField(
@@ -238,6 +259,26 @@ public final class ReportStylesFactory {
         field = new DRField<Weapon>(fieldName, Weapon.class);
         field.setDataType(new WeaponDataType(
                 new WeaponDistanceMetricFormatter()));
+
+        return field;
+    }
+
+    public final SubreportBuilder getWeaponEnhancementsSubreport(
+            final String column, final LocalizationService service) {
+        JasperReportBuilder report = DynamicReports.report();
+
+        report.columns(DynamicReports.col.column(column, "_THIS",
+                new WeaponEnhancementDataType(service)));
+
+        return Components.subreport(report);
+    }
+
+    public final DRField<Weapon> getWeaponNameField(final String fieldName,
+            final LocalizationService service) {
+        final DRField<Weapon> field;
+
+        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field.setDataType(new WeaponDataType(new WeaponNameFormatter(service)));
 
         return field;
     }

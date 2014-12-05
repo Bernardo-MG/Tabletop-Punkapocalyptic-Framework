@@ -9,27 +9,30 @@ import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
-public final class FactionDataType extends AbstractDataType<Faction, Faction> {
+public final class WeaponEnhancementDataType extends
+        AbstractDataType<WeaponEnhancement, WeaponEnhancement> {
 
-    private static final long                        serialVersionUID = 1L;
-    private final DRIValueFormatter<String, Faction> formatter        = new FactionFormatter();
-    private final LocalizationService                service;
+    private static final long                                  serialVersionUID = 1L;
+    private final DRIValueFormatter<String, WeaponEnhancement> formatter        = new WeaponEnhancementFormatter();
+    private final LocalizationService                          service;
 
-    private class FactionFormatter extends
-            AbstractValueFormatter<String, Faction> {
+    private class WeaponEnhancementFormatter extends
+            AbstractValueFormatter<String, WeaponEnhancement> {
         private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
         @Override
-        public String format(Faction value, ReportParameters reportParameters) {
-            return getLocalizationService().getFactionNameString(
+        public String format(WeaponEnhancement value,
+                ReportParameters reportParameters) {
+            return getLocalizationService().getSpecialRuleString(
                     value.getName());
         }
+
     }
 
-    public FactionDataType(final LocalizationService service) {
+    public WeaponEnhancementDataType(final LocalizationService service) {
         super();
 
         this.service = service;
@@ -41,12 +44,14 @@ public final class FactionDataType extends AbstractDataType<Faction, Faction> {
     }
 
     @Override
-    public final DRIValueFormatter<String, Faction> getValueFormatter() {
+    public final DRIValueFormatter<String, WeaponEnhancement>
+            getValueFormatter() {
         return formatter;
     }
 
     @Override
-    public final String valueToString(final Faction value, final Locale locale) {
+    public final String valueToString(final WeaponEnhancement value,
+            final Locale locale) {
         return value.getName();
     }
 
