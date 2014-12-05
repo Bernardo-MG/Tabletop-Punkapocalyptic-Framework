@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.report.punkapocalyptic.formatter;
+package com.wandrell.tabletop.business.report.formatter.punkapocalyptic;
 
 import net.sf.dynamicreports.report.base.expression.AbstractValueFormatter;
 import net.sf.dynamicreports.report.constant.Constants;

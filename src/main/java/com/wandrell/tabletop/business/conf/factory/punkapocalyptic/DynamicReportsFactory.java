@@ -1,13 +1,7 @@
 package com.wandrell.tabletop.business.conf.factory.punkapocalyptic;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.hyperLink;
-import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-import static net.sf.dynamicreports.report.builder.DynamicReports.template;
-
-import java.awt.Color;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Locale;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.DRField;
@@ -19,6 +13,7 @@ import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
+import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 
@@ -27,72 +22,57 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.ArmorDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.CollectionDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.EquipmentDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.FactionDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.SpecialRulesDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.UnitDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.ValueHandlerDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.WeaponDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.datatype.WeaponEnhancementDataType;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.ArmorArmorFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.ArmorNameFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.CollectionSizeFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponCombatFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponDistanceImperialFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponDistanceMetricFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponNameFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponPenetrationFormatter;
-import com.wandrell.tabletop.business.report.punkapocalyptic.formatter.WeaponStrengthFormatter;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ArmorDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.CollectionDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.EquipmentDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.FactionDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.SpecialRulesDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.UnitDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ValueHandlerDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.WeaponDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.WeaponEnhancementDataType;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.ArmorArmorFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.ArmorNameFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.CollectionSizeFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponCombatFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponDistanceImperialFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponDistanceMetricFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponNameFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponPenetrationFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponStrengthFormatter;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
-public final class ReportStylesFactory {
+public final class DynamicReportsFactory {
 
     private static final StyleBuilder           bold22CenteredStyle;
-    private static final StyleBuilder           boldCenteredStyle;
-    private static final StyleBuilder           boldStyle;
-    private static final StyleBuilder           columnStyle;
-    private static final StyleBuilder           columnTitleStyle;
     private static final ComponentBuilder<?, ?> footerComponent;
-    private static final StyleBuilder           groupStyle;
-    private static final ReportStylesFactory    instance = new ReportStylesFactory();
+    private static final DynamicReportsFactory  instance = new DynamicReportsFactory();
     private static final StyleBuilder           italicStyle;
     private static final ReportTemplateBuilder  reportTemplate;
-    private static final StyleBuilder           rootStyle;
 
     static {
-        rootStyle = stl.style().setPadding(2);
-        boldStyle = stl.style(rootStyle).bold();
-        italicStyle = stl.style(rootStyle).italic();
+        final StyleBuilder boldStyle;
+        final StyleBuilder rootStyle;
+        final StyleBuilder boldCenteredStyle;
 
-        boldCenteredStyle = stl.style(boldStyle).setAlignment(
+        rootStyle = Styles.style().setPadding(2);
+        boldStyle = Styles.style(rootStyle).bold();
+        italicStyle = Styles.style(rootStyle).italic();
+
+        boldCenteredStyle = Styles.style(boldStyle).setAlignment(
                 HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
-        bold22CenteredStyle = stl.style(boldCenteredStyle).setFontSize(22);
-
-        columnStyle = stl.style(rootStyle).setVerticalAlignment(
-                VerticalAlignment.MIDDLE);
-        columnTitleStyle = stl.style(columnStyle).setBorder(stl.pen1Point())
-                .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                .setBackgroundColor(Color.LIGHT_GRAY).bold();
-
-        groupStyle = stl.style(boldStyle).setHorizontalAlignment(
-                HorizontalAlignment.LEFT);
+        bold22CenteredStyle = Styles.style(boldCenteredStyle).setFontSize(22);
 
         footerComponent = Components.pageXofY();
 
-        reportTemplate = template().setLocale(Locale.ENGLISH)
-                .setColumnStyle(columnStyle)
-                .setColumnTitleStyle(columnTitleStyle)
-                .setGroupStyle(groupStyle).setGroupTitleStyle(groupStyle)
-                .crosstabHighlightEvenRows();
+        reportTemplate = DynamicReports.template();
     }
 
-    public static final ReportStylesFactory getInstance() {
+    public static final DynamicReportsFactory getInstance() {
         return instance;
     }
 
-    private ReportStylesFactory() {
+    private DynamicReportsFactory() {
         super();
     }
 
@@ -115,12 +95,20 @@ public final class ReportStylesFactory {
         return field;
     }
 
+    public final ComponentBuilder<?, ?> getAttributeCell(final String label,
+            final String field) {
+        return getBorderedCellComponent(Components
+                .horizontalList(Components.text(label),
+                        Components.text(getIntegerField(field))));
+    }
+
     public final ComponentBuilder<?, ?> getBorderedCellComponent(
             ComponentBuilder<?, ?> content) {
-        VerticalListBuilder cell = Components.verticalList(Components
-                .horizontalList(Components.horizontalGap(20), content,
-                        Components.horizontalGap(5)));
-        cell.setStyle(stl.style(stl.pen2Point()));
+        VerticalListBuilder cell;
+
+        cell = Components.verticalList(Components.horizontalList(content));
+        cell.setStyle(Styles.style(Styles.pen2Point()));
+
         return cell;
     }
 
@@ -136,8 +124,9 @@ public final class ReportStylesFactory {
 
     public final SubreportBuilder getEquipmentSubreport(final String column,
             final LocalizationService service) {
-        JasperReportBuilder report = DynamicReports.report();
+        JasperReportBuilder report;
 
+        report = DynamicReports.report();
         report.columns(DynamicReports.col.column(column, "name",
                 new EquipmentDataType(service)));
 
@@ -173,8 +162,9 @@ public final class ReportStylesFactory {
 
     public final SubreportBuilder getRulesSubreport(final String column,
             final LocalizationService service) {
-        JasperReportBuilder report = DynamicReports.report();
+        JasperReportBuilder report;
 
+        report = DynamicReports.report();
         report.columns(DynamicReports.col.column(column, "_THIS",
                 new SpecialRulesDataType(service)));
 
@@ -194,20 +184,20 @@ public final class ReportStylesFactory {
             final InputStream image, final String appName,
             final String downloadURL) {
         final ComponentBuilder<?, ?> titleLabelComponent;
+        final ComponentBuilder<?, ?> img;
+        final ComponentBuilder<?, ?> url;
+        final ComponentBuilder<?, ?> title;
         final HyperLinkBuilder link;
 
-        link = hyperLink(downloadURL);
+        link = DynamicReports.hyperLink(downloadURL);
+        img = Components.image(image).setFixedDimension(60, 60);
+        url = Components.text(downloadURL).setStyle(italicStyle)
+                .setHyperLink(link);
+        title = Components.text(appName).setStyle(bold22CenteredStyle)
+                .setHorizontalAlignment(HorizontalAlignment.LEFT);
 
-        titleLabelComponent = Components.horizontalList(
-                Components.image(image).setFixedDimension(60, 60),
-                Components.verticalList(
-                        Components
-                                .text(appName)
-                                .setStyle(bold22CenteredStyle)
-                                .setHorizontalAlignment(
-                                        HorizontalAlignment.LEFT), Components
-                                .text(downloadURL).setStyle(italicStyle)
-                                .setHyperLink(link))).setFixedWidth(300);
+        titleLabelComponent = Components.horizontalList(img,
+                Components.verticalList(title, url)).setFixedWidth(300);
 
         return titleLabelComponent;
     }
@@ -265,8 +255,9 @@ public final class ReportStylesFactory {
 
     public final SubreportBuilder getWeaponEnhancementsSubreport(
             final String column, final LocalizationService service) {
-        JasperReportBuilder report = DynamicReports.report();
+        JasperReportBuilder report;
 
+        report = DynamicReports.report();
         report.columns(DynamicReports.col.column(column, "_THIS",
                 new WeaponEnhancementDataType(service)));
 

@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.report.punkapocalyptic.datatype;
+package com.wandrell.tabletop.business.report.datatype.punkapocalyptic;
 
 import java.util.Locale;
 
@@ -9,29 +9,27 @@ import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
+import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
-public final class EquipmentDataType extends
-        AbstractDataType<Equipment, Equipment> {
+public final class FactionDataType extends AbstractDataType<Faction, Faction> {
 
-    private static final long                          serialVersionUID = 1L;
-    private final DRIValueFormatter<String, Equipment> formatter        = new EquipmentFormatter();
-    private final LocalizationService                  service;
+    private static final long                        serialVersionUID = 1L;
+    private final DRIValueFormatter<String, Faction> formatter        = new FactionFormatter();
+    private final LocalizationService                service;
 
-    private class EquipmentFormatter extends
-            AbstractValueFormatter<String, Equipment> {
+    private class FactionFormatter extends
+            AbstractValueFormatter<String, Faction> {
         private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
         @Override
-        public String
-                format(Equipment value, ReportParameters reportParameters) {
-            return getLocalizationService().getEquipmentString(value.getName());
+        public String format(Faction value, ReportParameters reportParameters) {
+            return getLocalizationService().getFactionNameString(
+                    value.getName());
         }
-
     }
 
-    public EquipmentDataType(final LocalizationService service) {
+    public FactionDataType(final LocalizationService service) {
         super();
 
         this.service = service;
@@ -43,13 +41,12 @@ public final class EquipmentDataType extends
     }
 
     @Override
-    public final DRIValueFormatter<String, Equipment> getValueFormatter() {
+    public final DRIValueFormatter<String, Faction> getValueFormatter() {
         return formatter;
     }
 
     @Override
-    public final String
-            valueToString(final Equipment value, final Locale locale) {
+    public final String valueToString(final Faction value, final Locale locale) {
         return value.getName();
     }
 

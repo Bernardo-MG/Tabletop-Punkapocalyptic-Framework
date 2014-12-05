@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.report.punkapocalyptic.datatype;
+package com.wandrell.tabletop.business.report.datatype.punkapocalyptic;
 
 import java.util.Collection;
 

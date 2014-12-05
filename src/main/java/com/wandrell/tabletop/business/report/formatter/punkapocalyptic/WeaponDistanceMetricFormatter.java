@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.report.punkapocalyptic.formatter;
+package com.wandrell.tabletop.business.report.formatter.punkapocalyptic;
 
 import net.sf.dynamicreports.report.base.expression.AbstractValueFormatter;
 import net.sf.dynamicreports.report.constant.Constants;
@@ -9,25 +9,25 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeap
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.util.punkapocalyptic.WeaponUtils;
 
-public final class WeaponPenetrationFormatter extends
+public final class WeaponDistanceMetricFormatter extends
         AbstractValueFormatter<String, Weapon> {
 
     private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
-    public WeaponPenetrationFormatter() {
+    public WeaponDistanceMetricFormatter() {
         super();
     }
 
     @Override
-    public final String format(final Weapon value,
+    public String format(final Weapon value,
             final ReportParameters reportParameters) {
         final String result;
 
         if (value instanceof MeleeWeapon) {
-            result = String.valueOf(((MeleeWeapon) value).getPenetration());
+            result = "-";
         } else {
             result = WeaponUtils
-                    .getRangedWeaponPenetration((RangedWeapon) value);
+                    .getRangedWeaponDistanceMetric((RangedWeapon) value);
         }
 
         return result;

@@ -1,25 +1,22 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.file.command;
 
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
-import net.sf.dynamicreports.report.builder.expression.AbstractSubDatasourceExpression;
 import net.sf.dynamicreports.report.builder.expression.Expressions;
-import net.sf.dynamicreports.report.constant.Constants;
 import net.sf.dynamicreports.report.definition.expression.DRIExpression;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.wandrell.service.application.ApplicationInfoService;
-import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.ReportStylesFactory;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
+import com.wandrell.tabletop.business.report.expression.CurrentObjectDatasourceExpression;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
@@ -29,33 +26,11 @@ public final class BuildGangReportCommand implements
         ReturnCommand<JasperReportBuilder>, ApplicationInfoServiceAware,
         LocalizationServiceAware {
 
-    private ApplicationInfoService    appInfoService;
-    private final ReportStylesFactory factory = ReportStylesFactory
-                                                      .getInstance();
-    private LocalizationService       localizationService;
-    private final InputStream         path;
-
-    private class CurrentUnitDatasourceExpression extends
-            AbstractSubDatasourceExpression<Unit> {
-        private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
-
-        public CurrentUnitDatasourceExpression(
-                DRIExpression<? extends Unit> expression) {
-            super(expression);
-        }
-
-        public CurrentUnitDatasourceExpression(String fieldName) {
-            super(fieldName);
-        }
-
-        @Override
-        protected JRDataSource createSubDatasource(Unit data) {
-            final Collection<Unit> list;
-            list = new LinkedList<>();
-            list.add(data);
-            return new JRBeanCollectionDataSource(list);
-        }
-    }
+    private ApplicationInfoService      appInfoService;
+    private final DynamicReportsFactory factory = DynamicReportsFactory
+                                                        .getInstance();
+    private LocalizationService         localizationService;
+    private final InputStream           path;
 
     public BuildGangReportCommand(final InputStream path) {
         super();
@@ -70,12 +45,12 @@ public final class BuildGangReportCommand implements
 
         report = DynamicReports.report();
         subreport = createUnitListSubreport(Expressions
-                .subDatasourceBeanCollection("units"));
+                .subDatasourceBeanCollection(ReportConf.UNITS));
 
-        report.setTemplate(factory.getReportTemplate());
+        report.setTemplate(getDynamicReportsFactory().getReportTemplate());
         report.title(createTitleComponent());
-        report.pageFooter(factory.getReportFooter());
         report.detailFooter(subreport);
+        report.pageFooter(getDynamicReportsFactory().getReportFooter());
 
         return report;
     }
@@ -92,36 +67,39 @@ public final class BuildGangReportCommand implements
     }
 
     private final ComponentBuilder<?, ?> createTitleComponent() {
+        final ComponentBuilder<?, ?> brand;
+
+        brand = getDynamicReportsFactory().getTitleLabelComponent(getImage(),
+                getApplicationInfoService().getApplicationName(),
+                getApplicationInfoService().getDownloadURI().toString());
+
         return Components
                 .horizontalList()
-                .add(factory
-                        .getTitleLabelComponent(getImage(),
-                                getApplicationInfoService()
-                                        .getApplicationName(),
-                                getApplicationInfoService().getDownloadURI()
-                                        .toString()))
+                .add(brand)
                 .newRow()
                 .add(Components.line())
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
-                        "faction")))
-                .add(Components.text(factory.getFactionField("faction",
-                        getLocalizationService())))
+                        ReportBundleConf.FACTION)))
+                .add(Components.text(getDynamicReportsFactory()
+                        .getFactionField(ReportConf.FACTION,
+                                getLocalizationService())))
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
-                        "valoration")))
-                .add(Components.text(factory
-                        .getValueHandlerValueField("valoration")))
+                        ReportBundleConf.VALORATION)))
+                .add(Components.text(getDynamicReportsFactory()
+                        .getValueHandlerValueField(ReportConf.VALORATION)))
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
-                        "bullets")))
-                .add(Components.text(factory
-                        .getValueHandlerValueField("bullets")))
+                        ReportBundleConf.BULLETS)))
+                .add(Components.text(getDynamicReportsFactory()
+                        .getValueHandlerValueField(ReportConf.BULLETS)))
                 .newRow()
                 .add(Components.text(getLocalizationService().getReportString(
-                        "units")))
-                .add(Components.text(factory.getCollectionSizeField("units")))
-                .newRow().add(Components.line()).newRow()
+                        ReportBundleConf.UNITS)))
+                .add(Components.text(getDynamicReportsFactory()
+                        .getCollectionSizeField(ReportConf.UNITS))).newRow()
+                .add(Components.line()).newRow()
                 .add(Components.verticalGap(10));
     }
 
@@ -133,9 +111,10 @@ public final class BuildGangReportCommand implements
                 dataSource);
 
         JasperReportBuilder report = DynamicReports.report();
-        report.setTemplate(factory.getReportTemplate());
+        report.setTemplate(getDynamicReportsFactory().getReportTemplate());
         report.addDetail(subreport);
-        subreport.setDataSource(new CurrentUnitDatasourceExpression("_THIS"));
+        subreport.setDataSource(new CurrentObjectDatasourceExpression(
+                ReportConf.CURRENT));
 
         return Components.subreport(report).setDataSource(dataSource);
     }
@@ -143,7 +122,7 @@ public final class BuildGangReportCommand implements
     private final JasperReportBuilder createUnitSubreport() {
         JasperReportBuilder report = DynamicReports.report();
 
-        report.setTemplate(factory.getReportTemplate());
+        report.setTemplate(getDynamicReportsFactory().getReportTemplate());
 
         report.title(getUnitTitleComponent());
 
@@ -157,8 +136,8 @@ public final class BuildGangReportCommand implements
     private final SubreportBuilder createWeaponsSubreport() {
         JasperReportBuilder report = DynamicReports.report();
 
-        report.detail(factory
-                .getBorderedCellComponent(getWeaponDetailComponent()));
+        report.detail(getDynamicReportsFactory().getBorderedCellComponent(
+                getWeaponDetailComponent()));
 
         return Components.subreport(report);
     }
@@ -171,15 +150,18 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> armorName;
         final ComponentBuilder<?, ?> armorArmor;
 
-        armorName = factory
-                .getBorderedCellComponent(Components.horizontalList(Components
+        armorName = getDynamicReportsFactory().getBorderedCellComponent(
+                Components.horizontalList(Components
                         .text(getLocalizationService().getReportString(
-                                "armor.name")), Components.text(factory
-                        .getArmorNameField("armor", getLocalizationService()))));
-        armorArmor = factory.getBorderedCellComponent(Components
-                .horizontalList(Components.text(getLocalizationService()
-                        .getReportString("armor.armor")), Components
-                        .text(factory.getArmorArmorField("armor"))));
+                                ReportBundleConf.ARMOR_NAME)), Components
+                        .text(getDynamicReportsFactory().getArmorNameField(
+                                ReportConf.ARMOR, getLocalizationService()))));
+        armorArmor = getDynamicReportsFactory().getBorderedCellComponent(
+                Components.horizontalList(Components
+                        .text(getLocalizationService().getReportString(
+                                ReportBundleConf.ARMOR_ARMOR)), Components
+                        .text(getDynamicReportsFactory().getArmorArmorField(
+                                ReportConf.ARMOR))));
 
         return Components.horizontalList(armorName, armorArmor);
     }
@@ -193,37 +175,38 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> toughness;
         final ComponentBuilder<?, ?> tech;
 
-        actions = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "actions.short")),
-                Components.text(factory.getIntegerField("actions"))));
-        combat = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "combat.short")),
-                Components.text(factory.getIntegerField("combat"))));
-        precision = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "precision.short")),
-                Components.text(factory.getIntegerField("precision"))));
-        agility = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "agility.short")),
-                Components.text(factory.getIntegerField("agility"))));
-        strength = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "strength.short")),
-                Components.text(factory.getIntegerField("strength"))));
-        toughness = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "toughness.short")),
-                Components.text(factory.getIntegerField("toughness"))));
-        tech = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "tech.short")),
-                Components.text(factory.getIntegerField("tech"))));
+        actions = getDynamicReportsFactory().getAttributeCell(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.ACTIONS_SHORT), ReportConf.ACTIONS);
+        combat = getDynamicReportsFactory().getAttributeCell(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.COMBAT_SHORT), ReportConf.COMBAT);
+        precision = getDynamicReportsFactory()
+                .getAttributeCell(
+                        getLocalizationService().getReportString(
+                                ReportBundleConf.PRECISION_SHORT),
+                        ReportConf.PRECISION);
+        agility = getDynamicReportsFactory().getAttributeCell(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.AGILITY_SHORT), ReportConf.AGILITY);
+        strength = getDynamicReportsFactory().getAttributeCell(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.STRENGTH_SHORT), ReportConf.STRENGTH);
+        toughness = getDynamicReportsFactory()
+                .getAttributeCell(
+                        getLocalizationService().getReportString(
+                                ReportBundleConf.TOUGHNESS_SHORT),
+                        ReportConf.TOUGHNESS);
+        tech = getDynamicReportsFactory().getAttributeCell(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.TECH_SHORT), ReportConf.TECH);
 
         return Components.horizontalList(actions, combat, precision, agility,
                 strength, toughness, tech);
+    }
+
+    private final DynamicReportsFactory getDynamicReportsFactory() {
+        return factory;
     }
 
     private final InputStream getImage() {
@@ -241,24 +224,40 @@ public final class BuildGangReportCommand implements
         final ComponentBuilder<?, ?> equipment;
         final ComponentBuilder<?, ?> weapons;
 
-        rules = factory.getBorderedCellComponent(factory.getRulesSubreport(
-                getLocalizationService().getReportString("rules"),
-                getLocalizationService()).setDataSource(
-                Expressions.subDatasourceBeanCollection("specialRules")));
+        rules = getDynamicReportsFactory()
+                .getBorderedCellComponent(
+                        getDynamicReportsFactory()
+                                .getRulesSubreport(
+                                        getLocalizationService()
+                                                .getReportString(
+                                                        ReportBundleConf.RULES),
+                                        getLocalizationService())
+                                .setDataSource(
+                                        Expressions
+                                                .subDatasourceBeanCollection(ReportConf.SPECIAL_RULES)));
 
         attributes = getAttributesComponent();
 
         armor = getArmorComponent();
 
-        equipment = factory.getBorderedCellComponent(factory
-                .getEquipmentSubreport(
-                        getLocalizationService().getReportString("equipment"),
-                        getLocalizationService()).setDataSource(
-                        Expressions.subDatasourceBeanCollection("equipment")));
+        equipment = getDynamicReportsFactory()
+                .getBorderedCellComponent(
+                        getDynamicReportsFactory()
+                                .getEquipmentSubreport(
+                                        getLocalizationService()
+                                                .getReportString(
+                                                        ReportBundleConf.EQUIPMENT),
+                                        getLocalizationService())
+                                .setDataSource(
+                                        Expressions
+                                                .subDatasourceBeanCollection(ReportConf.EQUIPMENT)));
 
-        weapons = factory.getBorderedCellComponent(createWeaponsSubreport()
-                .setDataSource(
-                        Expressions.subDatasourceBeanCollection("weapons")));
+        weapons = getDynamicReportsFactory()
+                .getBorderedCellComponent(
+                        createWeaponsSubreport()
+                                .setDataSource(
+                                        Expressions
+                                                .subDatasourceBeanCollection(ReportConf.WEAPONS)));
 
         return Components.verticalList(attributes, rules, armor, equipment,
                 weapons);
@@ -268,12 +267,16 @@ public final class BuildGangReportCommand implements
         ComponentBuilder<?, ?> name;
         ComponentBuilder<?, ?> points;
 
-        name = factory.getBorderedCellComponent(Components.text(factory
-                .getUnitNameField("_THIS", getLocalizationService())));
-        points = factory.getBorderedCellComponent(Components.horizontalList(
-                Components.text(getLocalizationService().getReportString(
-                        "valoration")), Components.text(factory
-                        .getValueHandlerValueField("valoration"))));
+        name = getDynamicReportsFactory().getBorderedCellComponent(
+                Components.text(getDynamicReportsFactory().getUnitNameField(
+                        ReportConf.CURRENT, getLocalizationService())));
+        points = getDynamicReportsFactory().getBorderedCellComponent(
+                Components.horizontalList(Components
+                        .text(getLocalizationService().getReportString(
+                                ReportBundleConf.VALORATION)), Components
+                        .text(getDynamicReportsFactory()
+                                .getValueHandlerValueField(
+                                        ReportConf.VALORATION))));
 
         return Components.horizontalList(name, points);
     }
@@ -283,42 +286,58 @@ public final class BuildGangReportCommand implements
         final SubreportBuilder rules;
         final SubreportBuilder equipment;
 
-        rules = factory.getRulesSubreport(getLocalizationService()
-                .getReportString("rules"), getLocalizationService());
+        rules = getDynamicReportsFactory().getRulesSubreport(
+                getLocalizationService()
+                        .getReportString(ReportBundleConf.RULES),
+                getLocalizationService());
         rules.setDataSource(Expressions
-                .subDatasourceBeanCollection("specialRules"));
+                .subDatasourceBeanCollection(ReportConf.SPECIAL_RULES));
 
-        equipment = factory.getWeaponEnhancementsSubreport(
-                getLocalizationService().getReportString("enhancements"),
+        equipment = getDynamicReportsFactory().getWeaponEnhancementsSubreport(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.ENHANCEMENTS),
                 getLocalizationService());
         equipment.setDataSource(Expressions
-                .subDatasourceBeanCollection("enhancements"));
+                .subDatasourceBeanCollection(ReportConf.WEAPON_ENHANCEMENTS));
 
-        data = Components.verticalList(Components.text(factory
-                .getWeaponNameField("_THIS", getLocalizationService())),
-                Components.horizontalList(Components
-                        .text(getLocalizationService()
-                                .getReportString("combat")), Components
-                        .text(factory.getWeaponCombatField("_THIS"))),
-                Components.horizontalList(Components
-                        .text(getLocalizationService().getReportString(
-                                "strength")), Components.text(factory
-                        .getWeaponStrengthField("_THIS"))), Components
-                        .horizontalList(Components
+        data = Components
+                .verticalList(
+                        Components.text(getDynamicReportsFactory()
+                                .getWeaponNameField(ReportConf.CURRENT,
+                                        getLocalizationService())),
+                        Components.horizontalList(Components
                                 .text(getLocalizationService().getReportString(
-                                        "penetration")), Components
-                                .text(factory
-                                        .getWeaponPenetrationField("_THIS"))),
-                Components.horizontalList(Components
-                        .text(getLocalizationService().getReportString(
-                                "distance.metric")), Components.text(factory
-                        .getWeaponDistanceMetricField("_THIS"))),
-                Components.horizontalList(Components
-                        .text(getLocalizationService().getReportString(
-                                "distance.imperial")), Components.text(factory
-                        .getWeaponDistanceImperialField("_THIS"))), factory
-                        .getBorderedCellComponent(equipment), factory
-                        .getBorderedCellComponent(rules));
+                                        ReportBundleConf.COMBAT)), Components
+                                .text(getDynamicReportsFactory()
+                                        .getWeaponCombatField(
+                                                ReportConf.CURRENT))),
+                        Components.horizontalList(Components
+                                .text(getLocalizationService().getReportString(
+                                        ReportBundleConf.STRENGTH)), Components
+                                .text(getDynamicReportsFactory()
+                                        .getWeaponStrengthField(
+                                                ReportConf.CURRENT))),
+                        Components.horizontalList(Components
+                                .text(getLocalizationService().getReportString(
+                                        ReportBundleConf.PENETRATION)),
+                                Components.text(getDynamicReportsFactory()
+                                        .getWeaponPenetrationField(
+                                                ReportConf.CURRENT))),
+                        Components.horizontalList(Components
+                                .text(getLocalizationService().getReportString(
+                                        ReportBundleConf.DISTANCE_METRIC)),
+                                Components.text(getDynamicReportsFactory()
+                                        .getWeaponDistanceMetricField(
+                                                ReportConf.CURRENT))),
+                        Components.horizontalList(Components
+                                .text(getLocalizationService().getReportString(
+                                        ReportBundleConf.DISTANCE_IMPERIAL)),
+                                Components.text(getDynamicReportsFactory()
+                                        .getWeaponDistanceImperialField(
+                                                ReportConf.CURRENT))),
+                        getDynamicReportsFactory().getBorderedCellComponent(
+                                equipment), getDynamicReportsFactory()
+                                .getBorderedCellComponent(rules));
 
         return data;
     }
