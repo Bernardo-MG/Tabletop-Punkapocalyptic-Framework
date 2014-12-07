@@ -77,14 +77,19 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
     private final UnitWeaponAvailability buildAvailability(final Unit unit) {
         final UnitWeaponAvailability availability;
         final Collection<WeaponOption> weaponOptions;
+        final Interval weaponsInterval;
         final Integer minWeapons;
         final Integer maxWeapons;
 
         weaponOptions = getWeaponOptions(unit.getUnitName());
-        minWeapons = getWeaponIntervals().get(unit.getUnitName())
-                .getLowerLimit();
-        maxWeapons = getWeaponIntervals().get(unit.getUnitName())
-                .getUpperLimit();
+        if (getWeaponIntervals().containsKey(unit.getUnitName())) {
+            weaponsInterval = getWeaponIntervals().get(unit.getUnitName());
+            minWeapons = weaponsInterval.getLowerLimit();
+            maxWeapons = weaponsInterval.getUpperLimit();
+        } else {
+            minWeapons = 0;
+            maxWeapons = 0;
+        }
 
         availability = getModelService().getUnitWeaponAvailability(
                 weaponOptions, minWeapons, maxWeapons);
