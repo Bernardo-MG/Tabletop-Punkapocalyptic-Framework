@@ -22,22 +22,29 @@ import com.wandrell.util.command.ReturnCommand;
 public final class ParseUnitsCommand implements
         ReturnCommand<Map<String, Unit>>, ModelServiceAware {
 
-    private final Document document;
-    private ModelService   modelService;
+    private final Document                 document;
+    private ModelService                   modelService;
+    private final Map<String, SpecialRule> rules;
 
-    public ParseUnitsCommand(final Document doc) {
+    public ParseUnitsCommand(final Document doc,
+            final Map<String, SpecialRule> rules) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(rules, "Received a null pointer as rules");
 
         document = doc;
+        this.rules = rules;
     }
 
     @Override
     public final Map<String, Unit> execute() throws Exception {
         final Map<String, Unit> units;
+        final Map<String, Collection<SpecialRule>> rules;
         final Collection<Element> nodes;
         Unit unit;
+
+        rules = getUnitRules();
 
         nodes = XPathFactory.instance()
                 .compile("//unit_profiles/unit_profile", Filters.element())
@@ -45,7 +52,7 @@ public final class ParseUnitsCommand implements
 
         units = new LinkedHashMap<>();
         for (final Element node : nodes) {
-            unit = parseNode(node);
+            unit = parseNode(node, rules);
             units.put(unit.getUnitName(), unit);
         }
 
@@ -65,7 +72,34 @@ public final class ParseUnitsCommand implements
         return modelService;
     }
 
-    private final Unit parseNode(final Element node) {
+    private final Map<String, SpecialRule> getSpecialRules() {
+        return rules;
+    }
+
+    private final Map<String, Collection<SpecialRule>> getUnitRules() {
+        final Map<String, Collection<SpecialRule>> result;
+        final Collection<Element> nodes;
+        Collection<SpecialRule> rules;
+
+        nodes = XPathFactory.instance()
+                .compile("//unit_rules/unit_rule", Filters.element())
+                .evaluate(getDocument());
+
+        result = new LinkedHashMap<>();
+        for (final Element node : nodes) {
+            rules = new LinkedList<>();
+            for (final Element rule : node.getChild("rules").getChildren()) {
+                rules.add(getSpecialRules().get(rule.getText()));
+            }
+
+            result.put(node.getChild("unit").getText(), rules);
+        }
+
+        return result;
+    }
+
+    private final Unit parseNode(final Element node,
+            final Map<String, Collection<SpecialRule>> rules) {
         final String name;
         final Integer actions;
         final Integer combat;
@@ -76,6 +110,7 @@ public final class ParseUnitsCommand implements
         final Integer tech;
         final Unit unit;
         final Integer cost;
+        final Collection<SpecialRule> unitRules;
 
         name = node.getChildText(ModelNodeConf.NAME);
 
@@ -91,9 +126,14 @@ public final class ParseUnitsCommand implements
 
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
+        if (rules.containsKey(name)) {
+            unitRules = rules.get(name);
+        } else {
+            unitRules = new LinkedList<>();
+        }
+
         unit = getModelService().getUnit(name, actions, agility, combat,
-                precision, strength, tech, toughness, cost,
-                new LinkedList<SpecialRule>());
+                precision, strength, tech, toughness, cost, unitRules);
 
         return unit;
     }

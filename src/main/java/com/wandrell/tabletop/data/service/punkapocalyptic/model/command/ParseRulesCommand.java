@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.jdom2.Document;
@@ -34,14 +35,20 @@ public final class ParseRulesCommand implements
     public final Map<String, SpecialRule> execute() throws Exception {
         final Map<String, SpecialRule> result;
         final Collection<Element> nodes;
+        final Collection<String> names;
         SpecialRule rule;
 
         nodes = XPathFactory.instance().compile("//rule", Filters.element())
                 .evaluate(getDocument());
 
-        result = new LinkedHashMap<>();
+        names = new LinkedHashSet<>();
         for (final Element node : nodes) {
-            rule = getModelService().getSpecialRule(node.getText());
+            names.add(node.getText());
+        }
+
+        result = new LinkedHashMap<>();
+        for (final String name : names) {
+            rule = getModelService().getSpecialRule(name);
 
             result.put(rule.getName(), rule);
         }
