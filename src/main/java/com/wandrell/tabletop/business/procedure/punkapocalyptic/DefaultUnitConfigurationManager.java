@@ -11,6 +11,8 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.GroupedUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
@@ -57,8 +59,10 @@ public final class DefaultUnitConfigurationManager implements
         availability = getDataModelService().getUnitArmorAvailability(
                 getUnit().getUnitName());
 
-        armors.add(availability.getInitialArmor());
-        armors.addAll(availability.getArmorOptions());
+        if (availability.getInitialArmor() != null) {
+            armors.add(availability.getInitialArmor());
+            armors.addAll(availability.getArmorOptions());
+        }
 
         return armors;
     }
@@ -67,6 +71,13 @@ public final class DefaultUnitConfigurationManager implements
     public final Collection<Equipment> getEquipmentOptions() {
         return getDataModelService().getEquipmentOptions(
                 getUnit().getUnitName());
+    }
+
+    @Override
+    public final Collection<Mutation> getMutations() {
+        return getDataModelService()
+                .getMutationOptions(getUnit().getUnitName())
+                .getMutationOptions();
     }
 
     @Override
@@ -95,6 +106,11 @@ public final class DefaultUnitConfigurationManager implements
 
         return getRulesetService().filterWeaponOptions(getUnit().getWeapons(),
                 weapons);
+    }
+
+    @Override
+    public final Boolean isGrouped() {
+        return (getUnit() instanceof GroupedUnit);
     }
 
     @Override
