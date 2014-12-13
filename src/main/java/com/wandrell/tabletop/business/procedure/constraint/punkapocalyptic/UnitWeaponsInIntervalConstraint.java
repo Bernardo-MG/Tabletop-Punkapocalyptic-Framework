@@ -9,17 +9,17 @@ import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 
 public final class UnitWeaponsInIntervalConstraint implements Constraint,
         UnitAware {
 
-    private final DataModelService dataModelService;
-    private String                 formattedMessage;
-    private final String           message;
-    private Unit                   unit;
+    private final DataService dataModelService;
+    private String            formattedMessage;
+    private final String      message;
+    private Unit              unit;
 
-    public UnitWeaponsInIntervalConstraint(final DataModelService service,
+    public UnitWeaponsInIntervalConstraint(final DataService service,
             final String message) {
         super();
 
@@ -88,7 +88,7 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         return MoreObjects.toStringHelper(this).toString();
     }
 
-    private final DataModelService getDataModelService() {
+    private final DataService getDataModelService() {
         return dataModelService;
     }
 

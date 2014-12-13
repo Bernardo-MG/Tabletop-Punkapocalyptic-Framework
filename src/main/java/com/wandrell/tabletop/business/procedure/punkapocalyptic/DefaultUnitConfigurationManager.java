@@ -16,18 +16,18 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final DataModelService    dataModelService;
+    private final DataService         dataModelService;
     private final RulesetService      rulesetService;
     private Unit                      unit;
     private final ConstraintValidator validator;
 
     public DefaultUnitConfigurationManager(final ConstraintValidator validator,
-            final DataModelService dataModelService,
+            final DataService dataModelService,
             final RulesetService rulesetService) {
         super();
 
@@ -131,7 +131,7 @@ public final class DefaultUnitConfigurationManager implements
         return validator;
     }
 
-    private final DataModelService getDataModelService() {
+    private final DataService getDataModelService() {
         return dataModelService;
     }
 

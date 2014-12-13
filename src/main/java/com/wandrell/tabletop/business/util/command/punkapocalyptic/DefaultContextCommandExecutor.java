@@ -8,12 +8,12 @@ import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationServic
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataModelServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
@@ -24,7 +24,7 @@ public final class DefaultContextCommandExecutor implements
     private final CommandExecutor  executor;
     private ModelService           modelService;
     private ApplicationInfoService serviceAppInfo;
-    private DataModelService       serviceDataModel;
+    private DataService            serviceDataModel;
     private FileService            serviceFile;
     private LocalizationService    serviceLoc;
     private RulesetService         serviceRuleset;
@@ -65,7 +65,7 @@ public final class DefaultContextCommandExecutor implements
     }
 
     @Override
-    public final void setDataModelService(final DataModelService service) {
+    public final void setDataModelService(final DataService service) {
         checkNotNull(service,
                 "Received a null pointer as the model data service");
 
@@ -102,7 +102,7 @@ public final class DefaultContextCommandExecutor implements
         return serviceAppInfo;
     }
 
-    private final DataModelService getDataModelService() {
+    private final DataService getDataModelService() {
         return serviceDataModel;
     }
 
@@ -150,9 +150,8 @@ public final class DefaultContextCommandExecutor implements
             ((ModelServiceAware) command).setModelService(getModelService());
         }
 
-        if (command instanceof DataModelServiceAware) {
-            ((DataModelServiceAware) command)
-                    .setDataModelService(getDataModelService());
+        if (command instanceof DataServiceAware) {
+            ((DataServiceAware) command).setDataService(getDataModelService());
         }
     }
 

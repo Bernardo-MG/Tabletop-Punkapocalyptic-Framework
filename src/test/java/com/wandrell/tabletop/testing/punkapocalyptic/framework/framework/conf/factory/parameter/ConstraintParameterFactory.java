@@ -25,7 +25,7 @@ import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitU
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitWeaponsInIntervalConstraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
@@ -267,7 +267,7 @@ public final class ConstraintParameterFactory {
         Integer weapons;
         Integer min;
         Integer max;
-        DataModelService service;
+        DataService service;
         Interval interval;
         Collection<Weapon> weaponsCol;
 
@@ -281,7 +281,7 @@ public final class ConstraintParameterFactory {
 
             interval = new DefaultInterval(min, max);
 
-            service = Mockito.mock(DataModelService.class);
+            service = Mockito.mock(DataService.class);
             Mockito.when(
                     service.getUnitAllowedWeaponsInterval(Matchers.anyString()))
                     .thenReturn(interval);

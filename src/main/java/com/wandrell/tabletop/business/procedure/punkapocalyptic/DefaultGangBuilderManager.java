@@ -23,7 +23,7 @@ import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChange
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataModelService;
+import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
@@ -31,7 +31,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private final GangListener               gangListener;
     private final EventListenerList          listeners = new EventListenerList();
     private final ModularDerivedValueHandler maxUnits;
-    private final DataModelService           serviceModel;
+    private final DataService                serviceModel;
     private RulesetService                   serviceRuleset;
     private final Constraint                 unitLimitConstraint;
     private final ConstraintValidator        validator;
@@ -82,7 +82,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     public DefaultGangBuilderManager(final Constraint unitLimitConstraint,
             final ConstraintValidator validator,
             final ModularDerivedValueHandler maxUnits,
-            final DataModelService dataModelService,
+            final DataService dataModelService,
             final RulesetService rulesetService) {
         super();
 
@@ -234,7 +234,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return validator;
     }
 
-    private final DataModelService getDataModelService() {
+    private final DataService getDataModelService() {
         return serviceModel;
     }
 
