@@ -75,6 +75,10 @@ public final class UnitValorationStore extends AbstractStoreModule implements
     public final void setUnit(final Unit unit) {
         checkNotNull(unit, "Received a null pointer as unit");
 
+        if (this.unit != null) {
+            this.unit.removeValorationListener(getListener());
+        }
+
         this.unit = unit;
 
         unit.addValorationListener(getListener());
