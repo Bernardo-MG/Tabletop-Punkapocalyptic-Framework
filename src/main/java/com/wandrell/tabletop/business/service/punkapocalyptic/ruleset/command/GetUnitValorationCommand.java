@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.MutantUnit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.util.command.ReturnCommand;
 
@@ -35,6 +37,13 @@ public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
 
         if (getUnit().getArmor() != null) {
             cost += getUnit().getArmor().getCost();
+        }
+
+        if (getUnit() instanceof MutantUnit) {
+            for (final Mutation mutation : ((MutantUnit) getUnit())
+                    .getMutations()) {
+                cost += mutation.getCost();
+            }
         }
 
         return cost;
