@@ -23,6 +23,8 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
             final String message) {
         super();
 
+        // TODO: Is this really needed?
+
         checkNotNull(service, "Received a null pointer as data model service");
         checkNotNull(message, "Received a null pointer as message");
 
