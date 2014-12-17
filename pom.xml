@@ -70,19 +70,19 @@
 		<testng.version>6.8.8</testng.version>
 		<wandrell.version>alpha</wandrell.version>
 		<!-- Plugins versions -->
-		<plugin.checkstyle.version>2.12.1</plugin.checkstyle.version>
-		<plugin.compiler.version>3.1</plugin.compiler.version>
-		<plugin.failsafe.version>2.17</plugin.failsafe.version>
+		<plugin.checkstyle.version>2.13</plugin.checkstyle.version>
+		<plugin.compiler.version>3.2</plugin.compiler.version>
+		<plugin.failsafe.version>2.18</plugin.failsafe.version>
 		<plugin.findbugs.version>3.0.0</plugin.findbugs.version>
 		<plugin.jacoco.version>0.7.2.201409121644</plugin.jacoco.version>
-		<plugin.jar.version>2.4</plugin.jar.version>
-		<plugin.javadoc.version>2.9.1</plugin.javadoc.version>
+		<plugin.jar.version>2.5</plugin.jar.version>
+		<plugin.javadoc.version>2.10.1</plugin.javadoc.version>
 		<plugin.jdepend.version>2.0</plugin.jdepend.version>
-		<plugin.jxr.version>2.4</plugin.jxr.version>
-		<plugin.pmd.version>3.2</plugin.pmd.version>
+		<plugin.jxr.version>2.5</plugin.jxr.version>
+		<plugin.pmd.version>3.3</plugin.pmd.version>
 		<plugin.reports.version>2.7</plugin.reports.version>
 		<plugin.site.version>3.4</plugin.site.version>
-		<plugin.surefire.version>2.17</plugin.surefire.version>
+		<plugin.surefire.version>2.18</plugin.surefire.version>
 		<plugin.taglist.version>2.4</plugin.taglist.version>
 	</properties>
 
