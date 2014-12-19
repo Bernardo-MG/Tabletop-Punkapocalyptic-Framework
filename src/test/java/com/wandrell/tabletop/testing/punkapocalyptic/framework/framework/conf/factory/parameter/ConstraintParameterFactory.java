@@ -17,7 +17,7 @@ import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToACountConstraint;
@@ -95,7 +95,7 @@ public final class ConstraintParameterFactory {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
         Constraint constraint;
-        ValueHandler limit;
+        ValueBox limit;
         Integer valueLimit;
         Integer unitsCount;
         Collection<Unit> units;
@@ -106,7 +106,7 @@ public final class ConstraintParameterFactory {
             itrValues = values.iterator();
 
             valueLimit = (Integer) itrValues.next();
-            limit = Mockito.mock(ValueHandler.class);
+            limit = Mockito.mock(ValueBox.class);
             Mockito.when(limit.getValue()).thenReturn(valueLimit);
             Mockito.when(limit.toString()).thenReturn(valueLimit.toString());
 

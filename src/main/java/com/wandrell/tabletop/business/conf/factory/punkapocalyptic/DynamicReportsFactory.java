@@ -21,7 +21,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ArmorDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.CollectionDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.EquipmentDataType;
@@ -212,11 +212,11 @@ public final class DynamicReportsFactory {
         return field;
     }
 
-    public final DRField<ValueHandler> getValueHandlerValueField(
+    public final DRField<ValueBox> getValueHandlerValueField(
             final String fieldName) {
-        final DRField<ValueHandler> field;
+        final DRField<ValueBox> field;
 
-        field = new DRField<ValueHandler>(fieldName, ValueHandler.class);
+        field = new DRField<ValueBox>(fieldName, ValueBox.class);
         field.setDataType(new ValueHandlerDataType());
 
         return field;

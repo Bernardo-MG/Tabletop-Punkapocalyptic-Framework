@@ -12,11 +12,11 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
-import com.wandrell.tabletop.business.model.valuehandler.AbstractValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.ModularDerivedValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
+import com.wandrell.tabletop.business.model.valuebox.AbstractValueBox;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
+import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueBox;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxListener;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
@@ -27,14 +27,14 @@ import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private Gang                             gang;
-    private final GangListener               gangListener;
-    private final EventListenerList          listeners = new EventListenerList();
-    private final ModularDerivedValueHandler maxUnits;
-    private final DataService                serviceModel;
-    private RulesetService                   serviceRuleset;
-    private final Constraint                 unitLimitConstraint;
-    private final ConstraintValidator        validator;
+    private Gang                      gang;
+    private final GangListener        gangListener;
+    private final EventListenerList   listeners = new EventListenerList();
+    private final DerivedValueBox     maxUnits;
+    private final DataService         serviceModel;
+    private RulesetService            serviceRuleset;
+    private final Constraint          unitLimitConstraint;
+    private final ConstraintValidator validator;
 
     {
         gangListener = new GangListenerAdapter() {
@@ -81,8 +81,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     public DefaultGangBuilderManager(final Constraint unitLimitConstraint,
             final ConstraintValidator validator,
-            final ModularDerivedValueHandler maxUnits,
-            final DataService dataModelService,
+            final DerivedValueBox maxUnits, final DataService dataModelService,
             final RulesetService rulesetService) {
         super();
 
@@ -129,7 +128,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
-    public final ValueHandler getMaxUnits() {
+    public final ValueBox getMaxUnits() {
         return maxUnits;
     }
 
@@ -175,13 +174,13 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         this.gang = gang;
 
         getRulesetService().setUpMaxUnitsValueHandler(
-                (ModularDerivedValueHandler) getMaxUnits(), getGang());
+                (DerivedValueBox) getMaxUnits(), getGang());
 
-        ((AbstractValueHandler) gang.getBullets())
-                .addValueEventListener(new ValueHandlerListener() {
+        ((AbstractValueBox) gang.getBullets())
+                .addValueEventListener(new ValueBoxListener() {
 
                     @Override
-                    public final void valueChanged(final ValueHandlerEvent evt) {
+                    public final void valueChanged(final ValueBoxEvent evt) {
                         validate();
                     }
 

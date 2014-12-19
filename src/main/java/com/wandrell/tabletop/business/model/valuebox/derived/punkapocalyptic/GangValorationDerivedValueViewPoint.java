@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic;
+package com.wandrell.tabletop.business.model.valuebox.derived.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,33 +6,34 @@ import java.util.EventObject;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.event.ValorationListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.StoreModule;
+import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
-public final class GangValorationStore extends AbstractStoreModule implements
-        GangAware {
+public final class GangValorationDerivedValueViewPoint extends
+        AbstractDerivedValueViewPoint implements GangAware {
 
     private Gang                     gang;
     private final ValorationListener listener;
     private final RulesetService     serviceRuleset;
 
     {
-        final StoreModule source = this;
+        final DerivedValueViewPoint source = this;
         listener = new ValorationListener() {
 
             @Override
             public final void valorationChanged(final EventObject event) {
-                fireValueChangedEvent(new ValueHandlerEvent(source,
+                fireValueChangedEvent(new ValueBoxEvent(source,
                         source.getValue(), source.getValue()));
             }
 
         };
     }
 
-    public GangValorationStore(final Gang gang, final RulesetService service) {
+    public GangValorationDerivedValueViewPoint(final Gang gang,
+            final RulesetService service) {
         super();
 
         checkNotNull(gang, "Received a null pointer as gang");
@@ -44,18 +45,14 @@ public final class GangValorationStore extends AbstractStoreModule implements
         gang.addValorationListener(getListener());
     }
 
-    public GangValorationStore(final GangValorationStore store) {
+    public GangValorationDerivedValueViewPoint(
+            final GangValorationDerivedValueViewPoint store) {
         super();
 
         checkNotNull(store, "Received a null pointer as store");
 
         gang = store.gang;
         serviceRuleset = store.serviceRuleset;
-    }
-
-    @Override
-    public final GangValorationStore createNewInstance() {
-        return new GangValorationStore(this);
     }
 
     @Override

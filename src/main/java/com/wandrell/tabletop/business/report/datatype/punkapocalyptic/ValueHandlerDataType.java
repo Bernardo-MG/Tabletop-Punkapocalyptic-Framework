@@ -9,21 +9,20 @@ import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 
 public final class ValueHandlerDataType extends
-        AbstractDataType<ValueHandler, ValueHandler> {
+        AbstractDataType<ValueBox, ValueBox> {
 
-    private static final long                             serialVersionUID = 1L;
-    private final DRIValueFormatter<String, ValueHandler> formatter        = new ValueHandlerFormatter();
+    private static final long                         serialVersionUID = 1L;
+    private final DRIValueFormatter<String, ValueBox> formatter        = new ValueHandlerFormatter();
 
     private class ValueHandlerFormatter extends
-            AbstractValueFormatter<String, ValueHandler> {
+            AbstractValueFormatter<String, ValueBox> {
         private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
         @Override
-        public String format(ValueHandler value,
-                ReportParameters reportParameters) {
+        public String format(ValueBox value, ReportParameters reportParameters) {
             return String.valueOf(value.getValue());
         }
     }
@@ -38,13 +37,13 @@ public final class ValueHandlerDataType extends
     }
 
     @Override
-    public final DRIValueFormatter<String, ValueHandler> getValueFormatter() {
+    public final DRIValueFormatter<String, ValueBox> getValueFormatter() {
         return formatter;
     }
 
     @Override
-    public final String valueToString(final ValueHandler value,
-            final Locale locale) {
+    public final String
+            valueToString(final ValueBox value, final Locale locale) {
         return String.valueOf(value.getValue());
     }
 

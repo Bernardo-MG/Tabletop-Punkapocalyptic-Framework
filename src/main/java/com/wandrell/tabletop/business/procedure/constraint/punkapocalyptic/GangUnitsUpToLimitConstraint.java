@@ -7,18 +7,18 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.valuehandler.ValueHandler;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
 public final class GangUnitsUpToLimitConstraint implements Constraint,
         GangAware {
 
-    private Gang               gang;
-    private final String       message;
-    private final ValueHandler unitsLimit;
+    private Gang           gang;
+    private final String   message;
+    private final ValueBox unitsLimit;
 
-    public GangUnitsUpToLimitConstraint(final ValueHandler unitsLimit,
+    public GangUnitsUpToLimitConstraint(final ValueBox unitsLimit,
             final String message) {
         super();
 

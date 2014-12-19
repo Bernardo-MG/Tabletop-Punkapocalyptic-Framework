@@ -1,34 +1,36 @@
-package com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic;
+package com.wandrell.tabletop.business.model.valuebox.derived.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerListener;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.StoreModule;
+import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 
-public final class MaxUnitsStore extends AbstractStoreModule {
+public final class MaxUnitsDerivedValueViewPoint extends
+        AbstractDerivedValueViewPoint {
 
-    private Gang                       gang;
-    private final RulesetService       serviceRuleset;
-    private final ValueHandlerListener valorationListener;
+    private Gang                   gang;
+    private final RulesetService   serviceRuleset;
+    private final ValueBoxListener valorationListener;
 
     {
-        final StoreModule source = this;
-        valorationListener = new ValueHandlerListener() {
+        final DerivedValueViewPoint source = this;
+        valorationListener = new ValueBoxListener() {
 
             @Override
-            public final void valueChanged(final ValueHandlerEvent evt) {
-                fireValueChangedEvent(new ValueHandlerEvent(source,
+            public final void valueChanged(final ValueBoxEvent evt) {
+                fireValueChangedEvent(new ValueBoxEvent(source,
                         source.getValue(), source.getValue()));
             }
 
         };
     }
 
-    public MaxUnitsStore(final Gang gang, final RulesetService service) {
+    public MaxUnitsDerivedValueViewPoint(final Gang gang,
+            final RulesetService service) {
         this(service);
 
         checkNotNull(gang, "Received a null pointer as gang");
@@ -38,7 +40,8 @@ public final class MaxUnitsStore extends AbstractStoreModule {
         gang.getValoration().addValueEventListener(getValorationListener());
     }
 
-    public MaxUnitsStore(final MaxUnitsStore store) {
+    public MaxUnitsDerivedValueViewPoint(
+            final MaxUnitsDerivedValueViewPoint store) {
         super();
 
         checkNotNull(store, "Received a null pointer as store");
@@ -47,17 +50,12 @@ public final class MaxUnitsStore extends AbstractStoreModule {
         serviceRuleset = store.serviceRuleset;
     }
 
-    public MaxUnitsStore(final RulesetService service) {
+    public MaxUnitsDerivedValueViewPoint(final RulesetService service) {
         super();
 
         checkNotNull(service, "Received a null pointer as ruleset service");
 
         serviceRuleset = service;
-    }
-
-    @Override
-    public MaxUnitsStore createNewInstance() {
-        return new MaxUnitsStore(this);
     }
 
     @Override
@@ -85,7 +83,7 @@ public final class MaxUnitsStore extends AbstractStoreModule {
         return serviceRuleset;
     }
 
-    private final ValueHandlerListener getValorationListener() {
+    private final ValueBoxListener getValorationListener() {
         return valorationListener;
     }
 

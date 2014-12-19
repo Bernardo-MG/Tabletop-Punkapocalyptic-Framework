@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.business.model.valuehandler.module.store.punkapocalyptic;
+package com.wandrell.tabletop.business.model.valuebox.derived.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,41 +6,33 @@ import java.util.EventObject;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.event.ValorationListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuehandler.event.ValueHandlerEvent;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.AbstractStoreModule;
-import com.wandrell.tabletop.business.model.valuehandler.module.store.StoreModule;
+import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
+import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
 
-public final class UnitValorationStore extends AbstractStoreModule implements
-        UnitAware {
+public final class UnitValorationDerivedValueViewPoint extends
+        AbstractDerivedValueViewPoint {
 
     private final ValorationListener listener;
     private final RulesetService     serviceRuleset;
-    private Unit                     unit;
+    private final Unit               unit;
 
     {
-        final StoreModule source = this;
+        final DerivedValueViewPoint source = this;
         listener = new ValorationListener() {
 
             @Override
             public final void valorationChanged(final EventObject event) {
-                fireValueChangedEvent(new ValueHandlerEvent(source,
+                fireValueChangedEvent(new ValueBoxEvent(source,
                         source.getValue(), source.getValue()));
             }
 
         };
     }
 
-    public UnitValorationStore(final RulesetService service) {
-        super();
-
-        checkNotNull(service, "Received a null pointer as ruleset service");
-
-        serviceRuleset = service;
-    }
-
-    public UnitValorationStore(final Unit unit, final RulesetService service) {
+    public UnitValorationDerivedValueViewPoint(final Unit unit,
+            final RulesetService service) {
         super();
 
         checkNotNull(unit, "Received a null pointer as unit");
@@ -52,7 +44,8 @@ public final class UnitValorationStore extends AbstractStoreModule implements
         unit.addValorationListener(getListener());
     }
 
-    public UnitValorationStore(final UnitValorationStore store) {
+    public UnitValorationDerivedValueViewPoint(
+            final UnitValorationDerivedValueViewPoint store) {
         super();
 
         checkNotNull(store, "Received a null pointer as store");
@@ -62,26 +55,8 @@ public final class UnitValorationStore extends AbstractStoreModule implements
     }
 
     @Override
-    public final UnitValorationStore createNewInstance() {
-        return new UnitValorationStore(this);
-    }
-
-    @Override
     public final Integer getValue() {
         return getRulesetService().getUnitValoration(getUnit());
-    }
-
-    @Override
-    public final void setUnit(final Unit unit) {
-        checkNotNull(unit, "Received a null pointer as unit");
-
-        if (this.unit != null) {
-            this.unit.removeValorationListener(getListener());
-        }
-
-        this.unit = unit;
-
-        unit.addValorationListener(getListener());
     }
 
     private final ValorationListener getListener() {
