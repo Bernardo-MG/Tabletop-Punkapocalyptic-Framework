@@ -7,18 +7,24 @@ import com.wandrell.util.command.ReturnCommand;
 public final class GetBulletCostFromPropertiesCommand implements
         ReturnCommand<Integer> {
 
-    private static final String KEY = "bullet_cost";
-    private final Properties    rulesConfig;
+    private final String     key;
+    private final Properties rulesConfig;
 
-    public GetBulletCostFromPropertiesCommand(final Properties rulesConfig) {
+    public GetBulletCostFromPropertiesCommand(final Properties rulesConfig,
+            final String key) {
         super();
 
+        this.key = key;
         this.rulesConfig = rulesConfig;
     }
 
     @Override
     public final Integer execute() throws Exception {
-        return Integer.parseInt(getRulesConfiguration().getProperty(KEY));
+        return Integer.parseInt(getRulesConfiguration().getProperty(getKey()));
+    }
+
+    private final String getKey() {
+        return key;
     }
 
     private final Properties getRulesConfiguration() {
