@@ -74,6 +74,12 @@ public final class DefaultUnitConfigurationManager implements
     }
 
     @Override
+    public final Integer getMaxMutations() {
+        return getDataModelService()
+                .getMutationOptions(getUnit().getUnitName()).getMaxMutations();
+    }
+
+    @Override
     public final Collection<Mutation> getMutations() {
         return getDataModelService()
                 .getMutationOptions(getUnit().getUnitName())
