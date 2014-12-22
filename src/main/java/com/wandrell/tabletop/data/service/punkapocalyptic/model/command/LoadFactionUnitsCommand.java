@@ -75,8 +75,10 @@ public final class LoadFactionUnitsCommand implements Command,
         Collection<Constraint> constraints;
         Collection<Element> nodesConstr;
         Constraint constr;
+        String[] tags;
+        Integer pos;
 
-        expression = String.format("//faction_unit[faction='%s']//unit",
+        expression = String.format("//faction_unit[faction='%s']/units/unit",
                 faction.getName());
         nodes = XPathFactory.instance().compile(expression, Filters.element())
                 .evaluate(getDocument());
@@ -85,7 +87,7 @@ public final class LoadFactionUnitsCommand implements Command,
             unit = getUnits().get(node.getChildText("name"));
 
             expConstraint = String
-                    .format("//faction_unit[faction='%s']//unit[name='%s']//constraint",
+                    .format("//faction_unit[faction='%s']/units/unit[name='%s']//constraint",
                             faction.getName(), unit.getUnitName());
 
             nodesConstr = XPathFactory.instance()
@@ -94,8 +96,23 @@ public final class LoadFactionUnitsCommand implements Command,
 
             constraints = new LinkedList<>();
             for (final Element constraint : nodesConstr) {
-                constr = getModelService().getUnitGangConstraint(
-                        constraint.getText(), unit.getUnitName());
+                if (constraint.getChildren().size() == 1) {
+                    constr = getModelService()
+                            .getUnitGangConstraint(
+                                    constraint.getChildText("name"),
+                                    unit.getUnitName());
+                } else {
+                    tags = new String[constraint.getChildren().size() - 1];
+                    pos = 0;
+                    for (final Element tag : constraint.getChildren().subList(
+                            1, constraint.getChildren().size())) {
+                        tags[pos] = tag.getText();
+                        pos++;
+                    }
+                    constr = getModelService().getUnitGangConstraint(
+                            constraint.getChildText("name"),
+                            unit.getUnitName(), tags);
+                }
 
                 constraints.add(constr);
             }

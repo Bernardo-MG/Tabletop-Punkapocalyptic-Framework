@@ -19,6 +19,7 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.procedure.Constraint;
+import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.DependantUnitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToACountConstraint;
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitUpToHalfGangLimitConstraint;
@@ -38,6 +39,7 @@ public final class ConstraintParameterFactory {
     private static final Integer                    MAX      = 20;
     private static final String                     UNIT1    = "unit1";
     private static final String                     UNIT2    = "unit2";
+    private static final String                     UNIT3    = "unit3";
 
     public static final ConstraintParameterFactory getInstance() {
         return instance;
@@ -45,6 +47,11 @@ public final class ConstraintParameterFactory {
 
     private ConstraintParameterFactory() {
         super();
+    }
+
+    public final Iterator<Object[]> getNotValidDependantConstraintParameters() {
+        return getDependantConstraintParameters(getValues(
+                ConstraintParametersConf.DEPENDANT_PROPERTIES, false));
     }
 
     public final Iterator<Object[]> getNotValidUnitLimitConstraintParameters() {
@@ -68,6 +75,11 @@ public final class ConstraintParameterFactory {
                 ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, false));
     }
 
+    public final Iterator<Object[]> getValidDependantConstraintParameters() {
+        return getDependantConstraintParameters(getValues(
+                ConstraintParametersConf.DEPENDANT_PROPERTIES, true));
+    }
+
     public final Iterator<Object[]> getValidUnitLimitConstraintParameters() {
         return getUnitLimitConstraintParameters(getValues(
                 ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, true));
@@ -87,6 +99,74 @@ public final class ConstraintParameterFactory {
             getValidWeaponIntervalConstraintParameters() {
         return getWeaponIntervalConstraintParameters(getValues(
                 ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, true));
+    }
+
+    private final Iterator<Object[]> getDependantConstraintParameters(
+            final Collection<Collection<Object>> valuesTable) {
+        final Collection<Object[]> result;
+        Iterator<Object> itrValues;
+        List<Unit> units;
+        Constraint constraint;
+        Gang gang;
+        Unit unit;
+        Integer limit;
+        Integer dependant;
+        Integer master;
+        Integer range;
+        final Integer total = 10;
+
+        result = new LinkedList<>();
+        for (final Collection<Object> values : valuesTable) {
+            itrValues = values.iterator();
+
+            dependant = (Integer) itrValues.next();
+            master = (Integer) itrValues.next();
+            range = (Integer) itrValues.next();
+
+            constraint = new DependantUnitConstraint(UNIT1, UNIT2, range,
+                    "message");
+
+            units = new LinkedList<>();
+            for (Integer i = 0; i < dependant; i++) {
+                unit = Mockito.mock(Unit.class);
+
+                Mockito.when(unit.getUnitName()).thenReturn(UNIT2);
+                Mockito.when(unit.toString()).thenReturn(UNIT2);
+
+                units.add(unit);
+            }
+
+            for (Integer i = 0; i < master; i++) {
+                unit = Mockito.mock(Unit.class);
+
+                Mockito.when(unit.getUnitName()).thenReturn(UNIT1);
+                Mockito.when(unit.toString()).thenReturn(UNIT1);
+
+                units.add(unit);
+            }
+
+            limit = total - units.size();
+            for (Integer i = 0; i < limit; i++) {
+                unit = Mockito.mock(Unit.class);
+
+                Mockito.when(unit.getUnitName()).thenReturn(UNIT3);
+                Mockito.when(unit.toString()).thenReturn(UNIT3);
+
+                units.add(unit);
+            }
+
+            Collections.shuffle(units);
+
+            gang = Mockito.mock(Gang.class);
+
+            Mockito.when(gang.getUnits()).thenReturn(units);
+
+            ((GangAware) constraint).setGang(gang);
+
+            result.add(new Object[] { constraint });
+        }
+
+        return result.iterator();
     }
 
     @SuppressWarnings("unchecked")

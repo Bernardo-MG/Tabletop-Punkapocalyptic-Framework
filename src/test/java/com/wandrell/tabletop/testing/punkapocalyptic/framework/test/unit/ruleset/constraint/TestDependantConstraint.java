@@ -7,21 +7,21 @@ import org.testng.annotations.DataProvider;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter.ConstraintParameterFactory;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.unit.ruleset.constraint.AbstractTestConstraint;
 
-public class TestUnitUpToHalfConstraint extends AbstractTestConstraint {
+public class TestDependantConstraint extends AbstractTestConstraint {
 
     @DataProvider(name = NOT_VALIDATES)
     public final static Iterator<Object[]> getNotValid() {
         return ConstraintParameterFactory.getInstance()
-                .getNotValidUpToHalfConstraintParameters();
+                .getNotValidDependantConstraintParameters();
     }
 
     @DataProvider(name = VALIDATES)
     public final static Iterator<Object[]> getValid() {
         return ConstraintParameterFactory.getInstance()
-                .getValidUpToHalfConstraintParameters();
+                .getValidDependantConstraintParameters();
     }
 
-    public TestUnitUpToHalfConstraint() {
+    public TestDependantConstraint() {
         super();
     }
 

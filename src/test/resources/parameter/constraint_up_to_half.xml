@@ -1,132 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <test_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="constraint_up_to_half.xsd">
-	<!-- Total 0 -->
+	<!-- Gang size 0 -->
 	<data valid="true">
 		<units>0</units>
-		<total>0</total>
+		<gangSize>0</gangSize>
 	</data>
-	<!-- Total 1 -->
+	<!-- Gang size 1 -->
 	<data valid="true">
 		<units>0</units>
-		<total>1</total>
+		<gangSize>1</gangSize>
 	</data>
 	<data valid="false">
 		<units>1</units>
-		<total>1</total>
+		<gangSize>1</gangSize>
 	</data>
-	<data valid="false">
-		<units>2</units>
-		<total>1</total>
-	</data>
-	<data valid="false">
-		<units>10</units>
-		<total>1</total>
-	</data>
-	<data valid="false">
-		<units>100</units>
-		<total>1</total>
-	</data>
-	<!-- Total 10 -->
+	<!-- Gang size 10 -->
 	<data valid="true">
 		<units>0</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="true">
 		<units>1</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="true">
 		<units>2</units>
-		<total>10</total>
-	</data>
-	<data valid="true">
-		<units>3</units>
-		<total>10</total>
-	</data>
-	<data valid="true">
-		<units>4</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="true">
 		<units>5</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="false">
 		<units>6</units>
-		<total>10</total>
-	</data>
-	<data valid="false">
-		<units>7</units>
-		<total>10</total>
-	</data>
-	<data valid="false">
-		<units>8</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="false">
 		<units>9</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
 	<data valid="false">
 		<units>10</units>
-		<total>10</total>
+		<gangSize>10</gangSize>
 	</data>
-	<data valid="false">
-		<units>11</units>
-		<total>10</total>
-	</data>
-	<data valid="false">
-		<units>12</units>
-		<total>10</total>
-	</data>
-	<!-- Total 11 -->
+	<!-- Gang size 11 -->
 	<data valid="true">
 		<units>0</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 	<data valid="true">
 		<units>1</units>
-		<total>11</total>
-	</data>
-	<data valid="true">
-		<units>2</units>
-		<total>11</total>
-	</data>
-	<data valid="true">
-		<units>3</units>
-		<total>11</total>
-	</data>
-	<data valid="true">
-		<units>4</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 	<data valid="true">
 		<units>5</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 	<data valid="false">
 		<units>6</units>
-		<total>11</total>
-	</data>
-	<data valid="false">
-		<units>7</units>
-		<total>11</total>
-	</data>
-	<data valid="false">
-		<units>8</units>
-		<total>11</total>
-	</data>
-	<data valid="false">
-		<units>9</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 	<data valid="false">
 		<units>10</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 	<data valid="false">
 		<units>11</units>
-		<total>11</total>
+		<gangSize>11</gangSize>
 	</data>
 </test_data>

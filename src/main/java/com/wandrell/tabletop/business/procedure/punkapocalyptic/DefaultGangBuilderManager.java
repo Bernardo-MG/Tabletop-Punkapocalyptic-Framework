@@ -7,16 +7,14 @@ import java.util.LinkedList;
 
 import javax.swing.event.EventListenerList;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
-import com.wandrell.tabletop.business.model.valuebox.AbstractValueBox;
 import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueBox;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxListener;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
@@ -51,8 +49,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                     getConstraintValidator().addConstraint(constraint);
                 }
 
-                validate();
-
                 fireUnitAddedEvent(event);
             }
 
@@ -70,8 +66,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 getConstraintValidator().setConstraints(constraints);
                 getConstraintValidator()
                         .addConstraint(getUnitLimitConstraint());
-
-                validate();
 
                 fireUnitRemovedEvent(event);
             }
@@ -134,8 +128,16 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     @Override
     public final Collection<Unit> getUnitOptions() {
-        return getDataModelService().getFactionUnits(
-                getGang().getFaction().getName());
+        final Collection<FactionUnitAvailability> units;
+        final Collection<Unit> result;
+
+        units = getGang().getFaction().getUnits();
+        result = new LinkedList<>();
+        for (final FactionUnitAvailability unit : units) {
+            result.add(unit.getUnit());
+        }
+
+        return result;
     }
 
     @Override
@@ -175,16 +177,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
         getRulesetService().setUpMaxUnitsValueHandler(
                 (DerivedValueBox) getMaxUnits(), getGang());
-
-        ((AbstractValueBox) gang.getBullets())
-                .addValueEventListener(new ValueBoxListener() {
-
-                    @Override
-                    public final void valueChanged(final ValueBoxEvent evt) {
-                        validate();
-                    }
-
-                });
 
         gang.addGangListener(getGangListener());
 

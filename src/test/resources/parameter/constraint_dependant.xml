@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_data xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="constraint_dependant.xsd">
+	<!-- Gang size 0 -->
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>0</master>
+		<range>100</range>
+	</data>
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>0</master>
+		<range>0</range>
+	</data>
+	<!-- Gang size 1 -->
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>0</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="false">
+		<dependant>1</dependant>
+		<master>0</master>
+		<range>2</range>
+	</data>
+	<!-- Gang size 10 -->
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>0</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>1</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>2</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="false">
+		<dependant>3</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="false">
+		<dependant>5</dependant>
+		<master>1</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>2</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>4</dependant>
+		<master>2</master>
+		<range>2</range>
+	</data>
+	<data valid="false">
+		<dependant>5</dependant>
+		<master>2</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>0</dependant>
+		<master>3</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>1</dependant>
+		<master>3</master>
+		<range>2</range>
+	</data>
+	<data valid="true">
+		<dependant>6</dependant>
+		<master>3</master>
+		<range>2</range>
+	</data>
+	<data valid="false">
+		<dependant>7</dependant>
+		<master>3</master>
+		<range>2</range>
+	</data>
+</test_data>

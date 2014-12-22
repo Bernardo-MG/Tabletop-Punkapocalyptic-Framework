@@ -9,21 +9,30 @@
 		</xs:complexType>
 		<xs:unique name="uniqueData">
 			<xs:selector xpath="data" />
-			<xs:field xpath="units" />
+			<xs:field xpath="dependant" />
+			<xs:field xpath="master" />
+			<xs:field xpath="range" />
 			<xs:field xpath="gangSize" />
 		</xs:unique>
 	</xs:element>
 
 	<xs:complexType name="checkList">
 		<xs:sequence>
-			<xs:element name="units" maxOccurs="1" minOccurs="1">
+			<xs:element name="dependant" maxOccurs="1" minOccurs="1">
 				<xs:simpleType>
 					<xs:restriction base="xs:integer">
 						<xs:minInclusive value="0" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
-			<xs:element name="gangSize" maxOccurs="1" minOccurs="1">
+			<xs:element name="master" maxOccurs="1" minOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="range" maxOccurs="1" minOccurs="1">
 				<xs:simpleType>
 					<xs:restriction base="xs:integer">
 						<xs:minInclusive value="0" />

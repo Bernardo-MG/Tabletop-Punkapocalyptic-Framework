@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
 import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
 
-public final class UpToHalfDocumentProcessor implements
+public final class DependantDocumentProcessor implements
         JDOMDocumentInputProcessor<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToHalfDocumentProcessor.class);
+                                               .getLogger(DependantDocumentProcessor.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UpToHalfDocumentProcessor() {
+    public DependantDocumentProcessor() {
         super();
     }
 
@@ -40,21 +40,26 @@ public final class UpToHalfDocumentProcessor implements
 
     private final Collection<Object> readNode(final Element node) {
         final Collection<Object> data;
-        final Integer units;
-        final Integer total;
+        final Integer dependant;
+        final Integer master;
+        final Integer range;
 
-        units = Integer.parseInt(node.getChild(TestXMLConf.NODE_UNITS)
+        dependant = Integer.parseInt(node.getChild(TestXMLConf.NODE_DEPENDANT)
                 .getText());
-        total = Integer.parseInt(node.getChild(TestXMLConf.NODE_GANG_SIZE)
+        master = Integer.parseInt(node.getChild(TestXMLConf.NODE_MASTER)
+                .getText());
+        range = Integer.parseInt(node.getChild(TestXMLConf.NODE_RANGE)
                 .getText());
 
         data = new LinkedList<>();
-        data.add(units);
-        data.add(total);
+        data.add(dependant);
+        data.add(master);
+        data.add(range);
 
-        getLogger().debug(
-                String.format("Read constraint for %d units of a total of %d",
-                        units, total));
+        getLogger()
+                .debug(String
+                        .format("Read constraint for %d dependant units, where %d are master units, and with range %d",
+                                dependant, master, range));
 
         return data;
     }
