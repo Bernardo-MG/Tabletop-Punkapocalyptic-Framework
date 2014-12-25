@@ -10,6 +10,7 @@ public final class ReportConf {
     public static final String CURRENT             = "_THIS";
     public static final String EQUIPMENT           = "equipment";
     public static final String FACTION             = "faction";
+    public static final String MUTATIONS           = "mutations";
     public static final String PRECISION           = "precision";
     public static final String SPECIAL_RULES       = "specialRules";
     public static final String STRENGTH            = "strength";

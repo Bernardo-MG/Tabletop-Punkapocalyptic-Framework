@@ -14,6 +14,7 @@ public final class ReportBundleConf {
     public static final String ENHANCEMENTS      = "enhancements";
     public static final String EQUIPMENT         = "equipment";
     public static final String FACTION           = "faction";
+    public static final String MUTATIONS         = "mutations";
     public static final String PENETRATION       = "penetration";
     public static final String PRECISION_SHORT   = "precision.short";
     public static final String RULES             = "rules";
