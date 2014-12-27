@@ -4,8 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.EventObject;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.event.ValorationListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitListener;
 import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
@@ -14,13 +14,16 @@ import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 public final class UnitValorationDerivedValueViewPoint extends
         AbstractDerivedValueViewPoint {
 
-    private final ValorationListener listener;
-    private final RulesetService     serviceRuleset;
-    private final Unit               unit;
+    private final UnitListener   listener;
+    private final RulesetService serviceRuleset;
+    private final Unit           unit;
 
     {
         final DerivedValueViewPoint source = this;
-        listener = new ValorationListener() {
+        listener = new UnitListener() {
+
+            @Override
+            public final void statusChanged(final EventObject e) {}
 
             @Override
             public final void valorationChanged(final EventObject event) {
@@ -41,7 +44,7 @@ public final class UnitValorationDerivedValueViewPoint extends
         this.unit = unit;
         serviceRuleset = service;
 
-        unit.addValorationListener(getListener());
+        unit.addUnitListener(getListener());
     }
 
     public UnitValorationDerivedValueViewPoint(
@@ -59,7 +62,7 @@ public final class UnitValorationDerivedValueViewPoint extends
         return getRulesetService().getUnitValoration(getUnit());
     }
 
-    private final ValorationListener getListener() {
+    private final UnitListener getListener() {
         return listener;
     }
 

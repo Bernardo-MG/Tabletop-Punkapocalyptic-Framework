@@ -6,6 +6,7 @@ public final class ModelNodeConf {
     public static final String AGILITY       = "agility";
     public static final String ARMOR         = "armor";
     public static final String ARMORS        = "armors";
+    public static final String BONUS         = "bonus";
     public static final String CENTIMETERS   = "cm";
     public static final String COMBAT        = "combat";
     public static final String COST          = "cost";
