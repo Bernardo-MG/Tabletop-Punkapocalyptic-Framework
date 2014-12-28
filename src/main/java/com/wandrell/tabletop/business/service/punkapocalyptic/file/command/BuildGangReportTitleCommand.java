@@ -13,23 +13,24 @@ import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.FactionDataType;
+import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
+import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class BuildGangReportTitleCommand implements
         ReturnCommand<ComponentBuilder<?, ?>>, ApplicationInfoServiceAware,
-        LocalizationServiceAware {
+        FileServiceAware, LocalizationServiceAware {
 
     private ApplicationInfoService appInfoService;
-    private final InputStream      imageStream;
+    private FileService            fileService;
     private LocalizationService    localizationService;
 
-    public BuildGangReportTitleCommand(final InputStream imgStream) {
+    public BuildGangReportTitleCommand() {
         super();
-
-        imageStream = imgStream;
     }
 
     @Override
@@ -37,10 +38,14 @@ public final class BuildGangReportTitleCommand implements
         final ComponentBuilder<?, ?> brand;
         final HorizontalListBuilder title;
         final DynamicReportsFactory factory;
+        final InputStream imageStream;
+
+        imageStream = ResourceUtils.getClassPathInputStream(getFileService()
+                .getTitleImagePath());
 
         factory = DynamicReportsFactory.getInstance();
 
-        brand = factory.getTitleLabelComponent(getImage(),
+        brand = factory.getTitleLabelComponent(imageStream,
                 getApplicationInfoService().getApplicationName(),
                 getApplicationInfoService().getDownloadURI().toString());
 
@@ -84,6 +89,11 @@ public final class BuildGangReportTitleCommand implements
     }
 
     @Override
+    public final void setFileService(final FileService service) {
+        fileService = service;
+    }
+
+    @Override
     public final void setLocalizationService(final LocalizationService service) {
         localizationService = service;
     }
@@ -102,8 +112,8 @@ public final class BuildGangReportTitleCommand implements
         return field;
     }
 
-    private final InputStream getImage() {
-        return imageStream;
+    private final FileService getFileService() {
+        return fileService;
     }
 
     private final LocalizationService getLocalizationService() {
