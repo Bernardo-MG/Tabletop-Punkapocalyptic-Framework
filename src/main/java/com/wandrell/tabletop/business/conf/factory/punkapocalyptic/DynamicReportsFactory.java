@@ -78,15 +78,6 @@ public final class DynamicReportsFactory {
         return field;
     }
 
-    public final DRField<Integer> getIntegerField(final String fieldName) {
-        final DRField<Integer> field;
-
-        field = new DRField<Integer>(fieldName, Integer.class);
-        field.setDataType(DynamicReports.type.integerType());
-
-        return field;
-    }
-
     public final ComponentBuilder<?, ?> getReportFooter() {
         return footerComponent;
     }

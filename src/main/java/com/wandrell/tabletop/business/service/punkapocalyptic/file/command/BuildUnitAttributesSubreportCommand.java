@@ -7,6 +7,7 @@ import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
@@ -64,11 +65,11 @@ public final class BuildUnitAttributesSubreportCommand implements
     private final ComponentBuilder<?, ?> getAttributeCell(final String label,
             final String field) {
         final TextFieldBuilder<String> labelText;
-        final TextFieldBuilder<Integer> labelValue;
+        final TextFieldBuilder<ValueBox> labelValue;
 
         labelText = Components.text(label);
         labelValue = Components.text(DynamicReportsFactory.getInstance()
-                .getIntegerField(field));
+                .getValueBoxField(field));
 
         return DynamicReportsFactory.getInstance().getBorderedCellComponent(
                 Components.horizontalList(labelText, labelValue));
