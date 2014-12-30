@@ -8,13 +8,13 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.GroupedUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
-public final class GroupedUnitFormatter extends
+public final class GroupedUnitNameFormatter extends
         AbstractValueFormatter<String, Unit> {
 
     private static final long         serialVersionUID = Constants.SERIAL_VERSION_UID;
     private final LocalizationService localizationService;
 
-    public GroupedUnitFormatter(final LocalizationService service) {
+    public GroupedUnitNameFormatter(final LocalizationService service) {
         super();
 
         localizationService = service;

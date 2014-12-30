@@ -11,13 +11,13 @@ import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
 import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 
-public final class ValueHandlerDataType extends
+public final class ValueBoxDataType extends
         AbstractDataType<ValueBox, ValueBox> {
 
     private static final long                         serialVersionUID = 1L;
-    private final DRIValueFormatter<String, ValueBox> formatter        = new ValueHandlerFormatter();
+    private final DRIValueFormatter<String, ValueBox> formatter;
 
-    private class ValueHandlerFormatter extends
+    private class ValueBoxValueFormatter extends
             AbstractValueFormatter<String, ValueBox> {
         private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
@@ -27,8 +27,16 @@ public final class ValueHandlerDataType extends
         }
     }
 
-    public ValueHandlerDataType() {
+    public ValueBoxDataType() {
         super();
+
+        formatter = new ValueBoxValueFormatter();
+    }
+
+    public ValueBoxDataType(final DRIValueFormatter<String, ValueBox> formatter) {
+        super();
+
+        this.formatter = formatter;
     }
 
     @Override

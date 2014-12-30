@@ -5,29 +5,40 @@ import java.io.InputStream;
 import net.sf.dynamicreports.report.base.DRField;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
-import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.style.Styles;
 
 import com.wandrell.service.application.ApplicationInfoService;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
-import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
+import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.FactionDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.GangDataType;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ValueBoxDataType;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.FactionNameFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GangBulletsFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GangUnitsRangeFormatter;
+import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GangValorationFormatter;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
+import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.command.ReturnCommand;
 
 public final class BuildGangReportTitleCommand implements
         ReturnCommand<ComponentBuilder<?, ?>>, ApplicationInfoServiceAware,
-        FileServiceAware, LocalizationServiceAware {
+        FileServiceAware, LocalizationServiceAware, RulesetServiceAware {
 
     private ApplicationInfoService appInfoService;
     private FileService            fileService;
     private LocalizationService    localizationService;
+    private RulesetService         rulesetService;
 
     public BuildGangReportTitleCommand() {
         super();
@@ -36,7 +47,7 @@ public final class BuildGangReportTitleCommand implements
     @Override
     public final ComponentBuilder<?, ?> execute() {
         final ComponentBuilder<?, ?> brand;
-        final HorizontalListBuilder title;
+        final VerticalListBuilder gangData;
         final DynamicReportsFactory factory;
         final InputStream imageStream;
 
@@ -47,39 +58,27 @@ public final class BuildGangReportTitleCommand implements
 
         brand = factory.getTitleLabelComponent(imageStream,
                 getApplicationInfoService().getApplicationName(),
+                getApplicationInfoService().getVersion(),
                 getApplicationInfoService().getDownloadURI().toString());
+        brand.setStyle(Styles.style().setRightBorder(Styles.pen1Point()));
 
-        title = Components.horizontalList().add(brand).newRow()
-                .add(Components.line());
+        gangData = Components.verticalList();
         // Faction
-        title.newRow()
-                .add(Components.text(getLocalizationService().getReportString(
-                        ReportBundleConf.FACTION)))
-                .add(Components.text(getFactionField(ReportConf.FACTION,
-                        getLocalizationService())));
+        gangData.add(Components.text(getFactionNameField(ReportConf.FACTION,
+                getLocalizationService())));
         // Valoration
-        title.newRow()
-                .add(Components.text(getLocalizationService().getReportString(
-                        ReportBundleConf.VALORATION)))
-                .add(Components.text(factory
-                        .getValueBoxField(ReportConf.VALORATION)));
-        // Bullets
-        title.newRow()
-                .add(Components.text(getLocalizationService().getReportString(
-                        ReportBundleConf.BULLETS)))
-                .add(Components.text(factory
-                        .getValueBoxField(ReportConf.BULLETS)));
+        gangData.add(Components
+                .text(getGangValorationField(ReportConf.VALORATION)));
         // Units
-        title.newRow()
-                .add(Components.text(getLocalizationService().getReportString(
-                        ReportBundleConf.UNITS)))
-                .add(Components.text(factory
-                        .getCollectionSizeField(ReportConf.UNITS)));
-        // Gap
-        title.newRow().add(Components.line()).newRow()
-                .add(Components.verticalGap(10));
+        gangData.add(Components.text(getGangUnitsField(ReportConf.CURRENT)));
 
-        return title;
+        // Bullets
+        gangData.add(Components.text(getGangBulletsField(ReportConf.BULLETS)));
+
+        return Components.verticalList().add(
+                Components.horizontalList().add(brand,
+                        Components.horizontalGap(5), gangData),
+                Components.line(), Components.verticalGap(10));
     }
 
     @Override
@@ -98,16 +97,21 @@ public final class BuildGangReportTitleCommand implements
         localizationService = service;
     }
 
+    @Override
+    public final void setRulesetService(final RulesetService service) {
+        rulesetService = service;
+    }
+
     private final ApplicationInfoService getApplicationInfoService() {
         return appInfoService;
     }
 
-    private final DRField<Faction> getFactionField(final String fieldName,
+    private final DRField<Faction> getFactionNameField(final String fieldName,
             final LocalizationService service) {
         final DRField<Faction> field;
 
         field = new DRField<Faction>(fieldName, Faction.class);
-        field.setDataType(new FactionDataType(service));
+        field.setDataType(new FactionDataType(new FactionNameFormatter(service)));
 
         return field;
     }
@@ -116,8 +120,43 @@ public final class BuildGangReportTitleCommand implements
         return fileService;
     }
 
+    private final DRField<ValueBox> getGangBulletsField(final String fieldName) {
+        final DRField<ValueBox> field;
+
+        field = new DRField<ValueBox>(fieldName, ValueBox.class);
+        field.setDataType(new ValueBoxDataType(new GangBulletsFormatter(
+                getLocalizationService())));
+
+        return field;
+    }
+
+    private final DRField<Gang> getGangUnitsField(final String fieldName) {
+        final DRField<Gang> field;
+
+        field = new DRField<Gang>(fieldName, Gang.class);
+        field.setDataType(new GangDataType(new GangUnitsRangeFormatter(
+                getLocalizationService(), getRulesetService())));
+
+        return field;
+    }
+
+    private final DRField<ValueBox> getGangValorationField(
+            final String fieldName) {
+        final DRField<ValueBox> field;
+
+        field = new DRField<ValueBox>(fieldName, ValueBox.class);
+        field.setDataType(new ValueBoxDataType(new GangValorationFormatter(
+                getLocalizationService())));
+
+        return field;
+    }
+
     private final LocalizationService getLocalizationService() {
         return localizationService;
+    }
+
+    private final RulesetService getRulesetService() {
+        return rulesetService;
     }
 
 }

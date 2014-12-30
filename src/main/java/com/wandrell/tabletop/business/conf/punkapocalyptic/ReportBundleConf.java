@@ -13,7 +13,6 @@ public final class ReportBundleConf {
     public static final String DISTANCE_METRIC   = "distance.metric";
     public static final String ENHANCEMENTS      = "enhancements";
     public static final String EQUIPMENT         = "equipment";
-    public static final String FACTION           = "faction";
     public static final String MUTATIONS         = "mutations";
     public static final String PENETRATION       = "penetration";
     public static final String PRECISION_SHORT   = "precision.short";
@@ -22,8 +21,9 @@ public final class ReportBundleConf {
     public static final String STRENGTH_SHORT    = "strength.short";
     public static final String TECH_SHORT        = "tech.short";
     public static final String TOUGHNESS_SHORT   = "toughness.short";
-    public static final String UNITS             = "units";
+    public static final String UNITS_RANGE       = "message.units.range";
     public static final String VALORATION        = "valoration";
+    public static final String VALORATION_TOTAL  = "valoration.total";
 
     private ReportBundleConf() {
         super();
