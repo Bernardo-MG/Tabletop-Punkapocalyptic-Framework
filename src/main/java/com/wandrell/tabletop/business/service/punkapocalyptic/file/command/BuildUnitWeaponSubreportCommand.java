@@ -7,11 +7,15 @@ import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.expression.Expressions;
+import net.sf.dynamicreports.report.constant.WhenNoDataType;
 
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnhancement;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
+import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.SpecialRulesDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.WeaponDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.WeaponEnhancementDataType;
 import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.WeaponCombatFormatter;
@@ -64,6 +68,23 @@ public final class BuildUnitWeaponSubreportCommand implements
         return localizationService;
     }
 
+    private final SubreportBuilder getRulesSubreport() {
+        final JasperReportBuilder report;
+        final DRField<SpecialRule> field;
+
+        field = new DRField<SpecialRule>(ReportConf.CURRENT, SpecialRule.class);
+        field.setDataType(new SpecialRulesDataType(getLocalizationService()));
+
+        report = DynamicReports.report();
+        report.detail(Components.horizontalList(Components.horizontalGap(10),
+                Components.verticalList(Components.text(field))));
+        report.title(Components.text(getLocalizationService().getReportString(
+                ReportBundleConf.RULES)));
+        report.setWhenNoDataType(WhenNoDataType.ALL_SECTIONS_NO_DETAIL);
+
+        return Components.subreport(report);
+    }
+
     private final DRField<Weapon> getWeaponCombatField(final String fieldName) {
         final DRField<Weapon> field;
 
@@ -75,43 +96,47 @@ public final class BuildUnitWeaponSubreportCommand implements
 
     private final ComponentBuilder<?, ?> getWeaponDetailComponent() {
         final ComponentBuilder<?, ?> data;
+        final ComponentBuilder<?, ?> attributes;
         final SubreportBuilder rules;
         final SubreportBuilder equipment;
 
-        rules = DynamicReportsFactory.getInstance().getRulesSubreport(
-                getLocalizationService()
-                        .getReportString(ReportBundleConf.RULES),
-                getLocalizationService());
+        rules = getRulesSubreport();
         rules.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.SPECIAL_RULES));
+        rules.setHeight(10);
 
-        equipment = getWeaponEnhancementsSubreport(getLocalizationService()
-                .getReportString(ReportBundleConf.ENHANCEMENTS),
-                getLocalizationService());
+        equipment = getWeaponEnhancementsSubreport();
         equipment.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.WEAPON_ENHANCEMENTS));
+        equipment.setHeight(10);
 
-        data = Components
+        attributes = Components
                 .verticalList(
                         Components.text(getWeaponNameField(ReportConf.CURRENT,
                                 getLocalizationService())),
-                        Components.horizontalList(Components
-                                .text(getLocalizationService().getReportString(
-                                        ReportBundleConf.COMBAT)), Components
-                                .text(getWeaponCombatField(ReportConf.CURRENT))),
                         Components.horizontalList(
+                                Components.horizontalGap(10),
+                                Components.text(getLocalizationService()
+                                        .getReportString(
+                                                ReportBundleConf.COMBAT)),
+                                Components
+                                        .text(getWeaponCombatField(ReportConf.CURRENT))),
+                        Components.horizontalList(
+                                Components.horizontalGap(10),
                                 Components.text(getLocalizationService()
                                         .getReportString(
                                                 ReportBundleConf.STRENGTH)),
                                 Components
                                         .text(getWeaponStrengthField(ReportConf.CURRENT))),
                         Components.horizontalList(
+                                Components.horizontalGap(10),
                                 Components.text(getLocalizationService()
                                         .getReportString(
                                                 ReportBundleConf.PENETRATION)),
                                 Components
                                         .text(getWeaponPenetrationField(ReportConf.CURRENT))),
                         Components.horizontalList(
+                                Components.horizontalGap(10),
                                 Components
                                         .text(getLocalizationService()
                                                 .getReportString(
@@ -119,16 +144,20 @@ public final class BuildUnitWeaponSubreportCommand implements
                                 Components
                                         .text(getWeaponDistanceMetricField(ReportConf.CURRENT))),
                         Components.horizontalList(
+                                Components.horizontalGap(10),
                                 Components
                                         .text(getLocalizationService()
                                                 .getReportString(
                                                         ReportBundleConf.DISTANCE_IMPERIAL)),
                                 Components
-                                        .text(getWeaponDistanceImperialField(ReportConf.CURRENT))),
-                        DynamicReportsFactory.getInstance()
-                                .getBorderedCellComponent(equipment),
-                        DynamicReportsFactory.getInstance()
-                                .getBorderedCellComponent(rules));
+                                        .text(getWeaponDistanceImperialField(ReportConf.CURRENT))));
+
+        data = Components.horizontalList(
+                attributes,
+                DynamicReportsFactory.getInstance().getBorderedCellComponent(
+                        Components.verticalList(rules,
+                                DynamicReportsFactory.getInstance()
+                                        .getBorderedCellComponent(equipment))));
 
         return data;
     }
@@ -155,13 +184,21 @@ public final class BuildUnitWeaponSubreportCommand implements
         return field;
     }
 
-    private final SubreportBuilder getWeaponEnhancementsSubreport(
-            final String column, final LocalizationService service) {
-        JasperReportBuilder report;
+    private final SubreportBuilder getWeaponEnhancementsSubreport() {
+        final JasperReportBuilder report;
+        final DRField<WeaponEnhancement> field;
+
+        field = new DRField<WeaponEnhancement>(ReportConf.CURRENT,
+                WeaponEnhancement.class);
+        field.setDataType(new WeaponEnhancementDataType(
+                getLocalizationService()));
 
         report = DynamicReports.report();
-        report.columns(DynamicReports.col.column(column, "_THIS",
-                new WeaponEnhancementDataType(service)));
+        report.detail(Components.horizontalList(Components.horizontalGap(10),
+                Components.verticalList(Components.text(field))));
+        report.title(Components.text(getLocalizationService().getReportString(
+                ReportBundleConf.ENHANCEMENTS)));
+        report.setWhenNoDataType(WhenNoDataType.ALL_SECTIONS_NO_DETAIL);
 
         return Components.subreport(report);
     }

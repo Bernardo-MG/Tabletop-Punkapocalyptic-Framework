@@ -1,6 +1,7 @@
 package com.wandrell.tabletop.business.service.punkapocalyptic.file.command;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.base.DRField;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
@@ -10,6 +11,7 @@ import net.sf.dynamicreports.report.builder.expression.Expressions;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.MutationDataType;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
@@ -28,8 +30,7 @@ public final class BuildUnitMutationSubreportCommand implements
     public final ComponentBuilder<?, ?> execute() {
         final SubreportBuilder subreport;
 
-        subreport = getMutationSubreport(getLocalizationService()
-                .getReportString(ReportBundleConf.MUTATIONS));
+        subreport = getMutationSubreport();
         subreport.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.MUTATIONS));
 
@@ -46,12 +47,18 @@ public final class BuildUnitMutationSubreportCommand implements
         return localizationService;
     }
 
-    private final SubreportBuilder getMutationSubreport(final String column) {
-        JasperReportBuilder report;
+    private final SubreportBuilder getMutationSubreport() {
+        final JasperReportBuilder report;
+        final DRField<Mutation> field;
+
+        field = new DRField<Mutation>(ReportConf.CURRENT, Mutation.class);
+        field.setDataType(new MutationDataType(getLocalizationService()));
 
         report = DynamicReports.report();
-        report.columns(DynamicReports.col.column(column, ReportConf.CURRENT,
-                new MutationDataType(getLocalizationService())));
+        report.detail(Components.horizontalList(Components.horizontalGap(10),
+                Components.verticalList(Components.text(field))));
+        report.title(Components.text(getLocalizationService().getReportString(
+                ReportBundleConf.MUTATIONS)));
 
         return Components.subreport(report);
     }

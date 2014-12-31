@@ -26,7 +26,7 @@ public final class WeaponEnhancementDataType extends
         @Override
         public String format(WeaponEnhancement value,
                 ReportParameters reportParameters) {
-            return getLocalizationService().getSpecialRuleString(
+            return getLocalizationService().getWeaponEnhancementString(
                     value.getName());
         }
 

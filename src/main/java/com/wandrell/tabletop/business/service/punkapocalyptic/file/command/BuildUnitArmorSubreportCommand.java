@@ -27,11 +27,8 @@ public final class BuildUnitArmorSubreportCommand implements
 
     @Override
     public final ComponentBuilder<?, ?> execute() {
-        final ComponentBuilder<?, ?> armorName;
-        final ComponentBuilder<?, ?> armorArmor;
         final TextFieldBuilder<String> armorNameLabelText;
         final TextFieldBuilder<Armor> armorNameText;
-        final TextFieldBuilder<String> armorArmorLabelText;
         final TextFieldBuilder<Armor> armorArmorText;
 
         armorNameLabelText = Components.text(getLocalizationService()
@@ -39,20 +36,15 @@ public final class BuildUnitArmorSubreportCommand implements
         armorNameText = Components.text(getArmorNameField(ReportConf.ARMOR,
                 getLocalizationService()));
 
-        armorArmorLabelText = Components.text(getLocalizationService()
-                .getReportString(ReportBundleConf.ARMOR_ARMOR));
         armorArmorText = Components.text(getArmorArmorField(ReportConf.ARMOR));
 
-        armorName = DynamicReportsFactory.getInstance()
-                .getBorderedCellComponent(
-                        Components.horizontalList(armorNameLabelText,
-                                armorNameText));
-        armorArmor = DynamicReportsFactory.getInstance()
-                .getBorderedCellComponent(
-                        Components.horizontalList(armorArmorLabelText,
-                                armorArmorText));
-
-        return Components.horizontalList(armorName, armorArmor);
+        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
+                Components
+                        .horizontalList(armorNameLabelText)
+                        .newRow()
+                        .add(Components.horizontalList(
+                                Components.horizontalGap(10), armorNameText,
+                                armorArmorText).setFixedWidth(300)));
     }
 
     @Override
@@ -64,7 +56,8 @@ public final class BuildUnitArmorSubreportCommand implements
         final DRField<Armor> field;
 
         field = new DRField<Armor>(fieldName, Armor.class);
-        field.setDataType(new ArmorDataType(new ArmorArmorFormatter()));
+        field.setDataType(new ArmorDataType(new ArmorArmorFormatter(
+                getLocalizationService())));
 
         return field;
     }

@@ -2,14 +2,12 @@ package com.wandrell.tabletop.business.conf.factory.punkapocalyptic;
 
 import java.io.InputStream;
 
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.DRField;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.HyperLinkBuilder;
 import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
-import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
@@ -17,13 +15,11 @@ import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 
 import com.wandrell.tabletop.business.model.valuebox.ValueBox;
-import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.SpecialRulesDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ValueBoxDataType;
-import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
 public final class DynamicReportsFactory {
 
-    private static final StyleBuilder           bold22CenteredStyle;
+    private static final StyleBuilder           bold22Style;
     private static final ComponentBuilder<?, ?> footerComponent;
     private static final DynamicReportsFactory  instance = new DynamicReportsFactory();
     private static final StyleBuilder           italicStyle;
@@ -39,8 +35,8 @@ public final class DynamicReportsFactory {
         italicStyle = Styles.style(rootStyle).italic();
 
         boldCenteredStyle = Styles.style(boldStyle).setAlignment(
-                HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
-        bold22CenteredStyle = Styles.style(boldCenteredStyle).setFontSize(22);
+                HorizontalAlignment.LEFT, VerticalAlignment.MIDDLE);
+        bold22Style = Styles.style(boldCenteredStyle).setFontSize(22);
 
         footerComponent = Components.pageXofY();
 
@@ -60,7 +56,7 @@ public final class DynamicReportsFactory {
         final VerticalListBuilder cell;
 
         cell = Components.verticalList(Components.horizontalList(content));
-        cell.setStyle(Styles.style(Styles.pen2Point()));
+        cell.setStyle(Styles.style(Styles.pen1Point()));
 
         return cell;
     }
@@ -71,17 +67,6 @@ public final class DynamicReportsFactory {
 
     public final ReportTemplateBuilder getReportTemplate() {
         return reportTemplate;
-    }
-
-    public final SubreportBuilder getRulesSubreport(final String column,
-            final LocalizationService service) {
-        final JasperReportBuilder report;
-
-        report = DynamicReports.report();
-        report.columns(DynamicReports.col.column(column, "_THIS",
-                new SpecialRulesDataType(service)));
-
-        return Components.subreport(report);
     }
 
     public final DRField<String> getStringField(final String fieldName) {
@@ -109,13 +94,16 @@ public final class DynamicReportsFactory {
         img = Components.image(image).setFixedDimension(200, 50);
         url = Components.text(downloadURL).setStyle(italicStyle)
                 .setHyperLink(link);
-        title = Components.text(titleLabel).setStyle(bold22CenteredStyle)
-                .setHorizontalAlignment(HorizontalAlignment.LEFT);
+        title = Components.text(titleLabel).setStyle(getTitleStyle());
 
         titleLabelComponent = Components.verticalList(img, title, url)
                 .setFixedWidth(250);
 
         return titleLabelComponent;
+    }
+
+    public final StyleBuilder getTitleStyle() {
+        return bold22Style;
     }
 
     public final DRField<ValueBox> getValueBoxField(final String fieldName) {

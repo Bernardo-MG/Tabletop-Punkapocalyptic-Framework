@@ -64,8 +64,10 @@ public final class BuildGangReportTitleCommand implements
 
         gangData = Components.verticalList();
         // Faction
-        gangData.add(Components.text(getFactionNameField(ReportConf.FACTION,
-                getLocalizationService())));
+        gangData.add(Components.text(
+                getFactionNameField(ReportConf.FACTION,
+                        getLocalizationService())).setStyle(
+                factory.getTitleStyle()));
         // Valoration
         gangData.add(Components
                 .text(getGangValorationField(ReportConf.VALORATION)));

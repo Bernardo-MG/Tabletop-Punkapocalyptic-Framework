@@ -2,12 +2,11 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.file.command;
 
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
-import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
+import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
 
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.util.command.ReturnCommand;
@@ -23,56 +22,63 @@ public final class BuildUnitAttributesSubreportCommand implements
 
     @Override
     public final ComponentBuilder<?, ?> execute() {
-        final ComponentBuilder<?, ?> actions;
-        final ComponentBuilder<?, ?> combat;
-        final ComponentBuilder<?, ?> precision;
-        final ComponentBuilder<?, ?> agility;
-        final ComponentBuilder<?, ?> strength;
-        final ComponentBuilder<?, ?> toughness;
-        final ComponentBuilder<?, ?> tech;
+        final HorizontalListBuilder list;
+        final DynamicReportsFactory factory;
 
-        actions = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.ACTIONS_SHORT), ReportConf.ACTIONS);
-        combat = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.COMBAT_SHORT), ReportConf.COMBAT);
-        precision = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.PRECISION_SHORT), ReportConf.PRECISION);
-        agility = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.AGILITY_SHORT), ReportConf.AGILITY);
-        strength = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.STRENGTH_SHORT), ReportConf.STRENGTH);
-        toughness = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.TOUGHNESS_SHORT), ReportConf.TOUGHNESS);
-        tech = getAttributeCell(
-                getLocalizationService().getReportString(
-                        ReportBundleConf.TECH_SHORT), ReportConf.TECH);
+        factory = DynamicReportsFactory.getInstance();
 
-        return Components.horizontalList(actions, combat, precision, agility,
-                strength, toughness, tech);
+        list = Components.horizontalList();
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.ACTIONS))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.COMBAT))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.PRECISION))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.AGILITY))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.STRENGTH))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.TOUGHNESS))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(getLocalizationService().getReportString(
+                        ReportBundleConf.TECH))));
+
+        list.newRow();
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.ACTIONS))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.COMBAT))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.PRECISION))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.AGILITY))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.STRENGTH))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.TOUGHNESS))));
+        list.add(factory.getBorderedCellComponent(Components
+                .text(DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.TECH))));
+
+        return list;
     }
 
     @Override
     public final void setLocalizationService(final LocalizationService service) {
         localizationService = service;
-    }
-
-    private final ComponentBuilder<?, ?> getAttributeCell(final String label,
-            final String field) {
-        final TextFieldBuilder<String> labelText;
-        final TextFieldBuilder<ValueBox> labelValue;
-
-        labelText = Components.text(label);
-        labelValue = Components.text(DynamicReportsFactory.getInstance()
-                .getValueBoxField(field));
-
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                Components.horizontalList(labelText, labelValue));
     }
 
     private final LocalizationService getLocalizationService() {
