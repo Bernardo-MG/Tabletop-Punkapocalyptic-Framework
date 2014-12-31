@@ -34,8 +34,8 @@ public final class BuildRulesSubreportCommand implements
         subreport.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.SPECIAL_RULES));
 
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                subreport);
+        return DynamicReportsFactory.getInstance()
+                .getBorderedCellComponentThin(subreport);
     }
 
     @Override

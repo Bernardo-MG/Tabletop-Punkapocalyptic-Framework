@@ -38,13 +38,15 @@ public final class BuildUnitArmorSubreportCommand implements
 
         armorArmorText = Components.text(getArmorArmorField(ReportConf.ARMOR));
 
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                Components
-                        .horizontalList(armorNameLabelText)
-                        .newRow()
-                        .add(Components.horizontalList(
-                                Components.horizontalGap(10), armorNameText,
-                                armorArmorText).setFixedWidth(300)));
+        return DynamicReportsFactory.getInstance()
+                .getBorderedCellComponentThin(
+                        Components
+                                .horizontalList(armorNameLabelText)
+                                .newRow()
+                                .add(Components.horizontalList(
+                                        Components.horizontalGap(10),
+                                        armorNameText, armorArmorText)
+                                        .setFixedWidth(300)));
     }
 
     @Override

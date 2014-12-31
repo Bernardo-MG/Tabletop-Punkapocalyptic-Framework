@@ -3,6 +3,7 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.file.command;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
+import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
@@ -28,50 +29,64 @@ public final class BuildUnitAttributesSubreportCommand implements
         factory = DynamicReportsFactory.getInstance();
 
         list = Components.horizontalList();
-        list.add(factory.getBorderedCellComponent(Components
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.ACTIONS)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.COMBAT)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.PRECISION)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.AGILITY)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.STRENGTH)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                getLocalizationService().getReportString(
+                        ReportBundleConf.TOUGHNESS)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components
                 .text(getLocalizationService().getReportString(
-                        ReportBundleConf.ACTIONS))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.COMBAT))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.PRECISION))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.AGILITY))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.STRENGTH))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.TOUGHNESS))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(getLocalizationService().getReportString(
-                        ReportBundleConf.TECH))));
+                        ReportBundleConf.TECH)).setHorizontalAlignment(
+                        HorizontalAlignment.CENTER)));
 
         list.newRow();
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.ACTIONS))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.COMBAT))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.PRECISION))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.AGILITY))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.STRENGTH))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.TOUGHNESS))));
-        list.add(factory.getBorderedCellComponent(Components
-                .text(DynamicReportsFactory.getInstance().getValueBoxField(
-                        ReportConf.TECH))));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.ACTIONS)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.COMBAT)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.PRECISION)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.AGILITY)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.STRENGTH)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.TOUGHNESS)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
+        list.add(factory.getBorderedCellComponentThin(Components.text(
+                DynamicReportsFactory.getInstance().getValueBoxField(
+                        ReportConf.TECH)).setHorizontalAlignment(
+                HorizontalAlignment.CENTER)));
 
         return list;
     }

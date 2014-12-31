@@ -45,8 +45,8 @@ public final class BuildUnitWeaponSubreportCommand implements
         subreport.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.WEAPONS));
 
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                subreport);
+        return DynamicReportsFactory.getInstance()
+                .getBorderedCellComponentThin(subreport);
     }
 
     @Override
@@ -59,7 +59,7 @@ public final class BuildUnitWeaponSubreportCommand implements
 
         report = DynamicReports.report();
         report.detail(DynamicReportsFactory.getInstance()
-                .getBorderedCellComponent(getWeaponDetailComponent()));
+                .getBorderedCellComponentThin(getWeaponDetailComponent()));
 
         return Components.subreport(report);
     }
@@ -154,10 +154,13 @@ public final class BuildUnitWeaponSubreportCommand implements
 
         data = Components.horizontalList(
                 attributes,
-                DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                        Components.verticalList(rules,
-                                DynamicReportsFactory.getInstance()
-                                        .getBorderedCellComponent(equipment))));
+                DynamicReportsFactory.getInstance()
+                        .getBorderedCellComponentThin(
+                                Components.verticalList(
+                                        rules,
+                                        DynamicReportsFactory.getInstance()
+                                                .getBorderedCellComponentThin(
+                                                        equipment))));
 
         return data;
     }

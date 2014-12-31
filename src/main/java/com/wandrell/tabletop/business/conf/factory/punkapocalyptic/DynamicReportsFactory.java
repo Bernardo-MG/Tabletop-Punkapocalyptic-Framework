@@ -51,7 +51,17 @@ public final class DynamicReportsFactory {
         super();
     }
 
-    public final ComponentBuilder<?, ?> getBorderedCellComponent(
+    public final ComponentBuilder<?, ?> getBorderedCellComponentStrong(
+            final ComponentBuilder<?, ?> content) {
+        final VerticalListBuilder cell;
+
+        cell = Components.verticalList(Components.horizontalList(content));
+        cell.setStyle(Styles.style(Styles.pen2Point()));
+
+        return cell;
+    }
+
+    public final ComponentBuilder<?, ?> getBorderedCellComponentThin(
             final ComponentBuilder<?, ?> content) {
         final VerticalListBuilder cell;
 

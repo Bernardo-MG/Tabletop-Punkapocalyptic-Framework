@@ -34,8 +34,8 @@ public final class BuildUnitEquipmentSubreportCommand implements
         subreport.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.EQUIPMENT));
 
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                subreport);
+        return DynamicReportsFactory.getInstance()
+                .getBorderedCellComponentThin(subreport);
     }
 
     @Override

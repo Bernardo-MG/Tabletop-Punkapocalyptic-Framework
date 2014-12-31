@@ -39,7 +39,7 @@ public final class BuildUnitReportTitleCommand implements
         unitName = Components.text(getUnitNameField(ReportConf.CURRENT,
                 getLocalizationService()));
 
-        return factory.getBorderedCellComponent(Components.verticalList(
+        return factory.getBorderedCellComponentThin(Components.verticalList(
                 unitName, unitValoration));
     }
 

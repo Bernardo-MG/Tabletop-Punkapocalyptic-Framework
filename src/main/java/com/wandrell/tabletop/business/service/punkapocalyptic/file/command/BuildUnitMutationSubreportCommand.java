@@ -34,8 +34,8 @@ public final class BuildUnitMutationSubreportCommand implements
         subreport.setDataSource(Expressions
                 .subDatasourceBeanCollection(ReportConf.MUTATIONS));
 
-        return DynamicReportsFactory.getInstance().getBorderedCellComponent(
-                subreport);
+        return DynamicReportsFactory.getInstance()
+                .getBorderedCellComponentThin(subreport);
     }
 
     @Override
