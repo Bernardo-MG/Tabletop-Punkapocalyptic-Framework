@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wandrell.tabletop</groupId>
-	<artifactId>tabletop-punkapocalyptic-framework</artifactId>
+	<artifactId>punkapocalyptic-framework</artifactId>
 	<version>alpha</version>
 	<packaging>jar</packaging>
 
@@ -22,10 +22,10 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework.git</connection>
-		<developerConnection>scm:git:https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework.git</developerConnection>
+		<connection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Framework.git</connection>
+		<developerConnection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Framework.git</developerConnection>
 		<tag>head</tag>
-		<url>http://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework</url>
+		<url>http://github.com/Bernardo-MG/punkapocalyptic-Framework</url>
 	</scm>
 
 	<organization>
@@ -146,13 +146,13 @@
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic API -->
 			<groupId>com.wandrell.tabletop</groupId>
-			<artifactId>tabletop-punkapocalyptic-api</artifactId>
+			<artifactId>punkapocalyptic-api</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic Framework API -->
 			<groupId>com.wandrell.tabletop</groupId>
-			<artifactId>tabletop-punkapocalyptic-framework-api</artifactId>
+			<artifactId>punkapocalyptic-framework-api</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
