@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.valuebox.EditableValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetGangValorationCommand;
 
@@ -32,7 +31,6 @@ public final class TestGangValorationCommand {
     private final Gang getGang() {
         final Gang gang;
         final Collection<Unit> units;
-        final EditableValueBox bullets;
         Unit unit;
 
         units = new LinkedList<>();
@@ -54,9 +52,7 @@ public final class TestGangValorationCommand {
 
         units.add(unit);
 
-        bullets = Mockito.mock(EditableValueBox.class);
-        Mockito.when(bullets.getValue()).thenReturn(4);
-        Mockito.when(gang.getBullets()).thenReturn(bullets);
+        Mockito.when(gang.getBullets()).thenReturn(4);
 
         Mockito.when(gang.getUnits()).thenReturn(units);
 

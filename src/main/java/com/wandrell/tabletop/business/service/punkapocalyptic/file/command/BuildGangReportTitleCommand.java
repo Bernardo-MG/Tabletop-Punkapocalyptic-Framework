@@ -13,10 +13,8 @@ import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReport
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.FactionDataType;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.GangDataType;
-import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.ValueBoxDataType;
 import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.FactionNameFormatter;
 import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GangBulletsFormatter;
 import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GangUnitsRangeFormatter;
@@ -70,12 +68,12 @@ public final class BuildGangReportTitleCommand implements
                 factory.getTitleStyle()));
         // Valoration
         gangData.add(Components
-                .text(getGangValorationField(ReportConf.VALORATION)));
+                .text(getGangValorationField(ReportConf.CURRENT)));
         // Units
         gangData.add(Components.text(getGangUnitsField(ReportConf.CURRENT)));
 
         // Bullets
-        gangData.add(Components.text(getGangBulletsField(ReportConf.BULLETS)));
+        gangData.add(Components.text(getGangBulletsField(ReportConf.CURRENT)));
 
         return Components.verticalList().add(
                 Components.horizontalList().add(brand,
@@ -122,11 +120,11 @@ public final class BuildGangReportTitleCommand implements
         return fileService;
     }
 
-    private final DRField<ValueBox> getGangBulletsField(final String fieldName) {
-        final DRField<ValueBox> field;
+    private final DRField<Gang> getGangBulletsField(final String fieldName) {
+        final DRField<Gang> field;
 
-        field = new DRField<ValueBox>(fieldName, ValueBox.class);
-        field.setDataType(new ValueBoxDataType(new GangBulletsFormatter(
+        field = new DRField<Gang>(fieldName, Gang.class);
+        field.setDataType(new GangDataType(new GangBulletsFormatter(
                 getLocalizationService())));
 
         return field;
@@ -142,12 +140,11 @@ public final class BuildGangReportTitleCommand implements
         return field;
     }
 
-    private final DRField<ValueBox> getGangValorationField(
-            final String fieldName) {
-        final DRField<ValueBox> field;
+    private final DRField<Gang> getGangValorationField(final String fieldName) {
+        final DRField<Gang> field;
 
-        field = new DRField<ValueBox>(fieldName, ValueBox.class);
-        field.setDataType(new ValueBoxDataType(new GangValorationFormatter(
+        field = new DRField<Gang>(fieldName, Gang.class);
+        field.setDataType(new GangDataType(new GangValorationFormatter(
                 getLocalizationService())));
 
         return field;

@@ -4,8 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.EventObject;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.event.ValorationListener;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
@@ -15,13 +16,13 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 public final class GangValorationDerivedValueViewPoint extends
         AbstractDerivedValueViewPoint implements GangAware {
 
-    private Gang                     gang;
-    private final ValorationListener listener;
-    private final RulesetService     serviceRuleset;
+    private Gang                 gang;
+    private final GangListener   listener;
+    private final RulesetService serviceRuleset;
 
     {
         final DerivedValueViewPoint source = this;
-        listener = new ValorationListener() {
+        listener = new GangListenerAdapter() {
 
             @Override
             public final void valorationChanged(final EventObject event) {
@@ -42,7 +43,7 @@ public final class GangValorationDerivedValueViewPoint extends
         this.gang = gang;
         serviceRuleset = service;
 
-        gang.addValorationListener(getListener());
+        gang.addGangListener(getListener());
     }
 
     public GangValorationDerivedValueViewPoint(
@@ -66,14 +67,14 @@ public final class GangValorationDerivedValueViewPoint extends
 
         this.gang = gang;
 
-        gang.addValorationListener(getListener());
+        gang.addGangListener(getListener());
     }
 
     private final Gang getGang() {
         return gang;
     }
 
-    private final ValorationListener getListener() {
+    private final GangListener getListener() {
         return listener;
     }
 

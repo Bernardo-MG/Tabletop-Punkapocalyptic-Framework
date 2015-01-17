@@ -31,8 +31,7 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
             cost += unit.getValoration();
         }
 
-        cost += (getGang().getBullets().getValue() * getRulesetService()
-                .getBulletCost());
+        cost += (getGang().getBullets() * getRulesetService().getBulletCost());
 
         return cost;
     }

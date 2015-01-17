@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetMaxAllowedUnitsCommand;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter.RulesetParametersFactory;
@@ -31,13 +30,9 @@ public final class TestMaxAllowedUnitsCommand {
             throws Exception {
         final ReturnCommand<Integer> command;
         final Gang gang;
-        final ValueBox valoration;
-
-        valoration = Mockito.mock(ValueBox.class);
-        Mockito.when(valoration.getValue()).thenReturn(points);
 
         gang = Mockito.mock(Gang.class);
-        Mockito.when(gang.getValoration()).thenReturn(valoration);
+        Mockito.when(gang.getValoration()).thenReturn(points);
 
         command = new GetMaxAllowedUnitsCommand(gang);
 

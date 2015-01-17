@@ -5,11 +5,11 @@ import net.sf.dynamicreports.report.constant.Constants;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
 public final class GangBulletsFormatter extends
-        AbstractValueFormatter<String, ValueBox> {
+        AbstractValueFormatter<String, Gang> {
 
     private static final long         serialVersionUID = Constants.SERIAL_VERSION_UID;
     private final LocalizationService localizationService;
@@ -21,10 +21,10 @@ public final class GangBulletsFormatter extends
     }
 
     @Override
-    public final String format(final ValueBox value,
+    public final String format(final Gang value,
             final ReportParameters reportParameters) {
         return String.format("%s: %d", getLocalizationService()
-                .getReportString(ReportBundleConf.BULLETS), value.getValue());
+                .getReportString(ReportBundleConf.BULLETS), value.getBullets());
     }
 
     private final LocalizationService getLocalizationService() {
