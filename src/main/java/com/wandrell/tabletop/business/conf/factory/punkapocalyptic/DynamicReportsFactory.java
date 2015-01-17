@@ -9,6 +9,7 @@ import net.sf.dynamicreports.report.builder.ReportTemplateBuilder;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
+import net.sf.dynamicreports.report.builder.datatype.IntegerType;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
@@ -69,6 +70,15 @@ public final class DynamicReportsFactory {
         cell.setStyle(Styles.style(Styles.pen1Point()));
 
         return cell;
+    }
+
+    public final DRField<Integer> getIntegerField(final String fieldName) {
+        final DRField<Integer> field;
+
+        field = new DRField<Integer>(fieldName, Integer.class);
+        field.setDataType(new IntegerType());
+
+        return field;
     }
 
     public final ComponentBuilder<?, ?> getReportFooter() {
