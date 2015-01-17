@@ -28,8 +28,7 @@ public final class UnitValorationFormatter extends
         valueLabel = getLocalizationService().getReportString(
                 ReportBundleConf.VALORATION);
 
-        return String.format("%s: %d", valueLabel, value.getValoration()
-                .getValue());
+        return String.format("%s: %d", valueLabel, value.getValoration());
     }
 
     private final LocalizationService getLocalizationService() {

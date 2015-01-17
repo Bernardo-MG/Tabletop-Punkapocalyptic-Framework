@@ -6,10 +6,11 @@ import java.util.EventObject;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitListener;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitListenerAdapter;
 import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.event.ValueChangeEvent;
 
 public final class UnitValorationDerivedValueViewPoint extends
         AbstractDerivedValueViewPoint {
@@ -20,14 +21,11 @@ public final class UnitValorationDerivedValueViewPoint extends
 
     {
         final DerivedValueViewPoint source = this;
-        listener = new UnitListener() {
-
-            @Override
-            public final void statusChanged(final EventObject e) {}
+        listener = new UnitListenerAdapter() {
 
             @Override
             public final void valorationChanged(final EventObject event) {
-                fireValueChangedEvent(new ValueBoxEvent(source,
+                fireValueChangedEvent(new ValueChangeEvent(source,
                         source.getValue(), source.getValue()));
             }
 

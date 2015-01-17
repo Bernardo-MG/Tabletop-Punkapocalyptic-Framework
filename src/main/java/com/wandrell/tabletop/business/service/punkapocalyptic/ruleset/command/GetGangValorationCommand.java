@@ -28,7 +28,7 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
 
         cost = 0;
         for (final Unit unit : getGang().getUnits()) {
-            cost += unit.getValoration().getValue();
+            cost += unit.getValoration();
         }
 
         cost += (getGang().getBullets().getValue() * getRulesetService()

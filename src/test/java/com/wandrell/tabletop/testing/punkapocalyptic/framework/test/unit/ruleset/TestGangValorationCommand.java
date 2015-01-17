@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.valuebox.EditableValueBox;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetGangValorationCommand;
 
@@ -34,7 +33,6 @@ public final class TestGangValorationCommand {
         final Gang gang;
         final Collection<Unit> units;
         final EditableValueBox bullets;
-        ValueBox value;
         Unit unit;
 
         units = new LinkedList<>();
@@ -42,23 +40,17 @@ public final class TestGangValorationCommand {
         gang = Mockito.mock(Gang.class);
 
         unit = Mockito.mock(Unit.class);
-        value = Mockito.mock(ValueBox.class);
-        Mockito.when(value.getValue()).thenReturn(1);
-        Mockito.when(unit.getValoration()).thenReturn(value);
+        Mockito.when(unit.getValoration()).thenReturn(1);
 
         units.add(unit);
 
         unit = Mockito.mock(Unit.class);
-        value = Mockito.mock(ValueBox.class);
-        Mockito.when(value.getValue()).thenReturn(2);
-        Mockito.when(unit.getValoration()).thenReturn(value);
+        Mockito.when(unit.getValoration()).thenReturn(2);
 
         units.add(unit);
 
         unit = Mockito.mock(Unit.class);
-        value = Mockito.mock(ValueBox.class);
-        Mockito.when(value.getValue()).thenReturn(3);
-        Mockito.when(unit.getValoration()).thenReturn(value);
+        Mockito.when(unit.getValoration()).thenReturn(3);
 
         units.add(unit);
 

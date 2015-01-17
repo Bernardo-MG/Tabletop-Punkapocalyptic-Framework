@@ -8,8 +8,8 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.event.ValorationList
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.event.ValueChangeEvent;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 
 public final class GangValorationDerivedValueViewPoint extends
@@ -25,7 +25,7 @@ public final class GangValorationDerivedValueViewPoint extends
 
             @Override
             public final void valorationChanged(final EventObject event) {
-                fireValueChangedEvent(new ValueBoxEvent(source,
+                fireValueChangedEvent(new ValueChangeEvent(source,
                         source.getValue(), source.getValue()));
             }
 

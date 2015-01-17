@@ -5,24 +5,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.valuebox.derived.AbstractDerivedValueViewPoint;
 import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueViewPoint;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxEvent;
-import com.wandrell.tabletop.business.model.valuebox.event.ValueBoxListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.event.ValueChangeEvent;
+import com.wandrell.tabletop.business.util.event.ValueChangeListener;
 
 public final class MaxUnitsDerivedValueViewPoint extends
         AbstractDerivedValueViewPoint {
 
-    private Gang                   gang;
-    private final RulesetService   serviceRuleset;
-    private final ValueBoxListener valorationListener;
+    private Gang                      gang;
+    private final RulesetService      serviceRuleset;
+    private final ValueChangeListener valorationListener;
 
     {
         final DerivedValueViewPoint source = this;
-        valorationListener = new ValueBoxListener() {
+        valorationListener = new ValueChangeListener() {
 
             @Override
-            public final void valueChanged(final ValueBoxEvent evt) {
-                fireValueChangedEvent(new ValueBoxEvent(source,
+            public final void valueChanged(final ValueChangeEvent evt) {
+                fireValueChangedEvent(new ValueChangeEvent(source,
                         source.getValue(), source.getValue()));
             }
 
@@ -83,7 +83,7 @@ public final class MaxUnitsDerivedValueViewPoint extends
         return serviceRuleset;
     }
 
-    private final ValueBoxListener getValorationListener() {
+    private final ValueChangeListener getValorationListener() {
         return valorationListener;
     }
 
