@@ -11,7 +11,7 @@ import net.sf.dynamicreports.report.builder.expression.Expressions;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.MutationDataType;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;

@@ -9,7 +9,7 @@ import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Mutation;
+import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 
 public final class MutationDataType extends
