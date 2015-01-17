@@ -37,7 +37,7 @@ public final class MaxUnitsDerivedValueViewPoint extends
 
         this.gang = gang;
 
-        gang.getValoration().addValueEventListener(getValorationListener());
+        gang.getValoration().addValueChangeListener(getValorationListener());
     }
 
     public MaxUnitsDerivedValueViewPoint(
@@ -65,14 +65,14 @@ public final class MaxUnitsDerivedValueViewPoint extends
 
     public final void setGang(final Gang gang) {
         if (this.gang != null) {
-            this.gang.getValoration().removeValueEventListener(
+            this.gang.getValoration().removeValueChangeListener(
                     getValorationListener());
         }
 
         this.gang = gang;
 
-        this.gang.getValoration()
-                .addValueEventListener(getValorationListener());
+        this.gang.getValoration().addValueChangeListener(
+                getValorationListener());
     }
 
     private final Gang getGang() {
