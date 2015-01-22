@@ -3,8 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -17,7 +16,7 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServ
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseFactionsCommand implements
-        ReturnCommand<Map<String, Faction>>, ModelServiceAware {
+        ReturnCommand<Collection<Faction>>, ModelServiceAware {
 
     private final Document document;
     private ModelService   modelService;
@@ -31,8 +30,8 @@ public final class ParseFactionsCommand implements
     }
 
     @Override
-    public final Map<String, Faction> execute() throws Exception {
-        final Map<String, Faction> factions;
+    public final Collection<Faction> execute() throws Exception {
+        final Collection<Faction> factions;
         final Collection<Element> nodes;
         String name;
 
@@ -40,10 +39,10 @@ public final class ParseFactionsCommand implements
                 .compile("//faction_profile", Filters.element())
                 .evaluate(getDocument());
 
-        factions = new LinkedHashMap<>();
+        factions = new LinkedList<>();
         for (final Element node : nodes) {
             name = node.getChildText("name");
-            factions.put(name, getModelService().getFaction(name));
+            factions.add(getModelService().getFaction(name));
         }
 
         return factions;

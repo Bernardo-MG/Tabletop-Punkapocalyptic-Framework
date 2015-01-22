@@ -4,9 +4,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
+import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitArmorAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitMutationAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Armor;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
@@ -16,52 +22,83 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
+import com.wandrell.util.repository.Repository;
 
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final DataService         dataModelService;
-    private final RulesetService      rulesetService;
-    private Unit                      unit;
-    private final ConstraintValidator validator;
+    private final Repository<UnitArmorAvailability>     armorAvaRepo;
+    private final Repository<UnitEquipmentAvailability> equipAvaRepo;
+    private final Repository<UnitMutationAvailability>  mutationAvaRepo;
+    private final RulesetService                        rulesetService;
+    private Unit                                        unit;
+    private final ConstraintValidator                   validator;
+    private final Repository<UnitWeaponAvailability>    weaponAvaRepo;
 
     public DefaultUnitConfigurationManager(final ConstraintValidator validator,
-            final DataService dataModelService,
+            final Repository<UnitArmorAvailability> armorAvaRepo,
+            final Repository<UnitEquipmentAvailability> equipAvaRepo,
+            final Repository<UnitMutationAvailability> mutationAvaRepo,
+            final Repository<UnitWeaponAvailability> weaponAvaRepo,
             final RulesetService rulesetService) {
         super();
 
         checkNotNull(validator,
                 "Received a null pointer as constraint validator");
-        checkNotNull(dataModelService,
-                "Received a null pointer as the data model service");
+        checkNotNull(armorAvaRepo,
+                "Received a null pointer as the armor availability repository");
+        checkNotNull(equipAvaRepo,
+                "Received a null pointer as the equipment availability repository");
+        checkNotNull(mutationAvaRepo,
+                "Received a null pointer as the mutation availability repository");
+        checkNotNull(weaponAvaRepo,
+                "Received a null pointer as the weapon availability repository");
         checkNotNull(rulesetService,
                 "Received a null pointer as the ruleset service");
 
         this.validator = validator;
-        this.dataModelService = dataModelService;
+        this.armorAvaRepo = armorAvaRepo;
+        this.equipAvaRepo = equipAvaRepo;
+        this.mutationAvaRepo = mutationAvaRepo;
+        this.weaponAvaRepo = weaponAvaRepo;
         this.rulesetService = rulesetService;
     }
 
     @Override
     public final Interval getAllowedWeaponsInterval() {
-        return getDataModelService().getUnitAllowedWeaponsInterval(
-                getUnit().getUnitName());
+        final Interval interval;
+        final UnitWeaponAvailability ava;
+
+        interval = new DefaultInterval();
+
+        ava = getUnitWeaponAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        interval.setLowerLimit(ava.getMinWeapons());
+        interval.setUpperLimit(ava.getMaxWeapons());
+
+        return interval;
     }
 
     @Override
     public final Collection<Armor> getArmorOptions() {
-        final UnitArmorAvailability availability;
         final Collection<Armor> armors;
+        final UnitArmorAvailability ava;
 
         armors = new LinkedList<>();
 
-        availability = getDataModelService().getUnitArmorAvailability(
-                getUnit().getUnitName());
+        ava = getUnitArmorAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
 
-        if (availability.getInitialArmor() != null) {
-            armors.add(availability.getInitialArmor());
-            armors.addAll(availability.getArmorOptions());
+        if (ava.getInitialArmor() != null) {
+            armors.add(ava.getInitialArmor());
+            armors.addAll(ava.getArmorOptions());
         }
 
         return armors;
@@ -69,21 +106,41 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Collection<Equipment> getEquipmentOptions() {
-        return getDataModelService().getEquipmentOptions(
-                getUnit().getUnitName());
+        final UnitEquipmentAvailability ava;
+
+        ava = getUnitEquipmentAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        return ava.getEquipmentOptions();
     }
 
     @Override
     public final Integer getMaxMutations() {
-        return getDataModelService()
-                .getMutationOptions(getUnit().getUnitName()).getMaxMutations();
+        final UnitMutationAvailability ava;
+
+        ava = getUnitMutationAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        return ava.getMaxMutations();
     }
 
     @Override
     public final Collection<Mutation> getMutations() {
-        return getDataModelService()
-                .getMutationOptions(getUnit().getUnitName())
-                .getMutationOptions();
+        final UnitMutationAvailability ava;
+
+        ava = getUnitMutationAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        return ava.getMutationOptions();
     }
 
     @Override
@@ -99,16 +156,35 @@ public final class DefaultUnitConfigurationManager implements
     @Override
     public final Collection<WeaponEnhancement> getWeaponEnhancements(
             final Weapon weapon) {
-        return getDataModelService().getWeaponEnhancements(
-                getUnit().getUnitName(), weapon.getName());
+        final WeaponOption option;
+        final UnitWeaponAvailability ava;
+
+        ava = getUnitWeaponAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        option = ava.getWeaponOptions().stream()
+                .filter(o -> o.getWeapon().getName().equals(weapon.getName()))
+                .iterator().next();
+
+        return option.getEnhancements();
     }
 
     @Override
     public final Collection<Weapon> getWeaponOptions() {
         final Collection<Weapon> weapons;
+        final UnitWeaponAvailability ava;
 
-        weapons = getDataModelService().getWeaponOptions(
-                getUnit().getUnitName());
+        ava = getUnitWeaponAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
+
+        weapons = ava.getWeaponOptions().stream().map(o -> o.getWeapon())
+                .collect(Collectors.toList());
 
         return getRulesetService().filterWeaponOptions(getUnit().getWeapons(),
                 weapons);
@@ -137,12 +213,28 @@ public final class DefaultUnitConfigurationManager implements
         return validator;
     }
 
-    private final DataService getDataModelService() {
-        return dataModelService;
-    }
-
     private final RulesetService getRulesetService() {
         return rulesetService;
+    }
+
+    private final Repository<UnitArmorAvailability>
+            getUnitArmorAvailabilityRepository() {
+        return armorAvaRepo;
+    }
+
+    private final Repository<UnitEquipmentAvailability>
+            getUnitEquipmentAvailabilityRepository() {
+        return equipAvaRepo;
+    }
+
+    private final Repository<UnitMutationAvailability>
+            getUnitMutationAvailabilityRepository() {
+        return mutationAvaRepo;
+    }
+
+    private final Repository<UnitWeaponAvailability>
+            getUnitWeaponAvailabilityRepository() {
+        return weaponAvaRepo;
     }
 
 }

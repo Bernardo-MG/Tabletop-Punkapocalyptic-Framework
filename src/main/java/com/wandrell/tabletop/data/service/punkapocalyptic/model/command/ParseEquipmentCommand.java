@@ -3,8 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,7 +17,7 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServ
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseEquipmentCommand implements
-        ReturnCommand<Map<String, Equipment>>, ModelServiceAware {
+        ReturnCommand<Collection<Equipment>>, ModelServiceAware {
 
     private final Document document;
     private ModelService   modelService;
@@ -32,19 +31,17 @@ public final class ParseEquipmentCommand implements
     }
 
     @Override
-    public final Map<String, Equipment> execute() throws Exception {
-        final Map<String, Equipment> equipment;
+    public final Collection<Equipment> execute() throws Exception {
+        final Collection<Equipment> equipment;
         final Collection<Element> nodes;
-        Equipment equip;
 
         nodes = XPathFactory.instance()
                 .compile("//equipment_profile", Filters.element())
                 .evaluate(getDocument());
 
-        equipment = new LinkedHashMap<>();
+        equipment = new LinkedList<>();
         for (final Element node : nodes) {
-            equip = parseNode(node);
-            equipment.put(equip.getName(), equip);
+            equipment.add(parseNode(node));
         }
 
         return equipment;

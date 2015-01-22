@@ -3,8 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -13,38 +12,42 @@ import org.jdom2.xpath.XPathFactory;
 
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class ParseMeleeWeaponsCommand implements
-        ReturnCommand<Map<String, MeleeWeapon>>, ModelServiceAware {
+        ReturnCommand<Collection<MeleeWeapon>>, ModelServiceAware {
 
-    private final Document document;
-    private ModelService   modelService;
+    private final Document                document;
+    private ModelService                  modelService;
+    private final Repository<SpecialRule> ruleRepo;
 
-    public ParseMeleeWeaponsCommand(final Document doc) {
+    public ParseMeleeWeaponsCommand(final Document doc,
+            final Repository<SpecialRule> ruleRepo) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
+        checkNotNull(ruleRepo, "Received a null pointer as rules repository");
 
         document = doc;
+        this.ruleRepo = ruleRepo;
     }
 
     @Override
-    public final Map<String, MeleeWeapon> execute() throws Exception {
-        final Map<String, MeleeWeapon> weapons;
+    public final Collection<MeleeWeapon> execute() throws Exception {
+        final Collection<MeleeWeapon> weapons;
         final Collection<Element> nodes;
-        MeleeWeapon weapon;
 
         nodes = XPathFactory.instance()
                 .compile("//weapon_melee_profile", Filters.element())
                 .evaluate(getDocument());
 
-        weapons = new LinkedHashMap<>();
+        weapons = new LinkedList<>();
         for (final Element node : nodes) {
-            weapon = parseNode(node);
-            weapons.put(weapon.getName(), weapon);
+            weapons.add(parseNode(node));
         }
 
         return weapons;
@@ -63,13 +66,19 @@ public final class ParseMeleeWeaponsCommand implements
         return modelService;
     }
 
+    private final Repository<SpecialRule> getRulesRepository() {
+        return ruleRepo;
+    }
+
     private final MeleeWeapon parseNode(final Element node) {
-        String name;
-        Integer strength;
-        Integer penetration;
-        Integer combat;
-        Integer cost;
-        MeleeWeapon weapon;
+        final Element rulesNode;
+        final String name;
+        final Integer strength;
+        final Integer penetration;
+        final Integer combat;
+        final Integer cost;
+        final MeleeWeapon weapon;
+        final Collection<SpecialRule> rules;
 
         name = node.getChildText(ModelNodeConf.NAME);
         strength = Integer.parseInt(node.getChildText(ModelNodeConf.STRENGTH));
@@ -78,8 +87,17 @@ public final class ParseMeleeWeaponsCommand implements
         combat = Integer.parseInt(node.getChildText(ModelNodeConf.COMBAT));
         cost = Integer.parseInt(node.getChildText(ModelNodeConf.COST));
 
+        rules = new LinkedList<>();
+        rulesNode = node.getChild("rules");
+        if (rulesNode != null) {
+            for (final Element rule : rulesNode.getChildren()) {
+                rules.addAll(getRulesRepository().getCollection(
+                        r -> r.getName().equals(rule.getText())));
+            }
+        }
+
         weapon = getModelService().getMeleeWeapon(name, cost, strength,
-                penetration, combat);
+                penetration, combat, rules);
 
         return weapon;
     }

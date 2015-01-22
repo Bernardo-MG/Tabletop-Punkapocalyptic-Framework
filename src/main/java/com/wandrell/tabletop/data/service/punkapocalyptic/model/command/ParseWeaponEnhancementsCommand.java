@@ -3,8 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,7 +17,7 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServ
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseWeaponEnhancementsCommand implements
-        ReturnCommand<Map<String, WeaponEnhancement>>, ModelServiceAware {
+        ReturnCommand<Collection<WeaponEnhancement>>, ModelServiceAware {
 
     private final Document document;
     private ModelService   modelService;
@@ -32,19 +31,17 @@ public final class ParseWeaponEnhancementsCommand implements
     }
 
     @Override
-    public final Map<String, WeaponEnhancement> execute() throws Exception {
-        final Map<String, WeaponEnhancement> enhancements;
+    public final Collection<WeaponEnhancement> execute() throws Exception {
+        final Collection<WeaponEnhancement> enhancements;
         final Collection<Element> nodes;
-        WeaponEnhancement enhancement;
 
         nodes = XPathFactory.instance()
                 .compile("//weapon_enhancement_profile", Filters.element())
                 .evaluate(getDocument());
 
-        enhancements = new LinkedHashMap<>();
+        enhancements = new LinkedList<>();
         for (final Element node : nodes) {
-            enhancement = parseNode(node);
-            enhancements.put(enhancement.getName(), enhancement);
+            enhancements.add(parseNode(node));
         }
 
         return enhancements;

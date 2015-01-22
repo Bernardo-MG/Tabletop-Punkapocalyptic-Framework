@@ -3,60 +3,66 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
+import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class ParseUnitEquipmentAvailabilitiesCommand implements
-        ReturnCommand<Map<String, Collection<Equipment>>> {
+        ReturnCommand<Collection<UnitEquipmentAvailability>>, ModelServiceAware {
 
-    private final Document               doc;
-    private final Map<String, Equipment> equipment;
-    private final Map<String, Unit>      units;
+    private final Document              doc;
+    private final Repository<Equipment> equipmentRepo;
+    private ModelService                modelService;
+    private final Repository<Unit>      unitRepo;
 
     public ParseUnitEquipmentAvailabilitiesCommand(final Document doc,
-            final Map<String, Unit> units,
-            final Map<String, Equipment> equipment) {
+            final Repository<Unit> unitRepo,
+            final Repository<Equipment> equipmentRepo) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
-        checkNotNull(units, "Received a null pointer as units");
-        checkNotNull(equipment, "Received a null pointer as equipment");
+        checkNotNull(unitRepo, "Received a null pointer as units repository");
+        checkNotNull(equipmentRepo,
+                "Received a null pointer as equipment repository");
 
         this.doc = doc;
-        this.units = units;
-        this.equipment = equipment;
+        this.unitRepo = unitRepo;
+        this.equipmentRepo = equipmentRepo;
     }
 
     @Override
-    public final Map<String, Collection<Equipment>> execute() throws Exception {
-        final Map<String, Collection<Equipment>> availabilities;
+    public final Collection<UnitEquipmentAvailability> execute()
+            throws Exception {
+        final Collection<UnitEquipmentAvailability> availabilities;
 
-        availabilities = new LinkedHashMap<>();
+        availabilities = new LinkedList<>();
 
-        for (final Unit unit : getUnits().values()) {
-            availabilities.put(unit.getUnitName(),
-                    getEquipment(unit.getUnitName()));
+        for (final Unit unit : getUnitsRepository().getCollection(u -> true)) {
+            availabilities.add(getModelService().getUnitEquipmentAvailability(
+                    unit, getEquipment(unit.getUnitName())));
         }
 
         return availabilities;
     }
 
-    private final Document getDocument() {
-        return doc;
+    @Override
+    public final void setModelService(final ModelService service) {
+        modelService = service;
     }
 
-    private final Map<String, Equipment> getEquipment() {
-        return equipment;
+    private final Document getDocument() {
+        return doc;
     }
 
     private final Collection<Equipment> getEquipment(final String unit) {
@@ -82,14 +88,25 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
 
         equipment = new LinkedList<>();
         for (final Element node : nodes) {
-            equipment.add(getEquipment().get(node.getChild("name").getText()));
+            equipment.add(getEquipmentRepository()
+                    .getCollection(
+                            e -> e.getName().equals(node.getChildText("name")))
+                    .iterator().next());
         }
 
         return equipment;
     }
 
-    private final Map<String, Unit> getUnits() {
-        return units;
+    private final Repository<Equipment> getEquipmentRepository() {
+        return equipmentRepo;
+    }
+
+    private final ModelService getModelService() {
+        return modelService;
+    }
+
+    private final Repository<Unit> getUnitsRepository() {
+        return unitRepo;
     }
 
 }

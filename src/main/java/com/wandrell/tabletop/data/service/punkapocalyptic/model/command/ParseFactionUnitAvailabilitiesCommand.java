@@ -4,46 +4,55 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
-import com.wandrell.util.command.Command;
+import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
-public final class LoadFactionUnitsCommand implements Command,
-        ModelServiceAware {
+public final class ParseFactionUnitAvailabilitiesCommand implements
+        ReturnCommand<Collection<FactionUnitAvailability>>, ModelServiceAware {
 
     private final Document            document;
-    private final Collection<Faction> factions;
+    private final Repository<Faction> factionRepo;
     private ModelService              modelService;
-    private final Map<String, Unit>   units;
+    private final Repository<Unit>    unitRepo;
 
-    public LoadFactionUnitsCommand(final Document doc,
-            final Collection<Faction> factions, final Map<String, Unit> units) {
+    public ParseFactionUnitAvailabilitiesCommand(final Document doc,
+            final Repository<Faction> factionRepo,
+            final Repository<Unit> unitRepo) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
-        checkNotNull(factions, "Received a null pointer as factions");
-        checkNotNull(units, "Received a null pointer as units");
+        checkNotNull(factionRepo,
+                "Received a null pointer as factions repository");
+        checkNotNull(unitRepo, "Received a null pointer as units repository");
 
         document = doc;
-        this.units = units;
-        this.factions = factions;
+        this.unitRepo = unitRepo;
+        this.factionRepo = factionRepo;
     }
 
     @Override
-    public final void execute() throws Exception {
-        for (final Faction faction : getFactions()) {
-            loadUnits(faction);
+    public final Collection<FactionUnitAvailability> execute() {
+        final Collection<FactionUnitAvailability> availabilities;
+
+        availabilities = new LinkedList<>();
+        for (final Faction faction : getFactionRepository().getCollection(
+                f -> true)) {
+            availabilities.addAll(parseNode(faction));
         }
+
+        return availabilities;
     }
 
     @Override
@@ -55,21 +64,23 @@ public final class LoadFactionUnitsCommand implements Command,
         return document;
     }
 
-    private final Collection<Faction> getFactions() {
-        return factions;
+    private final Repository<Faction> getFactionRepository() {
+        return factionRepo;
     }
 
     private final ModelService getModelService() {
         return modelService;
     }
 
-    private final Map<String, Unit> getUnits() {
-        return units;
+    private final Repository<Unit> getUnitRepository() {
+        return unitRepo;
     }
 
-    private final void loadUnits(final Faction faction) {
+    private final Collection<FactionUnitAvailability> parseNode(
+            final Faction faction) {
         final Collection<Element> nodes;
         final String expression;
+        final Collection<FactionUnitAvailability> result;
         String expConstraint;
         Unit unit;
         Collection<Constraint> constraints;
@@ -83,8 +94,13 @@ public final class LoadFactionUnitsCommand implements Command,
         nodes = XPathFactory.instance().compile(expression, Filters.element())
                 .evaluate(getDocument());
 
+        result = new LinkedList<>();
         for (final Element node : nodes) {
-            unit = getUnits().get(node.getChildText("name"));
+            unit = getUnitRepository()
+                    .getCollection(
+                            u -> u.getUnitName().equals(
+                                    node.getChildText("name"))).iterator()
+                    .next();
 
             expConstraint = String
                     .format("//faction_unit[faction='%s']/units/unit[name='%s']//constraint",
@@ -117,9 +133,11 @@ public final class LoadFactionUnitsCommand implements Command,
                 constraints.add(constr);
             }
 
-            faction.addUnit(getModelService().getFactionUnitAvailability(unit,
-                    constraints));
+            result.add(getModelService().getFactionUnitAvailability(faction,
+                    unit, constraints));
         }
+
+        return result;
     }
 
 }

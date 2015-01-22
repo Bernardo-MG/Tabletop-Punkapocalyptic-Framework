@@ -3,9 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,39 +16,39 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class ParseArmorsCommand implements
-        ReturnCommand<Map<String, Armor>>, ModelServiceAware {
+        ReturnCommand<Collection<Armor>>, ModelServiceAware {
 
-    private final Document                 document;
-    private ModelService                   modelService;
-    private final Map<String, SpecialRule> rules;
+    private final Document                document;
+    private ModelService                  modelService;
+    private final Repository<SpecialRule> ruleRepository;
 
     public ParseArmorsCommand(final Document doc,
-            final Map<String, SpecialRule> rules) {
+            final Repository<SpecialRule> ruleRepository) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
-        checkNotNull(rules, "Received a null pointer as rules");
+        checkNotNull(ruleRepository,
+                "Received a null pointer as rules repository");
 
         document = doc;
-        this.rules = rules;
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
-    public final Map<String, Armor> execute() throws Exception {
-        final Map<String, Armor> armors;
+    public final Collection<Armor> execute() throws Exception {
+        final Collection<Armor> armors;
         final Collection<Element> nodes;
-        Armor armor;
 
         nodes = XPathFactory.instance()
                 .compile("//armor_profile", Filters.element())
                 .evaluate(getDocument());
 
-        armors = new LinkedHashMap<>();
+        armors = new LinkedList<>();
         for (final Element node : nodes) {
-            armor = parseNode(node);
-            armors.put(armor.getName(), armor);
+            armors.add(parseNode(node));
         }
 
         return armors;
@@ -69,8 +67,8 @@ public final class ParseArmorsCommand implements
         return modelService;
     }
 
-    private final Map<String, SpecialRule> getRules() {
-        return rules;
+    private final Repository<SpecialRule> getRuleRepository() {
+        return ruleRepository;
     }
 
     private final Collection<SpecialRule> getRules(final Element rulesNode) {
@@ -79,7 +77,9 @@ public final class ParseArmorsCommand implements
         rules = new LinkedList<>();
         if (rulesNode != null) {
             for (final Element rule : rulesNode.getChildren()) {
-                rules.add(getRules().get(rule.getText()));
+                rules.add(getRuleRepository()
+                        .getCollection(r -> r.getName().equals(rule.getText()))
+                        .iterator().next());
             }
         }
 

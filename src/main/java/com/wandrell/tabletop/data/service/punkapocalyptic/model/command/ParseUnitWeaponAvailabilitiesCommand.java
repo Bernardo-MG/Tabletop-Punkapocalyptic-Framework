@@ -12,6 +12,8 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
+import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.WeaponOption;
@@ -21,49 +23,50 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class ParseUnitWeaponAvailabilitiesCommand implements
-        ReturnCommand<Map<String, UnitWeaponAvailability>>, ModelServiceAware {
+        ReturnCommand<Collection<UnitWeaponAvailability>>, ModelServiceAware {
 
-    private final Document                       doc;
-    private final Map<String, WeaponEnhancement> enhancements;
-    private ModelService                         modelService;
-    private final Map<String, Unit>              units;
-    private final Map<String, Interval>          weaponIntervals;
-    private final Map<String, Weapon>            weapons;
+    private final Document                      doc;
+    private final Repository<WeaponEnhancement> enhanceRepo;
+    private final Map<String, Interval>         intervals;
+    private ModelService                        modelService;
+    private final Repository<Unit>              unitRepo;
+    private final Repository<Weapon>            weaponRepo;
 
     public ParseUnitWeaponAvailabilitiesCommand(final Document doc,
-            final Map<String, Unit> units, final Map<String, Weapon> weapons,
-            final Map<String, WeaponEnhancement> enhancements,
-            final Map<String, Interval> weaponIntervals) {
+            final Repository<Unit> unitRepo,
+            final Repository<Weapon> weaponRepo,
+            final Repository<WeaponEnhancement> enhanceRepo) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
-        checkNotNull(units, "Received a null pointer as units");
-        checkNotNull(weapons, "Received a null pointer as weapons");
-        checkNotNull(enhancements,
-                "Received a null pointer as weapon enhancements");
-        checkNotNull(weaponIntervals,
-                "Received a null pointer as weapon intervals");
+        checkNotNull(unitRepo, "Received a null pointer as units repository");
+        checkNotNull(weaponRepo,
+                "Received a null pointer as weapons repository");
+        checkNotNull(enhanceRepo,
+                "Received a null pointer as weapon enhancements repository");
 
         this.doc = doc;
-        this.units = units;
-        this.weapons = weapons;
-        this.enhancements = enhancements;
-        this.weaponIntervals = weaponIntervals;
+        this.unitRepo = unitRepo;
+        this.weaponRepo = weaponRepo;
+        this.enhanceRepo = enhanceRepo;
+
+        intervals = getIntervalsMap();
     }
 
     @Override
-    public final Map<String, UnitWeaponAvailability> execute() throws Exception {
-        final Map<String, UnitWeaponAvailability> availabilities;
+    public final Collection<UnitWeaponAvailability> execute() throws Exception {
+        final Collection<UnitWeaponAvailability> availabilities;
         UnitWeaponAvailability availability;
 
-        availabilities = new LinkedHashMap<>();
+        availabilities = new LinkedList<>();
 
-        for (final Unit unit : getUnits().values()) {
+        for (final Unit unit : getUnitsRepository().getCollection(u -> true)) {
             availability = buildAvailability(unit);
 
-            availabilities.put(unit.getUnitName(), availability);
+            availabilities.add(availability);
         }
 
         return availabilities;
@@ -82,8 +85,8 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         final Integer maxWeapons;
 
         weaponOptions = getWeaponOptions(unit.getUnitName());
-        if (getWeaponIntervals().containsKey(unit.getUnitName())) {
-            weaponsInterval = getWeaponIntervals().get(unit.getUnitName());
+        if (getIntervals().containsKey(unit.getUnitName())) {
+            weaponsInterval = getIntervals().get(unit.getUnitName());
             minWeapons = weaponsInterval.getLowerLimit();
             maxWeapons = weaponsInterval.getUpperLimit();
         } else {
@@ -91,7 +94,7 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
             maxWeapons = 0;
         }
 
-        availability = getModelService().getUnitWeaponAvailability(
+        availability = getModelService().getUnitWeaponAvailability(unit,
                 weaponOptions, minWeapons, maxWeapons);
 
         return availability;
@@ -101,20 +104,45 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         return doc;
     }
 
+    private final Map<String, Interval> getIntervals() {
+        return intervals;
+    }
+
+    private final Map<String, Interval> getIntervalsMap() {
+        final Map<String, Interval> intervals;
+        final Collection<Element> nodes;
+        Element intervalNode;
+        Interval interval;
+        Integer lower;
+        Integer upper;
+
+        nodes = XPathFactory.instance()
+                .compile("//unit_weapon", Filters.element())
+                .evaluate(getDocument());
+
+        intervals = new LinkedHashMap<>();
+        for (final Element node : nodes) {
+            intervalNode = node.getChild("weapons_interval");
+
+            lower = Integer.parseInt(intervalNode.getChild(
+                    ModelNodeConf.MIN_WEAPONS).getValue());
+            upper = Integer.parseInt(intervalNode.getChild(
+                    ModelNodeConf.MAX_WEAPONS).getValue());
+
+            interval = new DefaultInterval(lower, upper);
+
+            intervals.put(node.getChildText(ModelNodeConf.UNIT), interval);
+        }
+
+        return intervals;
+    }
+
     private final ModelService getModelService() {
         return modelService;
     }
 
-    private final Map<String, Unit> getUnits() {
-        return units;
-    }
-
-    private final Map<String, WeaponEnhancement> getWeaponEnhancements() {
-        return enhancements;
-    }
-
-    private final Map<String, Interval> getWeaponIntervals() {
-        return weaponIntervals;
+    private final Repository<Unit> getUnitsRepository() {
+        return unitRepo;
     }
 
     private final Collection<WeaponOption> getWeaponOptions(final String unit) {
@@ -150,8 +178,10 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
 
         enhancements = new LinkedList<>();
         for (final Element node : nodesEnhancements) {
-            enhancement = getWeaponEnhancements().get(
-                    node.getChild("name").getText());
+            enhancement = getWeaponsEnhancementsRepository()
+                    .getCollection(
+                            e -> e.getName().equals(node.getChildText("name")))
+                    .iterator().next();
             enhancements.add(enhancement);
         }
 
@@ -161,7 +191,9 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         weapons = new LinkedList<>();
         for (final Element node : nodesWeapons) {
             enhanWeapon = new LinkedList<>();
-            weapon = getWeapons().get(node.getText());
+            weapon = getWeaponsRepository()
+                    .getCollection(w -> w.getName().equals(node.getText()))
+                    .iterator().next();
 
             for (final WeaponEnhancement enhanc : enhancements) {
                 if (enhanc.isValid(weapon)) {
@@ -175,8 +207,13 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         return weapons;
     }
 
-    private final Map<String, Weapon> getWeapons() {
-        return weapons;
+    private final Repository<WeaponEnhancement>
+            getWeaponsEnhancementsRepository() {
+        return enhanceRepo;
+    }
+
+    private final Repository<Weapon> getWeaponsRepository() {
+        return weaponRepo;
     }
 
 }

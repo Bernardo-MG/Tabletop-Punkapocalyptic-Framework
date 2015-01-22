@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Predicate;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import com.wandrell.conf.TestingConf;
-import com.wandrell.tabletop.business.model.interval.DefaultInterval;
-import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -26,12 +26,12 @@ import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitU
 import com.wandrell.tabletop.business.procedure.constraint.punkapocalyptic.UnitWeaponsInIntervalConstraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.GangAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.TestUtils;
+import com.wandrell.util.repository.Repository;
 
 public final class ConstraintParameterFactory {
 
@@ -347,9 +347,10 @@ public final class ConstraintParameterFactory {
         Integer weapons;
         Integer min;
         Integer max;
-        DataService service;
-        Interval interval;
+        Repository<UnitWeaponAvailability> repo;
         Collection<Weapon> weaponsCol;
+        Collection<UnitWeaponAvailability> avas;
+        UnitWeaponAvailability ava;
 
         result = new LinkedList<>();
         for (final Collection<Object> values : valuesTable) {
@@ -359,12 +360,16 @@ public final class ConstraintParameterFactory {
             min = (Integer) itrValues.next();
             max = (Integer) itrValues.next();
 
-            interval = new DefaultInterval(min, max);
+            ava = Mockito.mock(UnitWeaponAvailability.class);
+            Mockito.when(ava.getMinWeapons()).thenReturn(min);
+            Mockito.when(ava.getMaxWeapons()).thenReturn(max);
 
-            service = Mockito.mock(DataService.class);
-            Mockito.when(
-                    service.getUnitAllowedWeaponsInterval(Matchers.anyString()))
-                    .thenReturn(interval);
+            avas = new LinkedList<>();
+            avas.add(ava);
+
+            repo = Mockito.mock(Repository.class);
+            Mockito.when(repo.getCollection(Matchers.any(Predicate.class)))
+                    .thenReturn(avas);
 
             weaponsCol = Mockito.mock(Collection.class);
 
@@ -373,7 +378,7 @@ public final class ConstraintParameterFactory {
             unit = Mockito.mock(Unit.class);
             Mockito.when(unit.getWeapons()).thenReturn(weaponsCol);
 
-            constraint = new UnitWeaponsInIntervalConstraint(service, "message");
+            constraint = new UnitWeaponsInIntervalConstraint(repo, "message");
 
             ((UnitAware) constraint).setUnit(unit);
 

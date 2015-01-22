@@ -5,30 +5,31 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
-import com.wandrell.tabletop.business.model.interval.Interval;
+import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.UnitAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
+import com.wandrell.util.repository.Repository;
 
 public final class UnitWeaponsInIntervalConstraint implements Constraint,
         UnitAware {
 
-    private final DataService dataModelService;
-    private String            formattedMessage;
-    private final String      message;
-    private Unit              unit;
+    private String                                   formattedMessage;
+    private final String                             message;
+    private Unit                                     unit;
+    private final Repository<UnitWeaponAvailability> weaponAvaRepo;
 
-    public UnitWeaponsInIntervalConstraint(final DataService service,
-            final String message) {
+    public UnitWeaponsInIntervalConstraint(
+            final Repository<UnitWeaponAvailability> repo, final String message) {
         super();
 
         // TODO: Is this really needed?
 
-        checkNotNull(service, "Received a null pointer as data model service");
+        checkNotNull(repo,
+                "Received a null pointer as unit weapon availability repository");
         checkNotNull(message, "Received a null pointer as message");
 
-        dataModelService = service;
+        weaponAvaRepo = repo;
         this.message = message;
     }
 
@@ -57,22 +58,25 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
     @Override
     public final Boolean isValid() {
         final Boolean valid;
-        final Interval interval;
-        final Integer weapons;
+        final Integer weaponsCount;
+        final UnitWeaponAvailability ava;
 
         checkNotNull(unit, "Validating a null unit");
 
-        interval = getDataModelService().getUnitAllowedWeaponsInterval(
-                getUnit().getUnitName());
+        ava = getUnitWeaponAvailabilityRepository()
+                .getCollection(
+                        a -> a.getUnit().getUnitName()
+                                .equals(getUnit().getUnitName())).iterator()
+                .next();
 
-        weapons = getUnit().getWeapons().size();
+        weaponsCount = getUnit().getWeapons().size();
 
-        valid = ((weapons >= interval.getLowerLimit()) && (weapons <= interval
-                .getUpperLimit()));
+        valid = ((weaponsCount >= ava.getMinWeapons()) && (weaponsCount <= ava
+                .getMaxWeapons()));
 
         if (!valid) {
-            formattedMessage = String.format(getMessage(),
-                    interval.getLowerLimit(), interval.getUpperLimit());
+            formattedMessage = String.format(getMessage(), ava.getMinWeapons(),
+                    ava.getMaxWeapons());
         }
 
         return valid;
@@ -90,16 +94,17 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         return MoreObjects.toStringHelper(this).toString();
     }
 
-    private final DataService getDataModelService() {
-        return dataModelService;
-    }
-
     private final String getMessage() {
         return message;
     }
 
     private final Unit getUnit() {
         return unit;
+    }
+
+    private final Repository<UnitWeaponAvailability>
+            getUnitWeaponAvailabilityRepository() {
+        return weaponAvaRepo;
     }
 
 }

@@ -3,20 +3,21 @@ package com.wandrell.tabletop.business.util.command.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.wandrell.service.application.ApplicationInfoService;
+import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.business.util.tag.punkapocalyptic.repository.WeaponRepositoryAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ApplicationInfoServiceAware;
-import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.DataServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.tabletop.data.service.punkapocalyptic.model.DataService;
 import com.wandrell.util.command.Command;
 import com.wandrell.util.command.CommandExecutor;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class DefaultContextCommandExecutor implements
         ContextCommandExecutor {
@@ -24,10 +25,10 @@ public final class DefaultContextCommandExecutor implements
     private final CommandExecutor  executor;
     private ModelService           modelService;
     private ApplicationInfoService serviceAppInfo;
-    private DataService            serviceDataModel;
     private FileService            serviceFile;
     private LocalizationService    serviceLoc;
     private RulesetService         serviceRuleset;
+    private Repository<Weapon>     weaponRepository;
 
     public DefaultContextCommandExecutor(final CommandExecutor executor) {
         super();
@@ -65,14 +66,6 @@ public final class DefaultContextCommandExecutor implements
     }
 
     @Override
-    public final void setDataModelService(final DataService service) {
-        checkNotNull(service,
-                "Received a null pointer as the model data service");
-
-        serviceDataModel = service;
-    }
-
-    @Override
     public final void setFileService(final FileService service) {
         checkNotNull(service, "Received a null pointer as file service");
 
@@ -98,12 +91,13 @@ public final class DefaultContextCommandExecutor implements
         serviceRuleset = service;
     }
 
-    private final ApplicationInfoService getApplicationInfoService() {
-        return serviceAppInfo;
+    @Override
+    public final void setWeaponRepository(final Repository<Weapon> repository) {
+        weaponRepository = repository;
     }
 
-    private final DataService getDataModelService() {
-        return serviceDataModel;
+    private final ApplicationInfoService getApplicationInfoService() {
+        return serviceAppInfo;
     }
 
     private final CommandExecutor getExecutor() {
@@ -124,6 +118,10 @@ public final class DefaultContextCommandExecutor implements
 
     private final RulesetService getRulesetService() {
         return serviceRuleset;
+    }
+
+    private final Repository<Weapon> getWeaponRepository() {
+        return weaponRepository;
     }
 
     private final void setContext(final Object command) {
@@ -150,8 +148,9 @@ public final class DefaultContextCommandExecutor implements
             ((ModelServiceAware) command).setModelService(getModelService());
         }
 
-        if (command instanceof DataServiceAware) {
-            ((DataServiceAware) command).setDataService(getDataModelService());
+        if (command instanceof WeaponRepositoryAware) {
+            ((WeaponRepositoryAware) command)
+                    .setWeaponRepository(getWeaponRepository());
         }
     }
 

@@ -3,8 +3,7 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -14,42 +13,46 @@ import org.jdom2.xpath.XPathFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
+import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.util.RangedValue;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.util.command.ReturnCommand;
+import com.wandrell.util.repository.Repository;
 
 public final class ParseRangedWeaponsCommand implements
-        ReturnCommand<Map<String, RangedWeapon>>, ModelServiceAware {
+        ReturnCommand<Collection<RangedWeapon>>, ModelServiceAware {
 
-    private final Document    document;
-    private final MeleeWeapon melee;
-    private ModelService      modelService;
+    private final Document                document;
+    private final MeleeWeapon             melee;
+    private ModelService                  modelService;
+    private final Repository<SpecialRule> ruleRepo;
 
-    public ParseRangedWeaponsCommand(final Document doc, final MeleeWeapon melee) {
+    public ParseRangedWeaponsCommand(final Document doc,
+            final Repository<SpecialRule> ruleRepo, final MeleeWeapon melee) {
         super();
 
         checkNotNull(doc, "Received a null pointer as document");
         checkNotNull(melee, "Received a null pointer as melee weapon");
+        checkNotNull(ruleRepo, "Received a null pointer as rules repository");
 
         document = doc;
         this.melee = melee;
+        this.ruleRepo = ruleRepo;
     }
 
     @Override
-    public final Map<String, RangedWeapon> execute() throws Exception {
-        final Map<String, RangedWeapon> weapons;
+    public final Collection<RangedWeapon> execute() throws Exception {
+        final Collection<RangedWeapon> weapons;
         final Collection<Element> nodes;
-        RangedWeapon weapon;
 
         nodes = XPathFactory.instance()
                 .compile("//weapon_ranged_profile", Filters.element())
                 .evaluate(getDocument());
 
-        weapons = new LinkedHashMap<>();
+        weapons = new LinkedList<>();
         for (final Element node : nodes) {
-            weapon = parseNode(node);
-            weapons.put(weapon.getName(), weapon);
+            weapons.add(parseNode(node));
         }
 
         return weapons;
@@ -72,7 +75,12 @@ public final class ParseRangedWeaponsCommand implements
         return modelService;
     }
 
+    private final Repository<SpecialRule> getRulesRepository() {
+        return ruleRepo;
+    }
+
     private final RangedWeapon parseNode(final Element node) {
+        final Element rulesNode;
         final String name;
         final Element strength;
         final Element penetration;
@@ -96,7 +104,7 @@ public final class ParseRangedWeaponsCommand implements
         final RangedValue distanceInches;
         final RangedValue strengthRanged;
         final RangedValue penetrationRanged;
-        final RangedWeapon weapon;
+        final Collection<SpecialRule> rules;
 
         name = node.getChildText(ModelNodeConf.NAME);
 
@@ -146,11 +154,18 @@ public final class ParseRangedWeaponsCommand implements
         strengthRanged = getModelService().getRangedValue(strengthShort,
                 strengthMedium, strengthLong);
 
-        weapon = getModelService().getRangedWeapon(name, cost,
+        rules = new LinkedList<>();
+        rulesNode = node.getChild("rules");
+        if (rulesNode != null) {
+            for (final Element rule : rulesNode.getChildren()) {
+                rules.addAll(getRulesRepository().getCollection(
+                        r -> r.getName().equals(rule.getText())));
+            }
+        }
+
+        return getModelService().getRangedWeapon(name, cost, rules,
                 penetrationRanged, strengthRanged, distanceCM, distanceInches,
                 getDefaultMeleeWeapon());
-
-        return weapon;
     }
 
 }

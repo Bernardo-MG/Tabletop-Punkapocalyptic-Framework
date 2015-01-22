@@ -3,9 +3,8 @@ package com.wandrell.tabletop.data.service.punkapocalyptic.model.command;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -18,7 +17,7 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServ
 import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseRulesCommand implements
-        ReturnCommand<Map<String, SpecialRule>>, ModelServiceAware {
+        ReturnCommand<Collection<SpecialRule>>, ModelServiceAware {
 
     private final Document document;
     private ModelService   modelService;
@@ -32,11 +31,10 @@ public final class ParseRulesCommand implements
     }
 
     @Override
-    public final Map<String, SpecialRule> execute() throws Exception {
-        final Map<String, SpecialRule> result;
+    public final Collection<SpecialRule> execute() throws Exception {
+        final Collection<SpecialRule> result;
         final Collection<Element> nodes;
         final Collection<String> names;
-        SpecialRule rule;
 
         nodes = XPathFactory.instance().compile("//rule", Filters.element())
                 .evaluate(getDocument());
@@ -46,11 +44,9 @@ public final class ParseRulesCommand implements
             names.add(node.getText());
         }
 
-        result = new LinkedHashMap<>();
+        result = new LinkedList<>();
         for (final String name : names) {
-            rule = getModelService().getSpecialRule(name);
-
-            result.put(rule.getName(), rule);
+            result.add(getModelService().getSpecialRule(name));
         }
 
         return result;
