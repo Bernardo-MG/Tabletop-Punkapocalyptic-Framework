@@ -3,7 +3,6 @@ package com.wandrell.tabletop.business.procedure.punkapocalyptic;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import javax.swing.event.EventListenerList;
@@ -15,7 +14,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListe
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
 import com.wandrell.tabletop.business.model.valuebox.ValueBox;
-import com.wandrell.tabletop.business.model.valuebox.derived.DerivedValueBox;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedEvent;
@@ -29,7 +27,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private Gang                                      gang;
     private final GangListener                        gangListener;
     private final EventListenerList                   listeners = new EventListenerList();
-    private final DerivedValueBox                     maxUnits;
+    private final ValueBox                            maxUnits;
     private RulesetService                            serviceRuleset;
     private final Repository<FactionUnitAvailability> unitAvaRepository;
     private final Constraint                          unitLimitConstraint;
@@ -60,10 +58,11 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitRemoved(final UnitEvent event) {
-                final Collection<Constraint> constraints;
                 FactionUnitAvailability ava;
 
-                constraints = new LinkedList<>();
+                getConstraintValidator()
+                        .addConstraint(getUnitLimitConstraint());
+
                 for (final Unit unit : getGang().getUnits()) {
                     ava = getFactionUnitAvailabilityRepository()
                             .getCollection(
@@ -71,12 +70,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                                             .equals(unit.getUnitName()))
                             .iterator().next();
 
-                    constraints.addAll(ava.getConstraints());
+                    for (final Constraint constraint : ava.getConstraints()) {
+                        getConstraintValidator().addConstraint(constraint);
+                    }
                 }
-
-                getConstraintValidator().setConstraints(constraints);
-                getConstraintValidator()
-                        .addConstraint(getUnitLimitConstraint());
 
                 fireUnitRemovedEvent(event);
             }
@@ -85,8 +82,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     public DefaultGangBuilderManager(final Constraint unitLimitConstraint,
-            final ConstraintValidator validator,
-            final DerivedValueBox maxUnits,
+            final ConstraintValidator validator, final ValueBox maxUnits,
             final Repository<FactionUnitAvailability> unitAvaRepository,
             final RulesetService rulesetService) {
         super();
@@ -186,8 +182,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
         this.gang = gang;
 
-        getRulesetService().setUpMaxUnitsValueHandler(
-                (DerivedValueBox) getMaxUnits(), getGang());
+        getRulesetService().setUpMaxUnitsValueHandler(getMaxUnits(), getGang());
 
         gang.addGangListener(getGangListener());
 
