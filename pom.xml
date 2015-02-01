@@ -55,7 +55,7 @@
 		<site>
 			<id>wandrell-site</id>
 			<name>Wandrell Maven sites</name>
-			<url>ftp://docs.wandrell.com/tabletop-core</url>
+			<url>ftp://docs.wandrell.com/tabletop-punkapocalyptic-framework</url>
 		</site>
 	</distributionManagement>
 
