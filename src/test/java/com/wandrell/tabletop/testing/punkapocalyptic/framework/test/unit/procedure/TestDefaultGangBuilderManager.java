@@ -10,7 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
@@ -27,32 +26,8 @@ import com.wandrell.util.repository.Repository;
 
 public final class TestDefaultGangBuilderManager {
 
-    private DefaultGangBuilderManager           manager;
-    private Repository<FactionUnitAvailability> unitAvaRepository;
-    private ConstraintValidator                 validator;
-
     public TestDefaultGangBuilderManager() {
         super();
-    }
-
-    @SuppressWarnings("unchecked")
-    @BeforeMethod
-    public final void initialize() {
-        final Constraint unitLimitConstraint;
-        final ValueBox maxUnits;
-        final RulesetService rulesetService;
-
-        unitLimitConstraint = Mockito.mock(Constraint.class);
-        Mockito.when(unitLimitConstraint.toString()).thenReturn(
-                "UnitLimitConstraint");
-
-        validator = Mockito.mock(ConstraintValidator.class);
-        maxUnits = Mockito.mock(ValueBox.class);
-        unitAvaRepository = Mockito.mock(Repository.class);
-        rulesetService = Mockito.mock(RulesetService.class);
-
-        manager = new DefaultGangBuilderManager(unitLimitConstraint, validator,
-                maxUnits, unitAvaRepository, rulesetService);
     }
 
     @SuppressWarnings("unchecked")
@@ -69,6 +44,25 @@ public final class TestDefaultGangBuilderManager {
         final Collection<Constraint> constraints;
         final Constraint constraint;
         final Iterator<Constraint> itrConstraints;
+        final DefaultGangBuilderManager manager;
+        final ConstraintValidator validator;
+        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final Constraint unitLimitConstraint;
+        final ValueBox maxUnits;
+        final RulesetService rulesetService;
+
+        unitLimitConstraint = Mockito.mock(Constraint.class);
+        Mockito.when(unitLimitConstraint.toString()).thenReturn(
+                "UnitLimitConstraint");
+
+        maxUnits = Mockito.mock(ValueBox.class);
+        unitAvaRepository = Mockito.mock(Repository.class);
+        rulesetService = Mockito.mock(RulesetService.class);
+
+        validator = Mockito.mock(ConstraintValidator.class);
+
+        manager = new DefaultGangBuilderManager(unitLimitConstraint, validator,
+                maxUnits, unitAvaRepository, rulesetService);
 
         listenerCaptor = ArgumentCaptor.forClass(GangListener.class);
         constraintCaptor = ArgumentCaptor.forClass(Constraint.class);
@@ -134,7 +128,25 @@ public final class TestDefaultGangBuilderManager {
         final FactionUnitAvailability ava;
         final Collection<Constraint> constraints;
         final Constraint constraint;
-        final Iterator<Constraint> itrConstraints;
+        final DefaultGangBuilderManager manager;
+        final ConstraintValidator validator;
+        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final Constraint unitLimitConstraint;
+        final ValueBox maxUnits;
+        final RulesetService rulesetService;
+
+        unitLimitConstraint = Mockito.mock(Constraint.class);
+        Mockito.when(unitLimitConstraint.toString()).thenReturn(
+                "UnitLimitConstraint");
+
+        maxUnits = Mockito.mock(ValueBox.class);
+        unitAvaRepository = Mockito.mock(Repository.class);
+        rulesetService = Mockito.mock(RulesetService.class);
+
+        validator = Mockito.mock(ConstraintValidator.class);
+
+        manager = new DefaultGangBuilderManager(unitLimitConstraint, validator,
+                maxUnits, unitAvaRepository, rulesetService);
 
         listenerCaptor = ArgumentCaptor.forClass(GangListener.class);
         constraintCaptor = ArgumentCaptor.forClass(Constraint.class);
@@ -183,20 +195,59 @@ public final class TestDefaultGangBuilderManager {
 
         // Assert.assertEquals(constraintCaptor.getAllValues().size(), 2);
 
-        itrConstraints = constraintCaptor.getAllValues().iterator();
-        itrConstraints.next();
-        itrConstraints.next();
-        Assert.assertEquals(itrConstraints.next(), constraint);
+        Assert.assertTrue(constraintCaptor.getAllValues().contains(constraint));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public final void testValidate_NoValidates() {
+        final DefaultGangBuilderManager manager;
+        final ConstraintValidator validator;
+        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final Constraint unitLimitConstraint;
+        final ValueBox maxUnits;
+        final RulesetService rulesetService;
+
+        unitLimitConstraint = Mockito.mock(Constraint.class);
+        Mockito.when(unitLimitConstraint.toString()).thenReturn(
+                "UnitLimitConstraint");
+
+        maxUnits = Mockito.mock(ValueBox.class);
+        unitAvaRepository = Mockito.mock(Repository.class);
+        rulesetService = Mockito.mock(RulesetService.class);
+
+        validator = Mockito.mock(ConstraintValidator.class);
+
+        manager = new DefaultGangBuilderManager(unitLimitConstraint, validator,
+                maxUnits, unitAvaRepository, rulesetService);
+
         Mockito.when(validator.validate()).thenReturn(false);
         Assert.assertTrue(!manager.validate());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public final void testValidate_Validates() {
+        final DefaultGangBuilderManager manager;
+        final ConstraintValidator validator;
+        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final Constraint unitLimitConstraint;
+        final ValueBox maxUnits;
+        final RulesetService rulesetService;
+
+        unitLimitConstraint = Mockito.mock(Constraint.class);
+        Mockito.when(unitLimitConstraint.toString()).thenReturn(
+                "UnitLimitConstraint");
+
+        maxUnits = Mockito.mock(ValueBox.class);
+        unitAvaRepository = Mockito.mock(Repository.class);
+        rulesetService = Mockito.mock(RulesetService.class);
+
+        validator = Mockito.mock(ConstraintValidator.class);
+
+        manager = new DefaultGangBuilderManager(unitLimitConstraint, validator,
+                maxUnits, unitAvaRepository, rulesetService);
+
         Mockito.when(validator.validate()).thenReturn(true);
         Assert.assertTrue(manager.validate());
     }
