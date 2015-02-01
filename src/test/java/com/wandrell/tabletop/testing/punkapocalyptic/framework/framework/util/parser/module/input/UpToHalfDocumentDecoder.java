@@ -10,24 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
-public final class WeaponIntervalDocumentProcessor implements
-        JDOMDocumentInputProcessor<Collection<Collection<Object>>> {
+public final class UpToHalfDocumentDecoder implements
+        JDOMDocumentDecoder<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToHalfDocumentProcessor.class);
+                                               .getLogger(UpToHalfDocumentDecoder.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public WeaponIntervalDocumentProcessor() {
+    public UpToHalfDocumentDecoder() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Object>> process(final Document doc) {
+    public final Collection<Collection<Object>> decode(final Document doc) {
         final Collection<Collection<Object>> colData;
 
         colData = new LinkedHashSet<>();
@@ -40,24 +40,21 @@ public final class WeaponIntervalDocumentProcessor implements
 
     private final Collection<Object> readNode(final Element node) {
         final Collection<Object> data;
-        final Integer weapons;
-        final Integer min;
-        final Integer max;
+        final Integer units;
+        final Integer total;
 
-        weapons = Integer.parseInt(node.getChild(TestXMLConf.NODE_WEAPONS)
+        units = Integer.parseInt(node.getChild(TestXMLConf.NODE_UNITS)
                 .getText());
-        min = Integer.parseInt(node.getChild(TestXMLConf.NODE_MIN).getText());
-        max = Integer.parseInt(node.getChild(TestXMLConf.NODE_MAX).getText());
+        total = Integer.parseInt(node.getChild(TestXMLConf.NODE_GANG_SIZE)
+                .getText());
 
         data = new LinkedList<>();
-        data.add(weapons);
-        data.add(min);
-        data.add(max);
+        data.add(units);
+        data.add(total);
 
         getLogger().debug(
-                String.format(
-                        "Read constraint for %d weapons in interval [%d,%d]",
-                        weapons, min, max));
+                String.format("Read constraint for %d units of a total of %d",
+                        units, total));
 
         return data;
     }

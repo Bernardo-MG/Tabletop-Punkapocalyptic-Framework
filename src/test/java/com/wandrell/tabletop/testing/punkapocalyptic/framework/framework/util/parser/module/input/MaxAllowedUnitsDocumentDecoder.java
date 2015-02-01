@@ -9,17 +9,17 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
-public final class MaxAllowedUnitsDocumentProcessor implements
-        JDOMDocumentInputProcessor<Set<Collection<Integer>>> {
+public final class MaxAllowedUnitsDocumentDecoder implements
+        JDOMDocumentDecoder<Set<Collection<Integer>>> {
 
-    public MaxAllowedUnitsDocumentProcessor() {
+    public MaxAllowedUnitsDocumentDecoder() {
         super();
     }
 
     @Override
-    public final Set<Collection<Integer>> process(final Document doc) {
+    public final Set<Collection<Integer>> decode(final Document doc) {
         final Set<Collection<Integer>> data;
         Collection<Integer> pair;
 

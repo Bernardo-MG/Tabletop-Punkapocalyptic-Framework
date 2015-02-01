@@ -10,24 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
-public final class UpToHalfDocumentProcessor implements
-        JDOMDocumentInputProcessor<Collection<Collection<Object>>> {
+public final class UnitLimitDocumentDecoder implements
+        JDOMDocumentDecoder<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToHalfDocumentProcessor.class);
+                                               .getLogger(UnitLimitDocumentDecoder.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UpToHalfDocumentProcessor() {
+    public UnitLimitDocumentDecoder() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Object>> process(final Document doc) {
+    public final Collection<Collection<Object>> decode(final Document doc) {
         final Collection<Collection<Object>> colData;
 
         colData = new LinkedHashSet<>();
@@ -41,20 +41,20 @@ public final class UpToHalfDocumentProcessor implements
     private final Collection<Object> readNode(final Element node) {
         final Collection<Object> data;
         final Integer units;
-        final Integer total;
+        final Integer limit;
 
         units = Integer.parseInt(node.getChild(TestXMLConf.NODE_UNITS)
                 .getText());
-        total = Integer.parseInt(node.getChild(TestXMLConf.NODE_GANG_SIZE)
+        limit = Integer.parseInt(node.getChild(TestXMLConf.NODE_LIMIT)
                 .getText());
 
         data = new LinkedList<>();
+        data.add(limit);
         data.add(units);
-        data.add(total);
 
         getLogger().debug(
-                String.format("Read constraint for %d units of a total of %d",
-                        units, total));
+                String.format("Read constraint for %d units and a limit of %d",
+                        units, limit));
 
         return data;
     }

@@ -10,24 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentInputProcessor;
+import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
-public final class UpToCountDocumentProcessor implements
-        JDOMDocumentInputProcessor<Collection<Collection<Object>>> {
+public final class UpToCountDocumentDecoder implements
+        JDOMDocumentDecoder<Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UpToCountDocumentProcessor.class);
+                                               .getLogger(UpToCountDocumentDecoder.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UpToCountDocumentProcessor() {
+    public UpToCountDocumentDecoder() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Object>> process(final Document doc) {
+    public final Collection<Collection<Object>> decode(final Document doc) {
         final Collection<Collection<Object>> colData;
 
         colData = new LinkedHashSet<>();
