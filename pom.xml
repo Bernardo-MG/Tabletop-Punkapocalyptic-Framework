@@ -90,7 +90,7 @@
 		<!-- Manifest data -->
 		<manifest.name>com/wandrell/tabletop/framework</manifest.name>
 		<!-- Dependencies versions -->
-		<dynamicreports.version>3.2.1</dynamicreports.version>
+		<dynamicreports.version>4.0.0</dynamicreports.version>
 		<guava.version>18.0</guava.version>
 		<jaxen.version>1.1.6</jaxen.version>
 		<jdom.version>2.0.5</jdom.version>
