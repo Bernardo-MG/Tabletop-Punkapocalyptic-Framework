@@ -2,13 +2,13 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.GroupedUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
 

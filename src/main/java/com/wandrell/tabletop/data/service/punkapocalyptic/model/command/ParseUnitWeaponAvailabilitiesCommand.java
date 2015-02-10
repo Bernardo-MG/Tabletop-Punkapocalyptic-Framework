@@ -12,6 +12,8 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.interval.DefaultInterval;
 import com.wandrell.tabletop.business.model.interval.Interval;
@@ -22,8 +24,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.WeaponEnha
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
-import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.repository.Repository;
 
 public final class ParseUnitWeaponAvailabilitiesCommand implements
         ReturnCommand<Collection<UnitWeaponAvailability>>, ModelServiceAware {

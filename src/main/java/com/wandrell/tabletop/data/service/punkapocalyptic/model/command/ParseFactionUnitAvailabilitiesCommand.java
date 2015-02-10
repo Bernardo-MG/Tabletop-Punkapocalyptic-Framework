@@ -10,14 +10,14 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
-import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.repository.Repository;
 
 public final class ParseFactionUnitAvailabilitiesCommand implements
         ReturnCommand<Collection<FactionUnitAvailability>>, ModelServiceAware {

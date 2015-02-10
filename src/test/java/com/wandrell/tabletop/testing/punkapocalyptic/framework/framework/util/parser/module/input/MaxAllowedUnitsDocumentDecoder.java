@@ -8,8 +8,8 @@ import java.util.Set;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import com.wandrell.pattern.parser.xml.input.JDOMDocumentDecoder;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
 public final class MaxAllowedUnitsDocumentDecoder implements
         JDOMDocumentDecoder<Set<Collection<Integer>>> {

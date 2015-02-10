@@ -8,6 +8,7 @@ import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.expression.Expressions;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportBundleConf;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
@@ -15,7 +16,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutati
 import com.wandrell.tabletop.business.report.datatype.punkapocalyptic.MutationDataType;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class BuildUnitMutationSubreportCommand implements
         ReturnCommand<ComponentBuilder<?, ?>>, LocalizationServiceAware {

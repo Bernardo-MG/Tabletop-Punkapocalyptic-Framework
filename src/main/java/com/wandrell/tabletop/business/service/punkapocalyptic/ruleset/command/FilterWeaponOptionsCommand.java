@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class FilterWeaponOptionsCommand implements
         ReturnCommand<Collection<Weapon>> {

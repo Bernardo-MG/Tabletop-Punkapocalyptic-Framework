@@ -6,9 +6,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class GetFileToPrintGangOnDesktopCommand implements
         ReturnCommand<File>, LocalizationServiceAware {

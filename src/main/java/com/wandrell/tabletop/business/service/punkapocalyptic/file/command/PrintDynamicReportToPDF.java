@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 
-import com.wandrell.util.command.Command;
+import com.wandrell.pattern.command.Command;
 
 public final class PrintDynamicReportToPDF implements Command {
 

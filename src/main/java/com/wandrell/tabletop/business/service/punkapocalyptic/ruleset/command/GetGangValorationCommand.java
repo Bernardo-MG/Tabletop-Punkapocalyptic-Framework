@@ -2,11 +2,11 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class GetGangValorationCommand implements ReturnCommand<Integer>,
         RulesetServiceAware {

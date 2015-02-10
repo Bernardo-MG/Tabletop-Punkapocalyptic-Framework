@@ -10,10 +10,10 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class ParseFactionsCommand implements
         ReturnCommand<Collection<Faction>>, ModelServiceAware {

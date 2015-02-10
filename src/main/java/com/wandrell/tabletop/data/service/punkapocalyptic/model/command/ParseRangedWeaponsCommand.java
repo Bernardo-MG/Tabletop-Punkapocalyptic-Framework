@@ -10,6 +10,8 @@ import org.jdom2.Element;
 import org.jdom2.filter.Filters;
 import org.jdom2.xpath.XPathFactory;
 
+import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ModelNodeConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.MeleeWeapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.RangedWeapon;
@@ -17,8 +19,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.ruleset.SpecialRule;
 import com.wandrell.tabletop.business.model.punkapocalyptic.util.RangedValue;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ModelService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
-import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.repository.Repository;
 
 public final class ParseRangedWeaponsCommand implements
         ReturnCommand<Collection<RangedWeapon>>, ModelServiceAware {

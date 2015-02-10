@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.context.ApplicationContext;
 
 import com.wandrell.conf.TestingConf;
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
@@ -31,7 +32,6 @@ import com.wandrell.util.ContextUtils;
 import com.wandrell.util.FileUtils;
 import com.wandrell.util.ResourceUtils;
 import com.wandrell.util.TestUtils;
-import com.wandrell.util.repository.Repository;
 
 public final class ConstraintParameterFactory {
 

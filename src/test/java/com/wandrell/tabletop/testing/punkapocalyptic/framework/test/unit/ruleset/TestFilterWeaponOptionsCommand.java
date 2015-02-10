@@ -8,9 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.FilterWeaponOptionsCommand;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class TestFilterWeaponOptionsCommand {
 

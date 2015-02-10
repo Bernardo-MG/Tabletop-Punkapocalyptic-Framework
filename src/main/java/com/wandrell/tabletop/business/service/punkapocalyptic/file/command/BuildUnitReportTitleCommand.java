@@ -4,6 +4,7 @@ import net.sf.dynamicreports.report.base.DRField;
 import net.sf.dynamicreports.report.builder.component.ComponentBuilder;
 import net.sf.dynamicreports.report.builder.component.Components;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -12,7 +13,6 @@ import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.GroupedUn
 import com.wandrell.tabletop.business.report.formatter.punkapocalyptic.UnitValorationFormatter;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class BuildUnitReportTitleCommand implements
         ReturnCommand<ComponentBuilder<?, ?>>, LocalizationServiceAware {

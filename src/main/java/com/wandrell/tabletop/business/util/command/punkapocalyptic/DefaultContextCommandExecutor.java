@@ -2,6 +2,10 @@ package com.wandrell.tabletop.business.util.command.punkapocalyptic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.wandrell.pattern.command.Command;
+import com.wandrell.pattern.command.CommandExecutor;
+import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.service.application.ApplicationInfoService;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
@@ -14,10 +18,6 @@ import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.FileServi
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.LocalizationServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.ModelServiceAware;
 import com.wandrell.tabletop.business.util.tag.punkapocalyptic.service.RulesetServiceAware;
-import com.wandrell.util.command.Command;
-import com.wandrell.util.command.CommandExecutor;
-import com.wandrell.util.command.ReturnCommand;
-import com.wandrell.util.repository.Repository;
 
 public final class DefaultContextCommandExecutor implements
         ContextCommandExecutor {

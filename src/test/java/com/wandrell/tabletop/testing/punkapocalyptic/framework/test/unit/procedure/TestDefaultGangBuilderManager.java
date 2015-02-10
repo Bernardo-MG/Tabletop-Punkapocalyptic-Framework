@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -22,7 +23,6 @@ import com.wandrell.tabletop.business.procedure.Constraint;
 import com.wandrell.tabletop.business.procedure.ConstraintValidator;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.DefaultGangBuilderManager;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.util.repository.Repository;
 
 public final class TestDefaultGangBuilderManager {
 

@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.GroupedUnit;
@@ -15,7 +16,6 @@ import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutant
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
 import com.wandrell.tabletop.business.model.valuebox.EditableValueBox;
 import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetUnitValorationCommand;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class TestUnitValorationCommand {
 

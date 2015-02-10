@@ -9,8 +9,8 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wandrell.pattern.parser.xml.input.JDOMDocumentDecoder;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
-import com.wandrell.util.parser.xml.input.JDOMDocumentDecoder;
 
 public final class UpToCountDocumentDecoder implements
         JDOMDocumentDecoder<Collection<Collection<Object>>> {

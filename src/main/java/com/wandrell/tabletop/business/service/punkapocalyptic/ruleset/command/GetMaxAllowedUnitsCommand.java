@@ -2,8 +2,8 @@ package com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.util.command.ReturnCommand;
 
 public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
 

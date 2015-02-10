@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.event.EventListenerList;
 
+import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -20,7 +21,6 @@ import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChange
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.GangChangedListener;
 import com.wandrell.tabletop.business.procedure.punkapocalyptic.event.UnitChangedListener;
 import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.util.repository.Repository;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
