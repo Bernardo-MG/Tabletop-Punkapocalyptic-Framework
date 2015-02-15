@@ -9,7 +9,7 @@ import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.style.Styles;
 
 import com.wandrell.pattern.command.ReturnCommand;
-import com.wandrell.service.application.ApplicationInfoService;
+import com.wandrell.pattern.service.application.ApplicationInfoService;
 import com.wandrell.tabletop.business.conf.factory.punkapocalyptic.DynamicReportsFactory;
 import com.wandrell.tabletop.business.conf.punkapocalyptic.ReportConf;
 import com.wandrell.tabletop.business.model.punkapocalyptic.faction.Faction;

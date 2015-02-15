@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javax.sql.rowset.Predicate;
-
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -13,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.Repository.Filter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
@@ -83,10 +82,8 @@ public final class TestDefaultGangBuilderManager {
         availabilities.add(ava);
 
         Mockito.when(
-                unitAvaRepository
-                        .getCollection((java.util.function.Predicate<FactionUnitAvailability>) Matchers
-                                .any(Predicate.class))).thenReturn(
-                availabilities);
+                unitAvaRepository.getCollection(Matchers.any(Filter.class)))
+                .thenReturn(availabilities);
 
         gang = Mockito.mock(Gang.class);
 
@@ -167,10 +164,8 @@ public final class TestDefaultGangBuilderManager {
         availabilities.add(ava);
 
         Mockito.when(
-                unitAvaRepository
-                        .getCollection((java.util.function.Predicate<FactionUnitAvailability>) Matchers
-                                .any(Predicate.class))).thenReturn(
-                availabilities);
+                unitAvaRepository.getCollection(Matchers.any(Filter.class)))
+                .thenReturn(availabilities);
 
         gang = Mockito.mock(Gang.class);
 

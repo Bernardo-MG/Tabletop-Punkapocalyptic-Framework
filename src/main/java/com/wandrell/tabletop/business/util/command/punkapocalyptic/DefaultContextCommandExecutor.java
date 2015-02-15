@@ -6,7 +6,7 @@ import com.wandrell.pattern.command.Command;
 import com.wandrell.pattern.command.CommandExecutor;
 import com.wandrell.pattern.command.ReturnCommand;
 import com.wandrell.pattern.repository.Repository;
-import com.wandrell.service.application.ApplicationInfoService;
+import com.wandrell.pattern.service.application.ApplicationInfoService;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.service.punkapocalyptic.FileService;
 import com.wandrell.tabletop.business.service.punkapocalyptic.LocalizationService;

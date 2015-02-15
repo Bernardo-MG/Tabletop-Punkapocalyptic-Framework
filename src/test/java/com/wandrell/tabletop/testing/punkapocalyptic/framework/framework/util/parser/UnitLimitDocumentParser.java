@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.module.input;
+package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -9,25 +9,25 @@ import org.jdom2.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.wandrell.pattern.parser.xml.input.JDOMDocumentDecoder;
+import com.wandrell.pattern.parser.Parser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
 
-public final class UnitLimitDocumentDecoder implements
-        JDOMDocumentDecoder<Collection<Collection<Object>>> {
+public final class UnitLimitDocumentParser implements
+        Parser<Document, Collection<Collection<Object>>> {
 
     private static final Logger logger = LoggerFactory
-                                               .getLogger(UnitLimitDocumentDecoder.class);
+                                               .getLogger(UnitLimitDocumentParser.class);
 
     private static final Logger getLogger() {
         return logger;
     }
 
-    public UnitLimitDocumentDecoder() {
+    public UnitLimitDocumentParser() {
         super();
     }
 
     @Override
-    public final Collection<Collection<Object>> decode(final Document doc) {
+    public final Collection<Collection<Object>> parse(final Document doc) {
         final Collection<Collection<Object>> colData;
 
         colData = new LinkedHashSet<>();

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.function.Predicate;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -14,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.wandrell.conf.TestingConf;
 import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.Repository.Filter;
 import com.wandrell.tabletop.business.model.punkapocalyptic.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
 import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
@@ -368,7 +368,7 @@ public final class ConstraintParameterFactory {
             avas.add(ava);
 
             repo = Mockito.mock(Repository.class);
-            Mockito.when(repo.getCollection(Matchers.any(Predicate.class)))
+            Mockito.when(repo.getCollection(Matchers.any(Filter.class)))
                     .thenReturn(avas);
 
             weaponsCol = Mockito.mock(Collection.class);

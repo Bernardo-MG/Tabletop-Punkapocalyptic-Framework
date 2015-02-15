@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.module.input;
+package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -8,18 +8,18 @@ import java.util.Set;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
-import com.wandrell.pattern.parser.xml.input.JDOMDocumentDecoder;
+import com.wandrell.pattern.parser.Parser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.TestXMLConf;
 
-public final class MaxAllowedUnitsDocumentDecoder implements
-        JDOMDocumentDecoder<Set<Collection<Integer>>> {
+public final class MaxAllowedUnitsDocumentParser implements
+        Parser<Document, Set<Collection<Integer>>> {
 
-    public MaxAllowedUnitsDocumentDecoder() {
+    public MaxAllowedUnitsDocumentParser() {
         super();
     }
 
     @Override
-    public final Set<Collection<Integer>> decode(final Document doc) {
+    public final Set<Collection<Integer>> parse(final Document doc) {
         final Set<Collection<Integer>> data;
         Collection<Integer> pair;
 
