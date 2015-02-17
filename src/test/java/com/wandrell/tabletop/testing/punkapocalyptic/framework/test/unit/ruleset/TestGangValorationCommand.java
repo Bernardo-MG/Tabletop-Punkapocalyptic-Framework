@@ -7,10 +7,10 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
-import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetGangValorationCommand;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
+import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetGangValorationCommand;
 
 public final class TestGangValorationCommand {
 

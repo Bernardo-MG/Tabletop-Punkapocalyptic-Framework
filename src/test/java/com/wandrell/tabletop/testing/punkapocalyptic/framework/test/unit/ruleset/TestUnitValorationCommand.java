@@ -8,14 +8,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.wandrell.pattern.command.ReturnCommand;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Equipment;
-import com.wandrell.tabletop.business.model.punkapocalyptic.inventory.Weapon;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.GroupedUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.MutantUnit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.mutation.Mutation;
-import com.wandrell.tabletop.business.model.valuebox.EditableValueBox;
-import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetUnitValorationCommand;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
+import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetUnitValorationCommand;
+import com.wandrell.tabletop.valuebox.EditableValueBox;
 
 public final class TestUnitValorationCommand {
 

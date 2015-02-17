@@ -8,8 +8,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.wandrell.pattern.command.ReturnCommand;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.service.punkapocalyptic.ruleset.command.GetMaxAllowedUnitsCommand;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
+import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetMaxAllowedUnitsCommand;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter.RulesetParametersFactory;
 

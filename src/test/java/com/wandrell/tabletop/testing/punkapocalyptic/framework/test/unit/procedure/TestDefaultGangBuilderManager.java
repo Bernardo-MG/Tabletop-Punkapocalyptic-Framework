@@ -12,16 +12,16 @@ import org.testng.annotations.Test;
 
 import com.wandrell.pattern.repository.Repository;
 import com.wandrell.pattern.repository.Repository.Filter;
-import com.wandrell.tabletop.business.model.punkapocalyptic.availability.FactionUnitAvailability;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Gang;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.Unit;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.GangListener;
-import com.wandrell.tabletop.business.model.punkapocalyptic.unit.event.UnitEvent;
-import com.wandrell.tabletop.business.model.valuebox.ValueBox;
-import com.wandrell.tabletop.business.procedure.Constraint;
-import com.wandrell.tabletop.business.procedure.ConstraintValidator;
-import com.wandrell.tabletop.business.procedure.punkapocalyptic.DefaultGangBuilderManager;
-import com.wandrell.tabletop.business.service.punkapocalyptic.RulesetService;
+import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.procedure.ConstraintValidator;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
+import com.wandrell.tabletop.punkapocalyptic.procedure.DefaultGangBuilderManager;
+import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
+import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class TestDefaultGangBuilderManager {
 

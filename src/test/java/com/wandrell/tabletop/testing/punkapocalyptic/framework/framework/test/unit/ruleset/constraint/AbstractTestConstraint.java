@@ -3,7 +3,7 @@ package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.u
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.wandrell.tabletop.business.procedure.Constraint;
+import com.wandrell.tabletop.procedure.Constraint;
 
 public abstract class AbstractTestConstraint {
 
