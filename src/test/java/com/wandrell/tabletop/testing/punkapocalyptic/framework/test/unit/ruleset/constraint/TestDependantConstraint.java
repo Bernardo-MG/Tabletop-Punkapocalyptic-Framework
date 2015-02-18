@@ -10,13 +10,13 @@ import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.test.un
 public class TestDependantConstraint extends AbstractTestConstraint {
 
     @DataProvider(name = NOT_VALIDATES)
-    public final static Iterator<Object[]> getNotValid() {
+    public final static Iterator<Object[]> getNotValid() throws Exception {
         return ConstraintParameterFactory.getInstance()
                 .getNotValidDependantConstraintParameters();
     }
 
     @DataProvider(name = VALIDATES)
-    public final static Iterator<Object[]> getValid() {
+    public final static Iterator<Object[]> getValid() throws Exception {
         return ConstraintParameterFactory.getInstance()
                 .getValidDependantConstraintParameters();
     }

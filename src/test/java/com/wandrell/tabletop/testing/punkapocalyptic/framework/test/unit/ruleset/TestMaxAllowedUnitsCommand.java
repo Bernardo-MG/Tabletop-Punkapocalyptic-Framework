@@ -16,7 +16,7 @@ import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.fa
 public final class TestMaxAllowedUnitsCommand {
 
     @DataProvider(name = DataProviderConf.GENERIC_PROVIDER)
-    public final static Iterator<Object[]> getData() {
+    public final static Iterator<Object[]> getData() throws Exception {
         return RulesetParametersFactory.getInstance()
                 .getMaxAllowedUnitsValues();
     }

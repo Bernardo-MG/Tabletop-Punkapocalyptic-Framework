@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 
+import org.jdom2.Document;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
-import org.springframework.context.ApplicationContext;
 
-import com.wandrell.conf.TestingConf;
+import com.wandrell.pattern.parser.Parser;
+import com.wandrell.pattern.parser.xml.FilteredEntriesXMLFileParser;
 import com.wandrell.pattern.repository.Repository;
 import com.wandrell.pattern.repository.Repository.Filter;
 import com.wandrell.tabletop.procedure.Constraint;
@@ -27,11 +27,13 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInI
 import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.punkapocalyptic.util.tag.UnitAware;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.DependantDocumentParser;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UnitLimitDocumentParser;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UpToCountDocumentParser;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UpToHalfDocumentParser;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.WeaponIntervalDocumentParser;
 import com.wandrell.tabletop.valuebox.ValueBox;
-import com.wandrell.util.ContextUtils;
-import com.wandrell.util.FileUtils;
 import com.wandrell.util.ResourceUtils;
-import com.wandrell.util.TestUtils;
 
 public final class ConstraintParameterFactory {
 
@@ -49,56 +51,74 @@ public final class ConstraintParameterFactory {
         super();
     }
 
-    public final Iterator<Object[]> getNotValidDependantConstraintParameters() {
+    public final Iterator<Object[]> getNotValidDependantConstraintParameters()
+            throws Exception {
         return getDependantConstraintParameters(getValues(
-                ConstraintParametersConf.DEPENDANT_PROPERTIES, false));
+                ConstraintParametersConf.DEPENDANT, false,
+                new DependantDocumentParser()));
     }
 
-    public final Iterator<Object[]> getNotValidUnitLimitConstraintParameters() {
+    public final Iterator<Object[]> getNotValidUnitLimitConstraintParameters()
+            throws Exception {
         return getUnitLimitConstraintParameters(getValues(
-                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, false));
+                ConstraintParametersConf.UNIT_LIMIT, false,
+                new UnitLimitDocumentParser()));
     }
 
-    public final Iterator<Object[]> getNotValidUpToCountConstraintParameters() {
+    public final Iterator<Object[]> getNotValidUpToCountConstraintParameters()
+            throws Exception {
         return getUpToCountConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, false));
+                ConstraintParametersConf.UP_TO_A_COUNT, false,
+                new UpToCountDocumentParser()));
     }
 
-    public final Iterator<Object[]> getNotValidUpToHalfConstraintParameters() {
+    public final Iterator<Object[]> getNotValidUpToHalfConstraintParameters()
+            throws Exception {
         return getUpToHalfConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, false));
+                ConstraintParametersConf.UP_TO_HALF, false,
+                new UpToHalfDocumentParser()));
     }
 
     public final Iterator<Object[]>
-            getNotValidWeaponIntervalConstraintParameters() {
+            getNotValidWeaponIntervalConstraintParameters() throws Exception {
         return getWeaponIntervalConstraintParameters(getValues(
-                ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, false));
+                ConstraintParametersConf.WEAPON_INTERVAL, false,
+                new WeaponIntervalDocumentParser()));
     }
 
-    public final Iterator<Object[]> getValidDependantConstraintParameters() {
+    public final Iterator<Object[]> getValidDependantConstraintParameters()
+            throws Exception {
         return getDependantConstraintParameters(getValues(
-                ConstraintParametersConf.DEPENDANT_PROPERTIES, true));
+                ConstraintParametersConf.DEPENDANT, true,
+                new DependantDocumentParser()));
     }
 
-    public final Iterator<Object[]> getValidUnitLimitConstraintParameters() {
+    public final Iterator<Object[]> getValidUnitLimitConstraintParameters()
+            throws Exception {
         return getUnitLimitConstraintParameters(getValues(
-                ConstraintParametersConf.UNIT_LIMIT_PROPERTIES, true));
+                ConstraintParametersConf.UNIT_LIMIT, true,
+                new UnitLimitDocumentParser()));
     }
 
-    public final Iterator<Object[]> getValidUpToCountConstraintParameters() {
+    public final Iterator<Object[]> getValidUpToCountConstraintParameters()
+            throws Exception {
         return getUpToCountConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_A_COUNT_PROPERTIES, true));
+                ConstraintParametersConf.UP_TO_A_COUNT, true,
+                new UpToCountDocumentParser()));
     }
 
-    public final Iterator<Object[]> getValidUpToHalfConstraintParameters() {
+    public final Iterator<Object[]> getValidUpToHalfConstraintParameters()
+            throws Exception {
         return getUpToHalfConstraintParameters(getValues(
-                ConstraintParametersConf.UP_TO_HALF_PROPERTIES, true));
+                ConstraintParametersConf.UP_TO_HALF, true,
+                new UpToHalfDocumentParser()));
     }
 
     public final Iterator<Object[]>
-            getValidWeaponIntervalConstraintParameters() {
+            getValidWeaponIntervalConstraintParameters() throws Exception {
         return getWeaponIntervalConstraintParameters(getValues(
-                ConstraintParametersConf.WEAPON_INTERVAL_PROPERTIES, true));
+                ConstraintParametersConf.WEAPON_INTERVAL, true,
+                new WeaponIntervalDocumentParser()));
     }
 
     private final Iterator<Object[]> getDependantConstraintParameters(
@@ -313,28 +333,25 @@ public final class ConstraintParameterFactory {
         return result.iterator();
     }
 
-    private final Collection<Collection<Object>> getValues(final String file,
-            final Boolean valid) {
-        final ApplicationContext context;
-        final Properties properties;
-        final Collection<String> required;
-        final Collection<String> rejected;
+    private final
+            Collection<Collection<Object>>
+            getValues(
+                    final String file,
+                    final Boolean valid,
+                    final Parser<Document, Collection<Collection<Object>>> parserParams)
+                    throws Exception {
+        final FilteredEntriesXMLFileParser parserFile;
 
-        properties = FileUtils.getProperties(ResourceUtils
-                .getClassPathInputStream(file));
-        context = ContextUtils.getClassPathContext(properties,
-                TestingConf.CONTEXT_FILTERED);
-
-        required = new LinkedList<>();
-        rejected = new LinkedList<>();
+        parserFile = new FilteredEntriesXMLFileParser("data");
 
         if (valid) {
-            required.add("valid");
+            parserFile.addRequiredAttribute("valid");
         } else {
-            rejected.add("valid");
+            parserFile.addRejectedAttribute("valid");
         }
 
-        return TestUtils.getParameters(context, required, rejected);
+        return parserParams.parse(parserFile.parse(ResourceUtils
+                .getClassPathReader(file)));
     }
 
     @SuppressWarnings("unchecked")

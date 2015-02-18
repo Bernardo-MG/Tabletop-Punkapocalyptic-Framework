@@ -1,18 +1,17 @@
 package com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.factory.parameter;
 
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Properties;
 
-import org.springframework.context.ApplicationContext;
+import org.jdom2.Document;
 
-import com.wandrell.conf.TestingConf;
+import com.wandrell.pattern.parser.Parser;
+import com.wandrell.pattern.parser.xml.XMLFileParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.RulesetParametersConf;
-import com.wandrell.util.ContextUtils;
-import com.wandrell.util.FileUtils;
+import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.MaxAllowedUnitsDocumentParser;
 import com.wandrell.util.ResourceUtils;
-import com.wandrell.util.TestUtils;
 
 public final class RulesetParametersFactory {
 
@@ -40,22 +39,19 @@ public final class RulesetParametersFactory {
         super();
     }
 
-    public final Iterator<Object[]> getMaxAllowedUnitsValues() {
-        final ApplicationContext context;
-        final Properties properties;
+    public final Iterator<Object[]> getMaxAllowedUnitsValues() throws Exception {
+        final Parser<Reader, Document> parserFile;
+        final Parser<Document, Collection<Collection<Object>>> parserParams;
 
         if (valuesMaxUnits == null) {
             synchronized (lockMaxAllowedUnits) {
                 if (valuesMaxUnits == null) {
-                    synchronized (lockMaxAllowedUnits) {
-                        properties = FileUtils
-                                .getProperties(ResourceUtils
-                                        .getClassPathInputStream(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS));
-                        context = ContextUtils.getClassPathContext(properties,
-                                TestingConf.CONTEXT_FILTERED);
+                    parserFile = new XMLFileParser();
+                    parserParams = new MaxAllowedUnitsDocumentParser();
 
-                        valuesMaxUnits = TestUtils.getParameters(context);
-                    }
+                    valuesMaxUnits = parserParams
+                            .parse(parserFile.parse(ResourceUtils
+                                    .getClassPathReader(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS)));
                 }
             }
         }
