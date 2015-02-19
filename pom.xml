@@ -99,7 +99,6 @@
 		<spring.version>4.1.1.RELEASE</spring.version>
 		<tabletop.version>0.1.0-SNAPSHOT</tabletop.version>
 		<testng.version>6.8.8</testng.version>
-		<wandrell.version>0.1.0-SNAPSHOT</wandrell.version>
 		<!-- Plugins versions -->
 		<plugin.checkstyle.version>2.13</plugin.checkstyle.version>
 		<plugin.compiler.version>3.2</plugin.compiler.version>
@@ -209,12 +208,6 @@
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<!-- Wandrell's Core library -->
-			<groupId>com.wandrell</groupId>
-			<artifactId>wandrell-core</artifactId>
-			<version>${wandrell.version}</version>
 		</dependency>
 	</dependencies>
 
