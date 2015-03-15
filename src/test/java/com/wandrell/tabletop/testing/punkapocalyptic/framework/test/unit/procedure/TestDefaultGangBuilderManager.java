@@ -10,8 +10,8 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicate;
 import com.wandrell.pattern.repository.Repository;
-import com.wandrell.pattern.repository.Repository.Filter;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
@@ -82,7 +82,7 @@ public final class TestDefaultGangBuilderManager {
         availabilities.add(ava);
 
         Mockito.when(
-                unitAvaRepository.getCollection(Matchers.any(Filter.class)))
+                unitAvaRepository.getCollection(Matchers.any(Predicate.class)))
                 .thenReturn(availabilities);
 
         gang = Mockito.mock(Gang.class);
@@ -164,7 +164,7 @@ public final class TestDefaultGangBuilderManager {
         availabilities.add(ava);
 
         Mockito.when(
-                unitAvaRepository.getCollection(Matchers.any(Filter.class)))
+                unitAvaRepository.getCollection(Matchers.any(Predicate.class)))
                 .thenReturn(availabilities);
 
         gang = Mockito.mock(Gang.class);

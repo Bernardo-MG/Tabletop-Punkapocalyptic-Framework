@@ -10,10 +10,10 @@ import org.jdom2.Document;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
+import com.google.common.base.Predicate;
 import com.wandrell.pattern.parser.Parser;
 import com.wandrell.pattern.parser.xml.FilteredEntriesXMLFileParser;
 import com.wandrell.pattern.repository.Repository;
-import com.wandrell.pattern.repository.Repository.Filter;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
@@ -385,7 +385,7 @@ public final class ConstraintParameterFactory {
             avas.add(ava);
 
             repo = Mockito.mock(Repository.class);
-            Mockito.when(repo.getCollection(Matchers.any(Filter.class)))
+            Mockito.when(repo.getCollection(Matchers.any(Predicate.class)))
                     .thenReturn(avas);
 
             weaponsCol = Mockito.mock(Collection.class);
