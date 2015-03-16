@@ -50,7 +50,7 @@ public final class ParseUnitEquipmentAvailabilitiesCommand implements
 
         for (final Unit unit : getUnitsRepository().getCollection(u -> true)) {
             availabilities.add(getModelService().getUnitEquipmentAvailability(
-                    unit, getEquipment(unit.getUnitName())));
+                    unit, getEquipment(unit.getName())));
         }
 
         return availabilities;

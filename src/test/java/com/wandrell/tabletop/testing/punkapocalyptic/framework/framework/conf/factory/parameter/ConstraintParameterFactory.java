@@ -150,7 +150,7 @@ public final class ConstraintParameterFactory {
             for (Integer i = 0; i < dependant; i++) {
                 unit = Mockito.mock(Unit.class);
 
-                Mockito.when(unit.getUnitName()).thenReturn(UNIT2);
+                Mockito.when(unit.getName()).thenReturn(UNIT2);
                 Mockito.when(unit.toString()).thenReturn(UNIT2);
 
                 units.add(unit);
@@ -159,7 +159,7 @@ public final class ConstraintParameterFactory {
             for (Integer i = 0; i < master; i++) {
                 unit = Mockito.mock(Unit.class);
 
-                Mockito.when(unit.getUnitName()).thenReturn(UNIT1);
+                Mockito.when(unit.getName()).thenReturn(UNIT1);
                 Mockito.when(unit.toString()).thenReturn(UNIT1);
 
                 units.add(unit);
@@ -169,7 +169,7 @@ public final class ConstraintParameterFactory {
             for (Integer i = 0; i < limit; i++) {
                 unit = Mockito.mock(Unit.class);
 
-                Mockito.when(unit.getUnitName()).thenReturn(UNIT3);
+                Mockito.when(unit.getName()).thenReturn(UNIT3);
                 Mockito.when(unit.toString()).thenReturn(UNIT3);
 
                 units.add(unit);
@@ -253,9 +253,9 @@ public final class ConstraintParameterFactory {
                 unit = Mockito.mock(Unit.class);
 
                 if (i < valid) {
-                    Mockito.when(unit.getUnitName()).thenReturn(UNIT1);
+                    Mockito.when(unit.getName()).thenReturn(UNIT1);
                 } else {
-                    Mockito.when(unit.getUnitName()).thenReturn(UNIT2);
+                    Mockito.when(unit.getName()).thenReturn(UNIT2);
                 }
 
                 units.add(unit);
@@ -302,7 +302,7 @@ public final class ConstraintParameterFactory {
             for (Integer i = 0; i < valid; i++) {
                 unit = Mockito.mock(Unit.class);
 
-                Mockito.when(unit.getUnitName()).thenReturn(UNIT1);
+                Mockito.when(unit.getName()).thenReturn(UNIT1);
 
                 units.add(unit);
             }
@@ -311,7 +311,7 @@ public final class ConstraintParameterFactory {
             for (Integer i = 0; i < limit; i++) {
                 unit = Mockito.mock(Unit.class);
 
-                Mockito.when(unit.getUnitName()).thenReturn(UNIT2);
+                Mockito.when(unit.getName()).thenReturn(UNIT2);
 
                 units.add(unit);
             }

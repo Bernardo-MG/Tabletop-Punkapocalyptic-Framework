@@ -65,9 +65,8 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
 
         ava = getUnitWeaponAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         weaponsCount = getUnit().getWeapons().size();
 

@@ -79,8 +79,8 @@ public final class DependantUnitConstraint implements Constraint, GangAware {
 
         checkNotNull(gang, "Validating a null gang");
 
-        hasUnit = (final Unit u) -> u.getUnitName().equals(getUnit());
-        hasMainUnit = (final Unit u) -> u.getUnitName().equals(getMainUnit());
+        hasUnit = (final Unit u) -> u.getName().equals(getUnit());
+        hasMainUnit = (final Unit u) -> u.getName().equals(getMainUnit());
 
         units = getGang().getUnits().stream().filter(hasUnit)
                 .collect(Collectors.toList());

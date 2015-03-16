@@ -68,7 +68,7 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint,
 
         checkNotNull(getGang(), "Validating a null gang");
 
-        isUnit = (final Unit u) -> u.getUnitName().equals(getUnit());
+        isUnit = (final Unit u) -> u.getName().equals(getUnit());
 
         units = getGang().getUnits().stream().filter(isUnit)
                 .collect(Collectors.toList());

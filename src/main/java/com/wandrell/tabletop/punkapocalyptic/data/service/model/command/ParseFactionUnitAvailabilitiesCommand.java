@@ -98,13 +98,12 @@ public final class ParseFactionUnitAvailabilitiesCommand implements
         for (final Element node : nodes) {
             unit = getUnitRepository()
                     .getCollection(
-                            u -> u.getUnitName().equals(
-                                    node.getChildText("name"))).iterator()
-                    .next();
+                            u -> u.getName().equals(node.getChildText("name")))
+                    .iterator().next();
 
             expConstraint = String
                     .format("//faction_unit[faction='%s']/units/unit[name='%s']//constraint",
-                            faction.getName(), unit.getUnitName());
+                            faction.getName(), unit.getName());
 
             nodesConstr = XPathFactory.instance()
                     .compile(expConstraint, Filters.element())
@@ -113,10 +112,8 @@ public final class ParseFactionUnitAvailabilitiesCommand implements
             constraints = new LinkedList<>();
             for (final Element constraint : nodesConstr) {
                 if (constraint.getChildren().size() == 1) {
-                    constr = getModelService()
-                            .getUnitGangConstraint(
-                                    constraint.getChildText("name"),
-                                    unit.getUnitName());
+                    constr = getModelService().getUnitGangConstraint(
+                            constraint.getChildText("name"), unit.getName());
                 } else {
                     tags = new String[constraint.getChildren().size() - 1];
                     pos = 0;
@@ -126,8 +123,8 @@ public final class ParseFactionUnitAvailabilitiesCommand implements
                         pos++;
                     }
                     constr = getModelService().getUnitGangConstraint(
-                            constraint.getChildText("name"),
-                            unit.getUnitName(), tags);
+                            constraint.getChildText("name"), unit.getName(),
+                            tags);
                 }
 
                 constraints.add(constr);

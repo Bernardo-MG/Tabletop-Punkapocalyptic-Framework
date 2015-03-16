@@ -73,9 +73,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitWeaponAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         interval.setLowerLimit(ava.getMinWeapons());
         interval.setUpperLimit(ava.getMaxWeapons());
@@ -92,9 +91,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitArmorAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         if (ava.getInitialArmor() != null) {
             armors.add(ava.getInitialArmor());
@@ -110,9 +108,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitEquipmentAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         return ava.getEquipmentOptions();
     }
@@ -123,9 +120,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitMutationAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         return ava.getMaxMutations();
     }
@@ -136,9 +132,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitMutationAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         return ava.getMutationOptions();
     }
@@ -161,9 +156,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitWeaponAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         option = ava.getWeaponOptions().stream()
                 .filter(o -> o.getWeapon().getName().equals(weapon.getName()))
@@ -179,9 +173,8 @@ public final class DefaultUnitConfigurationManager implements
 
         ava = getUnitWeaponAvailabilityRepository()
                 .getCollection(
-                        a -> a.getUnit().getUnitName()
-                                .equals(getUnit().getUnitName())).iterator()
-                .next();
+                        a -> a.getUnit().getName().equals(getUnit().getName()))
+                .iterator().next();
 
         weapons = ava.getWeaponOptions().stream().map(o -> o.getWeapon())
                 .collect(Collectors.toList());

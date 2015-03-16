@@ -26,7 +26,7 @@ public final class GroupedUnitNameFormatter extends
         final String name;
         final String result;
 
-        name = getLocalizationService().getUnitNameString(value.getUnitName());
+        name = getLocalizationService().getUnitNameString(value.getName());
         if (value instanceof GroupedUnit) {
             result = String.format("%dx %s", ((GroupedUnit) value)
                     .getGroupSize().getValue(), name);

@@ -28,6 +28,7 @@ public final class ParseArmorsCommand implements
     public ParseArmorsCommand(final Document doc,
             final Repository<SpecialRule> ruleRepository) {
         super();
+        // TODO: Transform into parsers
 
         checkNotNull(doc, "Received a null pointer as document");
         checkNotNull(ruleRepository,

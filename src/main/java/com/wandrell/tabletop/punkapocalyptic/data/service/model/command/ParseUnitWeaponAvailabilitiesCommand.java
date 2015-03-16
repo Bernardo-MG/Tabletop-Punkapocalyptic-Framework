@@ -84,9 +84,9 @@ public final class ParseUnitWeaponAvailabilitiesCommand implements
         final Integer minWeapons;
         final Integer maxWeapons;
 
-        weaponOptions = getWeaponOptions(unit.getUnitName());
-        if (getIntervals().containsKey(unit.getUnitName())) {
-            weaponsInterval = getIntervals().get(unit.getUnitName());
+        weaponOptions = getWeaponOptions(unit.getName());
+        if (getIntervals().containsKey(unit.getName())) {
+            weaponsInterval = getIntervals().get(unit.getName());
             minWeapons = weaponsInterval.getLowerLimit();
             maxWeapons = weaponsInterval.getUpperLimit();
         } else {

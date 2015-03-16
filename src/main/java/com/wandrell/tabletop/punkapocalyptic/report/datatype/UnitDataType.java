@@ -31,7 +31,7 @@ public final class UnitDataType extends AbstractDataType<Unit, Unit> {
 
     @Override
     public final String valueToString(final Unit value, final Locale locale) {
-        return value.getUnitName();
+        return value.getName();
     }
 
 }
