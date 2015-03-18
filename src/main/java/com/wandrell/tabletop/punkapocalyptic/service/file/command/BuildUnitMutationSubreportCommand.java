@@ -52,7 +52,7 @@ public final class BuildUnitMutationSubreportCommand implements
         final DRField<Mutation> field;
 
         field = new DRField<Mutation>(ReportConf.CURRENT, Mutation.class);
-        field.setDataType(new MutationDataType(getLocalizationService()));
+        field.setDataType(new MutationDataType());
 
         report = DynamicReports.report();
         report.detail(Components.horizontalList(Components.horizontalGap(10),

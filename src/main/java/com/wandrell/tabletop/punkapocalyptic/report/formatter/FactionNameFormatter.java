@@ -5,28 +5,20 @@ import net.sf.dynamicreports.report.constant.Constants;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 
 public final class FactionNameFormatter extends
         AbstractValueFormatter<String, Faction> {
 
-    private static final long         serialVersionUID = Constants.SERIAL_VERSION_UID;
-    private final LocalizationService service;
+    private static final long serialVersionUID = Constants.SERIAL_VERSION_UID;
 
-    public FactionNameFormatter(final LocalizationService service) {
+    public FactionNameFormatter() {
         super();
-
-        this.service = service;
     }
 
     @Override
     public final String format(final Faction value,
             final ReportParameters reportParameters) {
-        return getLocalizationService().getFactionNameString(value.getName());
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return service;
+        return value.getName();
     }
 
 }

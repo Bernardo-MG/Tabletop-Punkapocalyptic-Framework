@@ -10,14 +10,12 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 
 public final class WeaponEnhancementDataType extends
         AbstractDataType<WeaponEnhancement, WeaponEnhancement> {
 
     private static final long                                  serialVersionUID = 1L;
     private final DRIValueFormatter<String, WeaponEnhancement> formatter        = new WeaponEnhancementFormatter();
-    private final LocalizationService                          service;
 
     private class WeaponEnhancementFormatter extends
             AbstractValueFormatter<String, WeaponEnhancement> {
@@ -26,16 +24,13 @@ public final class WeaponEnhancementDataType extends
         @Override
         public String format(WeaponEnhancement value,
                 ReportParameters reportParameters) {
-            return getLocalizationService().getWeaponEnhancementString(
-                    value.getName());
+            return value.getName();
         }
 
     }
 
-    public WeaponEnhancementDataType(final LocalizationService service) {
+    public WeaponEnhancementDataType() {
         super();
-
-        this.service = service;
     }
 
     @Override
@@ -53,10 +48,6 @@ public final class WeaponEnhancementDataType extends
     public final String valueToString(final WeaponEnhancement value,
             final Locale locale) {
         return value.getName();
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return service;
     }
 
 }

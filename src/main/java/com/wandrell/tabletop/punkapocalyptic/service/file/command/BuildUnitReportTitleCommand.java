@@ -36,8 +36,7 @@ public final class BuildUnitReportTitleCommand implements
                 ReportConf.CURRENT, getLocalizationService()));
 
         // Unit name
-        unitName = Components.text(getUnitNameField(ReportConf.CURRENT,
-                getLocalizationService()));
+        unitName = Components.text(getUnitNameField(ReportConf.CURRENT));
 
         return factory.getBorderedCellComponentThin(Components.verticalList(
                 unitName, unitValoration));
@@ -52,13 +51,11 @@ public final class BuildUnitReportTitleCommand implements
         return localizationService;
     }
 
-    private final DRField<Unit> getUnitNameField(final String fieldName,
-            final LocalizationService service) {
+    private final DRField<Unit> getUnitNameField(final String fieldName) {
         final DRField<Unit> field;
 
         field = new DRField<Unit>(fieldName, Unit.class);
-        field.setDataType(new UnitDataType(
-                new GroupedUnitNameFormatter(service)));
+        field.setDataType(new UnitDataType(new GroupedUnitNameFormatter()));
 
         return field;
     }

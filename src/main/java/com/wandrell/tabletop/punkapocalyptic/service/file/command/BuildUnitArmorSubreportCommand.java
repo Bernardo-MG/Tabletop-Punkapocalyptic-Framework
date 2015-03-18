@@ -33,8 +33,7 @@ public final class BuildUnitArmorSubreportCommand implements
 
         armorNameLabelText = Components.text(getLocalizationService()
                 .getReportString(ReportBundleConf.ARMOR_NAME));
-        armorNameText = Components.text(getArmorNameField(ReportConf.ARMOR,
-                getLocalizationService()));
+        armorNameText = Components.text(getArmorNameField(ReportConf.ARMOR));
 
         armorArmorText = Components.text(getArmorArmorField(ReportConf.ARMOR));
 
@@ -64,12 +63,11 @@ public final class BuildUnitArmorSubreportCommand implements
         return field;
     }
 
-    private final DRField<Armor> getArmorNameField(final String fieldName,
-            final LocalizationService service) {
+    private final DRField<Armor> getArmorNameField(final String fieldName) {
         final DRField<Armor> field;
 
         field = new DRField<Armor>(fieldName, Armor.class);
-        field.setDataType(new ArmorDataType(new ArmorNameFormatter(service)));
+        field.setDataType(new ArmorDataType(new ArmorNameFormatter()));
 
         return field;
     }

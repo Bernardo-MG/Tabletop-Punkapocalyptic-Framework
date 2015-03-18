@@ -10,14 +10,12 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 
 public final class MutationDataType extends
         AbstractDataType<Mutation, Mutation> {
 
     private static final long                         serialVersionUID = 1L;
     private final DRIValueFormatter<String, Mutation> formatter        = new MutationFormatter();
-    private final LocalizationService                 service;
 
     private class MutationFormatter extends
             AbstractValueFormatter<String, Mutation> {
@@ -25,15 +23,13 @@ public final class MutationDataType extends
 
         @Override
         public String format(Mutation value, ReportParameters reportParameters) {
-            return getLocalizationService().getMutationString(value.getName());
+            return value.getName();
         }
 
     }
 
-    public MutationDataType(final LocalizationService service) {
+    public MutationDataType() {
         super();
-
-        this.service = service;
     }
 
     @Override
@@ -50,10 +46,6 @@ public final class MutationDataType extends
     public final String
             valueToString(final Mutation value, final Locale locale) {
         return value.getName();
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return service;
     }
 
 }

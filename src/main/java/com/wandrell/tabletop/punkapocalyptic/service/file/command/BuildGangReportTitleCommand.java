@@ -62,10 +62,8 @@ public final class BuildGangReportTitleCommand implements
 
         gangData = Components.verticalList();
         // Faction
-        gangData.add(Components.text(
-                getFactionNameField(ReportConf.FACTION,
-                        getLocalizationService())).setStyle(
-                factory.getTitleStyle()));
+        gangData.add(Components.text(getFactionNameField(ReportConf.FACTION))
+                .setStyle(factory.getTitleStyle()));
         // Valoration
         gangData.add(Components
                 .text(getGangValorationField(ReportConf.CURRENT)));
@@ -106,12 +104,11 @@ public final class BuildGangReportTitleCommand implements
         return appInfoService;
     }
 
-    private final DRField<Faction> getFactionNameField(final String fieldName,
-            final LocalizationService service) {
+    private final DRField<Faction> getFactionNameField(final String fieldName) {
         final DRField<Faction> field;
 
         field = new DRField<Faction>(fieldName, Faction.class);
-        field.setDataType(new FactionDataType(new FactionNameFormatter(service)));
+        field.setDataType(new FactionDataType(new FactionNameFormatter()));
 
         return field;
     }

@@ -32,6 +32,8 @@ public final class ParseFactionUnitAvailabilitiesCommand implements
             final Repository<Unit> unitRepo) {
         super();
 
+        // TODO: Bundles should not be needed here
+
         checkNotNull(doc, "Received a null pointer as document");
         checkNotNull(factionRepo,
                 "Received a null pointer as factions repository");

@@ -10,14 +10,12 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 
 public final class SpecialRulesDataType extends
         AbstractDataType<SpecialRule, SpecialRule> {
 
     private static final long                            serialVersionUID = 1L;
     private final DRIValueFormatter<String, SpecialRule> formatter        = new SpecialRuleFormatter();
-    private final LocalizationService                    service;
 
     private class SpecialRuleFormatter extends
             AbstractValueFormatter<String, SpecialRule> {
@@ -26,16 +24,13 @@ public final class SpecialRulesDataType extends
         @Override
         public String format(SpecialRule value,
                 ReportParameters reportParameters) {
-            return getLocalizationService().getSpecialRuleString(
-                    value.getName());
+            return value.getName();
         }
 
     }
 
-    public SpecialRulesDataType(final LocalizationService service) {
+    public SpecialRulesDataType() {
         super();
-
-        this.service = service;
     }
 
     @Override
@@ -52,10 +47,6 @@ public final class SpecialRulesDataType extends
     public final String valueToString(final SpecialRule value,
             final Locale locale) {
         return value.getName();
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return service;
     }
 
 }

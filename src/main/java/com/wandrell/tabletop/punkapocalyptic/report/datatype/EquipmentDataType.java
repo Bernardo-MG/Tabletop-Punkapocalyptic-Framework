@@ -10,14 +10,12 @@ import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 
 public final class EquipmentDataType extends
         AbstractDataType<Equipment, Equipment> {
 
     private static final long                          serialVersionUID = 1L;
     private final DRIValueFormatter<String, Equipment> formatter        = new EquipmentFormatter();
-    private final LocalizationService                  service;
 
     private class EquipmentFormatter extends
             AbstractValueFormatter<String, Equipment> {
@@ -26,15 +24,13 @@ public final class EquipmentDataType extends
         @Override
         public String
                 format(Equipment value, ReportParameters reportParameters) {
-            return getLocalizationService().getEquipmentString(value.getName());
+            return value.getName();
         }
 
     }
 
-    public EquipmentDataType(final LocalizationService service) {
+    public EquipmentDataType() {
         super();
-
-        this.service = service;
     }
 
     @Override
@@ -51,10 +47,6 @@ public final class EquipmentDataType extends
     public final String
             valueToString(final Equipment value, final Locale locale) {
         return value.getName();
-    }
-
-    private final LocalizationService getLocalizationService() {
-        return service;
     }
 
 }

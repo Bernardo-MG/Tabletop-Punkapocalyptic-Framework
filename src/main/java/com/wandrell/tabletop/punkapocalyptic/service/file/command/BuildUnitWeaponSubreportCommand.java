@@ -73,7 +73,7 @@ public final class BuildUnitWeaponSubreportCommand implements
         final DRField<SpecialRule> field;
 
         field = new DRField<SpecialRule>(ReportConf.CURRENT, SpecialRule.class);
-        field.setDataType(new SpecialRulesDataType(getLocalizationService()));
+        field.setDataType(new SpecialRulesDataType());
 
         report = DynamicReports.report();
         report.detail(Components.horizontalList(Components.horizontalGap(10),
@@ -193,8 +193,7 @@ public final class BuildUnitWeaponSubreportCommand implements
 
         field = new DRField<WeaponEnhancement>(ReportConf.CURRENT,
                 WeaponEnhancement.class);
-        field.setDataType(new WeaponEnhancementDataType(
-                getLocalizationService()));
+        field.setDataType(new WeaponEnhancementDataType());
 
         report = DynamicReports.report();
         report.detail(Components.horizontalList(Components.horizontalGap(10),
@@ -211,7 +210,7 @@ public final class BuildUnitWeaponSubreportCommand implements
         final DRField<Weapon> field;
 
         field = new DRField<Weapon>(fieldName, Weapon.class);
-        field.setDataType(new WeaponDataType(new WeaponNameFormatter(service)));
+        field.setDataType(new WeaponDataType(new WeaponNameFormatter()));
 
         return field;
     }

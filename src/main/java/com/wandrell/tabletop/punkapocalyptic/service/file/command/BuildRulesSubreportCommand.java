@@ -52,7 +52,7 @@ public final class BuildRulesSubreportCommand implements
         final DRField<SpecialRule> field;
 
         field = new DRField<SpecialRule>(ReportConf.CURRENT, SpecialRule.class);
-        field.setDataType(new SpecialRulesDataType(getLocalizationService()));
+        field.setDataType(new SpecialRulesDataType());
 
         report = DynamicReports.report();
         report.detail(Components.horizontalList(Components.horizontalGap(10),

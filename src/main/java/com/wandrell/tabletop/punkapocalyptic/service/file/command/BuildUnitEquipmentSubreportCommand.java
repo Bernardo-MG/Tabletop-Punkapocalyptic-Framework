@@ -48,7 +48,7 @@ public final class BuildUnitEquipmentSubreportCommand implements
         final DRField<Equipment> field;
 
         field = new DRField<Equipment>(ReportConf.CURRENT, Equipment.class);
-        field.setDataType(new EquipmentDataType(getLocalizationService()));
+        field.setDataType(new EquipmentDataType());
 
         report = DynamicReports.report();
         report.detail(Components.horizontalList(Components.horizontalGap(10),
