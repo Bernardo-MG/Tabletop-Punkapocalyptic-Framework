@@ -2,6 +2,7 @@ package com.wandrell.tabletop.punkapocalyptic.procedure.constraint;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
@@ -60,22 +61,27 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         final Boolean valid;
         final Integer weaponsCount;
         final UnitWeaponAvailability ava;
+        final Collection<UnitWeaponAvailability> avas;
 
         checkNotNull(unit, "Validating a null unit");
 
-        ava = getUnitWeaponAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitWeaponAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        weaponsCount = getUnit().getWeapons().size();
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
 
-        valid = ((weaponsCount >= ava.getMinWeapons()) && (weaponsCount <= ava
-                .getMaxWeapons()));
+            weaponsCount = getUnit().getWeapons().size();
 
-        if (!valid) {
-            formattedMessage = String.format(getMessage(), ava.getMinWeapons(),
-                    ava.getMaxWeapons());
+            valid = ((weaponsCount >= ava.getMinWeapons()) && (weaponsCount <= ava
+                    .getMaxWeapons()));
+
+            if (!valid) {
+                formattedMessage = String.format(getMessage(),
+                        ava.getMinWeapons(), ava.getMaxWeapons());
+            }
+        } else {
+            valid = false;
         }
 
         return valid;

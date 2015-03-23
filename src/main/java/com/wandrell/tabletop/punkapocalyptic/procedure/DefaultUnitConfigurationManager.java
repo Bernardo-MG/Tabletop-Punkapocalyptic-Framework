@@ -68,16 +68,22 @@ public final class DefaultUnitConfigurationManager implements
     public final Interval getAllowedWeaponsInterval() {
         final Interval interval;
         final UnitWeaponAvailability ava;
+        final Collection<UnitWeaponAvailability> avas;
 
         interval = new DefaultInterval();
 
-        ava = getUnitWeaponAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitWeaponAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        interval.setLowerLimit(ava.getMinWeapons());
-        interval.setUpperLimit(ava.getMaxWeapons());
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
+
+            interval.setLowerLimit(ava.getMinWeapons());
+            interval.setUpperLimit(ava.getMaxWeapons());
+        } else {
+            interval.setLowerLimit(0);
+            interval.setUpperLimit(0);
+        }
 
         return interval;
     }
@@ -86,17 +92,20 @@ public final class DefaultUnitConfigurationManager implements
     public final Collection<Armor> getArmorOptions() {
         final Collection<Armor> armors;
         final UnitArmorAvailability ava;
+        final Collection<UnitArmorAvailability> avas;
 
         armors = new LinkedList<>();
 
-        ava = getUnitArmorAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitArmorAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        if (ava.getInitialArmor() != null) {
-            armors.add(ava.getInitialArmor());
-            armors.addAll(ava.getArmorOptions());
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
+
+            if (ava.getInitialArmor() != null) {
+                armors.add(ava.getInitialArmor());
+                armors.addAll(ava.getArmorOptions());
+            }
         }
 
         return armors;
@@ -105,37 +114,55 @@ public final class DefaultUnitConfigurationManager implements
     @Override
     public final Collection<Equipment> getEquipmentOptions() {
         final UnitEquipmentAvailability ava;
+        final Collection<UnitEquipmentAvailability> avas;
+        final Collection<Equipment> equipment;
 
-        ava = getUnitEquipmentAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitEquipmentAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        return ava.getEquipmentOptions();
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
+            equipment = ava.getEquipmentOptions();
+        } else {
+            equipment = new LinkedList<>();
+        }
+
+        return equipment;
     }
 
     @Override
     public final Integer getMaxMutations() {
         final UnitMutationAvailability ava;
+        final Collection<UnitMutationAvailability> avas;
+        final Integer max;
 
-        ava = getUnitMutationAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitMutationAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        return ava.getMaxMutations();
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
+            max = ava.getMaxMutations();
+        } else {
+            max = 0;
+        }
+
+        return max;
     }
 
     @Override
     public final Collection<Mutation> getMutations() {
-        final UnitMutationAvailability ava;
+        final Collection<UnitMutationAvailability> avas;
+        final Collection<Mutation> mutations;
 
-        ava = getUnitMutationAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitMutationAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
+        if (!avas.isEmpty()) {
+            mutations = avas.iterator().next().getMutationOptions();
+        } else {
+            mutations = new LinkedList<>();
+        }
 
-        return ava.getMutationOptions();
+        return mutations;
     }
 
     @Override
@@ -153,34 +180,51 @@ public final class DefaultUnitConfigurationManager implements
             final Weapon weapon) {
         final WeaponOption option;
         final UnitWeaponAvailability ava;
+        final Collection<UnitWeaponAvailability> avas;
+        final Collection<WeaponEnhancement> enhancements;
 
-        ava = getUnitWeaponAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitWeaponAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        option = ava.getWeaponOptions().stream()
-                .filter(o -> o.getWeapon().getName().equals(weapon.getName()))
-                .iterator().next();
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
 
-        return option.getEnhancements();
+            option = ava
+                    .getWeaponOptions()
+                    .stream()
+                    .filter(o -> o.getWeapon().getName()
+                            .equals(weapon.getName())).iterator().next();
+
+            enhancements = option.getEnhancements();
+        } else {
+            enhancements = new LinkedList<>();
+        }
+
+        return enhancements;
     }
 
     @Override
     public final Collection<Weapon> getWeaponOptions() {
+        final Collection<Weapon> weaponOptions;
         final Collection<Weapon> weapons;
         final UnitWeaponAvailability ava;
+        final Collection<UnitWeaponAvailability> avas;
 
-        ava = getUnitWeaponAvailabilityRepository()
-                .getCollection(
-                        a -> a.getUnit().getName().equals(getUnit().getName()))
-                .iterator().next();
+        avas = getUnitWeaponAvailabilityRepository().getCollection(
+                a -> a.getUnit().getName().equals(getUnit().getName()));
 
-        weapons = ava.getWeaponOptions().stream().map(o -> o.getWeapon())
-                .collect(Collectors.toList());
+        if (!avas.isEmpty()) {
+            ava = avas.iterator().next();
 
-        return getRulesetService().filterWeaponOptions(getUnit().getWeapons(),
-                weapons);
+            weaponOptions = ava.getWeaponOptions().stream()
+                    .map(o -> o.getWeapon()).collect(Collectors.toList());
+            weapons = getRulesetService().filterWeaponOptions(
+                    getUnit().getWeapons(), weaponOptions);
+        } else {
+            weapons = new LinkedList<>();
+        }
+
+        return weapons;
     }
 
     @Override

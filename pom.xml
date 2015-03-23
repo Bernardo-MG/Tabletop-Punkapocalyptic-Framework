@@ -197,6 +197,12 @@
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
+			<!-- Tabletop's Punkapocalyptic Core -->
+			<groupId>com.wandrell.tabletop</groupId>
+			<artifactId>punkapocalyptic-core</artifactId>
+			<version>${tabletop.version}</version>
+		</dependency>
+		<dependency>
 			<!-- Tabletop's Punkapocalyptic Framework API -->
 			<groupId>com.wandrell.tabletop</groupId>
 			<artifactId>punkapocalyptic-framework-api</artifactId>
