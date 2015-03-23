@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Predicate;
 import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
@@ -66,7 +67,16 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         checkNotNull(unit, "Validating a null unit");
 
         avas = getUnitWeaponAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitWeaponAvailability>() {
+
+                    @Override
+                    public final boolean apply(
+                            final UnitWeaponAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();

@@ -3,10 +3,11 @@ package com.wandrell.tabletop.punkapocalyptic.procedure;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
 
 import javax.swing.event.EventListenerList;
 
+import com.google.common.base.Predicate;
 import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
@@ -43,9 +44,19 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
                 ava = getFactionUnitAvailabilityRepository()
                         .getCollection(
-                                a -> a.getUnit().getName()
-                                        .equals(event.getUnit().getName()))
-                        .iterator().next();
+                                new Predicate<FactionUnitAvailability>() {
+
+                                    @Override
+                                    public boolean apply(
+                                            FactionUnitAvailability input) {
+                                        return input
+                                                .getUnit()
+                                                .getName()
+                                                .equals(event.getUnit()
+                                                        .getName());
+                                    }
+
+                                }).iterator().next();
 
                 constraints = ava.getConstraints();
 
@@ -66,9 +77,16 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 for (final Unit unit : getGang().getUnits()) {
                     ava = getFactionUnitAvailabilityRepository()
                             .getCollection(
-                                    a -> a.getUnit().getName()
-                                            .equals(unit.getName())).iterator()
-                            .next();
+                                    new Predicate<FactionUnitAvailability>() {
+
+                                        @Override
+                                        public boolean apply(
+                                                FactionUnitAvailability input) {
+                                            return input.getUnit().getName()
+                                                    .equals(unit.getName());
+                                        }
+
+                                    }).iterator().next();
 
                     for (final Constraint constraint : ava.getConstraints()) {
                         getConstraintValidator().addConstraint(constraint);
@@ -137,12 +155,22 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     @Override
     public final Collection<Unit> getUnitOptions() {
         final Collection<Unit> result;
+        final Collection<FactionUnitAvailability> avas;
 
-        result = getFactionUnitAvailabilityRepository()
-                .getCollection(
-                        a -> a.getFaction().getName()
-                                .equals(getGang().getFaction().getName()))
-                .stream().map(a -> a.getUnit()).collect(Collectors.toList());
+        avas = getFactionUnitAvailabilityRepository().getCollection(
+                new Predicate<FactionUnitAvailability>() {
+
+                    @Override
+                    public boolean apply(FactionUnitAvailability input) {
+                        return input.getFaction().getName()
+                                .equals(getGang().getFaction().getName());
+                    }
+
+                });
+        result = new LinkedList<>();
+        for (final FactionUnitAvailability ava : avas) {
+            result.add(ava.getUnit());
+        }
 
         return result;
     }

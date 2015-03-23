@@ -5,10 +5,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
@@ -74,10 +74,16 @@ public final class UnitUpToACountConstraint implements Constraint, GangAware {
 
         checkNotNull(gang, "Validating a null gang");
 
-        isUnit = (final Unit u) -> u.getName().equals(getUnit());
+        isUnit = new Predicate<Unit>() {
 
-        units = getGang().getUnits().stream().filter(isUnit)
-                .collect(Collectors.toList());
+            @Override
+            public final boolean apply(final Unit input) {
+                return input.getName().equals(getUnit());
+            }
+
+        };
+
+        units = Collections2.filter(getGang().getUnits(), isUnit);
 
         return (units.size() <= getCount());
     }

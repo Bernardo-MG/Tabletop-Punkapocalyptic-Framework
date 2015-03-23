@@ -5,10 +5,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
@@ -79,13 +79,25 @@ public final class DependantUnitConstraint implements Constraint, GangAware {
 
         checkNotNull(gang, "Validating a null gang");
 
-        hasUnit = (final Unit u) -> u.getName().equals(getUnit());
-        hasMainUnit = (final Unit u) -> u.getName().equals(getMainUnit());
+        hasUnit = new Predicate<Unit>() {
 
-        units = getGang().getUnits().stream().filter(hasUnit)
-                .collect(Collectors.toList());
-        mainUnits = getGang().getUnits().stream().filter(hasMainUnit)
-                .collect(Collectors.toList());
+            @Override
+            public final boolean apply(final Unit input) {
+                return input.getName().equals(getUnit());
+            }
+
+        };
+        hasMainUnit = new Predicate<Unit>() {
+
+            @Override
+            public final boolean apply(final Unit input) {
+                return input.getName().equals(getMainUnit());
+            }
+
+        };
+
+        units = Collections2.filter(getGang().getUnits(), hasUnit);
+        mainUnits = Collections2.filter(getGang().getUnits(), hasMainUnit);
 
         return (units.size() <= (mainUnits.size() * getCount()));
     }

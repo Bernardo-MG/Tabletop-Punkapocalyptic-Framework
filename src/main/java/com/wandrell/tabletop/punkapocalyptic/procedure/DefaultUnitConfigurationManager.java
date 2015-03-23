@@ -4,8 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.wandrell.pattern.repository.Repository;
 import com.wandrell.tabletop.interval.DefaultInterval;
 import com.wandrell.tabletop.interval.Interval;
@@ -73,7 +74,15 @@ public final class DefaultUnitConfigurationManager implements
         interval = new DefaultInterval();
 
         avas = getUnitWeaponAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitWeaponAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitWeaponAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();
@@ -97,7 +106,15 @@ public final class DefaultUnitConfigurationManager implements
         armors = new LinkedList<>();
 
         avas = getUnitArmorAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitArmorAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitArmorAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();
@@ -118,7 +135,15 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<Equipment> equipment;
 
         avas = getUnitEquipmentAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitEquipmentAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitEquipmentAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();
@@ -137,7 +162,15 @@ public final class DefaultUnitConfigurationManager implements
         final Integer max;
 
         avas = getUnitMutationAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitMutationAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitMutationAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();
@@ -155,7 +188,15 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<Mutation> mutations;
 
         avas = getUnitMutationAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitMutationAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitMutationAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
         if (!avas.isEmpty()) {
             mutations = avas.iterator().next().getMutationOptions();
         } else {
@@ -184,16 +225,31 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<WeaponEnhancement> enhancements;
 
         avas = getUnitWeaponAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitWeaponAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitWeaponAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
             ava = avas.iterator().next();
 
-            option = ava
-                    .getWeaponOptions()
-                    .stream()
-                    .filter(o -> o.getWeapon().getName()
-                            .equals(weapon.getName())).iterator().next();
+            option = Collections2
+                    .filter(ava.getWeaponOptions(),
+                            new Predicate<WeaponOption>() {
+
+                                @Override
+                                public final boolean apply(
+                                        final WeaponOption input) {
+                                    return input.getWeapon().getName()
+                                            .equals(weapon.getName());
+                                }
+
+                            }).iterator().next();
 
             enhancements = option.getEnhancements();
         } else {
@@ -207,17 +263,26 @@ public final class DefaultUnitConfigurationManager implements
     public final Collection<Weapon> getWeaponOptions() {
         final Collection<Weapon> weaponOptions;
         final Collection<Weapon> weapons;
-        final UnitWeaponAvailability ava;
         final Collection<UnitWeaponAvailability> avas;
 
         avas = getUnitWeaponAvailabilityRepository().getCollection(
-                a -> a.getUnit().getName().equals(getUnit().getName()));
+                new Predicate<UnitWeaponAvailability>() {
+
+                    @Override
+                    public boolean apply(UnitWeaponAvailability input) {
+                        return input.getUnit().getName()
+                                .equals(getUnit().getName());
+                    }
+
+                });
 
         if (!avas.isEmpty()) {
-            ava = avas.iterator().next();
-
-            weaponOptions = ava.getWeaponOptions().stream()
-                    .map(o -> o.getWeapon()).collect(Collectors.toList());
+            weaponOptions = new LinkedList<>();
+            for (final UnitWeaponAvailability avai : avas) {
+                for (final WeaponOption option : avai.getWeaponOptions()) {
+                    weaponOptions.add(option.getWeapon());
+                }
+            }
             weapons = getRulesetService().filterWeaponOptions(
                     getUnit().getWeapons(), weaponOptions);
         } else {
