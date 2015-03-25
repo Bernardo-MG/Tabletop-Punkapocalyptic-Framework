@@ -1,4 +1,4 @@
-package com.wandrell.tabletop.punkapocalyptic.valuebox.derived;
+package com.wandrell.tabletop.punkapocalyptic.valuebox;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -9,18 +9,17 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.valuebox.derived.AbstractDerivedValueViewPoint;
-import com.wandrell.tabletop.valuebox.derived.DerivedValueViewPoint;
+import com.wandrell.tabletop.valuebox.AbstractValueBox;
+import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class UnitValorationDerivedValueViewPoint extends
-        AbstractDerivedValueViewPoint {
+public final class UnitValorationValueBox extends AbstractValueBox {
 
     private final UnitListener   listener;
     private final RulesetService serviceRuleset;
     private final Unit           unit;
 
     {
-        final DerivedValueViewPoint source = this;
+        final ValueBox source = this;
         listener = new UnitListenerAdapter() {
 
             @Override
@@ -32,8 +31,7 @@ public final class UnitValorationDerivedValueViewPoint extends
         };
     }
 
-    public UnitValorationDerivedValueViewPoint(final Unit unit,
-            final RulesetService service) {
+    public UnitValorationValueBox(final Unit unit, final RulesetService service) {
         super();
 
         checkNotNull(unit, "Received a null pointer as unit");
@@ -45,8 +43,7 @@ public final class UnitValorationDerivedValueViewPoint extends
         unit.addUnitListener(getListener());
     }
 
-    public UnitValorationDerivedValueViewPoint(
-            final UnitValorationDerivedValueViewPoint store) {
+    public UnitValorationValueBox(final UnitValorationValueBox store) {
         super();
 
         checkNotNull(store, "Received a null pointer as store");

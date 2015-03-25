@@ -18,5 +18,5 @@
  * 
  * @author Bernardo Martínez Garrido
  */
-package com.wandrell.tabletop.punkapocalyptic.valuebox.derived;
+package com.wandrell.tabletop.punkapocalyptic.valuebox;
 
