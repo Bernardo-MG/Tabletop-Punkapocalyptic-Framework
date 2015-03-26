@@ -15,7 +15,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetUnitValorationCommand;
-import com.wandrell.tabletop.valuebox.EditableValueBox;
+import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class TestUnitValorationCommand {
 
@@ -54,7 +54,7 @@ public final class TestUnitValorationCommand {
         final GroupedUnit unit;
         final Collection<Equipment> equipment;
         final Collection<Weapon> weapons;
-        final EditableValueBox size;
+        final ValueBox size;
         Equipment equip;
         Weapon weapon;
 
@@ -85,7 +85,7 @@ public final class TestUnitValorationCommand {
 
         equipment.add(equip);
 
-        size = Mockito.mock(EditableValueBox.class);
+        size = Mockito.mock(ValueBox.class);
         Mockito.when(size.getValue()).thenReturn(2);
 
         Mockito.when(unit.getEquipment()).thenReturn(equipment);

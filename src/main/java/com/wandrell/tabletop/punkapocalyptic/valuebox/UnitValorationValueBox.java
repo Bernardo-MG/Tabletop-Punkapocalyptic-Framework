@@ -53,6 +53,11 @@ public final class UnitValorationValueBox extends AbstractValueBox {
     }
 
     @Override
+    public final UnitValorationValueBox createNewInstance() {
+        return new UnitValorationValueBox(this);
+    }
+
+    @Override
     public final Integer getValue() {
         return getRulesetService().getUnitValoration(getUnit());
     }

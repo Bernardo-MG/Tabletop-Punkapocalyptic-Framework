@@ -55,6 +55,11 @@ public final class GangValorationValueBox extends AbstractValueBox implements
     }
 
     @Override
+    public final GangValorationValueBox createNewInstance() {
+        return new GangValorationValueBox(this);
+    }
+
+    @Override
     public final Integer getValue() {
         return getRulesetService().getGangValoration(getGang());
     }
