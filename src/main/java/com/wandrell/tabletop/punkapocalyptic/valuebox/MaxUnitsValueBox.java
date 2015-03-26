@@ -9,10 +9,12 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
+import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.valuebox.AbstractValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class MaxUnitsValueBox extends AbstractValueBox {
+public final class MaxUnitsValueBox extends AbstractValueBox implements
+        GangAware {
 
     private Gang                 gang;
     private final GangListener   listener;
@@ -63,6 +65,7 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
         return getRulesetService().getMaxAllowedUnits(getGang());
     }
 
+    @Override
     public final void setGang(final Gang gang) {
         if (this.gang != null) {
             this.gang.addGangListener(getListener());
