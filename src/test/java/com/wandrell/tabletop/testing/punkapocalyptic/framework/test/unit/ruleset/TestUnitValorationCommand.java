@@ -29,7 +29,8 @@ public final class TestUnitValorationCommand {
 
         command = new GetUnitValorationCommand(getUnit());
 
-        Assert.assertEquals(command.execute(), (Integer) 15);
+        command.execute();
+        Assert.assertEquals(command.getResult(), (Integer) 15);
     }
 
     @Test
@@ -38,7 +39,8 @@ public final class TestUnitValorationCommand {
 
         command = new GetUnitValorationCommand(getGroupedUnit());
 
-        Assert.assertEquals(command.execute(), (Integer) 30);
+        command.execute();
+        Assert.assertEquals(command.getResult(), (Integer) 30);
     }
 
     @Test
@@ -47,7 +49,8 @@ public final class TestUnitValorationCommand {
 
         command = new GetUnitValorationCommand(getMutantUnit());
 
-        Assert.assertEquals(command.execute(), (Integer) 28);
+        command.execute();
+        Assert.assertEquals(command.getResult(), (Integer) 28);
     }
 
     private final GroupedUnit getGroupedUnit() {

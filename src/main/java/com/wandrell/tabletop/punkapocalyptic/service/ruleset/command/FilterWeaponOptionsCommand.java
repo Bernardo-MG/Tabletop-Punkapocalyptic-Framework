@@ -11,6 +11,7 @@ public final class FilterWeaponOptionsCommand implements
         ReturnCommand<Collection<Weapon>> {
 
     private final Collection<Weapon> weapons;
+    private Collection<Weapon>       weaponsFiltered;
     private final Collection<Weapon> weaponsHas;
 
     public FilterWeaponOptionsCommand(final Collection<Weapon> weaponsHas,
@@ -22,8 +23,7 @@ public final class FilterWeaponOptionsCommand implements
     }
 
     @Override
-    public final Collection<Weapon> execute() throws Exception {
-        final Collection<Weapon> result;
+    public final void execute() throws Exception {
         final Iterator<Weapon> itrWeapons;
         Weapon weapon;
         Boolean hasTwoHanded;
@@ -36,7 +36,7 @@ public final class FilterWeaponOptionsCommand implements
             hasTwoHanded = weapon.isTwoHanded();
         }
 
-        result = new LinkedHashSet<>();
+        weaponsFiltered = new LinkedHashSet<>();
         for (final Weapon w : getWeapons()) {
             // Checks if the unit already has that weapon
             if (!getUnitWeapons().contains(w)) {
@@ -44,15 +44,18 @@ public final class FilterWeaponOptionsCommand implements
                     // If it is two handed
                     // Then the unit should have no 2h weapon
                     if (!hasTwoHanded) {
-                        result.add(w);
+                        weaponsFiltered.add(w);
                     }
                 } else {
-                    result.add(w);
+                    weaponsFiltered.add(w);
                 }
             }
         }
+    }
 
-        return result;
+    @Override
+    public final Collection<Weapon> getResult() {
+        return weaponsFiltered;
     }
 
     private final Collection<Weapon> getUnitWeapons() {

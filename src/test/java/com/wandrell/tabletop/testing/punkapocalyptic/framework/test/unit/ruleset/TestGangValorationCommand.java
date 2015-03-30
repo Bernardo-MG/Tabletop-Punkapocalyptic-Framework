@@ -25,7 +25,8 @@ public final class TestGangValorationCommand {
         command = new GetGangValorationCommand(getGang());
         command.setRulesetService(getRulesetService());
 
-        Assert.assertEquals(command.execute(), (Integer) 46);
+        command.execute();
+        Assert.assertEquals(command.getResult(), (Integer) 46);
     }
 
     private final Gang getGang() {

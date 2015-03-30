@@ -36,7 +36,8 @@ public final class TestMaxAllowedUnitsCommand {
 
         command = new GetMaxAllowedUnitsCommand(gang);
 
-        Assert.assertEquals(command.execute(), units);
+        command.execute();
+        Assert.assertEquals(command.getResult(), units);
     }
 
 }

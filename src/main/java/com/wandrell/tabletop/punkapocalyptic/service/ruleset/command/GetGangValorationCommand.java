@@ -11,6 +11,7 @@ import com.wandrell.tabletop.punkapocalyptic.util.tag.service.RulesetServiceAwar
 public final class GetGangValorationCommand implements ReturnCommand<Integer>,
         RulesetServiceAware {
 
+    private Integer        cost;
     private final Gang     gang;
     private RulesetService serviceRuleset;
 
@@ -23,16 +24,17 @@ public final class GetGangValorationCommand implements ReturnCommand<Integer>,
     }
 
     @Override
-    public final Integer execute() {
-        Integer cost;
-
+    public final void execute() {
         cost = 0;
         for (final Unit unit : getGang().getUnits()) {
             cost += unit.getValoration();
         }
 
         cost += (getGang().getBullets() * getRulesetService().getBulletCost());
+    }
 
+    @Override
+    public final Integer getResult() {
         return cost;
     }
 

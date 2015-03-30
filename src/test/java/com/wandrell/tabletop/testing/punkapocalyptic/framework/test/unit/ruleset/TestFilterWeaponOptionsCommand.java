@@ -60,7 +60,8 @@ public final class TestFilterWeaponOptionsCommand {
         filter = new FilterWeaponOptionsCommand(getNoTwoHandedWeapons(),
                 getWeaponOptions());
 
-        weapons = filter.execute();
+        filter.execute();
+        weapons = filter.getResult();
 
         Assert.assertEquals(weapons.size(), 2);
 
@@ -76,7 +77,8 @@ public final class TestFilterWeaponOptionsCommand {
         filter = new FilterWeaponOptionsCommand(getTwoHandedWeapons(),
                 getWeaponOptions());
 
-        weapons = filter.execute();
+        filter.execute();
+        weapons = filter.getResult();
 
         Assert.assertEquals(weapons.size(), 1);
 

@@ -13,6 +13,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
 
     private final Unit unit;
+    private Integer    valoration;
 
     public GetUnitValorationCommand(final Unit unit) {
         super();
@@ -23,35 +24,39 @@ public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
     }
 
     @Override
-    public final Integer execute() {
-        Integer cost;
+    public final void execute() {
+        Integer valoration;
 
-        cost = getUnit().getBaseCost();
+        valoration = getUnit().getBaseCost();
 
         for (final Weapon weapon : getUnit().getWeapons()) {
-            cost += weapon.getCost();
+            valoration += weapon.getCost();
         }
 
         for (final Equipment equipment : getUnit().getEquipment()) {
-            cost += equipment.getCost();
+            valoration += equipment.getCost();
         }
 
         if (getUnit().getArmor() != null) {
-            cost += getUnit().getArmor().getCost();
+            valoration += getUnit().getArmor().getCost();
         }
 
         if (getUnit() instanceof MutantUnit) {
             for (final Mutation mutation : ((MutantUnit) getUnit())
                     .getMutations()) {
-                cost += mutation.getCost();
+                valoration += mutation.getCost();
             }
         }
 
         if (getUnit() instanceof GroupedUnit) {
-            cost = cost * ((GroupedUnit) getUnit()).getGroupSize().getValue();
+            valoration = valoration
+                    * ((GroupedUnit) getUnit()).getGroupSize().getValue();
         }
+    }
 
-        return cost;
+    @Override
+    public final Integer getResult() {
+        return valoration;
     }
 
     private final Unit getUnit() {
