@@ -2,10 +2,10 @@ package com.wandrell.tabletop.punkapocalyptic.service.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.command.ResultCommand;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 
-public final class GetMaxAllowedUnitsCommand implements ReturnCommand<Integer> {
+public final class GetMaxAllowedUnitsCommand implements ResultCommand<Integer> {
 
     private static final Integer RANGE = 100;
     private static final Integer STEP  = 3;

@@ -7,7 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.command.ResultCommand;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetMaxAllowedUnitsCommand;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
@@ -28,7 +28,7 @@ public final class TestMaxAllowedUnitsCommand {
     @Test(dataProvider = DataProviderConf.GENERIC_PROVIDER)
     public final void testCommand(final Integer points, final Integer units)
             throws Exception {
-        final ReturnCommand<Integer> command;
+        final ResultCommand<Integer> command;
         final Gang gang;
 
         gang = Mockito.mock(Gang.class);

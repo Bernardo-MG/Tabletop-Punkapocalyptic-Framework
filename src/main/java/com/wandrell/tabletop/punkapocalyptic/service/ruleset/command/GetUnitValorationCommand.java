@@ -2,7 +2,7 @@ package com.wandrell.tabletop.punkapocalyptic.service.ruleset.command;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.command.ResultCommand;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
@@ -10,7 +10,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 
-public final class GetUnitValorationCommand implements ReturnCommand<Integer> {
+public final class GetUnitValorationCommand implements ResultCommand<Integer> {
 
     private final Unit unit;
     private Integer    valoration;

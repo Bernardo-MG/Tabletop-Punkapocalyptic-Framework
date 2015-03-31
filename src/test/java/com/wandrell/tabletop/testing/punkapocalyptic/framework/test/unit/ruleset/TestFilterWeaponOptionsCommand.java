@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.command.ResultCommand;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.FilterWeaponOptionsCommand;
 
@@ -54,7 +54,7 @@ public final class TestFilterWeaponOptionsCommand {
 
     @Test
     public final void testFilterWeaponOptions_NoTwoHanded() throws Exception {
-        final ReturnCommand<Collection<Weapon>> filter;
+        final ResultCommand<Collection<Weapon>> filter;
         final Collection<Weapon> weapons;
 
         filter = new FilterWeaponOptionsCommand(getNoTwoHandedWeapons(),
@@ -71,7 +71,7 @@ public final class TestFilterWeaponOptionsCommand {
 
     @Test
     public final void testFilterWeaponOptions_TwoHanded() throws Exception {
-        final ReturnCommand<Collection<Weapon>> filter;
+        final ResultCommand<Collection<Weapon>> filter;
         final Collection<Weapon> weapons;
 
         filter = new FilterWeaponOptionsCommand(getTwoHandedWeapons(),

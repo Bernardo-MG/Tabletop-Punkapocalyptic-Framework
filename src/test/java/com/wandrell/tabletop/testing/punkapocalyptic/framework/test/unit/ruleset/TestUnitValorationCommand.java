@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.wandrell.pattern.command.ReturnCommand;
+import com.wandrell.pattern.command.ResultCommand;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
@@ -25,7 +25,7 @@ public final class TestUnitValorationCommand {
 
     @Test
     public final void testValoration_BaseUnit() throws Exception {
-        final ReturnCommand<Integer> command;
+        final ResultCommand<Integer> command;
 
         command = new GetUnitValorationCommand(getUnit());
 
@@ -35,7 +35,7 @@ public final class TestUnitValorationCommand {
 
     @Test
     public final void testValoration_GroupedUnit() throws Exception {
-        final ReturnCommand<Integer> command;
+        final ResultCommand<Integer> command;
 
         command = new GetUnitValorationCommand(getGroupedUnit());
 
@@ -45,7 +45,7 @@ public final class TestUnitValorationCommand {
 
     @Test
     public final void testValoration_MutantUnit() throws Exception {
-        final ReturnCommand<Integer> command;
+        final ResultCommand<Integer> command;
 
         command = new GetUnitValorationCommand(getMutantUnit());
 
