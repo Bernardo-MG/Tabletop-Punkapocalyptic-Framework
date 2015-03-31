@@ -25,8 +25,6 @@ public final class GetUnitValorationCommand implements ResultCommand<Integer> {
 
     @Override
     public final void execute() {
-        Integer valoration;
-
         valoration = getUnit().getBaseCost();
 
         for (final Weapon weapon : getUnit().getWeapons()) {
