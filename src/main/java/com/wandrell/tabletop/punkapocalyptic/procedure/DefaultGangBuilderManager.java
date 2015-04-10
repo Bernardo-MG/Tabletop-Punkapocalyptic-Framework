@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import javax.swing.event.EventListenerList;
 
 import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
@@ -25,14 +25,14 @@ import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private Gang                                      gang;
-    private final GangListener                        gangListener;
-    private final EventListenerList                   listeners = new EventListenerList();
-    private final ValueBox                            maxUnits;
-    private RulesetService                            serviceRuleset;
-    private final Repository<FactionUnitAvailability> unitAvaRepository;
-    private final Constraint                          unitLimitConstraint;
-    private final ConstraintValidator                 validator;
+    private Gang                                                                                   gang;
+    private final GangListener                                                                     gangListener;
+    private final EventListenerList                                                                listeners = new EventListenerList();
+    private final ValueBox                                                                         maxUnits;
+    private RulesetService                                                                         serviceRuleset;
+    private final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
+    private final Constraint                                                                       unitLimitConstraint;
+    private final ConstraintValidator                                                              validator;
 
     {
         gangListener = new GangListenerAdapter() {
@@ -99,9 +99,11 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         };
     }
 
-    public DefaultGangBuilderManager(final Constraint unitLimitConstraint,
-            final ConstraintValidator validator, final ValueBox maxUnits,
-            final Repository<FactionUnitAvailability> unitAvaRepository,
+    public DefaultGangBuilderManager(
+            final Constraint unitLimitConstraint,
+            final ConstraintValidator validator,
+            final ValueBox maxUnits,
+            final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository,
             final RulesetService rulesetService) {
         super();
 
@@ -259,7 +261,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return validator;
     }
 
-    private final Repository<FactionUnitAvailability>
+    private final
+            QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>>
             getFactionUnitAvailabilityRepository() {
         return unitAvaRepository;
     }

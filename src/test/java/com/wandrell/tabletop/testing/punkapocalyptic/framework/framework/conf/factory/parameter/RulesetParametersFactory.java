@@ -51,7 +51,7 @@ public final class RulesetParametersFactory {
 
                     valuesMaxUnits = parserParams
                             .parse(parserFile.parse(ResourceUtils
-                                    .getClassPathReader(RulesetParametersConf.PROPERTIES_MAX_ALLOWED_UNITS)));
+                                    .getClassPathReader(RulesetParametersConf.MAX_ALLOWED_UNITS)));
                 }
             }
         }

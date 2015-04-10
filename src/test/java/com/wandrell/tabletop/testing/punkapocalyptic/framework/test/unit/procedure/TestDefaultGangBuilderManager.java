@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
@@ -45,7 +45,7 @@ public final class TestDefaultGangBuilderManager {
         final Iterator<Constraint> itrConstraints;
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
-        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final Constraint unitLimitConstraint;
         final ValueBox maxUnits;
         final RulesetService rulesetService;
@@ -55,7 +55,7 @@ public final class TestDefaultGangBuilderManager {
                 "UnitLimitConstraint");
 
         maxUnits = Mockito.mock(ValueBox.class);
-        unitAvaRepository = Mockito.mock(Repository.class);
+        unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
 
         validator = Mockito.mock(ConstraintValidator.class);
@@ -127,7 +127,7 @@ public final class TestDefaultGangBuilderManager {
         final Constraint constraint;
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
-        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final Constraint unitLimitConstraint;
         final ValueBox maxUnits;
         final RulesetService rulesetService;
@@ -137,7 +137,7 @@ public final class TestDefaultGangBuilderManager {
                 "UnitLimitConstraint");
 
         maxUnits = Mockito.mock(ValueBox.class);
-        unitAvaRepository = Mockito.mock(Repository.class);
+        unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
 
         validator = Mockito.mock(ConstraintValidator.class);
@@ -198,7 +198,7 @@ public final class TestDefaultGangBuilderManager {
     public final void testValidate_NoValidates() {
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
-        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final Constraint unitLimitConstraint;
         final ValueBox maxUnits;
         final RulesetService rulesetService;
@@ -208,7 +208,7 @@ public final class TestDefaultGangBuilderManager {
                 "UnitLimitConstraint");
 
         maxUnits = Mockito.mock(ValueBox.class);
-        unitAvaRepository = Mockito.mock(Repository.class);
+        unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
 
         validator = Mockito.mock(ConstraintValidator.class);
@@ -225,7 +225,7 @@ public final class TestDefaultGangBuilderManager {
     public final void testValidate_Validates() {
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
-        final Repository<FactionUnitAvailability> unitAvaRepository;
+        final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final Constraint unitLimitConstraint;
         final ValueBox maxUnits;
         final RulesetService rulesetService;
@@ -235,7 +235,7 @@ public final class TestDefaultGangBuilderManager {
                 "UnitLimitConstraint");
 
         maxUnits = Mockito.mock(ValueBox.class);
-        unitAvaRepository = Mockito.mock(Repository.class);
+        unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
 
         validator = Mockito.mock(ConstraintValidator.class);

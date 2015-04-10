@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
@@ -16,13 +16,14 @@ import com.wandrell.tabletop.punkapocalyptic.util.tag.UnitAware;
 public final class UnitWeaponsInIntervalConstraint implements Constraint,
         UnitAware {
 
-    private String                                   formattedMessage;
-    private final String                             message;
-    private Unit                                     unit;
-    private final Repository<UnitWeaponAvailability> weaponAvaRepo;
+    private String                                                                               formattedMessage;
+    private final String                                                                         message;
+    private Unit                                                                                 unit;
+    private final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> weaponAvaRepo;
 
     public UnitWeaponsInIntervalConstraint(
-            final Repository<UnitWeaponAvailability> repo, final String message) {
+            final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> repo,
+            final String message) {
         super();
 
         // TODO: Is this really needed?
@@ -117,7 +118,8 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         return unit;
     }
 
-    private final Repository<UnitWeaponAvailability>
+    private final
+            QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>>
             getUnitWeaponAvailabilityRepository() {
         return weaponAvaRepo;
     }

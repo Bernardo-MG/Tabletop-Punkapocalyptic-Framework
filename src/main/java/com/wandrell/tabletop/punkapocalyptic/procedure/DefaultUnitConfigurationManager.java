@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.interval.DefaultInterval;
 import com.wandrell.tabletop.interval.Interval;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
@@ -28,19 +28,20 @@ import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
-    private final Repository<UnitArmorAvailability>     armorAvaRepo;
-    private final Repository<UnitEquipmentAvailability> equipAvaRepo;
-    private final Repository<UnitMutationAvailability>  mutationAvaRepo;
-    private final RulesetService                        rulesetService;
-    private Unit                                        unit;
-    private final ConstraintValidator                   validator;
-    private final Repository<UnitWeaponAvailability>    weaponAvaRepo;
+    private final QueryableRepository<UnitArmorAvailability, Predicate<UnitArmorAvailability>>         armorAvaRepo;
+    private final QueryableRepository<UnitEquipmentAvailability, Predicate<UnitEquipmentAvailability>> equipAvaRepo;
+    private final QueryableRepository<UnitMutationAvailability, Predicate<UnitMutationAvailability>>   mutationAvaRepo;
+    private final RulesetService                                                                       rulesetService;
+    private Unit                                                                                       unit;
+    private final ConstraintValidator                                                                  validator;
+    private final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>>       weaponAvaRepo;
 
-    public DefaultUnitConfigurationManager(final ConstraintValidator validator,
-            final Repository<UnitArmorAvailability> armorAvaRepo,
-            final Repository<UnitEquipmentAvailability> equipAvaRepo,
-            final Repository<UnitMutationAvailability> mutationAvaRepo,
-            final Repository<UnitWeaponAvailability> weaponAvaRepo,
+    public DefaultUnitConfigurationManager(
+            final ConstraintValidator validator,
+            final QueryableRepository<UnitArmorAvailability, Predicate<UnitArmorAvailability>> armorAvaRepo,
+            final QueryableRepository<UnitEquipmentAvailability, Predicate<UnitEquipmentAvailability>> equipAvaRepo,
+            final QueryableRepository<UnitMutationAvailability, Predicate<UnitMutationAvailability>> mutationAvaRepo,
+            final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> weaponAvaRepo,
             final RulesetService rulesetService) {
         super();
 
@@ -319,22 +320,26 @@ public final class DefaultUnitConfigurationManager implements
         return rulesetService;
     }
 
-    private final Repository<UnitArmorAvailability>
+    private final
+            QueryableRepository<UnitArmorAvailability, Predicate<UnitArmorAvailability>>
             getUnitArmorAvailabilityRepository() {
         return armorAvaRepo;
     }
 
-    private final Repository<UnitEquipmentAvailability>
+    private final
+            QueryableRepository<UnitEquipmentAvailability, Predicate<UnitEquipmentAvailability>>
             getUnitEquipmentAvailabilityRepository() {
         return equipAvaRepo;
     }
 
-    private final Repository<UnitMutationAvailability>
+    private final
+            QueryableRepository<UnitMutationAvailability, Predicate<UnitMutationAvailability>>
             getUnitMutationAvailabilityRepository() {
         return mutationAvaRepo;
     }
 
-    private final Repository<UnitWeaponAvailability>
+    private final
+            QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>>
             getUnitWeaponAvailabilityRepository() {
         return weaponAvaRepo;
     }

@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import com.google.common.base.Predicate;
 import com.wandrell.pattern.parser.Parser;
 import com.wandrell.pattern.parser.xml.FilteredEntriesXMLFileParser;
-import com.wandrell.pattern.repository.Repository;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
@@ -364,7 +364,7 @@ public final class ConstraintParameterFactory {
         Integer weapons;
         Integer min;
         Integer max;
-        Repository<UnitWeaponAvailability> repo;
+        QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> repo;
         Collection<Weapon> weaponsCol;
         Collection<UnitWeaponAvailability> avas;
         UnitWeaponAvailability ava;
@@ -384,7 +384,7 @@ public final class ConstraintParameterFactory {
             avas = new LinkedList<>();
             avas.add(ava);
 
-            repo = Mockito.mock(Repository.class);
+            repo = Mockito.mock(QueryableRepository.class);
             Mockito.when(repo.getCollection(Matchers.any(Predicate.class)))
                     .thenReturn(avas);
 
