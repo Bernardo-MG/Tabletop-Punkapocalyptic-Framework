@@ -56,7 +56,7 @@ public final class TestFilterWeaponOptions {
         Mockito.when(weapon6.getName()).thenReturn("weapon6");
         Mockito.when(weapon6.isTwoHanded()).thenReturn(false);
 
-        final Map<String, String> config;
+        final Map<Object, Object> config;
         final QueryableRepository<Weapon, Predicate<Weapon>> repo;
 
         config = Mockito.mock(Map.class);

@@ -32,7 +32,7 @@ public final class TestUnitValoration {
     @SuppressWarnings("unchecked")
     @BeforeClass
     public final void initializeWeapons() {
-        final Map<String, String> config;
+        final Map<Object, Object> config;
         final QueryableRepository<Weapon, Predicate<Weapon>> repo;
 
         config = Mockito.mock(Map.class);

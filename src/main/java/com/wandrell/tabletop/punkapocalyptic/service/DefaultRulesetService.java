@@ -25,10 +25,10 @@ public final class DefaultRulesetService implements RulesetService {
 
     private Integer                                              bulletCost;
     private Integer                                              packMax;
-    private final Map<String, String>                            rulesConfig;
+    private final Map<Object, Object>                            rulesConfig;
     private final QueryableRepository<Weapon, Predicate<Weapon>> weaponRepo;
 
-    public DefaultRulesetService(final Map<String, String> config,
+    public DefaultRulesetService(final Map<Object, Object> config,
             final QueryableRepository<Weapon, Predicate<Weapon>> weaponRepo) {
         super();
 
@@ -80,7 +80,7 @@ public final class DefaultRulesetService implements RulesetService {
     public final Integer getBulletCost() {
         if (bulletCost == null) {
             bulletCost = Integer.parseInt(getRulesConfiguration().get(
-                    "bullet_cost"));
+                    "bullet_cost").toString());
         }
 
         return bulletCost;
@@ -133,7 +133,7 @@ public final class DefaultRulesetService implements RulesetService {
     public final Integer getPackMaxSize() {
         if (packMax == null) {
             packMax = Integer.parseInt(getRulesConfiguration().get(
-                    "pack_max_size"));
+                    "pack_max_size").toString());
         }
 
         return packMax;
@@ -194,7 +194,7 @@ public final class DefaultRulesetService implements RulesetService {
         }
     }
 
-    private final Map<String, String> getRulesConfiguration() {
+    private final Map<Object, Object> getRulesConfiguration() {
         return rulesConfig;
     }
 
