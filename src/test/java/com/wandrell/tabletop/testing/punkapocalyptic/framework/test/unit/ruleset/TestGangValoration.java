@@ -1,32 +1,49 @@
 package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.unit.ruleset;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicate;
+import com.wandrell.pattern.repository.QueryableRepository;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetGangValorationCommand;
 
-public final class TestGangValorationCommand {
+public final class TestGangValoration {
 
-    public TestGangValorationCommand() {
+    private RulesetService service;
+
+    public TestGangValoration() {
         super();
+    }
+
+    @SuppressWarnings("unchecked")
+    @BeforeClass
+    public final void initializeWeapons() {
+        final Map<String, String> config;
+        final QueryableRepository<Weapon, Predicate<Weapon>> repo;
+
+        config = new LinkedHashMap<>();
+
+        config.put("bullet_cost", "10");
+
+        repo = Mockito.mock(QueryableRepository.class);
+
+        service = new DefaultRulesetService(config, repo);
     }
 
     @Test
     public final void testGangValoration() {
-        final GetGangValorationCommand command;
-
-        command = new GetGangValorationCommand(getGang());
-        command.setRulesetService(getRulesetService());
-
-        command.execute();
-        Assert.assertEquals(command.getResult(), (Integer) 46);
+        Assert.assertEquals(service.getGangValoration(getGang()), (Integer) 46);
     }
 
     private final Gang getGang() {
@@ -58,15 +75,6 @@ public final class TestGangValorationCommand {
         Mockito.when(gang.getUnits()).thenReturn(units);
 
         return gang;
-    }
-
-    private final RulesetService getRulesetService() {
-        final RulesetService service;
-
-        service = Mockito.mock(RulesetService.class);
-        Mockito.when(service.getBulletCost()).thenReturn(10);
-
-        return service;
     }
 
 }

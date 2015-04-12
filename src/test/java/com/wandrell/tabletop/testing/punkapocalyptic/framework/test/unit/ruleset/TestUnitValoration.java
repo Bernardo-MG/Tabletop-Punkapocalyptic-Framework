@@ -2,55 +2,60 @@ package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.unit.rulese
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.wandrell.pattern.command.ResultCommand;
+import com.google.common.base.Predicate;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
-import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.GetUnitValorationCommand;
+import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
+import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class TestUnitValorationCommand {
+public final class TestUnitValoration {
 
-    public TestUnitValorationCommand() {
+    private RulesetService service;
+
+    public TestUnitValoration() {
         super();
+    }
+
+    @SuppressWarnings("unchecked")
+    @BeforeClass
+    public final void initializeWeapons() {
+        final Map<String, String> config;
+        final QueryableRepository<Weapon, Predicate<Weapon>> repo;
+
+        config = Mockito.mock(Map.class);
+        repo = Mockito.mock(QueryableRepository.class);
+
+        service = new DefaultRulesetService(config, repo);
     }
 
     @Test
     public final void testValoration_BaseUnit() throws Exception {
-        final ResultCommand<Integer> command;
-
-        command = new GetUnitValorationCommand(getUnit());
-
-        command.execute();
-        Assert.assertEquals(command.getResult(), (Integer) 15);
+        Assert.assertEquals(service.getUnitValoration(getUnit()), (Integer) 15);
     }
 
     @Test
     public final void testValoration_GroupedUnit() throws Exception {
-        final ResultCommand<Integer> command;
-
-        command = new GetUnitValorationCommand(getGroupedUnit());
-
-        command.execute();
-        Assert.assertEquals(command.getResult(), (Integer) 30);
+        Assert.assertEquals(service.getUnitValoration(getGroupedUnit()),
+                (Integer) 30);
     }
 
     @Test
     public final void testValoration_MutantUnit() throws Exception {
-        final ResultCommand<Integer> command;
-
-        command = new GetUnitValorationCommand(getMutantUnit());
-
-        command.execute();
-        Assert.assertEquals(command.getResult(), (Integer) 28);
+        Assert.assertEquals(service.getUnitValoration(getMutantUnit()),
+                (Integer) 28);
     }
 
     private final GroupedUnit getGroupedUnit() {

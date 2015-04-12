@@ -2,29 +2,34 @@ package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.unit.rulese
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.wandrell.pattern.command.ResultCommand;
+import com.google.common.base.Predicate;
+import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
-import com.wandrell.tabletop.punkapocalyptic.service.ruleset.command.FilterWeaponOptionsCommand;
+import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
+import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
-public final class TestFilterWeaponOptionsCommand {
+public final class TestFilterWeaponOptions {
 
-    private Weapon weapon1;
-    private Weapon weapon2;
-    private Weapon weapon3;
-    private Weapon weapon4;
-    private Weapon weapon5;
-    private Weapon weapon6;
+    private RulesetService service;
+    private Weapon         weapon1;
+    private Weapon         weapon2;
+    private Weapon         weapon3;
+    private Weapon         weapon4;
+    private Weapon         weapon5;
+    private Weapon         weapon6;
 
-    public TestFilterWeaponOptionsCommand() {
+    public TestFilterWeaponOptions() {
         super();
     }
 
+    @SuppressWarnings("unchecked")
     @BeforeClass
     public final void initializeWeapons() {
         weapon1 = Mockito.mock(Weapon.class);
@@ -50,18 +55,22 @@ public final class TestFilterWeaponOptionsCommand {
         weapon6 = Mockito.mock(Weapon.class);
         Mockito.when(weapon6.getName()).thenReturn("weapon6");
         Mockito.when(weapon6.isTwoHanded()).thenReturn(false);
+
+        final Map<String, String> config;
+        final QueryableRepository<Weapon, Predicate<Weapon>> repo;
+
+        config = Mockito.mock(Map.class);
+        repo = Mockito.mock(QueryableRepository.class);
+
+        service = new DefaultRulesetService(config, repo);
     }
 
     @Test
     public final void testFilterWeaponOptions_NoTwoHanded() throws Exception {
-        final ResultCommand<Collection<Weapon>> filter;
         final Collection<Weapon> weapons;
 
-        filter = new FilterWeaponOptionsCommand(getNoTwoHandedWeapons(),
+        weapons = service.filterWeaponOptions(getNoTwoHandedWeapons(),
                 getWeaponOptions());
-
-        filter.execute();
-        weapons = filter.getResult();
 
         Assert.assertEquals(weapons.size(), 2);
 
@@ -71,14 +80,10 @@ public final class TestFilterWeaponOptionsCommand {
 
     @Test
     public final void testFilterWeaponOptions_TwoHanded() throws Exception {
-        final ResultCommand<Collection<Weapon>> filter;
         final Collection<Weapon> weapons;
 
-        filter = new FilterWeaponOptionsCommand(getTwoHandedWeapons(),
+        weapons = service.filterWeaponOptions(getTwoHandedWeapons(),
                 getWeaponOptions());
-
-        filter.execute();
-        weapons = filter.getResult();
 
         Assert.assertEquals(weapons.size(), 1);
 
