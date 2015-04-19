@@ -9,14 +9,12 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.valuebox.AbstractValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class MaxUnitsValueBox extends AbstractValueBox implements
-        GangAware {
+public final class MaxUnitsValueBox extends AbstractValueBox {
 
-    private Gang                 gang;
+    private final Gang           gang;
     private final GangListener   listener;
     private final RulesetService serviceRuleset;
 
@@ -34,30 +32,25 @@ public final class MaxUnitsValueBox extends AbstractValueBox implements
     }
 
     public MaxUnitsValueBox(final Gang gang, final RulesetService service) {
-        this(service);
+        super();
 
+        checkNotNull(service, "Received a null pointer as ruleset service");
         checkNotNull(gang, "Received a null pointer as gang");
+
+        serviceRuleset = service;
 
         this.gang = gang;
 
         gang.addGangListener(getListener());
     }
 
-    public MaxUnitsValueBox(final MaxUnitsValueBox store) {
+    public MaxUnitsValueBox(final MaxUnitsValueBox value) {
         super();
 
-        checkNotNull(store, "Received a null pointer as store");
+        checkNotNull(value, "Received a null pointer as value box");
 
-        gang = store.gang;
-        serviceRuleset = store.serviceRuleset;
-    }
-
-    public MaxUnitsValueBox(final RulesetService service) {
-        super();
-
-        checkNotNull(service, "Received a null pointer as ruleset service");
-
-        serviceRuleset = service;
+        gang = value.gang;
+        serviceRuleset = value.serviceRuleset;
     }
 
     @Override
@@ -68,17 +61,6 @@ public final class MaxUnitsValueBox extends AbstractValueBox implements
     @Override
     public final Integer getValue() {
         return getRulesetService().getMaxAllowedUnits(getGang());
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        if (this.gang != null) {
-            this.gang.addGangListener(getListener());
-        }
-
-        this.gang = gang;
-
-        this.gang.addGangListener(getListener());
     }
 
     private final Gang getGang() {
