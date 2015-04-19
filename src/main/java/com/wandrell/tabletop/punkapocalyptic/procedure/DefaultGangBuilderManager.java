@@ -239,8 +239,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         unitLimitConstraint = new GangUnitsUpToLimitConstraint(gang, maxUnits,
                 "too_many_units");
 
-        getRulesetService().setUpMaxUnitsValueHandler(getMaxUnits(), getGang());
-
         this.gang.addGangListener(getGangListener());
         maxUnits.addValueChangeListener(getMaxUnitsChangeListener());
 

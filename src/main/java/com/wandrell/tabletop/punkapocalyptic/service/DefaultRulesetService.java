@@ -18,8 +18,6 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
-import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class DefaultRulesetService implements RulesetService {
 
@@ -184,14 +182,6 @@ public final class DefaultRulesetService implements RulesetService {
         }
 
         return valoration;
-    }
-
-    @Override
-    public final void setUpMaxUnitsValueHandler(final ValueBox value,
-            final Gang gang) {
-        if ((value instanceof ValueBox) && (value instanceof GangAware)) {
-            ((GangAware) value).setGang(gang);
-        }
     }
 
     private final Map<Object, Object> getRulesConfiguration() {
