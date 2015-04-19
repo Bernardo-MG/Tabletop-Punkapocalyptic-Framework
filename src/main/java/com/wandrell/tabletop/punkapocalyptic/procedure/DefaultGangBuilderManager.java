@@ -9,6 +9,8 @@ import javax.swing.event.EventListenerList;
 
 import com.google.common.base.Predicate;
 import com.wandrell.pattern.repository.QueryableRepository;
+import com.wandrell.tabletop.event.ValueChangeEvent;
+import com.wandrell.tabletop.event.ValueChangeListener;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
@@ -17,22 +19,38 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
+import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToLimitConstraint;
+import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangBuilderStatusChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedEvent;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.UnitChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
+import com.wandrell.tabletop.punkapocalyptic.valuebox.MaxUnitsValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     private Gang                                                                                   gang;
     private final GangListener                                                                     gangListener;
+    private final ValueChangeListener                                                              listenerMaxUnits;
     private final EventListenerList                                                                listeners = new EventListenerList();
-    private final ValueBox                                                                         maxUnits;
+    private ValueBox                                                                               maxUnits;
     private RulesetService                                                                         serviceRuleset;
     private final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
-    private final Constraint                                                                       unitLimitConstraint;
+    private Constraint                                                                             unitLimitConstraint;
     private final ConstraintValidator                                                              validator;
+
+    {
+        listenerMaxUnits = new ValueChangeListener() {
+
+            @Override
+            public final void valueChanged(final ValueChangeEvent event) {
+                fireMaxUnitsChangedEvent(new ValueChangeEvent(this,
+                        event.getOldValue(), event.getNewValue()));
+            }
+
+        };
+    }
 
     {
         gangListener = new GangListenerAdapter() {
@@ -100,27 +118,18 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     public DefaultGangBuilderManager(
-            final Constraint unitLimitConstraint,
             final ConstraintValidator validator,
-            final ValueBox maxUnits,
             final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository,
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(unitLimitConstraint,
-                "Received a null pointer as units limit constraint");
         checkNotNull(validator,
                 "Received a null pointer as units constraint validator");
-        checkNotNull(maxUnits,
-                "Received a null pointer as units limit value handler");
         checkNotNull(unitAvaRepository,
                 "Received a null pointer as faction unit availability repository");
         checkNotNull(rulesetService,
                 "Received a null pointer as rule set service");
 
-        this.maxUnits = maxUnits;
-
-        this.unitLimitConstraint = unitLimitConstraint;
         this.validator = validator;
         this.unitAvaRepository = unitAvaRepository;
         serviceRuleset = rulesetService;
@@ -134,6 +143,14 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         checkNotNull(listener, "Received a null pointer as listener");
 
         getListeners().add(GangChangedListener.class, listener);
+    }
+
+    @Override
+    public final void addStatusChangedListener(
+            final GangBuilderStatusChangedListener listener) {
+        checkNotNull(listener, "Received a null pointer as listener");
+
+        getListeners().add(GangBuilderStatusChangedListener.class, listener);
     }
 
     @Override
@@ -185,16 +202,18 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     @Override
     public final void removeGangChangedListener(
             final GangChangedListener listener) {
-        checkNotNull(listener, "Received a null pointer as listener");
-
         getListeners().remove(GangChangedListener.class, listener);
+    }
+
+    @Override
+    public final void removeStatusChangedListener(
+            final GangBuilderStatusChangedListener listener) {
+        getListeners().remove(GangBuilderStatusChangedListener.class, listener);
     }
 
     @Override
     public final void removeUnitChangedListener(
             final UnitChangedListener listener) {
-        checkNotNull(listener, "Received a null pointer as listener");
-
         getListeners().remove(UnitChangedListener.class, listener);
     }
 
@@ -210,11 +229,20 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
             this.gang.removeGangListener(getGangListener());
         }
 
+        if (maxUnits != null) {
+            maxUnits.removeValueChangeListener(getMaxUnitsChangeListener());
+        }
+
         this.gang = gang;
+
+        maxUnits = new MaxUnitsValueBox(gang, getRulesetService());
+        unitLimitConstraint = new GangUnitsUpToLimitConstraint(gang, maxUnits,
+                "too_many_units");
 
         getRulesetService().setUpMaxUnitsValueHandler(getMaxUnits(), getGang());
 
         gang.addGangListener(getGangListener());
+        maxUnits.addValueChangeListener(getMaxUnitsChangeListener());
 
         fireGangChangedEvent(event);
     }
@@ -232,6 +260,18 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         listnrs = getListeners().getListeners(GangChangedListener.class);
         for (final GangChangedListener l : listnrs) {
             l.gangChanged(event);
+        }
+    }
+
+    private final void fireMaxUnitsChangedEvent(final ValueChangeEvent event) {
+        final GangBuilderStatusChangedListener[] listnrs;
+
+        checkNotNull(event, "Received a null pointer as event");
+
+        listnrs = getListeners().getListeners(
+                GangBuilderStatusChangedListener.class);
+        for (final GangBuilderStatusChangedListener l : listnrs) {
+            l.maxUnitsChanged(event);
         }
     }
 
@@ -273,6 +313,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     private final EventListenerList getListeners() {
         return listeners;
+    }
+
+    private final ValueChangeListener getMaxUnitsChangeListener() {
+        return listenerMaxUnits;
     }
 
     private final RulesetService getRulesetService() {

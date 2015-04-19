@@ -9,14 +9,12 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.valuebox.AbstractValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class GangValorationValueBox extends AbstractValueBox implements
-        GangAware {
+public final class GangValorationValueBox extends AbstractValueBox {
 
-    private Gang                 gang;
+    private final Gang           gang;
     private final GangListener   listener;
     private final RulesetService serviceRuleset;
 
@@ -62,15 +60,6 @@ public final class GangValorationValueBox extends AbstractValueBox implements
     @Override
     public final Integer getValue() {
         return getRulesetService().getGangValoration(getGang());
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        checkNotNull(gang, "Received a null pointer as gang");
-
-        this.gang = gang;
-
-        gang.addGangListener(getListener());
     }
 
     private final Gang getGang() {

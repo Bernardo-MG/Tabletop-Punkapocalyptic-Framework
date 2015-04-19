@@ -8,23 +8,23 @@ import java.util.Objects;
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class GangUnitsUpToLimitConstraint implements Constraint,
-        GangAware {
+public final class GangUnitsUpToLimitConstraint implements Constraint {
 
-    private Gang           gang;
+    private final Gang     gang;
     private final String   message;
     private final ValueBox unitsLimit;
 
-    public GangUnitsUpToLimitConstraint(final ValueBox unitsLimit,
-            final String message) {
+    public GangUnitsUpToLimitConstraint(final Gang gang,
+            final ValueBox unitsLimit, final String message) {
         super();
 
+        checkNotNull(gang, "Received a null pointer as gang");
         checkNotNull(unitsLimit, "Received a null pointer as units limit");
         checkNotNull(message, "Received a null pointer as message");
 
+        this.gang = gang;
         this.unitsLimit = unitsLimit;
         this.message = message;
     }
@@ -59,13 +59,6 @@ public final class GangUnitsUpToLimitConstraint implements Constraint,
                 "The limit should be positive or zero");
 
         return (getGang().getUnits().size() <= getUnitsLimit());
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        checkNotNull(gang, "Received a null pointer as gang");
-
-        this.gang = gang;
     }
 
     @Override

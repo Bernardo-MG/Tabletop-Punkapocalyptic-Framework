@@ -210,8 +210,6 @@ public final class ConstraintParameterFactory {
             Mockito.when(limit.getValue()).thenReturn(valueLimit);
             Mockito.when(limit.toString()).thenReturn(valueLimit.toString());
 
-            constraint = new GangUnitsUpToLimitConstraint(limit, "message");
-
             gang = Mockito.mock(Gang.class);
 
             unitsCount = (Integer) itrValues.next();
@@ -221,7 +219,8 @@ public final class ConstraintParameterFactory {
             Mockito.when(gang.toString()).thenReturn(
                     String.format("Gang with %d units", unitsCount));
 
-            ((GangAware) constraint).setGang(gang);
+            constraint = new GangUnitsUpToLimitConstraint(gang, limit,
+                    "message");
 
             result.add(new Object[] { constraint });
         }
