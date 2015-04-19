@@ -45,12 +45,12 @@ The continuous integration information can be found at the [project CI page][] b
 ## License
 The project is released under version 2.0 of the [Apache License][].
 
-[development Javadoc page]: http://docs.wandrell.com/development/maven/tabletop-punkapocalyptic-framework/apidocs
-[development Maven site]: http://docs.wandrell.com/development/maven/tabletop-punkapocalyptic-framework
+[development Javadoc page]: http://docs.wandrell.com/development/maven/tabletop-punkapocalyptic-ruleset/apidocs
+[development Maven site]: http://docs.wandrell.com/development/maven/tabletop-punkapocalyptic-ruleset
 [Apache License]: http://www.apache.org/licenses/LICENSE-2.0
-[Javadoc page]: http://docs.wandrell.com/maven/tabletop-punkapocalyptic-framework/apidocs
-[Maven site]: http://docs.wandrell.com/maven/tabletop-punkapocalyptic-framework
-[project CI page]: https://travis-ci.org/Bernardo-MG/Tabletop-Punkapocalyptic-Framework
-[project issues page]: https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework/issues
-[project page]: http://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework
-[releases repository]: http://dl.bintray.com/bernardo-mg/tabletop-punkapocalyptic-framework
+[Javadoc page]: http://docs.wandrell.com/maven/tabletop-punkapocalyptic-ruleset/apidocs
+[Maven site]: http://docs.wandrell.com/maven/tabletop-punkapocalyptic-ruleset
+[project CI page]: https://travis-ci.org/Bernardo-MG/Tabletop-Punkapocalyptic-Ruleset
+[project issues page]: https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Ruleset/issues
+[project page]: http://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Ruleset
+[releases repository]: http://dl.bintray.com/bernardo-mg/tabletop-punkapocalyptic-ruleset

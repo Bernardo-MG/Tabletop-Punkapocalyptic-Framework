@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wandrell.tabletop</groupId>
-	<artifactId>punkapocalyptic-framework</artifactId>
+	<artifactId>punkapocalyptic-ruleset</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Tabletop's Punkapocalyptic Framework</name>
+	<name>Tabletop's Punkapocalyptic Ruleset</name>
 	<url />
-	<description>Framework library for the wargame Punkapocalyptic, part of the Tabletop project.</description>
+	<description>Ruleset for the wargame Punkapocalyptic, part of the Tabletop project.</description>
 
 	<licenses>
 		<license>
@@ -22,20 +22,20 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Framework.git</connection>
-		<developerConnection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Framework.git</developerConnection>
+		<connection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Ruleset.git</connection>
+		<developerConnection>scm:git:https://github.com/Bernardo-MG/punkapocalyptic-Ruleset.git</developerConnection>
 		<tag>head</tag>
-		<url>http://github.com/Bernardo-MG/punkapocalyptic-Framework</url>
+		<url>http://github.com/Bernardo-MG/punkapocalyptic-Ruleset</url>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Framework/issues</url>
+		<url>https://github.com/Bernardo-MG/Tabletop-Punkapocalyptic-Ruleset/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>Travis CI</system>
-		<url>https://travis-ci.org/Bernardo-MG/Tabletop-Punkapocalyptic-Framework</url>
+		<url>https://travis-ci.org/Bernardo-MG/Tabletop-Punkapocalyptic-Ruleset</url>
 		<notifiers />
 	</ciManagement>
 
@@ -44,7 +44,7 @@
 			<uniqueVersion>false</uniqueVersion>
 			<id>wandrell-releases</id>
 			<name>Wandrell releases repository</name>
-			<url>https://api.bintray.com/maven/bernardo-mg/maven/tabletop-punkapocalyptic-framework</url>
+			<url>https://api.bintray.com/maven/bernardo-mg/maven/tabletop-punkapocalyptic-ruleset</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>
@@ -64,7 +64,7 @@
 				<site>
 					<id>wandrell-site</id>
 					<name>Wandrell Maven sites</name>
-					<url>ftp://docs.wandrell.com/tabletop-punkapocalyptic-framework</url>
+					<url>ftp://docs.wandrell.com/tabletop-punkapocalyptic-ruleset</url>
 				</site>
 			</distributionManagement>
 		</profile>
@@ -74,7 +74,7 @@
 				<site>
 					<id>wandrell-site-development</id>
 					<name>Wandrell Development Maven sites</name>
-					<url>ftp://docs.wandrell.com/tabletop-punkapocalyptic-framework</url>
+					<url>ftp://docs.wandrell.com/tabletop-punkapocalyptic-ruleset</url>
 				</site>
 			</distributionManagement>
 		</profile>
@@ -212,21 +212,15 @@
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
-			<!-- Tabletop's Punkapocalyptic API -->
-			<groupId>com.wandrell.tabletop</groupId>
-			<artifactId>punkapocalyptic-api</artifactId>
-			<version>${tabletop.version}</version>
-		</dependency>
-		<dependency>
 			<!-- Tabletop's Punkapocalyptic Core -->
 			<groupId>com.wandrell.tabletop</groupId>
-			<artifactId>punkapocalyptic-core</artifactId>
+			<artifactId>punkapocalyptic-model</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Tabletop's Punkapocalyptic Framework API -->
 			<groupId>com.wandrell.tabletop</groupId>
-			<artifactId>punkapocalyptic-framework-api</artifactId>
+			<artifactId>punkapocalyptic-ruleset-api</artifactId>
 			<version>${tabletop.version}</version>
 		</dependency>
 		<dependency>
