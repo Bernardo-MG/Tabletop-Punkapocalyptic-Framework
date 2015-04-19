@@ -241,7 +241,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
         getRulesetService().setUpMaxUnitsValueHandler(getMaxUnits(), getGang());
 
-        gang.addGangListener(getGangListener());
+        this.gang.addGangListener(getGangListener());
         maxUnits.addValueChangeListener(getMaxUnitsChangeListener());
 
         fireGangChangedEvent(event);

@@ -87,7 +87,7 @@ public final class TestDefaultGangBuilderManager {
 
         manager.setGang(gang);
 
-        Mockito.verify(gang, Mockito.times(1)).addGangListener(
+        Mockito.verify(gang, Mockito.atLeast(1)).addGangListener(
                 listenerCaptor.capture());
 
         listenerGang = listenerCaptor.getValue();
@@ -163,7 +163,7 @@ public final class TestDefaultGangBuilderManager {
 
         manager.setGang(gang);
 
-        Mockito.verify(gang, Mockito.times(1)).addGangListener(
+        Mockito.verify(gang, Mockito.atLeast(1)).addGangListener(
                 listenerCaptor.capture());
 
         listenerGang = listenerCaptor.getValue();
