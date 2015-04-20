@@ -134,6 +134,7 @@ public final class TestDefaultGangBuilderManager {
         final Unit unit;
         final Collection<ConstraintData> constraints;
         final ConstraintData constraint;
+        final Iterator<Constraint> itrConstraints;
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
         final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
@@ -204,7 +205,11 @@ public final class TestDefaultGangBuilderManager {
 
         // Assert.assertEquals(constraintCaptor.getAllValues().size(), 2);
 
-        Assert.assertTrue(constraintCaptor.getAllValues().contains(constraint));
+        itrConstraints = constraintCaptor.getAllValues().iterator();
+        itrConstraints.next();
+        itrConstraints.next();
+        Assert.assertEquals(itrConstraints.next().getName(),
+                constraint.getNameToken());
     }
 
     @SuppressWarnings("unchecked")
