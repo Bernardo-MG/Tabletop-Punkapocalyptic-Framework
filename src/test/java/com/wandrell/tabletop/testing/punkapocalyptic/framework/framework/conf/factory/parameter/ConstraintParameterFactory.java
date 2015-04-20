@@ -24,7 +24,6 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToL
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACountConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.UnitAware;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.DependantDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UnitLimitDocumentParser;
@@ -388,9 +387,8 @@ public final class ConstraintParameterFactory {
             unit = Mockito.mock(Unit.class);
             Mockito.when(unit.getWeapons()).thenReturn(weaponsCol);
 
-            constraint = new UnitWeaponsInIntervalConstraint(repo, "message");
-
-            ((UnitAware) constraint).setUnit(unit);
+            constraint = new UnitWeaponsInIntervalConstraint(unit, repo,
+                    "message");
 
             result.add(new Object[] { constraint });
         }

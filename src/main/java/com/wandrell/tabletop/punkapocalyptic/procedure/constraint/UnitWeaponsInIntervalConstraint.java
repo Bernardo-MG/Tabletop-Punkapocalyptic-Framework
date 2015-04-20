@@ -11,27 +11,28 @@ import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.UnitAware;
 
-public final class UnitWeaponsInIntervalConstraint implements Constraint,
-        UnitAware {
+public final class UnitWeaponsInIntervalConstraint implements Constraint {
 
     private String                                                                               formattedMessage;
     private final String                                                                         message;
-    private Unit                                                                                 unit;
+    private final Unit                                                                           unit;
     private final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> weaponAvaRepo;
 
     public UnitWeaponsInIntervalConstraint(
+            final Unit unit,
             final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> repo,
             final String message) {
         super();
 
         // TODO: Is this really needed?
 
+        checkNotNull(unit, "Received a null pointer as unit");
         checkNotNull(repo,
                 "Received a null pointer as unit weapon availability repository");
         checkNotNull(message, "Received a null pointer as message");
 
+        this.unit = unit;
         weaponAvaRepo = repo;
         this.message = message;
     }
@@ -101,13 +102,6 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
         }
 
         return valid;
-    }
-
-    @Override
-    public final void setUnit(final Unit unit) {
-        checkNotNull(unit, "Received a null pointer as unit");
-
-        this.unit = unit;
     }
 
     @Override

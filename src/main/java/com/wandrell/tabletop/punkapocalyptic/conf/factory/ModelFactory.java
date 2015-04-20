@@ -180,18 +180,18 @@ public final class ModelFactory {
                 distanceLong);
     }
 
-    public final RangedWeapon getRangedWeapon(final String name,
-            final Integer cost, final Collection<SpecialRule> rules,
-            final RangedValue penetration, final RangedValue strength,
-            final RangedValue distanceCM, final RangedValue distanceInches,
-            final MeleeWeapon weaponMelee) {
+    public final RangedWeapon getRangedWeapon(final Unit unit,
+            final String name, final Integer cost,
+            final Collection<SpecialRule> rules, final RangedValue penetration,
+            final RangedValue strength, final RangedValue distanceCM,
+            final RangedValue distanceInches, final MeleeWeapon weaponMelee) {
         final RangedWeapon weapon;
 
         switch (name) {
             case "throwing_knife":
-                weapon = new UnitBasedStrengthRangedWeapon(name, cost, rules,
-                        penetration, strength, distanceCM, distanceInches,
-                        weaponMelee);
+                weapon = new UnitBasedStrengthRangedWeapon(unit, name, cost,
+                        rules, penetration, strength, distanceCM,
+                        distanceInches, weaponMelee);
                 break;
             default:
                 weapon = new DefaultRangedWeapon(name, cost, rules,
