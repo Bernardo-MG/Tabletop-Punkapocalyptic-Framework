@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import com.google.common.base.Predicate;
 import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
@@ -20,6 +21,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
 import com.wandrell.tabletop.punkapocalyptic.procedure.DefaultGangBuilderManager;
+import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
 public final class TestDefaultGangBuilderManager {
@@ -39,36 +41,49 @@ public final class TestDefaultGangBuilderManager {
         final GangListener listenerGang;
         final Collection<FactionUnitAvailability> availabilities;
         final FactionUnitAvailability ava;
-        final Collection<Constraint> constraints;
-        final Constraint constraint;
+        final Unit unit;
+        final Collection<ConstraintData> constraints;
+        final ConstraintData constraint;
         final Iterator<Constraint> itrConstraints;
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
         final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final RulesetService rulesetService;
+        final LocalizationService localizationService;
 
         unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
+        localizationService = Mockito.mock(LocalizationService.class);
+
+        Mockito.when(localizationService.getMessageString(Matchers.anyString()))
+                .thenReturn("");
 
         validator = Mockito.mock(ConstraintValidator.class);
 
         manager = new DefaultGangBuilderManager(validator, unitAvaRepository,
-                rulesetService);
+                rulesetService, localizationService);
 
         listenerCaptor = ArgumentCaptor.forClass(GangListener.class);
         constraintCaptor = ArgumentCaptor.forClass(Constraint.class);
 
         constraints = new LinkedList<>();
 
-        constraint = Mockito.mock(Constraint.class);
-        Mockito.when(constraint.isValid()).thenReturn(false);
-        Mockito.when(constraint.toString()).thenReturn("MockedConstraint1");
+        constraint = Mockito.mock(ConstraintData.class);
+        Mockito.when(constraint.getNameToken()).thenReturn("unique");
+        Mockito.when(constraint.getContext()).thenReturn(
+                new LinkedList<String>());
 
         constraints.add(constraint);
 
         ava = Mockito.mock(FactionUnitAvailability.class);
 
+        unit = Mockito.mock(Unit.class);
+
+        Mockito.when(unit.getName()).thenReturn("name");
+
         Mockito.when(ava.getConstraints()).thenReturn(constraints);
+
+        Mockito.when(ava.getUnit()).thenReturn(unit);
 
         availabilities = new LinkedList<>();
         availabilities.add(ava);
@@ -101,7 +116,8 @@ public final class TestDefaultGangBuilderManager {
 
         itrConstraints = constraintCaptor.getAllValues().iterator();
         itrConstraints.next();
-        Assert.assertEquals(itrConstraints.next(), constraint);
+        Assert.assertEquals(itrConstraints.next().getName(),
+                constraint.getNameToken());
     }
 
     @SuppressWarnings("unchecked")
@@ -115,35 +131,48 @@ public final class TestDefaultGangBuilderManager {
         final GangListener listenerGang;
         final Collection<FactionUnitAvailability> availabilities;
         final FactionUnitAvailability ava;
-        final Collection<Constraint> constraints;
-        final Constraint constraint;
+        final Unit unit;
+        final Collection<ConstraintData> constraints;
+        final ConstraintData constraint;
         final DefaultGangBuilderManager manager;
         final ConstraintValidator validator;
         final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final RulesetService rulesetService;
+        final LocalizationService localizationService;
 
         unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
+        localizationService = Mockito.mock(LocalizationService.class);
+
+        Mockito.when(localizationService.getMessageString(Matchers.anyString()))
+                .thenReturn("");
 
         validator = Mockito.mock(ConstraintValidator.class);
 
         manager = new DefaultGangBuilderManager(validator, unitAvaRepository,
-                rulesetService);
+                rulesetService, localizationService);
 
         listenerCaptor = ArgumentCaptor.forClass(GangListener.class);
         constraintCaptor = ArgumentCaptor.forClass(Constraint.class);
 
         constraints = new LinkedList<>();
 
-        constraint = Mockito.mock(Constraint.class);
-        Mockito.when(constraint.isValid()).thenReturn(false);
-        Mockito.when(constraint.toString()).thenReturn("MockedConstraint1");
+        constraint = Mockito.mock(ConstraintData.class);
+        Mockito.when(constraint.getNameToken()).thenReturn("unique");
+        Mockito.when(constraint.getContext()).thenReturn(
+                new LinkedList<String>());
 
         constraints.add(constraint);
 
         ava = Mockito.mock(FactionUnitAvailability.class);
 
+        unit = Mockito.mock(Unit.class);
+
+        Mockito.when(unit.getName()).thenReturn("name");
+
         Mockito.when(ava.getConstraints()).thenReturn(constraints);
+
+        Mockito.when(ava.getUnit()).thenReturn(unit);
 
         availabilities = new LinkedList<>();
         availabilities.add(ava);
@@ -185,14 +214,19 @@ public final class TestDefaultGangBuilderManager {
         final ConstraintValidator validator;
         final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final RulesetService rulesetService;
+        final LocalizationService localizationService;
 
         unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
+        localizationService = Mockito.mock(LocalizationService.class);
+
+        Mockito.when(localizationService.getMessageString(Matchers.anyString()))
+                .thenReturn("");
 
         validator = Mockito.mock(ConstraintValidator.class);
 
         manager = new DefaultGangBuilderManager(validator, unitAvaRepository,
-                rulesetService);
+                rulesetService, localizationService);
 
         Mockito.when(validator.validate()).thenReturn(false);
         Assert.assertTrue(!manager.validate());
@@ -205,14 +239,19 @@ public final class TestDefaultGangBuilderManager {
         final ConstraintValidator validator;
         final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
         final RulesetService rulesetService;
+        final LocalizationService localizationService;
 
         unitAvaRepository = Mockito.mock(QueryableRepository.class);
         rulesetService = Mockito.mock(RulesetService.class);
+        localizationService = Mockito.mock(LocalizationService.class);
+
+        Mockito.when(localizationService.getMessageString(Matchers.anyString()))
+                .thenReturn("");
 
         validator = Mockito.mock(ConstraintValidator.class);
 
         manager = new DefaultGangBuilderManager(validator, unitAvaRepository,
-                rulesetService);
+                rulesetService, localizationService);
 
         Mockito.when(validator.validate()).thenReturn(true);
         Assert.assertTrue(manager.validate());

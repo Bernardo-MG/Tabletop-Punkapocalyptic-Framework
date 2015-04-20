@@ -10,27 +10,29 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 
-public final class UnitUpToACountConstraint implements Constraint, GangAware {
+public final class UnitUpToACountConstraint implements Constraint {
 
     private final Integer count;
-    private Gang          gang;
+    private final Gang    gang;
     private final String  message;
     private final String  unit;
 
-    public UnitUpToACountConstraint(final String unit, final Integer count,
-            final String message) {
+    public UnitUpToACountConstraint(final Gang gang, final String unit,
+            final Integer count, final String message) {
         super();
 
         checkNotNull(unit, "Received a null pointer as unit");
         checkNotNull(count, "Received a null pointer as count");
         checkNotNull(message, "Received a null pointer as message");
+        checkNotNull(gang, "Received a null pointer as gang");
 
         checkArgument(count >= 0, "The count should be positive or zero");
 
+        this.gang = gang;
         this.unit = unit;
         this.count = count;
         this.message = message;
@@ -63,6 +65,11 @@ public final class UnitUpToACountConstraint implements Constraint, GangAware {
     }
 
     @Override
+    public final String getName() {
+        return ConstraintsConf.UNIQUE;
+    }
+
+    @Override
     public final int hashCode() {
         return Objects.hash(getClass().getName(), unit, count);
     }
@@ -86,13 +93,6 @@ public final class UnitUpToACountConstraint implements Constraint, GangAware {
         units = Collections2.filter(getGang().getUnits(), isUnit);
 
         return (units.size() <= getCount());
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        checkNotNull(gang, "Received a null pointer as gang");
-
-        this.gang = gang;
     }
 
     @Override

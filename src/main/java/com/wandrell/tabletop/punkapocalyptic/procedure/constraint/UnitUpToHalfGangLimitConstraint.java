@@ -9,24 +9,25 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 
-public final class UnitUpToHalfGangLimitConstraint implements Constraint,
-        GangAware {
+public final class UnitUpToHalfGangLimitConstraint implements Constraint {
 
-    private Gang         gang;
+    private final Gang   gang;
     private final String message;
     private final String unit;
 
-    public UnitUpToHalfGangLimitConstraint(final String unit,
+    public UnitUpToHalfGangLimitConstraint(final Gang gang, final String unit,
             final String message) {
         super();
 
         checkNotNull(unit, "Received a null pointer as unit");
         checkNotNull(message, "Received a null pointer as message");
+        checkNotNull(gang, "Received a null pointer as gang");
 
+        this.gang = gang;
         this.unit = unit;
         this.message = message;
     }
@@ -57,6 +58,11 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint,
     }
 
     @Override
+    public final String getName() {
+        return ConstraintsConf.UP_TO_HALF_POINTS;
+    }
+
+    @Override
     public final int hashCode() {
         return Objects.hash(getClass().getName(), unit);
     }
@@ -80,13 +86,6 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint,
         units = Collections2.filter(getGang().getUnits(), isUnit);
 
         return (units.size() <= (getGang().getUnits().size() / 2));
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        checkNotNull(gang, "Received a null pointer as gang");
-
-        this.gang = gang;
     }
 
     @Override

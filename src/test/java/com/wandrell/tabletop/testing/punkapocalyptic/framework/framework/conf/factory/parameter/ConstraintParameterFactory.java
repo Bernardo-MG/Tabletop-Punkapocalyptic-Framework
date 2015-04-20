@@ -24,7 +24,6 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToL
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACountConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 import com.wandrell.tabletop.punkapocalyptic.util.tag.UnitAware;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.DependantDocumentParser;
@@ -143,7 +142,9 @@ public final class ConstraintParameterFactory {
             master = (Integer) itrValues.next();
             range = (Integer) itrValues.next();
 
-            constraint = new DependantUnitConstraint(UNIT1, UNIT2, range,
+            gang = Mockito.mock(Gang.class);
+
+            constraint = new DependantUnitConstraint(gang, UNIT1, UNIT2, range,
                     "message");
 
             units = new LinkedList<>();
@@ -177,11 +178,7 @@ public final class ConstraintParameterFactory {
 
             Collections.shuffle(units);
 
-            gang = Mockito.mock(Gang.class);
-
             Mockito.when(gang.getUnits()).thenReturn(units);
-
-            ((GangAware) constraint).setGang(gang);
 
             result.add(new Object[] { constraint });
         }
@@ -242,7 +239,9 @@ public final class ConstraintParameterFactory {
         for (final Collection<Object> values : valuesTable) {
             itrValues = values.iterator();
 
-            constraint = new UnitUpToACountConstraint(UNIT1,
+            gang = Mockito.mock(Gang.class);
+
+            constraint = new UnitUpToACountConstraint(gang, UNIT1,
                     (Integer) itrValues.next(), "message");
 
             valid = (Integer) itrValues.next();
@@ -262,13 +261,9 @@ public final class ConstraintParameterFactory {
 
             Collections.shuffle(units);
 
-            gang = Mockito.mock(Gang.class);
-
             Mockito.when(gang.getUnits()).thenReturn(units);
             Mockito.when(gang.toString()).thenReturn(
                     String.format("Gang with %d valid units", valid));
-
-            ((GangAware) constraint).setGang(gang);
 
             result.add(new Object[] { constraint });
         }
@@ -292,7 +287,10 @@ public final class ConstraintParameterFactory {
         for (final Collection<Object> values : valuesTable) {
             itrValues = values.iterator();
 
-            constraint = new UnitUpToHalfGangLimitConstraint(UNIT1, "message");
+            gang = Mockito.mock(Gang.class);
+
+            constraint = new UnitUpToHalfGangLimitConstraint(gang, UNIT1,
+                    "message");
 
             valid = (Integer) itrValues.next();
             total = (Integer) itrValues.next();
@@ -317,14 +315,10 @@ public final class ConstraintParameterFactory {
 
             Collections.shuffle(units);
 
-            gang = Mockito.mock(Gang.class);
-
             Mockito.when(gang.getUnits()).thenReturn(units);
             Mockito.when(gang.toString()).thenReturn(
                     String.format("Gang with %d valid units in a total of %d",
                             valid, total));
-
-            ((GangAware) constraint).setGang(gang);
 
             result.add(new Object[] { constraint });
         }

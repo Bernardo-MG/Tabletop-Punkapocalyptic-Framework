@@ -10,29 +10,31 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.util.tag.GangAware;
 
-public final class DependantUnitConstraint implements Constraint, GangAware {
+public final class DependantUnitConstraint implements Constraint {
 
     private final Integer count;
-    private Gang          gang;
+    private final Gang    gang;
     private final String  mainUnit;
     private final String  message;
     private final String  unit;
 
-    public DependantUnitConstraint(final String mainUnit, final String unit,
-            final Integer count, final String message) {
+    public DependantUnitConstraint(final Gang gang, final String mainUnit,
+            final String unit, final Integer count, final String message) {
         super();
 
         checkNotNull(mainUnit, "Received a null pointer as main unit");
         checkNotNull(unit, "Received a null pointer as unit");
         checkNotNull(count, "Received a null pointer as count");
         checkNotNull(message, "Received a null pointer as message");
+        checkNotNull(gang, "Received a null pointer as gang");
 
         checkArgument(count >= 0, "The count should be positive or zero");
 
+        this.gang = gang;
         this.mainUnit = mainUnit;
         this.unit = unit;
         this.count = count;
@@ -63,6 +65,11 @@ public final class DependantUnitConstraint implements Constraint, GangAware {
     @Override
     public final String getErrorMessage() {
         return String.format(getMessage(), getUnit(), getCount());
+    }
+
+    @Override
+    public final String getName() {
+        return ConstraintsConf.DEPENDANT;
     }
 
     @Override
@@ -100,13 +107,6 @@ public final class DependantUnitConstraint implements Constraint, GangAware {
         mainUnits = Collections2.filter(getGang().getUnits(), hasMainUnit);
 
         return (units.size() <= (mainUnits.size() * getCount()));
-    }
-
-    @Override
-    public final void setGang(final Gang gang) {
-        checkNotNull(gang, "Received a null pointer as gang");
-
-        this.gang = gang;
     }
 
     @Override

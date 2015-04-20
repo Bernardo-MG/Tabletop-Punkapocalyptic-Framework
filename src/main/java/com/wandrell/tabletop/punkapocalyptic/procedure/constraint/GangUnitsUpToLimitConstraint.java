@@ -48,6 +48,11 @@ public final class GangUnitsUpToLimitConstraint implements Constraint {
     }
 
     @Override
+    public final String getName() {
+        return "gang_up_to_limit";
+    }
+
+    @Override
     public final int hashCode() {
         return Objects.hash(getClass().getName(), unitsLimit);
     }

@@ -54,6 +54,11 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint,
     }
 
     @Override
+    public final String getName() {
+        return "unit_weapon_interval";
+    }
+
+    @Override
     public final int hashCode() {
         return Objects.hash(getClass().getName());
     }
