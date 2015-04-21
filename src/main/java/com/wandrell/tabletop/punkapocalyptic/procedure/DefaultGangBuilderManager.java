@@ -15,6 +15,7 @@ import com.wandrell.tabletop.event.ValueChangeListener;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
+import com.wandrell.tabletop.procedure.DefaultConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.conf.factory.ModelFactory;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
@@ -136,14 +137,11 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     public DefaultGangBuilderManager(
-            final ConstraintValidator validator,
             final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository,
             final RulesetService rulesetService,
             final LocalizationService localizationService) {
         super();
 
-        checkNotNull(validator,
-                "Received a null pointer as units constraint validator");
         checkNotNull(unitAvaRepository,
                 "Received a null pointer as faction unit availability repository");
         checkNotNull(rulesetService,
@@ -151,7 +149,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         checkNotNull(localizationService,
                 "Received a null pointer as localization service");
 
-        this.validator = validator;
+        this.validator = new DefaultConstraintValidator();
         this.unitAvaRepository = unitAvaRepository;
         serviceRuleset = rulesetService;
         serviceLocalization = localizationService;

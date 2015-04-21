@@ -11,6 +11,7 @@ import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.interval.DefaultInterval;
 import com.wandrell.tabletop.interval.Interval;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
+import com.wandrell.tabletop.procedure.DefaultConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitMutationAvailability;
@@ -23,12 +24,14 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
+import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
 
     private final QueryableRepository<UnitArmorAvailability, Predicate<UnitArmorAvailability>>         armorAvaRepo;
+    private final String                                                                               constraintMessage;
     private final QueryableRepository<UnitEquipmentAvailability, Predicate<UnitEquipmentAvailability>> equipAvaRepo;
     private final QueryableRepository<UnitMutationAvailability, Predicate<UnitMutationAvailability>>   mutationAvaRepo;
     private final RulesetService                                                                       rulesetService;
@@ -37,7 +40,7 @@ public final class DefaultUnitConfigurationManager implements
     private final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>>       weaponAvaRepo;
 
     public DefaultUnitConfigurationManager(
-            final ConstraintValidator validator,
+            final String constraintMessage,
             final QueryableRepository<UnitArmorAvailability, Predicate<UnitArmorAvailability>> armorAvaRepo,
             final QueryableRepository<UnitEquipmentAvailability, Predicate<UnitEquipmentAvailability>> equipAvaRepo,
             final QueryableRepository<UnitMutationAvailability, Predicate<UnitMutationAvailability>> mutationAvaRepo,
@@ -45,8 +48,8 @@ public final class DefaultUnitConfigurationManager implements
             final RulesetService rulesetService) {
         super();
 
-        checkNotNull(validator,
-                "Received a null pointer as constraint validator");
+        checkNotNull(constraintMessage,
+                "Received a null pointer as the constraint message");
         checkNotNull(armorAvaRepo,
                 "Received a null pointer as the armor availability repository");
         checkNotNull(equipAvaRepo,
@@ -58,7 +61,9 @@ public final class DefaultUnitConfigurationManager implements
         checkNotNull(rulesetService,
                 "Received a null pointer as the ruleset service");
 
-        this.validator = validator;
+        this.constraintMessage = constraintMessage;
+
+        this.validator = new DefaultConstraintValidator();
         this.armorAvaRepo = armorAvaRepo;
         this.equipAvaRepo = equipAvaRepo;
         this.mutationAvaRepo = mutationAvaRepo;
@@ -304,12 +309,23 @@ public final class DefaultUnitConfigurationManager implements
 
         this.unit = unit;
 
+        getConstraintValidator().clearConstraints();
+
+        getConstraintValidator().addConstraint(
+                new UnitWeaponsInIntervalConstraint(unit,
+                        getUnitWeaponAvailabilityRepository(),
+                        getConstraintMessage()));
+
         validate();
     }
 
     @Override
     public final Boolean validate() {
         return getConstraintValidator().validate();
+    }
+
+    private final String getConstraintMessage() {
+        return constraintMessage;
     }
 
     private final ConstraintValidator getConstraintValidator() {
