@@ -10,10 +10,8 @@ import org.jdom2.Document;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import com.google.common.base.Predicate;
 import com.wandrell.pattern.parser.Parser;
 import com.wandrell.pattern.parser.xml.FilteredEntriesXMLFileParser;
-import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
@@ -24,6 +22,7 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToL
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACountConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
+import com.wandrell.tabletop.punkapocalyptic.repository.UnitWeaponAvailabilityRepository;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.DependantDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UnitLimitDocumentParser;
@@ -356,9 +355,8 @@ public final class ConstraintParameterFactory {
         Integer weapons;
         Integer min;
         Integer max;
-        QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> repo;
+        UnitWeaponAvailabilityRepository repo;
         Collection<Weapon> weaponsCol;
-        Collection<UnitWeaponAvailability> avas;
         UnitWeaponAvailability ava;
 
         result = new LinkedList<>();
@@ -373,12 +371,9 @@ public final class ConstraintParameterFactory {
             Mockito.when(ava.getMinWeapons()).thenReturn(min);
             Mockito.when(ava.getMaxWeapons()).thenReturn(max);
 
-            avas = new LinkedList<>();
-            avas.add(ava);
-
-            repo = Mockito.mock(QueryableRepository.class);
-            Mockito.when(repo.getCollection(Matchers.any(Predicate.class)))
-                    .thenReturn(avas);
+            repo = Mockito.mock(UnitWeaponAvailabilityRepository.class);
+            Mockito.when(repo.getAvailabilityForUnit(Matchers.any(Unit.class)))
+                    .thenReturn(ava);
 
             weaponsCol = Mockito.mock(Collection.class);
 

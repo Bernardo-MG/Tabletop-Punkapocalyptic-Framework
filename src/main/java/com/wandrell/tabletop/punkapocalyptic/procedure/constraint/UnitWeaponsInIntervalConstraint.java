@@ -2,27 +2,23 @@ package com.wandrell.tabletop.punkapocalyptic.procedure.constraint;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.repository.UnitWeaponAvailabilityRepository;
 
 public final class UnitWeaponsInIntervalConstraint implements Constraint {
 
-    private String                                                                               formattedMessage;
-    private final String                                                                         message;
-    private final Unit                                                                           unit;
-    private final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> weaponAvaRepo;
+    private String                                 formattedMessage;
+    private final String                           message;
+    private final Unit                             unit;
+    private final UnitWeaponAvailabilityRepository weaponAvaRepo;
 
-    public UnitWeaponsInIntervalConstraint(
-            final Unit unit,
-            final QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>> repo,
-            final String message) {
+    public UnitWeaponsInIntervalConstraint(final Unit unit,
+            final UnitWeaponAvailabilityRepository repo, final String message) {
         super();
 
         // TODO: Is this really needed?
@@ -69,25 +65,15 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint {
         final Boolean valid;
         final Integer weaponsCount;
         final UnitWeaponAvailability ava;
-        final Collection<UnitWeaponAvailability> avas;
 
         checkNotNull(unit, "Validating a null unit");
 
-        avas = getUnitWeaponAvailabilityRepository().getCollection(
-                new Predicate<UnitWeaponAvailability>() {
+        ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
+                getUnit());
 
-                    @Override
-                    public final boolean apply(
-                            final UnitWeaponAvailability input) {
-                        return input.getUnit().getName()
-                                .equals(getUnit().getName());
-                    }
-
-                });
-
-        if (!avas.isEmpty()) {
-            ava = avas.iterator().next();
-
+        if (ava == null) {
+            valid = false;
+        } else {
             weaponsCount = getUnit().getWeapons().size();
 
             valid = ((weaponsCount >= ava.getMinWeapons()) && (weaponsCount <= ava
@@ -97,8 +83,6 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint {
                 formattedMessage = String.format(getMessage(),
                         ava.getMinWeapons(), ava.getMaxWeapons());
             }
-        } else {
-            valid = false;
         }
 
         return valid;
@@ -117,8 +101,7 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint {
         return unit;
     }
 
-    private final
-            QueryableRepository<UnitWeaponAvailability, Predicate<UnitWeaponAvailability>>
+    private final UnitWeaponAvailabilityRepository
             getUnitWeaponAvailabilityRepository() {
         return weaponAvaRepo;
     }

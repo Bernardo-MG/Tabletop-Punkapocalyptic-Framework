@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
-import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.event.ValueChangeListener;
 import com.wandrell.tabletop.procedure.Constraint;
@@ -28,6 +26,7 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangBuilderStatusCh
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedEvent;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.UnitChangedListener;
+import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.MaxUnitsValueBox;
@@ -35,16 +34,16 @@ import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 
-    private Gang                                                                                   gang;
-    private final GangListener                                                                     gangListener;
-    private final ValueChangeListener                                                              listenerMaxUnits;
-    private final EventListenerList                                                                listeners = new EventListenerList();
-    private ValueBox                                                                               maxUnits;
-    private final LocalizationService                                                              serviceLocalization;
-    private RulesetService                                                                         serviceRuleset;
-    private final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository;
-    private Constraint                                                                             unitLimitConstraint;
-    private final ConstraintValidator                                                              validator;
+    private Gang                                    gang;
+    private final GangListener                      gangListener;
+    private final ValueChangeListener               listenerMaxUnits;
+    private final EventListenerList                 listeners = new EventListenerList();
+    private ValueBox                                maxUnits;
+    private final LocalizationService               serviceLocalization;
+    private RulesetService                          serviceRuleset;
+    private final FactionUnitAvailabilityRepository unitAvaRepository;
+    private Constraint                              unitLimitConstraint;
+    private final ConstraintValidator               validator;
 
     {
         listenerMaxUnits = new ValueChangeListener() {
@@ -70,20 +69,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 factory = ModelFactory.getInstance();
 
                 ava = getFactionUnitAvailabilityRepository()
-                        .getCollection(
-                                new Predicate<FactionUnitAvailability>() {
-
-                                    @Override
-                                    public boolean apply(
-                                            FactionUnitAvailability input) {
-                                        return input
-                                                .getUnit()
-                                                .getName()
-                                                .equals(event.getUnit()
-                                                        .getName());
-                                    }
-
-                                }).iterator().next();
+                        .getAvailabilityForUnit(event.getUnit());
 
                 for (final ConstraintData data : ava.getConstraints()) {
                     constraint = factory.getConstraint(gang,
@@ -109,17 +95,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
                 for (final Unit unit : getGang().getUnits()) {
                     ava = getFactionUnitAvailabilityRepository()
-                            .getCollection(
-                                    new Predicate<FactionUnitAvailability>() {
-
-                                        @Override
-                                        public boolean apply(
-                                                FactionUnitAvailability input) {
-                                            return input.getUnit().getName()
-                                                    .equals(unit.getName());
-                                        }
-
-                                    }).iterator().next();
+                            .getAvailabilityForUnit(unit);
 
                     for (final ConstraintData data : ava.getConstraints()) {
                         constraint = factory.getConstraint(gang,
@@ -137,7 +113,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     public DefaultGangBuilderManager(
-            final QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>> unitAvaRepository,
+            final FactionUnitAvailabilityRepository unitAvaRepository,
             final RulesetService rulesetService,
             final LocalizationService localizationService) {
         super();
@@ -196,16 +172,9 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         final Collection<Unit> result;
         final Collection<FactionUnitAvailability> avas;
 
-        avas = getFactionUnitAvailabilityRepository().getCollection(
-                new Predicate<FactionUnitAvailability>() {
+        avas = getFactionUnitAvailabilityRepository()
+                .getAvailabilitiesForFaction(getGang().getFaction());
 
-                    @Override
-                    public boolean apply(FactionUnitAvailability input) {
-                        return input.getFaction().getName()
-                                .equals(getGang().getFaction().getName());
-                    }
-
-                });
         result = new LinkedList<>();
         for (final FactionUnitAvailability ava : avas) {
             result.add(ava.getUnit());
@@ -319,8 +288,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return validator;
     }
 
-    private final
-            QueryableRepository<FactionUnitAvailability, Predicate<FactionUnitAvailability>>
+    private final FactionUnitAvailabilityRepository
             getFactionUnitAvailabilityRepository() {
         return unitAvaRepository;
     }

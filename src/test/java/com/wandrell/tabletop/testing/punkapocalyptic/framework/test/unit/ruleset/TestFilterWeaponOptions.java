@@ -9,9 +9,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.QueryableRepository;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.repository.WeaponRepository;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
@@ -57,10 +56,10 @@ public final class TestFilterWeaponOptions {
         Mockito.when(weapon6.isTwoHanded()).thenReturn(false);
 
         final Map<Object, Object> config;
-        final QueryableRepository<Weapon, Predicate<Weapon>> repo;
+        final WeaponRepository repo;
 
         config = Mockito.mock(Map.class);
-        repo = Mockito.mock(QueryableRepository.class);
+        repo = Mockito.mock(WeaponRepository.class);
 
         service = new DefaultRulesetService(config, repo);
     }

@@ -7,9 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import com.google.common.base.Predicate;
-import com.wandrell.pattern.repository.QueryableRepository;
-import com.wandrell.tabletop.punkapocalyptic.conf.WeaponNameConf;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.MeleeWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
@@ -18,16 +15,17 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
+import com.wandrell.tabletop.punkapocalyptic.repository.WeaponRepository;
 
 public final class DefaultRulesetService implements RulesetService {
 
-    private Integer                                              bulletCost;
-    private Integer                                              packMax;
-    private final Map<Object, Object>                            rulesConfig;
-    private final QueryableRepository<Weapon, Predicate<Weapon>> weaponRepo;
+    private Integer                   bulletCost;
+    private Integer                   packMax;
+    private final Map<Object, Object> rulesConfig;
+    private final WeaponRepository    weaponRepo;
 
     public DefaultRulesetService(final Map<Object, Object> config,
-            final QueryableRepository<Weapon, Predicate<Weapon>> weaponRepo) {
+            final WeaponRepository weaponRepo) {
         super();
 
         checkNotNull(config, "Received a null pointer as config map");
@@ -139,17 +137,7 @@ public final class DefaultRulesetService implements RulesetService {
 
     @Override
     public final MeleeWeapon getTwoHandedMeleeEquivalent() {
-        // TODO: Don't query the repository here
-        return (MeleeWeapon) getWeaponRepository().getEntity(
-                new Predicate<Weapon>() {
-
-                    @Override
-                    public final boolean apply(final Weapon input) {
-                        return input.getName().equals(
-                                WeaponNameConf.IMPROVISED_WEAPON);
-                    }
-
-                });
+        return getWeaponRepository().getRangedMeleeWeapon();
     }
 
     @Override
@@ -188,8 +176,7 @@ public final class DefaultRulesetService implements RulesetService {
         return rulesConfig;
     }
 
-    private final QueryableRepository<Weapon, Predicate<Weapon>>
-            getWeaponRepository() {
+    private final WeaponRepository getWeaponRepository() {
         return weaponRepo;
     }
 
