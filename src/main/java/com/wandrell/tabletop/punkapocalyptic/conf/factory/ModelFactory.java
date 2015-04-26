@@ -3,6 +3,8 @@ package com.wandrell.tabletop.punkapocalyptic.conf.factory;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
@@ -41,6 +43,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnitWrapper;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.RulesetServiceDerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
@@ -54,6 +57,7 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGa
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
+import com.wandrell.tabletop.valuebox.DefaultValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class ModelFactory {
@@ -224,12 +228,28 @@ public final class ModelFactory {
 
     public final Unit getUnit(final UnitTemplate template,
             final RulesetService service) {
-        final Unit unit;
         final DerivedValuesBuilder valorationBuilder;
+        final Collection<SpecialRule> filtered;
+        Unit unit;
 
         valorationBuilder = new RulesetServiceDerivedValuesBuilder(service);
 
         unit = new DefaultUnit(template, valorationBuilder);
+
+        filtered = Collections2.filter(
+                unit.getUnitTemplate().getSpecialRules(),
+                new Predicate<SpecialRule>() {
+
+                    @Override
+                    public final boolean apply(final SpecialRule input) {
+                        return input.getName().equals("pack");
+                    }
+
+                });
+
+        if (!filtered.isEmpty()) {
+            unit = new GroupedUnitWrapper(unit, new DefaultValueBox(0));
+        }
 
         return unit;
     }
