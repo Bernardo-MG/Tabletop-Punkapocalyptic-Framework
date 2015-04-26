@@ -223,17 +223,13 @@ public final class ModelFactory {
     }
 
     public final Unit getUnit(final UnitTemplate template,
-            final Integer actions, final Integer agility, final Integer combat,
-            final Integer precision, final Integer strength,
-            final Integer tech, final Integer toughness, final Integer cost,
             final Collection<SpecialRule> rules, final RulesetService service) {
         final Unit unit;
         final DerivedValuesBuilder valorationBuilder;
 
         valorationBuilder = new RulesetServiceDerivedValuesBuilder(service);
 
-        unit = new DefaultUnit(template, actions, agility, combat, precision,
-                strength, tech, toughness, cost, rules, valorationBuilder);
+        unit = new DefaultUnit(template, rules, valorationBuilder);
 
         return unit;
     }
