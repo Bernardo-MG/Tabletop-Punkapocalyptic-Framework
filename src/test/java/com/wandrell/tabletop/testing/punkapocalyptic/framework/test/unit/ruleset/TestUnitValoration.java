@@ -13,6 +13,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 import com.wandrell.tabletop.punkapocalyptic.repository.WeaponRepository;
@@ -59,6 +60,7 @@ public final class TestUnitValoration {
 
     private final GroupedUnit getGroupedUnit() {
         final GroupedUnit unit;
+        final UnitTemplate template;
         final Collection<Equipment> equipment;
         final Collection<Weapon> weapons;
         final ValueBox size;
@@ -70,7 +72,11 @@ public final class TestUnitValoration {
 
         unit = Mockito.mock(GroupedUnit.class);
 
-        Mockito.when(unit.getBaseCost()).thenReturn(1);
+        template = Mockito.mock(UnitTemplate.class);
+
+        Mockito.when(template.getBaseCost()).thenReturn(1);
+
+        Mockito.when(unit.getUnitTemplate()).thenReturn(template);
 
         weapon = Mockito.mock(Weapon.class);
         Mockito.when(weapon.getCost()).thenReturn(2);
@@ -104,6 +110,7 @@ public final class TestUnitValoration {
 
     private final MutantUnit getMutantUnit() {
         final MutantUnit unit;
+        final UnitTemplate template;
         final Collection<Equipment> equipment;
         final Collection<Weapon> weapons;
         final Collection<Mutation> mutations;
@@ -117,7 +124,11 @@ public final class TestUnitValoration {
 
         unit = Mockito.mock(MutantUnit.class);
 
-        Mockito.when(unit.getBaseCost()).thenReturn(1);
+        template = Mockito.mock(UnitTemplate.class);
+
+        Mockito.when(template.getBaseCost()).thenReturn(1);
+
+        Mockito.when(unit.getUnitTemplate()).thenReturn(template);
 
         weapon = Mockito.mock(Weapon.class);
         Mockito.when(weapon.getCost()).thenReturn(2);
@@ -158,6 +169,7 @@ public final class TestUnitValoration {
 
     private final Unit getUnit() {
         final Unit unit;
+        final UnitTemplate template;
         final Collection<Equipment> equipment;
         final Collection<Weapon> weapons;
         Equipment equip;
@@ -168,7 +180,11 @@ public final class TestUnitValoration {
 
         unit = Mockito.mock(Unit.class);
 
-        Mockito.when(unit.getBaseCost()).thenReturn(1);
+        template = Mockito.mock(UnitTemplate.class);
+
+        Mockito.when(template.getBaseCost()).thenReturn(1);
+
+        Mockito.when(unit.getUnitTemplate()).thenReturn(template);
 
         weapon = Mockito.mock(Weapon.class);
         Mockito.when(weapon.getCost()).thenReturn(2);

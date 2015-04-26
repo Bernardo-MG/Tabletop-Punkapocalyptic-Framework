@@ -18,6 +18,7 @@ import com.wandrell.tabletop.punkapocalyptic.conf.factory.ModelFactory;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
@@ -69,11 +70,13 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 factory = ModelFactory.getInstance();
 
                 ava = getFactionUnitAvailabilityRepository()
-                        .getAvailabilityForUnit(event.getUnit());
+                        .getAvailabilityForUnit(
+                                event.getUnit().getUnitTemplate()
+                                        .getNameToken());
 
                 for (final ConstraintData data : ava.getConstraints()) {
                     constraint = factory.getConstraint(gang,
-                            data.getNameToken(), ava.getUnit().getName(),
+                            data.getNameToken(), ava.getUnit().getNameToken(),
                             (List<String>) data.getContext(),
                             getLocalizationService());
                     getConstraintValidator().addConstraint(constraint);
@@ -95,11 +98,12 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
                 for (final Unit unit : getGang().getUnits()) {
                     ava = getFactionUnitAvailabilityRepository()
-                            .getAvailabilityForUnit(unit);
+                            .getAvailabilityForUnit(
+                                    unit.getUnitTemplate().getNameToken());
 
                     for (final ConstraintData data : ava.getConstraints()) {
-                        constraint = factory.getConstraint(gang,
-                                data.getNameToken(), ava.getUnit().getName(),
+                        constraint = factory.getConstraint(gang, data
+                                .getNameToken(), ava.getUnit().getNameToken(),
                                 (List<String>) data.getContext(),
                                 getLocalizationService());
                         getConstraintValidator().addConstraint(constraint);
@@ -168,8 +172,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
-    public final Collection<Unit> getUnitOptions() {
-        final Collection<Unit> result;
+    public final Collection<UnitTemplate> getUnitOptions() {
+        final Collection<UnitTemplate> result;
         final Collection<FactionUnitAvailability> avas;
 
         avas = getFactionUnitAvailabilityRepository()

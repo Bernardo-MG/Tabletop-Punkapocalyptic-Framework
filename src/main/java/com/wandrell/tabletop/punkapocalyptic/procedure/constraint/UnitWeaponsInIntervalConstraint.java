@@ -69,7 +69,7 @@ public final class UnitWeaponsInIntervalConstraint implements Constraint {
         checkNotNull(unit, "Validating a null unit");
 
         ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             valid = false;

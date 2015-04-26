@@ -39,10 +39,11 @@ import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.TwoHandedSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit.DerivedValuesBuilder;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.DerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.RulesetServiceDerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.DefaultMutation;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 import com.wandrell.tabletop.punkapocalyptic.model.util.DefaultRangedValue;
@@ -135,7 +136,7 @@ public final class ModelFactory {
     }
 
     public final FactionUnitAvailability getFactionUnitAvailability(
-            final Faction faction, final Unit unit,
+            final Faction faction, final UnitTemplate unit,
             final Collection<ConstraintData> constraints) {
         return new DefaultFactionUnitAvailability(faction, unit, constraints);
     }
@@ -221,8 +222,8 @@ public final class ModelFactory {
         return rule;
     }
 
-    public final Unit getUnit(final String name, final Integer actions,
-            final Integer agility, final Integer combat,
+    public final Unit getUnit(final UnitTemplate template,
+            final Integer actions, final Integer agility, final Integer combat,
             final Integer precision, final Integer strength,
             final Integer tech, final Integer toughness, final Integer cost,
             final Collection<SpecialRule> rules, final RulesetService service) {
@@ -231,27 +232,28 @@ public final class ModelFactory {
 
         valorationBuilder = new RulesetServiceDerivedValuesBuilder(service);
 
-        unit = new DefaultUnit(name, actions, agility, combat, precision,
+        unit = new DefaultUnit(template, actions, agility, combat, precision,
                 strength, tech, toughness, cost, rules, valorationBuilder);
 
         return unit;
     }
 
     public final UnitArmorAvailability getUnitArmorAvailability(
-            final Unit unit, final Collection<Armor> armorOptions,
+            final UnitTemplate unit, final Collection<Armor> armorOptions,
             final Armor initialArmor) {
         return new DefaultUnitArmorAvailability(unit, armorOptions,
                 initialArmor);
     }
 
     public final UnitMutationAvailability getUnitMutationAvailability(
-            final Unit unit, final Integer max,
+            final UnitTemplate unit, final Integer max,
             final Collection<Mutation> mutations) {
         return new DefaultUnitMutationAvailability(unit, max, mutations);
     }
 
     public final UnitWeaponAvailability getUnitWeaponAvailability(
-            final Unit unit, final Collection<WeaponOption> weaponOptions,
+            final UnitTemplate unit,
+            final Collection<WeaponOption> weaponOptions,
             final Integer minWeapons, final Integer maxWeapons) {
         return new DefaultUnitWeaponAvailability(unit, weaponOptions,
                 minWeapons, maxWeapons);

@@ -372,7 +372,8 @@ public final class ConstraintParameterFactory {
             Mockito.when(ava.getMaxWeapons()).thenReturn(max);
 
             repo = Mockito.mock(UnitWeaponAvailabilityRepository.class);
-            Mockito.when(repo.getAvailabilityForUnit(Matchers.any(Unit.class)))
+            Mockito.when(
+                    repo.getAvailabilityForUnit(Matchers.any(String.class)))
                     .thenReturn(ava);
 
             weaponsCol = Mockito.mock(Collection.class);

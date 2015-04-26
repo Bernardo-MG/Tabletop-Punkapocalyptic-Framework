@@ -81,7 +81,7 @@ public final class DefaultUnitConfigurationManager implements
         interval = new DefaultInterval();
 
         ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             interval.setLowerLimit(0);
@@ -102,7 +102,7 @@ public final class DefaultUnitConfigurationManager implements
         armors = new LinkedList<>();
 
         ava = getUnitArmorAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava.getInitialArmor() != null) {
             armors.add(ava.getInitialArmor());
@@ -118,7 +118,7 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<Equipment> equipment;
 
         ava = getUnitEquipmentAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             equipment = new LinkedList<>();
@@ -135,7 +135,7 @@ public final class DefaultUnitConfigurationManager implements
         final Integer max;
 
         ava = getUnitMutationAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             max = 0;
@@ -152,7 +152,7 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<Mutation> mutations;
 
         ava = getUnitMutationAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             mutations = new LinkedList<>();
@@ -181,7 +181,7 @@ public final class DefaultUnitConfigurationManager implements
         final Collection<WeaponEnhancement> enhancements;
 
         ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             enhancements = new LinkedList<>();
@@ -212,7 +212,7 @@ public final class DefaultUnitConfigurationManager implements
         final UnitWeaponAvailability ava;
 
         ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnit());
+                getUnit().getUnitTemplate().getNameToken());
 
         if (ava == null) {
             weapons = new LinkedList<>();

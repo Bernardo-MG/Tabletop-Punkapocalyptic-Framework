@@ -144,7 +144,7 @@ public final class DefaultRulesetService implements RulesetService {
     public final Integer getUnitValoration(final Unit unit) {
         Integer valoration;
 
-        valoration = unit.getBaseCost();
+        valoration = unit.getUnitTemplate().getBaseCost();
 
         for (final Weapon weapon : unit.getWeapons()) {
             valoration += weapon.getCost();
