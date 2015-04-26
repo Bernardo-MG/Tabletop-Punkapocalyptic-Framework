@@ -223,13 +223,13 @@ public final class ModelFactory {
     }
 
     public final Unit getUnit(final UnitTemplate template,
-            final Collection<SpecialRule> rules, final RulesetService service) {
+            final RulesetService service) {
         final Unit unit;
         final DerivedValuesBuilder valorationBuilder;
 
         valorationBuilder = new RulesetServiceDerivedValuesBuilder(service);
 
-        unit = new DefaultUnit(template, rules, valorationBuilder);
+        unit = new DefaultUnit(template, valorationBuilder);
 
         return unit;
     }

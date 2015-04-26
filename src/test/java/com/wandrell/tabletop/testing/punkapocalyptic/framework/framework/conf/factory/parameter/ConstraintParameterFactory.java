@@ -17,6 +17,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvaila
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.DependantUnitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACountConstraint;
@@ -351,6 +352,7 @@ public final class ConstraintParameterFactory {
         final Collection<Object[]> result;
         Iterator<Object> itrValues;
         Constraint constraint;
+        UnitTemplate template;
         Unit unit;
         Integer weapons;
         Integer min;
@@ -380,8 +382,13 @@ public final class ConstraintParameterFactory {
 
             Mockito.when(weaponsCol.size()).thenReturn(weapons);
 
+            template = Mockito.mock(UnitTemplate.class);
+
+            Mockito.when(template.getNameToken()).thenReturn("");
+
             unit = Mockito.mock(Unit.class);
             Mockito.when(unit.getWeapons()).thenReturn(weaponsCol);
+            Mockito.when(unit.getUnitTemplate()).thenReturn(template);
 
             constraint = new UnitWeaponsInIntervalConstraint(unit, repo,
                     "message");
