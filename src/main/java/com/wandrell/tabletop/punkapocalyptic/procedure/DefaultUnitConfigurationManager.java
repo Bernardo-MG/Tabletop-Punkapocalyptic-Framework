@@ -3,6 +3,8 @@ package com.wandrell.tabletop.punkapocalyptic.procedure;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 import com.google.common.base.Predicate;
@@ -28,7 +30,6 @@ import com.wandrell.tabletop.punkapocalyptic.repository.UnitArmorAvailabilityRep
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitEquipmentAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitMutationAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitWeaponAvailabilityRepository;
-import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
 public final class DefaultUnitConfigurationManager implements
         UnitConfigurationManager {
@@ -37,7 +38,6 @@ public final class DefaultUnitConfigurationManager implements
     private final String                              constraintMessage;
     private final UnitEquipmentAvailabilityRepository equipAvaRepo;
     private final UnitMutationAvailabilityRepository  mutationAvaRepo;
-    private final RulesetService                      rulesetService;
     private Unit                                      unit;
     private final ConstraintValidator                 validator;
     private final UnitWeaponAvailabilityRepository    weaponAvaRepo;
@@ -46,8 +46,7 @@ public final class DefaultUnitConfigurationManager implements
             final UnitArmorAvailabilityRepository armorAvaRepo,
             final UnitEquipmentAvailabilityRepository equipAvaRepo,
             final UnitMutationAvailabilityRepository mutationAvaRepo,
-            final UnitWeaponAvailabilityRepository weaponAvaRepo,
-            final RulesetService rulesetService) {
+            final UnitWeaponAvailabilityRepository weaponAvaRepo) {
         super();
 
         checkNotNull(constraintMessage,
@@ -60,8 +59,6 @@ public final class DefaultUnitConfigurationManager implements
                 "Received a null pointer as the mutation availability repository");
         checkNotNull(weaponAvaRepo,
                 "Received a null pointer as the weapon availability repository");
-        checkNotNull(rulesetService,
-                "Received a null pointer as the ruleset service");
 
         this.constraintMessage = constraintMessage;
 
@@ -70,7 +67,6 @@ public final class DefaultUnitConfigurationManager implements
         this.equipAvaRepo = equipAvaRepo;
         this.mutationAvaRepo = mutationAvaRepo;
         this.weaponAvaRepo = weaponAvaRepo;
-        this.rulesetService = rulesetService;
     }
 
     @Override
@@ -221,8 +217,7 @@ public final class DefaultUnitConfigurationManager implements
             for (final WeaponOption option : ava.getWeaponOptions()) {
                 weaponOptions.add(option.getWeapon());
             }
-            weapons = getRulesetService().filterWeaponOptions(
-                    getUnit().getWeapons(), weaponOptions);
+            weapons = filterWeaponOptions(getUnit().getWeapons(), weaponOptions);
         }
 
         return weapons;
@@ -254,16 +249,49 @@ public final class DefaultUnitConfigurationManager implements
         return getConstraintValidator().validate();
     }
 
+    private final Collection<Weapon> filterWeaponOptions(
+            final Collection<Weapon> weaponsHas,
+            final Collection<Weapon> weapons) {
+        final Collection<Weapon> weaponsFiltered;
+        final Iterator<Weapon> itrWeapons;
+        Weapon weapon;
+        Boolean hasTwoHanded;
+
+        // TODO: This method should not be part of the service
+
+        // Checks if the unit has a two handed weapon
+        hasTwoHanded = false;
+        itrWeapons = weaponsHas.iterator();
+        while ((!hasTwoHanded) && (itrWeapons.hasNext())) {
+            weapon = itrWeapons.next();
+            hasTwoHanded = weapon.isTwoHanded();
+        }
+
+        weaponsFiltered = new LinkedHashSet<>();
+        for (final Weapon w : weapons) {
+            // Checks if the unit already has that weapon
+            if (!weaponsHas.contains(w)) {
+                if (w.isTwoHanded()) {
+                    // If it is two handed
+                    // Then the unit should have no 2h weapon
+                    if (!hasTwoHanded) {
+                        weaponsFiltered.add(w);
+                    }
+                } else {
+                    weaponsFiltered.add(w);
+                }
+            }
+        }
+
+        return weaponsFiltered;
+    }
+
     private final String getConstraintMessage() {
         return constraintMessage;
     }
 
     private final ConstraintValidator getConstraintValidator() {
         return validator;
-    }
-
-    private final RulesetService getRulesetService() {
-        return rulesetService;
     }
 
     private final UnitArmorAvailabilityRepository

@@ -2,9 +2,6 @@ package com.wandrell.tabletop.punkapocalyptic.service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
@@ -34,44 +31,6 @@ public final class DefaultRulesetService implements RulesetService {
 
         rulesConfig = config;
         this.weaponRepo = weaponRepo;
-    }
-
-    @Override
-    public final Collection<Weapon> filterWeaponOptions(
-            final Collection<Weapon> weaponsHas,
-            final Collection<Weapon> weapons) {
-        final Collection<Weapon> weaponsFiltered;
-        final Iterator<Weapon> itrWeapons;
-        Weapon weapon;
-        Boolean hasTwoHanded;
-
-        // TODO: This method should not be part of the service
-
-        // Checks if the unit has a two handed weapon
-        hasTwoHanded = false;
-        itrWeapons = weaponsHas.iterator();
-        while ((!hasTwoHanded) && (itrWeapons.hasNext())) {
-            weapon = itrWeapons.next();
-            hasTwoHanded = weapon.isTwoHanded();
-        }
-
-        weaponsFiltered = new LinkedHashSet<>();
-        for (final Weapon w : weapons) {
-            // Checks if the unit already has that weapon
-            if (!weaponsHas.contains(w)) {
-                if (w.isTwoHanded()) {
-                    // If it is two handed
-                    // Then the unit should have no 2h weapon
-                    if (!hasTwoHanded) {
-                        weaponsFiltered.add(w);
-                    }
-                } else {
-                    weaponsFiltered.add(w);
-                }
-            }
-        }
-
-        return weaponsFiltered;
     }
 
     @Override
