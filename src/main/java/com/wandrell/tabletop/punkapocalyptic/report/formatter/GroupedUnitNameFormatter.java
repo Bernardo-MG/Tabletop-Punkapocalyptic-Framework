@@ -4,7 +4,7 @@ import net.sf.dynamicreports.report.base.expression.AbstractValueFormatter;
 import net.sf.dynamicreports.report.constant.Constants;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 
-import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 
 public final class GroupedUnitNameFormatter extends
@@ -23,8 +23,8 @@ public final class GroupedUnitNameFormatter extends
         final String result;
 
         name = value.getName();
-        if (value instanceof GroupedUnit) {
-            result = String.format("%dx %s", ((GroupedUnit) value)
+        if (value instanceof DefaultGroupedUnit) {
+            result = String.format("%dx %s", ((DefaultGroupedUnit) value)
                     .getGroupSize().getValue(), name);
         } else {
             result = name;

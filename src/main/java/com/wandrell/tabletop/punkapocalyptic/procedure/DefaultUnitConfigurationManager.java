@@ -22,7 +22,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.option.WeaponOpt
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
@@ -225,7 +225,7 @@ public final class DefaultUnitConfigurationManager implements
 
     @Override
     public final Boolean isGrouped() {
-        return (getUnit() instanceof GroupedUnit);
+        return (getUnit() instanceof DefaultGroupedUnit);
     }
 
     @Override

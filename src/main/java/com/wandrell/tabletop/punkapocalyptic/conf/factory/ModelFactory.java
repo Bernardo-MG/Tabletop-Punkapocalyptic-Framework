@@ -38,9 +38,9 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnitWrapper;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.DefaultMutation;
@@ -212,10 +212,7 @@ public final class ModelFactory {
         final Collection<SpecialRule> filtered;
         Unit unit;
 
-        unit = new DefaultUnit(template);
-
-        filtered = Collections2.filter(
-                unit.getUnitTemplate().getSpecialRules(),
+        filtered = Collections2.filter(template.getSpecialRules(),
                 new Predicate<SpecialRule>() {
 
                     @Override
@@ -225,8 +222,10 @@ public final class ModelFactory {
 
                 });
 
-        if (!filtered.isEmpty()) {
-            unit = new GroupedUnitWrapper(unit);
+        if (filtered.isEmpty()) {
+            unit = new DefaultUnit(template);
+        } else {
+            unit = new DefaultGroupedUnit(template);
         }
 
         return unit;
