@@ -10,7 +10,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
-import com.wandrell.tabletop.punkapocalyptic.repository.WeaponRepository;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
@@ -34,12 +33,10 @@ public final class TestMaxAllowedUnits {
     @BeforeClass
     public final void initializeWeapons() {
         final Map<Object, Object> config;
-        final WeaponRepository repo;
 
         config = Mockito.mock(Map.class);
-        repo = Mockito.mock(WeaponRepository.class);
 
-        service = new DefaultRulesetService(config, repo);
+        service = new DefaultRulesetService(config);
     }
 
     @Test(dataProvider = DataProviderConf.GENERIC_PROVIDER)

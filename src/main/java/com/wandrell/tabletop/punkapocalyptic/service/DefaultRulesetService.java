@@ -5,32 +5,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.MeleeWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
-import com.wandrell.tabletop.punkapocalyptic.repository.WeaponRepository;
 
 public final class DefaultRulesetService implements RulesetService {
 
     private Integer                   bulletCost;
     private Integer                   packMax;
     private final Map<Object, Object> rulesConfig;
-    private final WeaponRepository    weaponRepo;
 
-    public DefaultRulesetService(final Map<Object, Object> config,
-            final WeaponRepository weaponRepo) {
+    public DefaultRulesetService(final Map<Object, Object> config) {
         super();
 
         checkNotNull(config, "Received a null pointer as config map");
-        checkNotNull(weaponRepo,
-                "Received a null pointer as weapons repository");
 
         rulesConfig = config;
-        this.weaponRepo = weaponRepo;
     }
 
     @Override
@@ -97,11 +90,6 @@ public final class DefaultRulesetService implements RulesetService {
     }
 
     @Override
-    public final MeleeWeapon getTwoHandedMeleeEquivalent() {
-        return getWeaponRepository().getRangedMeleeWeapon();
-    }
-
-    @Override
     public final Integer getUnitValoration(final Unit unit) {
         Integer valoration;
 
@@ -135,10 +123,6 @@ public final class DefaultRulesetService implements RulesetService {
 
     private final Map<Object, Object> getRulesConfiguration() {
         return rulesConfig;
-    }
-
-    private final WeaponRepository getWeaponRepository() {
-        return weaponRepo;
     }
 
 }
