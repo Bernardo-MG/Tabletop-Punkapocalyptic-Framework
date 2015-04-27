@@ -31,7 +31,7 @@ public final class GangUnitsRangeFormatter extends
         return String.format(
                 getLocalizationService().getReportString(
                         ReportBundleConf.UNITS_RANGE), value.getUnits().size(),
-                getRulesetService().getMaxAllowedUnits(value));
+                getRulesetService().getMaxAllowedUnits(value.getValoration()));
     }
 
     private final LocalizationService getLocalizationService() {

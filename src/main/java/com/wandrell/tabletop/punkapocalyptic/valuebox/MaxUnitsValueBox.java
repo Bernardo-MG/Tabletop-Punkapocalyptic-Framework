@@ -60,7 +60,8 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
 
     @Override
     public final Integer getValue() {
-        return getRulesetService().getMaxAllowedUnits(getGang());
+        return getRulesetService()
+                .getMaxAllowedUnits(getGang().getValoration());
     }
 
     private final Gang getGang() {

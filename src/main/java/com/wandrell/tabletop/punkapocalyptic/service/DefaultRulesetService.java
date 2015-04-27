@@ -46,7 +46,7 @@ public final class DefaultRulesetService implements RulesetService {
     }
 
     @Override
-    public final Integer getMaxAllowedUnits(final Gang gang) {
+    public final Integer getMaxAllowedUnits(final Integer valoration) {
         final Integer step;
         final Integer range;
         Integer max;
@@ -56,7 +56,7 @@ public final class DefaultRulesetService implements RulesetService {
         step = 3;
         range = 100;
 
-        value = gang.getValoration();
+        value = valoration;
         if (value == 0) {
             max = step;
         } else {

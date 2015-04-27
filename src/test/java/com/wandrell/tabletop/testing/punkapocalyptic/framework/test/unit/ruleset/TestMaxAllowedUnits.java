@@ -9,7 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.DataProviderConf;
@@ -42,12 +41,7 @@ public final class TestMaxAllowedUnits {
     @Test(dataProvider = DataProviderConf.GENERIC_PROVIDER)
     public final void testMaxAllowedUnits(final Integer points,
             final Integer units) throws Exception {
-        final Gang gang;
-
-        gang = Mockito.mock(Gang.class);
-        Mockito.when(gang.getValoration()).thenReturn(points);
-
-        Assert.assertEquals(service.getMaxAllowedUnits(gang), units);
+        Assert.assertEquals(service.getMaxAllowedUnits(points), units);
     }
 
 }
