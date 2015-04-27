@@ -14,12 +14,13 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultFactionUn
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultUnitArmorAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultUnitMutationAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultUnitWeaponAvailability;
-import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultWeaponOption;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitArmorAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitMutationAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
-import com.wandrell.tabletop.punkapocalyptic.model.availability.WeaponOption;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.DefaultWeaponOption;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.WeaponOption;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.DefaultFaction;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Armor;
@@ -255,8 +256,9 @@ public final class ModelFactory {
     }
 
     public final UnitArmorAvailability getUnitArmorAvailability(
-            final UnitTemplate unit, final Collection<Armor> armorOptions,
-            final Armor initialArmor) {
+            final UnitTemplate unit,
+            final Collection<ArmorOption> armorOptions,
+            final ArmorOption initialArmor) {
         return new DefaultUnitArmorAvailability(unit, armorOptions,
                 initialArmor);
     }

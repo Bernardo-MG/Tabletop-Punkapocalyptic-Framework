@@ -45,6 +45,8 @@ public final class DefaultRulesetService implements RulesetService {
         Weapon weapon;
         Boolean hasTwoHanded;
 
+        // TODO: This method should not be part of the service
+
         // Checks if the unit has a two handed weapon
         hasTwoHanded = false;
         itrWeapons = weaponsHas.iterator();

@@ -19,8 +19,8 @@ import net.sf.dynamicreports.report.constant.WhenNoDataType;
 import com.wandrell.tabletop.punkapocalyptic.conf.ReportBundleConf;
 import com.wandrell.tabletop.punkapocalyptic.conf.ReportConf;
 import com.wandrell.tabletop.punkapocalyptic.conf.factory.DynamicReportsFactory;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Armor;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
@@ -28,7 +28,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
-import com.wandrell.tabletop.punkapocalyptic.report.datatype.ArmorDataType;
+import com.wandrell.tabletop.punkapocalyptic.report.datatype.ArmorOptionDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.EquipmentDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.FactionDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.GangDataType;
@@ -38,8 +38,8 @@ import com.wandrell.tabletop.punkapocalyptic.report.datatype.UnitDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.WeaponDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.WeaponEnhancementDataType;
 import com.wandrell.tabletop.punkapocalyptic.report.expression.CurrentObjectDatasourceExpression;
-import com.wandrell.tabletop.punkapocalyptic.report.formatter.ArmorArmorFormatter;
-import com.wandrell.tabletop.punkapocalyptic.report.formatter.ArmorNameFormatter;
+import com.wandrell.tabletop.punkapocalyptic.report.formatter.ArmorOptionArmorFormatter;
+import com.wandrell.tabletop.punkapocalyptic.report.formatter.ArmorOptionNameFormatter;
 import com.wandrell.tabletop.punkapocalyptic.report.formatter.FactionNameFormatter;
 import com.wandrell.tabletop.punkapocalyptic.report.formatter.GangBulletsFormatter;
 import com.wandrell.tabletop.punkapocalyptic.report.formatter.GangUnitsRangeFormatter;
@@ -115,22 +115,25 @@ public final class ReportFactory {
         return Components.subreport(report);
     }
 
-    private final DRField<Armor> getArmorArmorField(final String fieldName,
-            final LocalizationService localizationService) {
-        final DRField<Armor> field;
+    private final DRField<ArmorOption>
+            getArmorNameField(final String fieldName) {
+        final DRField<ArmorOption> field;
 
-        field = new DRField<Armor>(fieldName, Armor.class);
-        field.setDataType(new ArmorDataType(new ArmorArmorFormatter(
-                localizationService)));
+        field = new DRField<ArmorOption>(fieldName, ArmorOption.class);
+        field.setDataType(new ArmorOptionDataType(
+                new ArmorOptionNameFormatter()));
 
         return field;
     }
 
-    private final DRField<Armor> getArmorNameField(final String fieldName) {
-        final DRField<Armor> field;
+    private final DRField<ArmorOption> getArmorOptionArmorField(
+            final String fieldName,
+            final LocalizationService localizationService) {
+        final DRField<ArmorOption> field;
 
-        field = new DRField<Armor>(fieldName, Armor.class);
-        field.setDataType(new ArmorDataType(new ArmorNameFormatter()));
+        field = new DRField<ArmorOption>(fieldName, ArmorOption.class);
+        field.setDataType(new ArmorOptionDataType(
+                new ArmorOptionArmorFormatter(localizationService)));
 
         return field;
     }
@@ -289,15 +292,15 @@ public final class ReportFactory {
     private final ComponentBuilder<?, ?> getUnitArmorSubreport(
             final LocalizationService localizationService) {
         final TextFieldBuilder<String> armorNameLabelText;
-        final TextFieldBuilder<Armor> armorNameText;
-        final TextFieldBuilder<Armor> armorArmorText;
+        final TextFieldBuilder<ArmorOption> armorNameText;
+        final TextFieldBuilder<ArmorOption> armorArmorText;
 
         armorNameLabelText = Components.text(localizationService
                 .getReportString(ReportBundleConf.ARMOR_NAME));
         armorNameText = Components.text(getArmorNameField(ReportConf.ARMOR));
 
-        armorArmorText = Components.text(getArmorArmorField(ReportConf.ARMOR,
-                localizationService));
+        armorArmorText = Components.text(getArmorOptionArmorField(
+                ReportConf.ARMOR, localizationService));
 
         return DynamicReportsFactory.getInstance()
                 .getBorderedCellComponentThin(

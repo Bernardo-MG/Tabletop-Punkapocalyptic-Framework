@@ -15,8 +15,8 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitArmorAvailab
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitEquipmentAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitMutationAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
-import com.wandrell.tabletop.punkapocalyptic.model.availability.WeaponOption;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Armor;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
+import com.wandrell.tabletop.punkapocalyptic.model.availability.option.WeaponOption;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
@@ -95,8 +95,8 @@ public final class DefaultUnitConfigurationManager implements
     }
 
     @Override
-    public final Collection<Armor> getArmorOptions() {
-        final Collection<Armor> armors;
+    public final Collection<ArmorOption> getArmorOptions() {
+        final Collection<ArmorOption> armors;
         final UnitArmorAvailability ava;
 
         armors = new LinkedList<>();
