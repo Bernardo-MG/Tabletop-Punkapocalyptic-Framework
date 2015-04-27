@@ -37,7 +37,6 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitBasedStrengthRa
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
-import com.wandrell.tabletop.punkapocalyptic.model.ruleset.FirearmSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.TwoHandedSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
@@ -190,19 +189,20 @@ public final class ModelFactory {
             final String name, final Integer cost,
             final Collection<SpecialRule> rules, final RangedValue penetration,
             final RangedValue strength, final RangedValue distanceCM,
-            final RangedValue distanceInches, final MeleeWeapon weaponMelee) {
+            final RangedValue distanceInches, final Boolean firearm,
+            final MeleeWeapon weaponMelee) {
         final RangedWeapon weapon;
 
         switch (name) {
             case "throwing_knife":
                 weapon = new UnitBasedStrengthRangedWeapon(unit, name, cost,
                         rules, penetration, strength, distanceCM,
-                        distanceInches, weaponMelee);
+                        distanceInches, firearm, weaponMelee);
                 break;
             default:
                 weapon = new DefaultRangedWeapon(name, cost, rules,
                         penetration, strength, distanceCM, distanceInches,
-                        weaponMelee);
+                        firearm, weaponMelee);
         }
 
         return weapon;
@@ -216,9 +216,6 @@ public final class ModelFactory {
             case SpecialRuleNameConf.TWO_HANDED:
                 rule = new TwoHandedSpecialRule(SpecialRuleNameConf.TWO_HANDED,
                         service);
-                break;
-            case "firearm":
-                rule = new FirearmSpecialRule("firearm");
                 break;
             default:
                 rule = new DefaultSpecialRule(name);
