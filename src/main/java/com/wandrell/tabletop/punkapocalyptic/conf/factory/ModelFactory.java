@@ -9,7 +9,6 @@ import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
 import com.wandrell.tabletop.punkapocalyptic.conf.MessageBundleKey;
-import com.wandrell.tabletop.punkapocalyptic.conf.SpecialRuleNameConf;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultFactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultUnitArmorAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.DefaultUnitMutationAvailability;
@@ -38,7 +37,6 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
-import com.wandrell.tabletop.punkapocalyptic.model.ruleset.TwoHandedSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DerivedValuesBuilder;
@@ -166,9 +164,9 @@ public final class ModelFactory {
     public final MeleeWeapon getMeleeWeapon(final String name,
             final Integer cost, final Integer strength,
             final Integer penetration, final Integer combat,
-            final Collection<SpecialRule> rules) {
+            final Boolean twoHanded, final Collection<SpecialRule> rules) {
         return new DefaultMeleeWeapon(name, cost, strength, penetration,
-                combat, rules);
+                combat, twoHanded, rules);
     }
 
     public final Mutation getMutation(final String name, final Integer cost,
@@ -186,7 +184,7 @@ public final class ModelFactory {
     }
 
     public final RangedWeapon getRangedWeapon(final Unit unit,
-            final String name, final Integer cost,
+            final String name, final Integer cost, final Boolean twoHanded,
             final Collection<SpecialRule> rules, final RangedValue penetration,
             final RangedValue strength, final RangedValue distanceCM,
             final RangedValue distanceInches, final Boolean firearm) {
@@ -195,11 +193,11 @@ public final class ModelFactory {
         switch (name) {
             case "throwing_knife":
                 weapon = new UnitBasedStrengthRangedWeapon(unit, name, cost,
-                        rules, penetration, strength, distanceCM,
+                        twoHanded, rules, penetration, strength, distanceCM,
                         distanceInches, firearm);
                 break;
             default:
-                weapon = new DefaultRangedWeapon(name, cost, rules,
+                weapon = new DefaultRangedWeapon(name, cost, twoHanded, rules,
                         penetration, strength, distanceCM, distanceInches,
                         firearm);
         }
@@ -209,17 +207,7 @@ public final class ModelFactory {
 
     public final SpecialRule getSpecialRule(final String name,
             final RulesetService service) {
-        final SpecialRule rule;
-
-        switch (name) {
-            case SpecialRuleNameConf.TWO_HANDED:
-                rule = new TwoHandedSpecialRule(SpecialRuleNameConf.TWO_HANDED);
-                break;
-            default:
-                rule = new DefaultSpecialRule(name);
-        }
-
-        return rule;
+        return new DefaultSpecialRule(name);
     }
 
     public final Unit getUnit(final UnitTemplate template,
