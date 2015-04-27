@@ -189,20 +189,19 @@ public final class ModelFactory {
             final String name, final Integer cost,
             final Collection<SpecialRule> rules, final RangedValue penetration,
             final RangedValue strength, final RangedValue distanceCM,
-            final RangedValue distanceInches, final Boolean firearm,
-            final MeleeWeapon weaponMelee) {
+            final RangedValue distanceInches, final Boolean firearm) {
         final RangedWeapon weapon;
 
         switch (name) {
             case "throwing_knife":
                 weapon = new UnitBasedStrengthRangedWeapon(unit, name, cost,
                         rules, penetration, strength, distanceCM,
-                        distanceInches, firearm, weaponMelee);
+                        distanceInches, firearm);
                 break;
             default:
                 weapon = new DefaultRangedWeapon(name, cost, rules,
                         penetration, strength, distanceCM, distanceInches,
-                        firearm, weaponMelee);
+                        firearm);
         }
 
         return weapon;
@@ -214,8 +213,7 @@ public final class ModelFactory {
 
         switch (name) {
             case SpecialRuleNameConf.TWO_HANDED:
-                rule = new TwoHandedSpecialRule(SpecialRuleNameConf.TWO_HANDED,
-                        service);
+                rule = new TwoHandedSpecialRule(SpecialRuleNameConf.TWO_HANDED);
                 break;
             default:
                 rule = new DefaultSpecialRule(name);

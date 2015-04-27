@@ -20,24 +20,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.RangedWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
-import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 
 public final class TwoHandedSpecialRule implements SpecialRule,
         WeaponModifierSpecialRule {
 
-    private final SpecialRule    rule;
-    private final RulesetService rulesetService;
+    private final SpecialRule rule;
 
-    public TwoHandedSpecialRule(final String name, final RulesetService service) {
+    public TwoHandedSpecialRule(final String name) {
         super();
 
         checkNotNull(name, "Received a null pointer as name");
-        checkNotNull(service, "Received a null pointer as ruleset service");
 
         rule = new DefaultSpecialRule(name);
-        rulesetService = service;
     }
 
     public TwoHandedSpecialRule(final TwoHandedSpecialRule rule) {
@@ -46,7 +41,6 @@ public final class TwoHandedSpecialRule implements SpecialRule,
         checkNotNull(rule, "Received a null pointer as rule");
 
         this.rule = rule.rule.createNewInstance();
-        rulesetService = rule.rulesetService;
     }
 
     @Override
@@ -54,11 +48,6 @@ public final class TwoHandedSpecialRule implements SpecialRule,
         checkNotNull(weapon, "Received a null pointer as weapon");
 
         weapon.setTwoHanded(true);
-
-        if (weapon instanceof RangedWeapon) {
-            ((RangedWeapon) weapon).setMeleeEquivalent(getRulesetService()
-                    .getTwoHandedMeleeEquivalent());
-        }
     }
 
     @Override
@@ -103,10 +92,6 @@ public final class TwoHandedSpecialRule implements SpecialRule,
 
     private final SpecialRule getBaseRule() {
         return rule;
-    }
-
-    private final RulesetService getRulesetService() {
-        return rulesetService;
     }
 
 }
