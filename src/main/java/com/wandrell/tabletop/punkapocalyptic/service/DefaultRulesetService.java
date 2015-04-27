@@ -4,13 +4,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Map;
 
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.MutantUnit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 
 public final class DefaultRulesetService implements RulesetService {
 
@@ -87,38 +82,6 @@ public final class DefaultRulesetService implements RulesetService {
         }
 
         return packMax;
-    }
-
-    @Override
-    public final Integer getUnitValoration(final Unit unit) {
-        Integer valoration;
-
-        valoration = unit.getUnitTemplate().getBaseCost();
-
-        for (final Weapon weapon : unit.getWeapons()) {
-            valoration += weapon.getCost();
-        }
-
-        for (final Equipment equipment : unit.getEquipment()) {
-            valoration += equipment.getCost();
-        }
-
-        if (unit.getArmor() != null) {
-            valoration += unit.getArmor().getCost();
-        }
-
-        if (unit instanceof MutantUnit) {
-            for (final Mutation mutation : ((MutantUnit) unit).getMutations()) {
-                valoration += mutation.getCost();
-            }
-        }
-
-        if (unit instanceof GroupedUnit) {
-            valoration = valoration
-                    * ((GroupedUnit) unit).getGroupSize().getValue();
-        }
-
-        return valoration;
     }
 
     private final Map<Object, Object> getRulesConfiguration() {

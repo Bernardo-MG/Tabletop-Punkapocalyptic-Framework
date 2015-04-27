@@ -39,10 +39,8 @@ import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.DerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.GroupedUnitWrapper;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.RulesetServiceDerivedValuesBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.DefaultMutation;
@@ -55,7 +53,6 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGa
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
-import com.wandrell.tabletop.valuebox.DefaultValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class ModelFactory {
@@ -212,13 +209,10 @@ public final class ModelFactory {
 
     public final Unit getUnit(final UnitTemplate template,
             final RulesetService service) {
-        final DerivedValuesBuilder valorationBuilder;
         final Collection<SpecialRule> filtered;
         Unit unit;
 
-        valorationBuilder = new RulesetServiceDerivedValuesBuilder(service);
-
-        unit = new DefaultUnit(template, valorationBuilder);
+        unit = new DefaultUnit(template);
 
         filtered = Collections2.filter(
                 unit.getUnitTemplate().getSpecialRules(),
@@ -232,7 +226,7 @@ public final class ModelFactory {
                 });
 
         if (!filtered.isEmpty()) {
-            unit = new GroupedUnitWrapper(unit, new DefaultValueBox(0));
+            unit = new GroupedUnitWrapper(unit);
         }
 
         return unit;
