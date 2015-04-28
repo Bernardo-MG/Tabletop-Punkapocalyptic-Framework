@@ -33,6 +33,7 @@ public final class DefaultRulesetService implements RulesetService {
 
     @Override
     public final Integer getGangValoration(final Gang gang) {
+        // TODO: This should be done inside the gang
         Integer cost;
 
         cost = 0;
@@ -49,26 +50,23 @@ public final class DefaultRulesetService implements RulesetService {
     public final Integer getMaxAllowedUnits(final Integer valoration) {
         final Integer step;
         final Integer range;
-        Integer max;
-        Integer value;
+        final Integer max;
+        Integer times;
 
         // TODO: Maybe this should be loaded from a config file
         step = 3;
         range = 100;
 
-        value = valoration;
-        if (value == 0) {
+        if (valoration == 0) {
             max = step;
-        } else {
+        } else if (valoration < 0) {
             max = 0;
-            while (value > 0) {
-                if (value > range) {
-                    value -= range;
-                } else {
-                    value = 0;
-                }
-                max += step;
+        } else {
+            times = (valoration / range);
+            if ((valoration % range) > 0) {
+                times++;
             }
+            max = times * step;
         }
 
         return max;
