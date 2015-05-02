@@ -1,5 +1,6 @@
 package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.integration.gang;
 
+import java.util.EventObject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,41 +13,55 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang.ValorationBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
 
-public final class ITGangValoration {
+public final class ITGangValorationListener {
 
-    public ITGangValoration() {
+    private final class TestGangListener implements GangListener {
+        public Integer valoration;
+
+        @Override
+        public final void bulletsChanged(final EventObject event) {}
+
+        @Override
+        public final void unitAdded(final UnitEvent event) {}
+
+        @Override
+        public final void unitRemoved(final UnitEvent event) {}
+
+        @Override
+        public final void valorationChanged(final EventObject event) {
+            valoration = ((Gang) event.getSource()).getValoration();
+        }
+    }
+
+    public ITGangValorationListener() {
         super();
     }
 
     @Test
     public final void testBulletsChange() {
         final Gang gang;
+        final TestGangListener listener;
 
         gang = getGang();
 
-        Assert.assertEquals(gang.getValoration(), (Integer) 46);
+        listener = new TestGangListener();
+
+        gang.addGangListener(listener);
 
         gang.setBullets(0);
 
-        Assert.assertEquals(gang.getValoration(), (Integer) 6);
+        Assert.assertEquals(listener.valoration, (Integer) 6);
 
         gang.setBullets(1);
 
-        Assert.assertEquals(gang.getValoration(), (Integer) 16);
-    }
-
-    @Test
-    public final void testGangValoration() {
-        final Gang gang;
-
-        gang = getGang();
-
-        Assert.assertEquals(gang.getValoration(), (Integer) 46);
+        Assert.assertEquals(listener.valoration, (Integer) 16);
     }
 
     private final Gang getGang() {

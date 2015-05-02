@@ -8,6 +8,7 @@ import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.valuebox.AbstractValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
@@ -24,10 +25,36 @@ public final class GangValorationValueBox extends AbstractValueBox {
         listener = new GangListenerAdapter() {
 
             @Override
-            public final void valorationChanged(final EventObject event) {
+            public void bulletsChanged(final EventObject event) {
+                final Integer old;
+
+                old = valoration;
+
                 valoration = getRulesetService().getGangValoration(getGang());
-                fireValueChangedEvent(new ValueChangeEvent(source,
-                        source.getValue(), source.getValue()));
+                fireValueChangedEvent(new ValueChangeEvent(source, old,
+                        valoration));
+            }
+
+            @Override
+            public void unitAdded(final UnitEvent event) {
+                final Integer old;
+
+                old = valoration;
+
+                valoration = getRulesetService().getGangValoration(getGang());
+                fireValueChangedEvent(new ValueChangeEvent(source, old,
+                        valoration));
+            }
+
+            @Override
+            public void unitRemoved(final UnitEvent event) {
+                final Integer old;
+
+                old = valoration;
+
+                valoration = getRulesetService().getGangValoration(getGang());
+                fireValueChangedEvent(new ValueChangeEvent(source, old,
+                        valoration));
             }
 
         };
