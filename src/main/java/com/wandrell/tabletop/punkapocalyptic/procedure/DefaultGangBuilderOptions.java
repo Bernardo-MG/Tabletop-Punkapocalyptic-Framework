@@ -1,9 +1,7 @@
 package com.wandrell.tabletop.punkapocalyptic.procedure;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
-import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityRepository;
 
@@ -21,18 +19,8 @@ public final class DefaultGangBuilderOptions implements GangBuilderOptions {
 
     @Override
     public final Collection<UnitTemplate> getUnitOptions() {
-        final Collection<UnitTemplate> result;
-        final Collection<FactionUnitAvailability> avas;
-
-        avas = getFactionUnitAvailabilityRepository()
-                .getAvailabilitiesForFaction(getFactionName());
-
-        result = new LinkedList<>();
-        for (final FactionUnitAvailability ava : avas) {
-            result.add(ava.getUnit());
-        }
-
-        return result;
+        return getFactionUnitAvailabilityRepository().getUnitsForFaction(
+                getFactionName());
     }
 
     public final void setFactionName(final String name) {

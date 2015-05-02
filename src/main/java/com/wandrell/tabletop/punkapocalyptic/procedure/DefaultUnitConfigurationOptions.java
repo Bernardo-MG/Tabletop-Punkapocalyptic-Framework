@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.wandrell.tabletop.interval.DefaultInterval;
 import com.wandrell.tabletop.interval.Interval;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitArmorAvailability;
@@ -14,7 +12,6 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitEquipmentAva
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitMutationAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
-import com.wandrell.tabletop.punkapocalyptic.model.availability.option.WeaponOption;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
@@ -73,11 +70,10 @@ public final class DefaultUnitConfigurationOptions implements
         final Collection<ArmorOption> armors;
         final UnitArmorAvailability ava;
 
-        armors = new LinkedList<>();
-
         ava = getUnitArmorAvailabilityRepository().getAvailabilityForUnit(
                 getUnitNameToken());
 
+        armors = new LinkedList<>();
         if (ava.getInitialArmor() != null) {
             armors.add(ava.getInitialArmor());
             armors.addAll(ava.getArmorOptions());
@@ -94,10 +90,9 @@ public final class DefaultUnitConfigurationOptions implements
         ava = getUnitEquipmentAvailabilityRepository().getAvailabilityForUnit(
                 getUnitNameToken());
 
-        if (ava == null) {
-            equipment = new LinkedList<>();
-        } else {
-            equipment = ava.getEquipmentOptions();
+        equipment = new LinkedList<>();
+        if (ava != null) {
+            equipment.addAll(ava.getEquipmentOptions());
         }
 
         return equipment;
@@ -128,10 +123,9 @@ public final class DefaultUnitConfigurationOptions implements
         ava = getUnitMutationAvailabilityRepository().getAvailabilityForUnit(
                 getUnitNameToken());
 
-        if (ava == null) {
-            mutations = new LinkedList<>();
-        } else {
-            mutations = ava.getMutationOptions();
+        mutations = new LinkedList<>();
+        if (ava != null) {
+            mutations.addAll(ava.getMutationOptions());
         }
 
         return mutations;
@@ -140,31 +134,11 @@ public final class DefaultUnitConfigurationOptions implements
     @Override
     public final Collection<WeaponEnhancement> getWeaponEnhancements(
             final Weapon weapon) {
-        final WeaponOption option;
-        final UnitWeaponAvailability ava;
         final Collection<WeaponEnhancement> enhancements;
 
-        ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnitNameToken());
-
-        if (ava == null) {
-            enhancements = new LinkedList<>();
-        } else {
-            option = Collections2
-                    .filter(ava.getWeaponOptions(),
-                            new Predicate<WeaponOption>() {
-
-                                @Override
-                                public final boolean apply(
-                                        final WeaponOption input) {
-                                    return input.getWeapon().getName()
-                                            .equals(weapon.getName());
-                                }
-
-                            }).iterator().next();
-
-            enhancements = option.getEnhancements();
-        }
+        enhancements = getUnitWeaponAvailabilityRepository()
+                .getEnhancementsForUnitAndWeapon(getUnitNameToken(),
+                        weapon.getName());
 
         return enhancements;
     }
@@ -173,20 +147,11 @@ public final class DefaultUnitConfigurationOptions implements
     public final Collection<Weapon> getWeaponOptions() {
         final Collection<Weapon> weaponOptions;
         final Collection<Weapon> weapons;
-        final UnitWeaponAvailability ava;
 
-        ava = getUnitWeaponAvailabilityRepository().getAvailabilityForUnit(
-                getUnitNameToken());
+        weaponOptions = getUnitWeaponAvailabilityRepository()
+                .getAvailableWeaponsForUnit(getUnitNameToken());
 
-        if (ava == null) {
-            weapons = new LinkedList<>();
-        } else {
-            weaponOptions = new LinkedList<>();
-            for (final WeaponOption option : ava.getWeaponOptions()) {
-                weaponOptions.add(option.getWeapon());
-            }
-            weapons = filterWeaponOptions(getUnitWeapons(), weaponOptions);
-        }
+        weapons = filterWeaponOptions(getUnitWeapons(), weaponOptions);
 
         return weapons;
     }
@@ -206,8 +171,6 @@ public final class DefaultUnitConfigurationOptions implements
         final Iterator<Weapon> itrWeapons;
         Weapon weapon;
         Boolean hasTwoHanded;
-
-        // TODO: This method should not be part of the service
 
         // Checks if the unit has a two handed weapon
         hasTwoHanded = false;

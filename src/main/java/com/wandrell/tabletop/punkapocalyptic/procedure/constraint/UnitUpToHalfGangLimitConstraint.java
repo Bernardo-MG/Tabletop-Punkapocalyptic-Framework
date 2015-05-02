@@ -49,6 +49,7 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint {
         final UnitUpToHalfGangLimitConstraint other;
 
         other = (UnitUpToHalfGangLimitConstraint) obj;
+
         return Objects.equals(unit, other.unit);
     }
 
@@ -71,8 +72,6 @@ public final class UnitUpToHalfGangLimitConstraint implements Constraint {
     public final Boolean isValid() {
         final Predicate<Unit> isUnit;
         final Collection<Unit> units;
-
-        checkNotNull(getGang(), "Validating a null gang");
 
         isUnit = new Predicate<Unit>() {
 

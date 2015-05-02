@@ -16,6 +16,7 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
 
     private final Gang           gang;
     private final GangListener   listener;
+    private Integer              max;
     private final RulesetService serviceRuleset;
 
     {
@@ -24,6 +25,8 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
 
             @Override
             public final void valorationChanged(final EventObject evt) {
+                max = getRulesetService().getMaxAllowedUnits(
+                        getGang().getValoration());
                 fireValueChangedEvent(new ValueChangeEvent(source,
                         source.getValue(), source.getValue()));
             }
@@ -41,6 +44,8 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
 
         this.gang = gang;
 
+        max = getRulesetService().getMaxAllowedUnits(getGang().getValoration());
+
         gang.addGangListener(getListener());
     }
 
@@ -50,7 +55,10 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
         checkNotNull(value, "Received a null pointer as value box");
 
         gang = value.gang;
+
         serviceRuleset = value.serviceRuleset;
+
+        max = getRulesetService().getMaxAllowedUnits(getGang().getValoration());
     }
 
     @Override
@@ -60,8 +68,7 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
 
     @Override
     public final Integer getValue() {
-        return getRulesetService()
-                .getMaxAllowedUnits(getGang().getValoration());
+        return max;
     }
 
     private final Gang getGang() {

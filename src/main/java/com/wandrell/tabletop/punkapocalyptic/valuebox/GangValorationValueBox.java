@@ -17,6 +17,7 @@ public final class GangValorationValueBox extends AbstractValueBox {
     private final Gang           gang;
     private final GangListener   listener;
     private final RulesetService serviceRuleset;
+    private Integer              valoration;
 
     {
         final ValueBox source = this;
@@ -24,6 +25,7 @@ public final class GangValorationValueBox extends AbstractValueBox {
 
             @Override
             public final void valorationChanged(final EventObject event) {
+                valoration = getRulesetService().getGangValoration(getGang());
                 fireValueChangedEvent(new ValueChangeEvent(source,
                         source.getValue(), source.getValue()));
             }
@@ -38,7 +40,10 @@ public final class GangValorationValueBox extends AbstractValueBox {
         checkNotNull(service, "Received a null pointer as service");
 
         this.gang = gang;
+
         serviceRuleset = service;
+
+        valoration = getRulesetService().getGangValoration(getGang());
 
         gang.addGangListener(getListener());
     }
@@ -49,7 +54,10 @@ public final class GangValorationValueBox extends AbstractValueBox {
         checkNotNull(store, "Received a null pointer as store");
 
         gang = store.gang;
+
         serviceRuleset = store.serviceRuleset;
+
+        valoration = getRulesetService().getGangValoration(getGang());
     }
 
     @Override
@@ -59,7 +67,7 @@ public final class GangValorationValueBox extends AbstractValueBox {
 
     @Override
     public final Integer getValue() {
-        return getRulesetService().getGangValoration(getGang());
+        return valoration;
     }
 
     private final Gang getGang() {
