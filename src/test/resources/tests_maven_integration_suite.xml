@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="TabletopPunkaFrameworkIntegration" parallel="methods" thread-count="4">
+<suite name="TabletopPunkaRulesetIntegration" parallel="methods"
+	thread-count="4">
+
+	<test name="punka_rules_integration">
+		<packages>
+			<package
+				name="com.wandrell.tabletop.testing.punkapocalyptic.framework.test.integration.*" />
+		</packages>
+	</test>
 
 </suite>

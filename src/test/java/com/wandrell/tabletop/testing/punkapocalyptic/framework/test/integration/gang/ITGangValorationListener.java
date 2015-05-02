@@ -36,7 +36,7 @@ public final class ITGangValorationListener {
 
         @Override
         public final void valorationChanged(final EventObject event) {
-            valoration = ((Gang) event.getSource()).getValoration();
+            valoration = ((DefaultGang) event.getSource()).getValoration();
         }
     }
 
