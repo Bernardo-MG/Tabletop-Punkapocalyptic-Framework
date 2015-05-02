@@ -38,6 +38,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang.ValorationBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
@@ -142,7 +143,7 @@ public final class ModelFactory {
 
     public final Gang getGang(final Faction faction,
             final RulesetService service) {
-        final DefaultGang.ValorationBuilder valorationBuilder;
+        final ValorationBuilder valorationBuilder;
         final Gang gang;
 
         valorationBuilder = new DefaultGang.ValorationBuilder() {
