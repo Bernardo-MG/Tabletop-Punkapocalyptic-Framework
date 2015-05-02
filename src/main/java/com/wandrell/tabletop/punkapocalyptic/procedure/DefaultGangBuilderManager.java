@@ -3,7 +3,6 @@ package com.wandrell.tabletop.punkapocalyptic.procedure;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -18,15 +17,12 @@ import com.wandrell.tabletop.punkapocalyptic.conf.factory.ModelFactory;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangBuilderStatusChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedEvent;
-import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedListener;
-import com.wandrell.tabletop.punkapocalyptic.procedure.event.UnitChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
@@ -37,6 +33,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     private Gang                                    gang;
     private final GangListener                      gangListener;
+    private final DefaultGangBuilderOptions         gangOptions;
     private final ValueChangeListener               listenerMaxUnits;
     private final EventListenerList                 listeners = new EventListenerList();
     private ValueBox                                maxUnits;
@@ -134,15 +131,9 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         serviceRuleset = rulesetService;
         serviceLocalization = localizationService;
 
+        gangOptions = new DefaultGangBuilderOptions(unitAvaRepository);
+
         getConstraintValidator().addConstraint(getUnitLimitConstraint());
-    }
-
-    @Override
-    public final void
-            addGangChangedListener(final GangChangedListener listener) {
-        checkNotNull(listener, "Received a null pointer as listener");
-
-        getListeners().add(GangChangedListener.class, listener);
     }
 
     @Override
@@ -151,14 +142,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         checkNotNull(listener, "Received a null pointer as listener");
 
         getListeners().add(GangBuilderStatusChangedListener.class, listener);
-    }
-
-    @Override
-    public final void
-            addUnitChangedListener(final UnitChangedListener listener) {
-        checkNotNull(listener, "Received a null pointer as listener");
-
-        getListeners().add(UnitChangedListener.class, listener);
     }
 
     @Override
@@ -172,19 +155,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
-    public final Collection<UnitTemplate> getUnitOptions() {
-        final Collection<UnitTemplate> result;
-        final Collection<FactionUnitAvailability> avas;
-
-        avas = getFactionUnitAvailabilityRepository()
-                .getAvailabilitiesForFaction(getGang().getFaction());
-
-        result = new LinkedList<>();
-        for (final FactionUnitAvailability ava : avas) {
-            result.add(ava.getUnit());
-        }
-
-        return result;
+    public final DefaultGangBuilderOptions getOptions() {
+        return gangOptions;
     }
 
     @Override
@@ -193,21 +165,9 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     @Override
-    public final void removeGangChangedListener(
-            final GangChangedListener listener) {
-        getListeners().remove(GangChangedListener.class, listener);
-    }
-
-    @Override
     public final void removeStatusChangedListener(
             final GangBuilderStatusChangedListener listener) {
         getListeners().remove(GangBuilderStatusChangedListener.class, listener);
-    }
-
-    @Override
-    public final void removeUnitChangedListener(
-            final UnitChangedListener listener) {
-        getListeners().remove(UnitChangedListener.class, listener);
     }
 
     @Override
@@ -221,6 +181,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         if (this.gang != null) {
             this.gang.removeGangListener(getGangListener());
         }
+
+        getOptions().setFactionName(gang.getFaction().getName());
 
         if (maxUnits != null) {
             maxUnits.removeValueChangeListener(getMaxUnitsChangeListener());
@@ -244,12 +206,13 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     private final void fireGangChangedEvent(final GangChangedEvent event) {
-        final GangChangedListener[] listnrs;
+        final GangBuilderStatusChangedListener[] listnrs;
 
         checkNotNull(event, "Received a null pointer as event");
 
-        listnrs = getListeners().getListeners(GangChangedListener.class);
-        for (final GangChangedListener l : listnrs) {
+        listnrs = getListeners().getListeners(
+                GangBuilderStatusChangedListener.class);
+        for (final GangBuilderStatusChangedListener l : listnrs) {
             l.gangChanged(event);
         }
     }
@@ -267,23 +230,25 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     }
 
     private final void fireUnitAddedEvent(final UnitEvent event) {
-        final UnitChangedListener[] listnrs;
+        final GangBuilderStatusChangedListener[] listnrs;
 
         checkNotNull(event, "Received a null pointer as event");
 
-        listnrs = getListeners().getListeners(UnitChangedListener.class);
-        for (final UnitChangedListener l : listnrs) {
+        listnrs = getListeners().getListeners(
+                GangBuilderStatusChangedListener.class);
+        for (final GangBuilderStatusChangedListener l : listnrs) {
             l.unitAdded(event);
         }
     }
 
     private final void fireUnitRemovedEvent(final UnitEvent event) {
-        final UnitChangedListener[] listnrs;
+        final GangBuilderStatusChangedListener[] listnrs;
 
         checkNotNull(event, "Received a null pointer as event");
 
-        listnrs = getListeners().getListeners(UnitChangedListener.class);
-        for (final UnitChangedListener l : listnrs) {
+        listnrs = getListeners().getListeners(
+                GangBuilderStatusChangedListener.class);
+        for (final GangBuilderStatusChangedListener l : listnrs) {
             l.unitRemoved(event);
         }
     }
