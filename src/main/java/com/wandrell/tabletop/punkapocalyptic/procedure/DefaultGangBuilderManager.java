@@ -182,7 +182,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
             this.gang.removeGangListener(getGangListener());
         }
 
-        getOptions().setFactionName(gang.getFaction().getName());
+        getOptions().setFactionName(gang.getFaction().getNameToken());
 
         if (maxUnits != null) {
             maxUnits.removeValueChangeListener(getMaxUnitsChangeListener());

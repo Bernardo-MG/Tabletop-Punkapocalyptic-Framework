@@ -31,7 +31,7 @@ public final class FactionDataType extends AbstractDataType<Faction, Faction> {
 
     @Override
     public final String valueToString(final Faction value, final Locale locale) {
-        return value.getName();
+        return value.getNameToken();
     }
 
 }
