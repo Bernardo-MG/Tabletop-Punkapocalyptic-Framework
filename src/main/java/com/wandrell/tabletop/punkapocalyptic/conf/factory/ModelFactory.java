@@ -218,7 +218,7 @@ public final class ModelFactory {
 
                     @Override
                     public final boolean apply(final SpecialRule input) {
-                        return input.getName().equals("pack");
+                        return input.getNameToken().equals("pack");
                     }
 
                 });

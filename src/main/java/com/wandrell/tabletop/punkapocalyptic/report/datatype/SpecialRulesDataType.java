@@ -24,7 +24,7 @@ public final class SpecialRulesDataType extends
         @Override
         public String format(SpecialRule value,
                 ReportParameters reportParameters) {
-            return value.getName();
+            return value.getNameToken();
         }
 
     }
@@ -46,7 +46,7 @@ public final class SpecialRulesDataType extends
     @Override
     public final String valueToString(final SpecialRule value,
             final Locale locale) {
-        return value.getName();
+        return value.getNameToken();
     }
 
 }
