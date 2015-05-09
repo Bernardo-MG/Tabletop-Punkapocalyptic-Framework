@@ -14,7 +14,7 @@ import com.wandrell.pattern.parser.Parser;
 import com.wandrell.pattern.parser.xml.FilteredEntriesXMLFileParser;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
@@ -358,7 +358,7 @@ public final class ConstraintParameterFactory {
         Integer min;
         Integer max;
         UnitWeaponAvailabilityRepository repo;
-        Collection<Weapon> weaponsCol;
+        Collection<UnitWeapon> weaponsCol;
         UnitWeaponAvailability ava;
 
         result = new LinkedList<>();

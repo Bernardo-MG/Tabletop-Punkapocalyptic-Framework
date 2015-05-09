@@ -13,7 +13,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitMutationAvai
 import com.wandrell.tabletop.punkapocalyptic.model.availability.UnitWeaponAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitArmorAvailabilityRepository;
@@ -28,7 +28,7 @@ public final class DefaultUnitConfigurationOptions implements
     private final UnitEquipmentAvailabilityRepository equipAvaRepo;
     private final UnitMutationAvailabilityRepository  mutationAvaRepo;
     private String                                    unitNameToken;
-    private Collection<Weapon>                        unitWeapons;
+    private Collection<UnitWeapon>                    unitWeapons;
     private final UnitWeaponAvailabilityRepository    weaponAvaRepo;
 
     public DefaultUnitConfigurationOptions(
@@ -133,20 +133,20 @@ public final class DefaultUnitConfigurationOptions implements
 
     @Override
     public final Collection<WeaponEnhancement> getWeaponEnhancements(
-            final Weapon weapon) {
+            final UnitWeapon weapon) {
         final Collection<WeaponEnhancement> enhancements;
 
         enhancements = getUnitWeaponAvailabilityRepository()
                 .getEnhancementsForUnitAndWeapon(getUnitNameToken(),
-                        weapon.getName());
+                        weapon.getTemplate().getName());
 
         return enhancements;
     }
 
     @Override
-    public final Collection<Weapon> getWeaponOptions() {
-        final Collection<Weapon> weaponOptions;
-        final Collection<Weapon> weapons;
+    public final Collection<UnitWeapon> getWeaponOptions() {
+        final Collection<UnitWeapon> weaponOptions;
+        final Collection<UnitWeapon> weapons;
 
         weaponOptions = getUnitWeaponAvailabilityRepository()
                 .getAvailableWeaponsForUnit(getUnitNameToken());
@@ -160,16 +160,16 @@ public final class DefaultUnitConfigurationOptions implements
         unitNameToken = name;
     }
 
-    public final void setUnitWeapons(final Collection<Weapon> weapons) {
+    public final void setUnitWeapons(final Collection<UnitWeapon> weapons) {
         unitWeapons = weapons;
     }
 
-    private final Collection<Weapon> filterWeaponOptions(
-            final Collection<Weapon> weaponsHas,
-            final Collection<Weapon> weapons) {
-        final Collection<Weapon> weaponsFiltered;
-        final Iterator<Weapon> itrWeapons;
-        Weapon weapon;
+    private final Collection<UnitWeapon> filterWeaponOptions(
+            final Collection<UnitWeapon> weaponsHas,
+            final Collection<UnitWeapon> weapons) {
+        final Collection<UnitWeapon> weaponsFiltered;
+        final Iterator<UnitWeapon> itrWeapons;
+        UnitWeapon weapon;
         Boolean hasTwoHanded;
 
         // Checks if the unit has a two handed weapon
@@ -177,14 +177,14 @@ public final class DefaultUnitConfigurationOptions implements
         itrWeapons = weaponsHas.iterator();
         while ((!hasTwoHanded) && (itrWeapons.hasNext())) {
             weapon = itrWeapons.next();
-            hasTwoHanded = weapon.isTwoHanded();
+            hasTwoHanded = weapon.getTemplate().isTwoHanded();
         }
 
         weaponsFiltered = new LinkedHashSet<>();
-        for (final Weapon w : weapons) {
+        for (final UnitWeapon w : weapons) {
             // Checks if the unit already has that weapon
             if (!weaponsHas.contains(w)) {
-                if (w.isTwoHanded()) {
+                if (w.getTemplate().isTwoHanded()) {
                     // If it is two handed
                     // Then the unit should have no 2h weapon
                     if (!hasTwoHanded) {
@@ -223,7 +223,7 @@ public final class DefaultUnitConfigurationOptions implements
         return weaponAvaRepo;
     }
 
-    private final Collection<Weapon> getUnitWeapons() {
+    private final Collection<UnitWeapon> getUnitWeapons() {
         return unitWeapons;
     }
 

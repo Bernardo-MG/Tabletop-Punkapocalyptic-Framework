@@ -6,14 +6,15 @@ import net.sf.dynamicreports.report.base.datatype.AbstractDataType;
 import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 
-public final class WeaponDataType extends AbstractDataType<Weapon, Weapon> {
+public final class WeaponDataType extends
+        AbstractDataType<UnitWeapon, UnitWeapon> {
 
-    private static final long                       serialVersionUID = 1L;
-    private final DRIValueFormatter<String, Weapon> formatter;
+    private static final long                           serialVersionUID = 1L;
+    private final DRIValueFormatter<String, UnitWeapon> formatter;
 
-    public WeaponDataType(final DRIValueFormatter<String, Weapon> formatter) {
+    public WeaponDataType(final DRIValueFormatter<String, UnitWeapon> formatter) {
         super();
 
         this.formatter = formatter;
@@ -25,13 +26,14 @@ public final class WeaponDataType extends AbstractDataType<Weapon, Weapon> {
     }
 
     @Override
-    public final DRIValueFormatter<String, Weapon> getValueFormatter() {
+    public final DRIValueFormatter<String, UnitWeapon> getValueFormatter() {
         return formatter;
     }
 
     @Override
-    public final String valueToString(final Weapon value, final Locale locale) {
-        return String.valueOf(value.getName());
+    public final String valueToString(final UnitWeapon value,
+            final Locale locale) {
+        return String.valueOf(value.getTemplate().getName());
     }
 
 }

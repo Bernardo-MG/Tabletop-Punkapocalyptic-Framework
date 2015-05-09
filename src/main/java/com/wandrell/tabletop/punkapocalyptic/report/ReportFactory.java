@@ -22,7 +22,7 @@ import com.wandrell.tabletop.punkapocalyptic.conf.factory.DynamicReportsFactory;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.option.ArmorOption;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
@@ -520,10 +520,11 @@ public final class ReportFactory {
                 .getBorderedCellComponentThin(subreport);
     }
 
-    private final DRField<Weapon> getWeaponCombatField(final String fieldName) {
-        final DRField<Weapon> field;
+    private final DRField<UnitWeapon> getWeaponCombatField(
+            final String fieldName) {
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(new WeaponCombatFormatter()));
 
         return field;
@@ -594,22 +595,22 @@ public final class ReportFactory {
         return data;
     }
 
-    private final DRField<Weapon> getWeaponDistanceImperialField(
+    private final DRField<UnitWeapon> getWeaponDistanceImperialField(
             final String fieldName) {
-        final DRField<Weapon> field;
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(
                 new WeaponDistanceImperialFormatter()));
 
         return field;
     }
 
-    private final DRField<Weapon> getWeaponDistanceMetricField(
+    private final DRField<UnitWeapon> getWeaponDistanceMetricField(
             final String fieldName) {
-        final DRField<Weapon> field;
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(
                 new WeaponDistanceMetricFormatter()));
 
@@ -635,31 +636,31 @@ public final class ReportFactory {
         return Components.subreport(report);
     }
 
-    private final DRField<Weapon> getWeaponNameField(final String fieldName,
-            final LocalizationService service) {
-        final DRField<Weapon> field;
+    private final DRField<UnitWeapon> getWeaponNameField(
+            final String fieldName, final LocalizationService service) {
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(new WeaponNameFormatter()));
 
         return field;
     }
 
-    private final DRField<Weapon> getWeaponPenetrationField(
+    private final DRField<UnitWeapon> getWeaponPenetrationField(
             final String fieldName) {
-        final DRField<Weapon> field;
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(new WeaponPenetrationFormatter()));
 
         return field;
     }
 
-    private final DRField<Weapon>
-            getWeaponStrengthField(final String fieldName) {
-        final DRField<Weapon> field;
+    private final DRField<UnitWeapon> getWeaponStrengthField(
+            final String fieldName) {
+        final DRField<UnitWeapon> field;
 
-        field = new DRField<Weapon>(fieldName, Weapon.class);
+        field = new DRField<UnitWeapon>(fieldName, UnitWeapon.class);
         field.setDataType(new WeaponDataType(new WeaponStrengthFormatter()));
 
         return field;

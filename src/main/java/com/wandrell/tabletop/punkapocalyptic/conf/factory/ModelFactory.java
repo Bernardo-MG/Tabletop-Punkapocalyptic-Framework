@@ -33,7 +33,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.FirearmWeaponEnhanc
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.MeleeWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.RangedWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitBasedStrengthRangedWeapon;
-import com.wandrell.tabletop.punkapocalyptic.model.inventory.Weapon;
+import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.DefaultSpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
@@ -267,7 +267,7 @@ public final class ModelFactory {
         return enhancement;
     }
 
-    public final WeaponOption getWeaponOption(final Weapon weapon,
+    public final WeaponOption getWeaponOption(final UnitWeapon weapon,
             final Collection<WeaponEnhancement> enhancements) {
         return new DefaultWeaponOption(weapon, enhancements);
     }
