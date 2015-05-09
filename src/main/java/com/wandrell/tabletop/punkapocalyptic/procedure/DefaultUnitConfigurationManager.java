@@ -9,6 +9,7 @@ import com.wandrell.tabletop.procedure.DefaultConstraintValidator;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGroupedUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
+import com.wandrell.tabletop.punkapocalyptic.repository.MutationRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitArmorAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitEquipmentAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitMutationAvailabilityRepository;
@@ -24,6 +25,7 @@ public final class DefaultUnitConfigurationManager implements
     private final UnitWeaponAvailabilityRepository weaponAvaRepo;
 
     public DefaultUnitConfigurationManager(final String constraintMessage,
+            final MutationRepository mutationRepo,
             final UnitArmorAvailabilityRepository armorAvaRepo,
             final UnitEquipmentAvailabilityRepository equipAvaRepo,
             final UnitMutationAvailabilityRepository mutationAvaRepo,
@@ -32,6 +34,8 @@ public final class DefaultUnitConfigurationManager implements
 
         checkNotNull(constraintMessage,
                 "Received a null pointer as the constraint message");
+        checkNotNull(mutationRepo,
+                "Received a null pointer as the mutations repository");
         checkNotNull(armorAvaRepo,
                 "Received a null pointer as the armor availability repository");
         checkNotNull(equipAvaRepo,
@@ -45,8 +49,8 @@ public final class DefaultUnitConfigurationManager implements
 
         this.validator = new DefaultConstraintValidator();
 
-        confOptions = new DefaultUnitConfigurationOptions(armorAvaRepo,
-                equipAvaRepo, mutationAvaRepo, weaponAvaRepo);
+        confOptions = new DefaultUnitConfigurationOptions(mutationRepo,
+                armorAvaRepo, equipAvaRepo, mutationAvaRepo, weaponAvaRepo);
 
         this.weaponAvaRepo = weaponAvaRepo;
     }

@@ -16,6 +16,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.inventory.Equipment;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.UnitWeapon;
 import com.wandrell.tabletop.punkapocalyptic.model.inventory.WeaponEnhancement;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.mutation.Mutation;
+import com.wandrell.tabletop.punkapocalyptic.repository.MutationRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitArmorAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitEquipmentAvailabilityRepository;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitMutationAvailabilityRepository;
@@ -27,17 +28,20 @@ public final class DefaultUnitConfigurationOptions implements
     private final UnitArmorAvailabilityRepository     armorAvaRepo;
     private final UnitEquipmentAvailabilityRepository equipAvaRepo;
     private final UnitMutationAvailabilityRepository  mutationAvaRepo;
+    private final MutationRepository                  mutationRepo;
     private String                                    unitNameToken;
     private Collection<UnitWeapon>                    unitWeapons;
     private final UnitWeaponAvailabilityRepository    weaponAvaRepo;
 
     public DefaultUnitConfigurationOptions(
+            final MutationRepository mutationRepo,
             final UnitArmorAvailabilityRepository armorAvaRepo,
             final UnitEquipmentAvailabilityRepository equipAvaRepo,
             final UnitMutationAvailabilityRepository mutationAvaRepo,
             final UnitWeaponAvailabilityRepository weaponAvaRepo) {
         super();
 
+        this.mutationRepo = mutationRepo;
         this.armorAvaRepo = armorAvaRepo;
         this.equipAvaRepo = equipAvaRepo;
         this.mutationAvaRepo = mutationAvaRepo;
@@ -125,7 +129,12 @@ public final class DefaultUnitConfigurationOptions implements
 
         mutations = new LinkedList<>();
         if (ava != null) {
-            mutations.addAll(ava.getMutationOptions());
+            if (ava.getMutationOptions().isEmpty()) {
+                // No limits to allowed mutations
+                mutations.addAll(getMutationRepository().getAll());
+            } else {
+                mutations.addAll(ava.getMutationOptions());
+            }
         }
 
         return mutations;
@@ -197,6 +206,10 @@ public final class DefaultUnitConfigurationOptions implements
         }
 
         return weaponsFiltered;
+    }
+
+    private final MutationRepository getMutationRepository() {
+        return mutationRepo;
     }
 
     private final UnitArmorAvailabilityRepository
