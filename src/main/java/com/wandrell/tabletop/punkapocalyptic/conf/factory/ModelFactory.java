@@ -97,7 +97,7 @@ public final class ModelFactory {
 
     public final Unit getUnit(final UnitTemplate template,
             final RulesetService service) {
-        final Collection<SpecialRule> filtered;
+        final Collection<? extends SpecialRule> filtered;
         Unit unit;
 
         filtered = Collections2.filter(template.getSpecialRules(),
