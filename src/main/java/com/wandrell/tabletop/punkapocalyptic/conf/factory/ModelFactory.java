@@ -1,9 +1,13 @@
 package com.wandrell.tabletop.punkapocalyptic.conf.factory;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.wandrell.tabletop.procedure.Constraint;
+import com.wandrell.tabletop.punkapocalyptic.conf.ConstraintsConf;
+import com.wandrell.tabletop.punkapocalyptic.conf.MessageBundleKey;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
 import com.wandrell.tabletop.punkapocalyptic.model.ruleset.SpecialRule;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
@@ -13,6 +17,10 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultUnit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.UnitTemplate;
+import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.DependantUnitConstraint;
+import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACountConstraint;
+import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGangLimitConstraint;
+import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
 import com.wandrell.tabletop.valuebox.ValueBox;
@@ -27,7 +35,46 @@ public final class ModelFactory {
 
     private ModelFactory() {
         super();
-        // TODO: Remove and do this on the commands or the service
+    }
+
+    public final Constraint getConstraint(final Gang gang, final String name,
+            final String unit, final List<String> context,
+            final LocalizationService service) {
+        final Constraint constraint;
+        final String message;
+        // TODO: The localization service should not be required in here
+
+        switch (name) {
+            case ConstraintsConf.UNIQUE:
+                message = String
+                        .format(service
+                                .getMessageString(MessageBundleKey.UNIQUE),
+                                unit);
+
+                constraint = new UnitUpToACountConstraint(gang, unit, 1,
+                        message);
+                break;
+            case ConstraintsConf.UP_TO_HALF_POINTS:
+                message = String.format(
+                        service.getMessageString(MessageBundleKey.HALF_GANG),
+                        unit);
+
+                constraint = new UnitUpToHalfGangLimitConstraint(gang, unit,
+                        message);
+                break;
+            case ConstraintsConf.DEPENDANT:
+                message = String.format(service
+                        .getMessageString(MessageBundleKey.DEPENDS_ON_UNIT),
+                        unit, context.get(0), Integer.parseInt(context.get(1)));
+
+                constraint = new DependantUnitConstraint(gang, context.get(0),
+                        unit, Integer.parseInt(context.get(1)), message);
+                break;
+            default:
+                constraint = null;
+        }
+
+        return constraint;
     }
 
     public final Gang getGang(final Faction faction,
