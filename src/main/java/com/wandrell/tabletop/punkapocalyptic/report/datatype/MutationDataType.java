@@ -23,7 +23,7 @@ public final class MutationDataType extends
 
         @Override
         public String format(Mutation value, ReportParameters reportParameters) {
-            return value.getName();
+            return value.getNameToken();
         }
 
     }
@@ -45,7 +45,7 @@ public final class MutationDataType extends
     @Override
     public final String
             valueToString(final Mutation value, final Locale locale) {
-        return value.getName();
+        return value.getNameToken();
     }
 
 }
