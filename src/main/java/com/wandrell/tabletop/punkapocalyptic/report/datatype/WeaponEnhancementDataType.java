@@ -24,7 +24,7 @@ public final class WeaponEnhancementDataType extends
         @Override
         public String format(WeaponEnhancement value,
                 ReportParameters reportParameters) {
-            return value.getName();
+            return value.getNameToken();
         }
 
     }
@@ -47,7 +47,7 @@ public final class WeaponEnhancementDataType extends
     @Override
     public final String valueToString(final WeaponEnhancement value,
             final Locale locale) {
-        return value.getName();
+        return value.getNameToken();
     }
 
 }

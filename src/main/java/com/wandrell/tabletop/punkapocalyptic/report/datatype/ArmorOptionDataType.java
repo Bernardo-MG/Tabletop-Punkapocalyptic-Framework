@@ -34,7 +34,7 @@ public final class ArmorOptionDataType extends
     @Override
     public final String valueToString(final ArmorOption value,
             final Locale locale) {
-        return value.getArmor().getName();
+        return value.getArmor().getNameToken();
     }
 
 }

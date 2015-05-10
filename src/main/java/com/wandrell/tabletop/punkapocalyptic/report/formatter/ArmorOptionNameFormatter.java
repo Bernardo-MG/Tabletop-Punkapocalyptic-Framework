@@ -18,7 +18,7 @@ public final class ArmorOptionNameFormatter extends
     @Override
     public final String format(final ArmorOption value,
             final ReportParameters reportParameters) {
-        return value.getArmor().getName();
+        return value.getArmor().getNameToken();
     }
 
 }

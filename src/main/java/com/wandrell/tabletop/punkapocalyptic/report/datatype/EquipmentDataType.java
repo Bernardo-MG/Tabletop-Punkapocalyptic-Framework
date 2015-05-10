@@ -24,7 +24,7 @@ public final class EquipmentDataType extends
         @Override
         public String
                 format(Equipment value, ReportParameters reportParameters) {
-            return value.getName();
+            return value.getNameToken();
         }
 
     }
@@ -46,7 +46,7 @@ public final class EquipmentDataType extends
     @Override
     public final String
             valueToString(final Equipment value, final Locale locale) {
-        return value.getName();
+        return value.getNameToken();
     }
 
 }

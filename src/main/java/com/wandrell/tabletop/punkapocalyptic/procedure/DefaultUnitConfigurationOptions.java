@@ -147,7 +147,7 @@ public final class DefaultUnitConfigurationOptions implements
 
         enhancements = getUnitWeaponAvailabilityRepository()
                 .getEnhancementsForUnitAndWeapon(getUnitNameToken(),
-                        weapon.getTemplate().getName());
+                        weapon.getTemplate().getNameToken());
 
         return enhancements;
     }
