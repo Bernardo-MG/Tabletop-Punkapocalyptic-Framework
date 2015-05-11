@@ -1,5 +1,7 @@
 package com.wandrell.tabletop.punkapocalyptic.procedure;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -77,11 +79,13 @@ public final class DefaultUnitConfigurationOptions implements
         ava = getUnitArmorAvailabilityRepository().getAvailabilityForUnit(
                 getUnitNameToken());
 
+        checkNotNull(ava, String.format("No armor availability for %s",
+                getUnitNameToken()));
+
         armors = new LinkedList<>();
-        if (ava.getInitialArmor() != null) {
-            armors.add(ava.getInitialArmor());
-            armors.addAll(ava.getArmorOptions());
-        }
+
+        armors.add(ava.getInitialArmor());
+        armors.addAll(ava.getArmorOptions());
 
         return armors;
     }
