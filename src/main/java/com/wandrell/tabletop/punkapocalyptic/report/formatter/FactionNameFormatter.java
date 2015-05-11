@@ -18,7 +18,7 @@ public final class FactionNameFormatter extends
     @Override
     public final String format(final Faction value,
             final ReportParameters reportParameters) {
-        return value.getNameToken();
+        return value.getName();
     }
 
 }

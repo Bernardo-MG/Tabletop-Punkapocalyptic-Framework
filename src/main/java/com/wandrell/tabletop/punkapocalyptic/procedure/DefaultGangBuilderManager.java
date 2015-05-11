@@ -132,8 +132,6 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         serviceLocalization = localizationService;
 
         gangOptions = new DefaultGangBuilderOptions(unitAvaRepository);
-
-        getConstraintValidator().addConstraint(getUnitLimitConstraint());
     }
 
     @Override
@@ -193,6 +191,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         maxUnits = new MaxUnitsValueBox(gang, getRulesetService());
         unitLimitConstraint = new GangUnitsUpToLimitConstraint(gang, maxUnits,
                 "too_many_units");
+        getConstraintValidator().addConstraint(getUnitLimitConstraint());
 
         this.gang.addGangListener(getGangListener());
         maxUnits.addValueChangeListener(getMaxUnitsChangeListener());
