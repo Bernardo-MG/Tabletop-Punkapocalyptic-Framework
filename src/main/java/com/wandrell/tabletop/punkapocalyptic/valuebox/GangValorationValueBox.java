@@ -2,8 +2,6 @@ package com.wandrell.tabletop.punkapocalyptic.valuebox;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.EventObject;
-
 import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
@@ -25,7 +23,7 @@ public final class GangValorationValueBox extends AbstractValueBox {
         listener = new GangListenerAdapter() {
 
             @Override
-            public void bulletsChanged(final EventObject event) {
+            public void bulletsChanged(final ValueChangeEvent event) {
                 final Integer old;
 
                 old = valoration;

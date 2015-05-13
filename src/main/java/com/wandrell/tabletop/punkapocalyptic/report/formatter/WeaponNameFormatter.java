@@ -18,7 +18,7 @@ public final class WeaponNameFormatter extends
     @Override
     public final String format(final UnitWeapon value,
             final ReportParameters reportParameters) {
-        return value.getTemplate().getNameToken();
+        return value.getWeaponTemplate().getNameToken();
     }
 
 }

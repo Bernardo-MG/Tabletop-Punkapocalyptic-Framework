@@ -151,7 +151,7 @@ public final class DefaultUnitConfigurationOptions implements
 
         enhancements = getUnitWeaponAvailabilityRepository()
                 .getEnhancementsForUnitAndWeapon(getUnitNameToken(),
-                        weapon.getTemplate().getNameToken());
+                        weapon.getWeaponTemplate().getNameToken());
 
         return enhancements;
     }
@@ -190,14 +190,14 @@ public final class DefaultUnitConfigurationOptions implements
         itrWeapons = weaponsHas.iterator();
         while ((!hasTwoHanded) && (itrWeapons.hasNext())) {
             weapon = itrWeapons.next();
-            hasTwoHanded = weapon.getTemplate().isTwoHanded();
+            hasTwoHanded = weapon.getWeaponTemplate().isTwoHanded();
         }
 
         weaponsFiltered = new LinkedHashSet<>();
         for (final UnitWeapon w : weapons) {
             // Checks if the unit already has that weapon
             if (!weaponsHas.contains(w)) {
-                if (w.getTemplate().isTwoHanded()) {
+                if (w.getWeaponTemplate().isTwoHanded()) {
                     // If it is two handed
                     // Then the unit should have no 2h weapon
                     if (!hasTwoHanded) {

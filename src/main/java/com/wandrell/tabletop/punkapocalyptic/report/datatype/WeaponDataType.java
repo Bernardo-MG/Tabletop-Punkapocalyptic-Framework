@@ -33,7 +33,7 @@ public final class WeaponDataType extends
     @Override
     public final String valueToString(final UnitWeapon value,
             final Locale locale) {
-        return String.valueOf(value.getTemplate().getNameToken());
+        return String.valueOf(value.getWeaponTemplate().getNameToken());
     }
 
 }

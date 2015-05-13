@@ -2,8 +2,6 @@ package com.wandrell.tabletop.punkapocalyptic.valuebox;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.EventObject;
-
 import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
@@ -24,7 +22,7 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
         listener = new GangListenerAdapter() {
 
             @Override
-            public final void valorationChanged(final EventObject evt) {
+            public final void valorationChanged(final ValueChangeEvent evt) {
                 max = getRulesetService().getMaxAllowedUnits(
                         getGang().getValoration());
                 fireValueChangedEvent(new ValueChangeEvent(source,

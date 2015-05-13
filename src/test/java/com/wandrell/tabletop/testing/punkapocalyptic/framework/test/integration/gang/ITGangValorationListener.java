@@ -1,6 +1,5 @@
 package com.wandrell.tabletop.testing.punkapocalyptic.framework.test.integration.gang;
 
-import java.util.EventObject;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,13 +7,13 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang.ValorationBuilder;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
-import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
+import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
@@ -22,22 +21,14 @@ import com.wandrell.tabletop.valuebox.ValueBox;
 
 public final class ITGangValorationListener {
 
-    private final class TestGangListener implements GangListener {
+    private final class TestGangListener extends GangListenerAdapter {
         public Integer valoration;
 
         @Override
-        public final void bulletsChanged(final EventObject event) {}
-
-        @Override
-        public final void unitAdded(final UnitEvent event) {}
-
-        @Override
-        public final void unitRemoved(final UnitEvent event) {}
-
-        @Override
-        public final void valorationChanged(final EventObject event) {
+        public final void valorationChanged(final ValueChangeEvent event) {
             valoration = ((DefaultGang) event.getSource()).getValoration();
         }
+
     }
 
     public ITGangValorationListener() {
