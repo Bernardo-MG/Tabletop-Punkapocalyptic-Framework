@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
-import com.wandrell.tabletop.event.ValueChangeEvent;
-import com.wandrell.tabletop.event.ValueChangeListener;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
@@ -27,7 +25,9 @@ import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityR
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.MaxUnitsValueBox;
-import com.wandrell.tabletop.valuebox.ValueBox;
+import com.wandrell.tabletop.stat.event.ValueChangeEvent;
+import com.wandrell.tabletop.stat.event.ValueChangeListener;
+import com.wandrell.tabletop.stat.valuebox.ValueBox;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 

@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.faction.Faction;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.DefaultGang.ValorationBuilder;
@@ -17,7 +16,8 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapte
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
-import com.wandrell.tabletop.valuebox.ValueBox;
+import com.wandrell.tabletop.stat.event.ValueChangeEvent;
+import com.wandrell.tabletop.stat.valuebox.ValueBox;
 
 public final class ITGangValorationListener {
 

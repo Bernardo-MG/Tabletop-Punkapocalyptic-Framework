@@ -24,13 +24,13 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToACount
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGangLimitConstraint;
 import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitWeaponsInIntervalConstraint;
 import com.wandrell.tabletop.punkapocalyptic.repository.UnitWeaponAvailabilityRepository;
+import com.wandrell.tabletop.stat.valuebox.ValueBox;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.conf.ConstraintParametersConf;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.DependantDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UnitLimitDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UpToCountDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.UpToHalfDocumentParser;
 import com.wandrell.tabletop.testing.punkapocalyptic.framework.framework.util.parser.WeaponIntervalDocumentParser;
-import com.wandrell.tabletop.valuebox.ValueBox;
 import com.wandrell.util.ResourceUtils;
 
 public final class ConstraintParameterFactory {

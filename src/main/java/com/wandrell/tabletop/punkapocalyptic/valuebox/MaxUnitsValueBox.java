@@ -2,15 +2,15 @@ package com.wandrell.tabletop.punkapocalyptic.valuebox;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.wandrell.tabletop.event.ValueChangeEvent;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.valuebox.AbstractValueBox;
-import com.wandrell.tabletop.valuebox.ValueBox;
+import com.wandrell.tabletop.stat.event.ValueChangeEvent;
+import com.wandrell.tabletop.stat.valuebox.AbstractValueBoxEventFirer;
+import com.wandrell.tabletop.stat.valuebox.ValueBox;
 
-public final class MaxUnitsValueBox extends AbstractValueBox {
+public final class MaxUnitsValueBox extends AbstractValueBoxEventFirer {
 
     private final Gang           gang;
     private final GangListener   listener;
@@ -60,13 +60,13 @@ public final class MaxUnitsValueBox extends AbstractValueBox {
     }
 
     @Override
-    public final MaxUnitsValueBox createNewInstance() {
-        return new MaxUnitsValueBox(this);
+    public final Integer getValue() {
+        return max;
     }
 
     @Override
-    public final Integer getValue() {
-        return max;
+    public final void setValue(final Integer value) {
+        throw new UnsupportedOperationException("Setting the value is disabled");
     }
 
     private final Gang getGang() {
