@@ -15,7 +15,7 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
 import com.wandrell.tabletop.punkapocalyptic.service.DefaultRulesetService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class ITGangValoration {
 

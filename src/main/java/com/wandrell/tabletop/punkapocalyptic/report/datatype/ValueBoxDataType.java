@@ -9,7 +9,7 @@ import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.dynamicreports.report.definition.ReportParameters;
 import net.sf.dynamicreports.report.definition.expression.DRIValueFormatter;
 
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class ValueBoxDataType extends
         AbstractDataType<ValueBox, ValueBox> {

@@ -7,9 +7,9 @@ import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListener;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.GangListenerAdapter;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.event.UnitEvent;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
-import com.wandrell.tabletop.stat.event.ValueChangeEvent;
-import com.wandrell.tabletop.stat.valuebox.AbstractValueBoxEventFirer;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.event.ValueChangeEvent;
+import com.wandrell.tabletop.stats.valuebox.AbstractValueBoxEventFirer;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class GangValorationValueBox extends AbstractValueBoxEventFirer {
 

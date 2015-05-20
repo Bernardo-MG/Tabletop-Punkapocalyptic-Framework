@@ -16,7 +16,7 @@ import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.VerticalAlignment;
 
 import com.wandrell.tabletop.punkapocalyptic.report.datatype.ValueBoxDataType;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class DynamicReportsFactory {
 

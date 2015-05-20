@@ -8,7 +8,7 @@ import java.util.Objects;
 import com.google.common.base.MoreObjects;
 import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class GangUnitsUpToLimitConstraint implements Constraint {
 

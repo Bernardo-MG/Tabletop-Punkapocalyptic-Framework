@@ -25,9 +25,9 @@ import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityR
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.MaxUnitsValueBox;
-import com.wandrell.tabletop.stat.event.ValueChangeEvent;
-import com.wandrell.tabletop.stat.event.ValueChangeListener;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.event.ValueChangeEvent;
+import com.wandrell.tabletop.stats.event.ValueChangeListener;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class DefaultGangBuilderManager implements GangBuilderManager {
 

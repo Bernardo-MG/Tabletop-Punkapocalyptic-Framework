@@ -23,7 +23,7 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.UnitUpToHalfGa
 import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.GangValorationValueBox;
-import com.wandrell.tabletop.stat.valuebox.ValueBox;
+import com.wandrell.tabletop.stats.valuebox.ValueBox;
 
 public final class ModelFactory {
 
