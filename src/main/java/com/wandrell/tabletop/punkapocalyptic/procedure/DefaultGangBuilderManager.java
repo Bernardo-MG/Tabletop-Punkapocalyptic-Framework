@@ -11,7 +11,6 @@ import com.wandrell.tabletop.procedure.Constraint;
 import com.wandrell.tabletop.procedure.ConstraintData;
 import com.wandrell.tabletop.procedure.ConstraintValidator;
 import com.wandrell.tabletop.procedure.DefaultConstraintValidator;
-import com.wandrell.tabletop.punkapocalyptic.conf.factory.ModelFactory;
 import com.wandrell.tabletop.punkapocalyptic.model.availability.FactionUnitAvailability;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Gang;
 import com.wandrell.tabletop.punkapocalyptic.model.unit.Unit;
@@ -22,7 +21,7 @@ import com.wandrell.tabletop.punkapocalyptic.procedure.constraint.GangUnitsUpToL
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangBuilderStatusChangedListener;
 import com.wandrell.tabletop.punkapocalyptic.procedure.event.GangChangedEvent;
 import com.wandrell.tabletop.punkapocalyptic.repository.FactionUnitAvailabilityRepository;
-import com.wandrell.tabletop.punkapocalyptic.service.LocalizationService;
+import com.wandrell.tabletop.punkapocalyptic.service.ModelService;
 import com.wandrell.tabletop.punkapocalyptic.service.RulesetService;
 import com.wandrell.tabletop.punkapocalyptic.valuebox.MaxUnitsValueBox;
 import com.wandrell.tabletop.stats.event.ValueChangeEvent;
@@ -37,8 +36,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
     private final ValueChangeListener               listenerMaxUnits;
     private final EventListenerList                 listeners = new EventListenerList();
     private ValueBox                                maxUnits;
-    private final LocalizationService               serviceLocalization;
-    private RulesetService                          serviceRuleset;
+    private final ModelService                      serviceModel;
+    private final RulesetService                    serviceRuleset;
     private final FactionUnitAvailabilityRepository unitAvaRepository;
     private Constraint                              unitLimitConstraint;
     private final ConstraintValidator               validator;
@@ -61,10 +60,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
             @Override
             public final void unitAdded(final UnitEvent event) {
                 final FactionUnitAvailability ava;
-                final ModelFactory factory;
                 Constraint constraint;
-
-                factory = ModelFactory.getInstance();
 
                 ava = getFactionUnitAvailabilityRepository()
                         .getAvailabilityForUnit(
@@ -72,10 +68,9 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                                         .getNameToken());
 
                 for (final ConstraintData data : ava.getConstraints()) {
-                    constraint = factory.getConstraint(gang,
+                    constraint = getModelService().getConstraint(getGang(),
                             data.getNameToken(), ava.getUnit().getNameToken(),
-                            (List<String>) data.getContext(),
-                            getLocalizationService());
+                            (List<String>) data.getContext());
                     getConstraintValidator().addConstraint(constraint);
                 }
 
@@ -84,11 +79,8 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
             @Override
             public final void unitRemoved(final UnitEvent event) {
-                final ModelFactory factory;
                 Constraint constraint;
                 FactionUnitAvailability ava;
-
-                factory = ModelFactory.getInstance();
 
                 getConstraintValidator()
                         .addConstraint(getUnitLimitConstraint());
@@ -99,10 +91,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                                     unit.getUnitTemplate().getNameToken());
 
                     for (final ConstraintData data : ava.getConstraints()) {
-                        constraint = factory.getConstraint(gang, data
-                                .getNameToken(), ava.getUnit().getNameToken(),
-                                (List<String>) data.getContext(),
-                                getLocalizationService());
+                        constraint = getModelService().getConstraint(getGang(),
+                                data.getNameToken(),
+                                ava.getUnit().getNameToken(),
+                                (List<String>) data.getContext());
                         getConstraintValidator().addConstraint(constraint);
                     }
                 }
@@ -115,21 +107,19 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
     public DefaultGangBuilderManager(
             final FactionUnitAvailabilityRepository unitAvaRepository,
-            final RulesetService rulesetService,
-            final LocalizationService localizationService) {
+            final RulesetService rulesetService, final ModelService modelService) {
         super();
 
         checkNotNull(unitAvaRepository,
                 "Received a null pointer as faction unit availability repository");
         checkNotNull(rulesetService,
                 "Received a null pointer as ruleset service");
-        checkNotNull(localizationService,
-                "Received a null pointer as localization service");
+        checkNotNull(modelService, "Received a null pointer as model service");
 
         this.validator = new DefaultConstraintValidator();
         this.unitAvaRepository = unitAvaRepository;
         serviceRuleset = rulesetService;
-        serviceLocalization = localizationService;
+        serviceModel = modelService;
 
         gangOptions = new DefaultGangBuilderOptions(unitAvaRepository);
     }
@@ -269,12 +259,12 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
         return listeners;
     }
 
-    private final LocalizationService getLocalizationService() {
-        return serviceLocalization;
-    }
-
     private final ValueChangeListener getMaxUnitsChangeListener() {
         return listenerMaxUnits;
+    }
+
+    private final ModelService getModelService() {
+        return serviceModel;
     }
 
     private final RulesetService getRulesetService() {
