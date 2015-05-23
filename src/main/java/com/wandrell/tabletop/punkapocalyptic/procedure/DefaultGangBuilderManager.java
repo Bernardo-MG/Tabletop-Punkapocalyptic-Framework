@@ -3,7 +3,6 @@ package com.wandrell.tabletop.punkapocalyptic.procedure;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
@@ -70,7 +69,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 for (final ConstraintData data : ava.getConstraints()) {
                     constraint = getModelService().getConstraint(getGang(),
                             data.getNameToken(), ava.getUnit().getNameToken(),
-                            (List<String>) data.getContext());
+                            data.getContext());
                     getConstraintValidator().addConstraint(constraint);
                 }
 
@@ -91,10 +90,10 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                                     unit.getUnitTemplate().getNameToken());
 
                     for (final ConstraintData data : ava.getConstraints()) {
-                        constraint = getModelService().getConstraint(getGang(),
-                                data.getNameToken(),
-                                ava.getUnit().getNameToken(),
-                                (List<String>) data.getContext());
+                        constraint = getModelService()
+                                .getConstraint(getGang(), data.getNameToken(),
+                                        ava.getUnit().getNameToken(),
+                                        data.getContext());
                         getConstraintValidator().addConstraint(constraint);
                     }
                 }
