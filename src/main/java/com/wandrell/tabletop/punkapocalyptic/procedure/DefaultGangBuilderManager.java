@@ -63,6 +63,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
 
                 ava = getFactionUnitAvailabilityRepository()
                         .getAvailabilityForUnit(
+                                getGang().getFaction().getNameToken(),
                                 event.getUnit().getUnitTemplate()
                                         .getNameToken());
 
@@ -87,6 +88,7 @@ public final class DefaultGangBuilderManager implements GangBuilderManager {
                 for (final Unit unit : getGang().getUnits()) {
                     ava = getFactionUnitAvailabilityRepository()
                             .getAvailabilityForUnit(
+                                    getGang().getFaction().getNameToken(),
                                     unit.getUnitTemplate().getNameToken());
 
                     for (final ConstraintData data : ava.getConstraints()) {
